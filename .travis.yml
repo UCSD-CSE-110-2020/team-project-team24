@@ -18,6 +18,10 @@ cache:
    # Android build cache (see http://tools.android.com/tech-docs/build-cache)
    - $HOME/.android/build-cache
 
+before_install: 
+    - openssl aes-256-cbc -K $encrypted_c383056a4ea8_key -iv $encrypted_c383056a4ea8_iv -in gcloud-service-key.json.enc -out gcloud-service-key.json -d
+
+
 android:
  components:
    # Uncomment the lines below if you want to
