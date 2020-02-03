@@ -32,19 +32,23 @@ public class Routes extends AppCompatActivity {
             }
         });
 
-//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-//
-//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//                switch(menuItem.getItemId()) {
-//                    case R.id.action_home:
-//                    Toast.makeText(Routes.this, "Home", Toast.LENGTH_SHORT);
-//                    break;
-//                }
-//                return true;
-//            }
-//        });
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch(menuItem.getItemId()) {
+                    case R.id.action_home:
+                    Toast.makeText(Routes.this, "Home", Toast.LENGTH_SHORT);
+                    break;
+
+                    case R.id.action_routes_list:
+                        Toast.makeText(Routes.this, "Routes", Toast.LENGTH_SHORT);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
 }
