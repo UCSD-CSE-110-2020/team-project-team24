@@ -4,19 +4,14 @@ import java.io.Serializable;
 import java.lang.Comparable;
 
 
-public class Route implements Serializable, Comparable {
-
+public class Route implements Serializable, Comparable<Route> {
     private String title;
 
     private WalkStats stats;
 
     // OPTIONAL fields
     private String startingLocation;
-    private RouteType routeType;
-    private TerrainType terrainType;
-    private SurfaceType surfaceType;
-    private TrailType trailType;
-    private Difficulty difficulty;
+    private RouteEnvironment environment;
     private boolean isFavorite;
     private String notes;
 
@@ -32,11 +27,6 @@ public class Route implements Serializable, Comparable {
     public Route setTitle(String title) {
         this.title = title;
         return this;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        return 0;
     }
 
     public String getStartingLocation() {
@@ -75,29 +65,14 @@ public class Route implements Serializable, Comparable {
         return this;
     }
 
-    public Object[] gatherFields() {
+    public RouteEnvironment getEnvironment() {
+        return environment;
+    }
 
-        return null;
+    @Override
+    public int compareTo(Route o) {
+        return title.compareTo(o.title);
     }
 
 }
 
-enum RouteType {
-    LOOP, OUT_AND_BACK;
-}
-
-enum TerrainType {
-    FLAT, HILLY;
-}
-
-enum SurfaceType {
-    EVEN, UNEVEN;
-}
-
-enum Difficulty {
-    EASY, MODERATE, HARD;
-}
-
-enum TrailType {
-    STREETS, TRAIL;
-}
