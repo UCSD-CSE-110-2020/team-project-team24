@@ -69,6 +69,11 @@ public class Route implements Serializable, Comparable<Route> {
         return environment;
     }
 
+    public Route setEnvironment(RouteEnvironment environment) {
+        this.environment = environment;
+        return this;
+    }
+
     @Override
     public int compareTo(Route o) {
         return title.compareTo(o.title);

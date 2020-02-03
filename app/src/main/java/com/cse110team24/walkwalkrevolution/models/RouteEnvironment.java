@@ -1,7 +1,6 @@
 package com.cse110team24.walkwalkrevolution.models;
 
 public class RouteEnvironment {
-    private final static int TYPE_CT = 5;
 
     private RouteType routeType;
     private TerrainType terrainType;
@@ -48,7 +47,7 @@ public class RouteEnvironment {
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
-    
+
 }
 enum RouteType {
     LOOP, OUT_AND_BACK;
