@@ -25,6 +25,19 @@ android {
         disable 'GoogleAppIndexingWarning'
         disable 'OldTargetApi'
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            all {
+                testLogging {
+                    events "passed", "skipped", "failed"
+                    exceptionFormat "full"
+                }
+            }
+        }
+    }
+
 }
 
 dependencies {
