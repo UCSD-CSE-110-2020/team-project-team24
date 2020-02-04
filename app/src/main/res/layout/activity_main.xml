@@ -12,35 +12,17 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
         android:text="Hello World!"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
-=======
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
->>>>>>> 5b7854dd98d9a7bda4806c04d7fec63cb4ccf325
 
     <Button
         android:id="@+id/goToRoutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
         android:text="Routes"
         android:layout_below="@id/textView3"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
-=======
-        android:layout_marginTop="289dp"
-        android:layout_marginBottom="19dp"
-        android:text="@string/routes"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
->>>>>>> 5b7854dd98d9a7bda4806c04d7fec63cb4ccf325
 
 </RelativeLayout>
