@@ -1,8 +1,9 @@
 package com.cse110team24.walkwalkrevolution.models;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class WalkStats {
+public class WalkStats implements Serializable {
     private long steps;
     private long timeElapsed;
     private double distance;

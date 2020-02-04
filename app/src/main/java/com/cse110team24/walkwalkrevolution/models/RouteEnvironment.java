@@ -1,6 +1,8 @@
 package com.cse110team24.walkwalkrevolution.models;
 
-public class RouteEnvironment {
+import java.io.Serializable;
+
+public class RouteEnvironment implements Serializable {
     public enum RouteType {
         LOOP, OUT_AND_BACK;
     }
