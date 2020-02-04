@@ -5,6 +5,8 @@ import java.lang.Comparable;
 import java.util.Objects;
 
 public class Route implements Serializable, Comparable<Route> {
+    private static final String TITLE_ERR = "A title is required for a route.";
+
     private String title;
 
     private WalkStats stats;
@@ -15,7 +17,10 @@ public class Route implements Serializable, Comparable<Route> {
     private boolean isFavorite;
     private String notes;
 
-    public Route(String title) {
+    public Route(String title) throws IllegalArgumentException {
+        if (title == null) {
+            throw new IllegalArgumentException(TITLE_ERR);
+        }
         this.title = title;
     }
 
@@ -23,7 +28,10 @@ public class Route implements Serializable, Comparable<Route> {
         return title;
     }
 
-    public Route setTitle(String title) {
+    public Route setTitle(String title) throws IllegalArgumentException {
+        if (title == null) {
+            throw new IllegalArgumentException(TITLE_ERR);
+        }
         this.title = title;
         return this;
     }
