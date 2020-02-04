@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+//    buildToolsVersion "29.0.2"
 
     defaultConfig {
         applicationId "com.cse110team24.walkwalkrevolution"
@@ -25,6 +25,19 @@ android {
         disable 'GoogleAppIndexingWarning'
         disable 'OldTargetApi'
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            all {
+                testLogging {
+                    events "passed", "skipped", "failed"
+                    exceptionFormat "full"
+                }
+            }
+        }
+    }
+
 }
 
 dependencies {
