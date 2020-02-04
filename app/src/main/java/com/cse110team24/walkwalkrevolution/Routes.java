@@ -39,11 +39,11 @@ public class Routes extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()) {
                     case R.id.action_home:
-                    Toast.makeText(Routes.this, "Home", Toast.LENGTH_SHORT);
+                    Toast.makeText(Routes.this, "Home", Toast.LENGTH_SHORT).show();
                     break;
 
                     case R.id.action_routes_list:
-                        Toast.makeText(Routes.this, "Routes", Toast.LENGTH_SHORT);
+                        Toast.makeText(Routes.this, "Routes", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return true;

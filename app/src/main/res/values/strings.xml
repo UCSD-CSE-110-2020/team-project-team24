@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">WalkWalkRevolution</string>
     <string name="title_activity_routes">Routes</string>
+    <string name="A">A</string>
+    <string name="B">B</string>
+    <string name="C">C</string>
+    <string name="routes">Routes</string>
+    <string name="home">Home</string>
 </resources>
