@@ -48,4 +48,14 @@ public class WalkStats implements Serializable {
         this.dateCompleted = dateCompleted;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof WalkStats) {
+            WalkStats stats = (WalkStats) o;
+            return steps == stats.steps && timeElapsed == stats.timeElapsed &&
+                    distance == stats.distance && dateCompleted.equals(stats.dateCompleted);
+        }
+
+        return false;
+    }
 }
