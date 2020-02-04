@@ -13,7 +13,6 @@ public class WalkStats {
         this.timeElapsed = timeElapsed;
         this.distance = distance;
         this.dateCompleted = (Calendar) dateCompleted.clone();
-
     }
 
     public long getSteps() {

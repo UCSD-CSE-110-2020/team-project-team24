@@ -3,7 +3,6 @@ package com.cse110team24.walkwalkrevolution.models;
 import java.io.Serializable;
 import java.lang.Comparable;
 
-
 public class Route implements Serializable, Comparable<Route> {
     private String title;
 
@@ -14,7 +13,6 @@ public class Route implements Serializable, Comparable<Route> {
     private RouteEnvironment environment;
     private boolean isFavorite;
     private String notes;
-
 
     public Route(String title) {
         this.title = title;
@@ -78,6 +76,5 @@ public class Route implements Serializable, Comparable<Route> {
     public int compareTo(Route o) {
         return title.compareTo(o.title);
     }
-
 }
 

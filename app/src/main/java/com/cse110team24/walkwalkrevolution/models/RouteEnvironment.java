@@ -1,6 +1,25 @@
 package com.cse110team24.walkwalkrevolution.models;
 
 public class RouteEnvironment {
+    public enum RouteType {
+        LOOP, OUT_AND_BACK;
+    }
+
+    public enum TerrainType {
+        FLAT, HILLY;
+    }
+
+    public enum SurfaceType {
+        EVEN, UNEVEN;
+    }
+
+    public enum Difficulty {
+        EASY, MODERATE, HARD;
+    }
+
+    public enum TrailType {
+        STREETS, TRAIL;
+    }
 
     private RouteType routeType;
     private TerrainType terrainType;
@@ -49,23 +68,4 @@ public class RouteEnvironment {
     }
 
 }
-enum RouteType {
-    LOOP, OUT_AND_BACK;
-}
 
-enum TerrainType {
-    FLAT, HILLY;
-
-}
-
-enum SurfaceType {
-    EVEN, UNEVEN;
-}
-
-enum Difficulty {
-    EASY, MODERATE, HARD;
-}
-
-enum TrailType {
-    STREETS, TRAIL;
-}
