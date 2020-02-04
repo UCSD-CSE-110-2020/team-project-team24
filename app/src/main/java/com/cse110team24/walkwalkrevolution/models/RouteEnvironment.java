@@ -69,4 +69,16 @@ public class RouteEnvironment implements Serializable {
         this.difficulty = difficulty;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof RouteEnvironment) {
+            RouteEnvironment environment = (RouteEnvironment) o;
+            return routeType == environment.routeType && terrainType == environment.terrainType &&
+                    surfaceType == environment.surfaceType && trailType == environment.trailType &&
+                    difficulty == environment.difficulty;
+        }
+
+        return false;
+    }
+
 }
