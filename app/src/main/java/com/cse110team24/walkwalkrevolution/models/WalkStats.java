@@ -2,6 +2,7 @@ package com.cse110team24.walkwalkrevolution.models;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class WalkStats implements Serializable {
     private long steps;
@@ -50,10 +51,10 @@ public class WalkStats implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof WalkStats) {
+        if (o != null && o instanceof WalkStats) {
             WalkStats stats = (WalkStats) o;
             return steps == stats.steps && timeElapsed == stats.timeElapsed &&
-                    distance == stats.distance && dateCompleted.equals(stats.dateCompleted);
+                    distance == stats.distance && Objects.equals(dateCompleted, stats.dateCompleted);
         }
 
         return false;

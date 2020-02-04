@@ -71,7 +71,7 @@ public class RouteEnvironment implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof RouteEnvironment) {
+        if (o != null && o instanceof RouteEnvironment) {
             RouteEnvironment environment = (RouteEnvironment) o;
             return routeType == environment.routeType && terrainType == environment.terrainType &&
                     surfaceType == environment.surfaceType && trailType == environment.trailType &&
