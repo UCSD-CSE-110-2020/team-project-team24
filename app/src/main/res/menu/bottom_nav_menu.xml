@@ -6,13 +6,13 @@
         android:id="@+id/action_home"
         android:enabled="true"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home"
+        android:title="@string/home"
          />
     <item
         android:id="@+id/action_routes_list"
         android:enabled="true"
         android:icon="@drawable/ic_terrain_black_24dp"
-        android:title="Routes"
+        android:title="@string/routes"
          />
 
 </menu>

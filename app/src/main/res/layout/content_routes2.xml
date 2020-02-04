@@ -10,26 +10,26 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textA"
         android:layout_width="match_parent"
         android:layout_height="358dp"
-        android:text="A"
-        android:textSize="100dp"
+        android:text="@string/A"
+        android:textSize="100sp"
         android:gravity="center"/>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textB"
         android:layout_width="match_parent"
         android:layout_height="279dp"
-        android:text="B"
-        android:textSize="100dp"
+        android:text="@string/B"
+        android:textSize="100sp"
         android:gravity="center" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textC"
         android:layout_width="match_parent"
         android:layout_height="307dp"
-        android:text="C"
-        android:textSize="100dp"
+        android:text="@string/C"
+        android:textSize="100sp"
         android:gravity="center"/>
 </LinearLayout>
