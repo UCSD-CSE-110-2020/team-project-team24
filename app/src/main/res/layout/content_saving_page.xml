@@ -14,10 +14,10 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Title: (this is REQUIRED) " />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -26,14 +26,14 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="hint" />
+                android:hint="" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/startingLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Starting Location:" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -42,14 +42,14 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="hint" />
+                android:hint="" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/routeType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Route Type:" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -57,25 +57,25 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButton1"
+                android:id="@+id/loopButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Loop" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/outAndForthButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Out-and-back" />
         </RadioGroup>
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/terrainType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Terrain Type:" />
 
 
         <RadioGroup
@@ -84,25 +84,25 @@
             android:orientation="horizontal">
 
              <RadioButton
-                android:id="@+id/radioButton3"
+                android:id="@+id/flatButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Flat" />
 
             <RadioButton
-                android:id="@+id/radioButton4"
+                android:id="@+id/hillyButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Hilly" />
         </RadioGroup>
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/surfaceType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Surface Type:" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -110,25 +110,25 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButton5"
+                android:id="@+id/evenButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Even" />
 
             <RadioButton
-                android:id="@+id/radioButton6"
+                android:id="@+id/unevenButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Uneven" />
         </RadioGroup>
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/landType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Land Type:" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -136,25 +136,25 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButton7"
+                android:id="@+id/streetButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Street" />
 
             <RadioButton
-                android:id="@+id/radioButton8"
+                android:id="@+id/trailButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Trail" />
         </RadioGroup>
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/difficultyType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Difficulty" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -162,18 +162,19 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButton9"
+                android:id="@+id/hardButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Hard" />
 
             <RadioButton
-                android:id="@+id/radioButton10"
+                android:id="@+id/easyButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="RadioButton" />
+                android:text="Easy" />
         </RadioGroup>
+
     </LinearLayout>
 </ScrollView>
