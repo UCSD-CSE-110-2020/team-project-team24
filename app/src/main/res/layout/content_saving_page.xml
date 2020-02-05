@@ -161,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/hillyroad"
+                android:drawableTop="@drawable/trailicon"
                 android:gravity="center"
                 android:text="Trail" />
         </RadioGroup>
