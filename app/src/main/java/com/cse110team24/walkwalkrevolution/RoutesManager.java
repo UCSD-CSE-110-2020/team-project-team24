@@ -71,35 +71,3 @@ public class RoutesManager {
         return ois;
     }
 }
-
-//rivate void printRoute(Route route) {
-//        System.out.println("Title: " + route.getTitle());
-//        if (route.getStartingLocation() != null)
-//        System.out.println(route.getStartingLocation());
-//        }
-//protected void writeRoutes(List<Route> routes, Context context) {
-//        try (FileOutputStream fos = context.openFileOutput(STORAGE_FILE, Context.MODE_PRIVATE)) {
-//        ObjectOutputStream oos = new ObjectOutputStream(fos);
-//        oos.writeObject(routes);
-//        Log.d("writing", "writeRoute: routes written to file");
-//        } catch (FileNotFoundException e) {
-//        e.printStackTrace();
-//        } catch (IOException e) {
-//        e.printStackTrace();
-//        }
-//        }
-//protected List<Route> readRoutes(Context context) {
-//        try (FileInputStream fis = context.openFileInput(STORAGE_FILE)){
-//        ObjectInputStream ois = new ObjectInputStream(fis);
-//        Log.d("reading", "readRoutes: reading routes to list");
-//        return (List<Route>) ois.readObject();
-//        } catch (FileNotFoundException e) {
-//        Log.e("reading", "readRoutes: file hasn't been created");
-//        e.printStackTrace();
-//        } catch (IOException e) {
-//        e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//        e.printStackTrace();
-//        }
-//        return new ArrayList<>();
-//        }
