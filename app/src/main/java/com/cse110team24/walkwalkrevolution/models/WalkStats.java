@@ -14,7 +14,7 @@ public class WalkStats implements Serializable {
         this.steps = steps;
         this.timeElapsed = timeElapsed;
         this.distance = distance;
-        this.dateCompleted = (Calendar) dateCompleted.clone();
+        this.dateCompleted = dateCompleted;
     }
 
     public long getSteps() {
@@ -51,7 +51,7 @@ public class WalkStats implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o != null && o instanceof WalkStats) {
+        if (o instanceof WalkStats) {
             WalkStats stats = (WalkStats) o;
             return steps == stats.steps && timeElapsed == stats.timeElapsed &&
                     distance == stats.distance && Objects.equals(dateCompleted, stats.dateCompleted);

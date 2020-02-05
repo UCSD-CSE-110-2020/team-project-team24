@@ -88,7 +88,7 @@ public class Route implements Serializable, Comparable<Route> {
 
     @Override
     public boolean equals(Object o) {
-        if (o != null && o instanceof Route) {
+        if (o instanceof Route) {
             Route route = (Route) o;
             boolean titleEquals = Objects.equals(title, route.title);
             boolean locEquals = Objects.equals(startingLocation, route.startingLocation);
