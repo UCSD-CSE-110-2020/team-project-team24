@@ -54,7 +54,6 @@ public class RoutesManagerTest {
                 List<Route> readRoutes = RoutesManager.readList(TEST_FILE, context);
                 assertEquals(new Route(title), readRoutes.get(0));
             } catch (IOException e) {
-                e.printStackTrace();
                 fail();
             }
         });
@@ -85,7 +84,6 @@ public class RoutesManagerTest {
                 List<Route> readRoutes = RoutesManager.readList(TEST_FILE, context);
                 assertEquals(route, readRoutes.get(0));
             } catch (IOException e) {
-                e.printStackTrace();
                 fail();
             }
         });

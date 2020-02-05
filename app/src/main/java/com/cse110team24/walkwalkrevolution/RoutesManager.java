@@ -20,6 +20,8 @@ import java.util.List;
 public class RoutesManager {
     private static final String SUCCESSFUL_WRITE = "write: successfully written to file '%s'";
     private static final String SUCCESSFUL_READ = "read: successfully read from file '%s'";
+    private static final String FAIL_READ = "read: failed to read from file '%s'";
+
 
     /**
      * write a list of Route objects to a file
@@ -46,12 +48,13 @@ public class RoutesManager {
     public static List<Route> readList(String filename, Context context) throws IOException {
         ObjectInputStream ois = getInputStream(filename, context);
         if (ois == null) {
-            Log.e(RoutesManager.class.getName(), String.format(SUCCESSFUL_READ, filename));
+            Log.e(RoutesManager.class.getName(), String.format(FAIL_READ, filename));
             return new ArrayList<>();
         }
         List<Route> routes = null;
         try {
             routes = (List<Route>) ois.readObject();
+            Log.d(RoutesManager.class.getName(), String.format(SUCCESSFUL_READ, filename));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
