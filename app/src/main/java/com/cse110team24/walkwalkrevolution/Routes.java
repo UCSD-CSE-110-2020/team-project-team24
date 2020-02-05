@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
+import com.cse110team24.walkwalkrevolution.models.WalkStats;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -18,6 +19,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 
 public class Routes extends AppCompatActivity {
 
@@ -46,8 +49,8 @@ public class Routes extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()) {
                     case R.id.action_home:
-                    Toast.makeText(Routes.this, "Home", Toast.LENGTH_SHORT).show();
-                    break;
+                        Toast.makeText(Routes.this, "Home", Toast.LENGTH_SHORT).show();
+                        break;
 
                     case R.id.action_routes_list:
                         Toast.makeText(Routes.this, "Routes", Toast.LENGTH_SHORT).show();
@@ -57,12 +60,18 @@ public class Routes extends AppCompatActivity {
             }
         });
 
-        RecyclerView rvRoutes = (RecyclerView)findViewById(R.id.recycler_view);
+        RecyclerView rvRoutes = findViewById(R.id.recycler_view);
         Route rt = new Route("Rose Canyon");
         Route rt2 = new Route("Marian Bear");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2066,5,6);
+        WalkStats ws = new WalkStats(22, 33, 0.01, calendar);
+        rt.setStats(ws);
+
         routes.add(rt);
         routes.add(rt2);
-        RouteAdapter adapter = new RouteAdapter(routes);
+        Collections.sort(routes);
+        RouteAdapter adapter = new RouteAdapter(routes, this);
         rvRoutes.setAdapter(adapter);
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }

@@ -3,4 +3,16 @@
     <string name="title_activity_routes">Routes</string>
     <string name="routes">Routes</string>
     <string name="home">Home</string>
+    <string name="fake_title">Canyon View Hiking Trail</string>
+    <string name="fake_steps">22 steps</string>
+    <string name="fake_distance">0.01 miles</string>
+    <string name="fake_date">1/20</string>
+    <plurals name="show_steps">
+        <item quantity="one">%d step</item>
+        <item quantity="other">%d steps</item>
+    </plurals>
+    <plurals name="show_miles">
+        <item quantity="one">%1$,.2f mile</item>
+        <item quantity="other">%1$,.2f miles</item>
+    </plurals>
 </resources>
