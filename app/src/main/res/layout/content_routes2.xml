@@ -1,35 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Routes"
-    tools:showIn="@layout/activity_routes2"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    >
 
     <TextView
-        android:id="@+id/textA"
+        android:id="@+id/route_name"
         android:layout_width="match_parent"
-        android:layout_height="358dp"
-        android:text="@string/A"
-        android:textSize="100sp"
-        android:gravity="center"/>
+        android:layout_height="182dp"
+        android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/textB"
+        android:id="@+id/route_location"
         android:layout_width="match_parent"
-        android:layout_height="279dp"
-        android:text="@string/B"
-        android:textSize="100sp"
-        android:gravity="center" />
+        android:layout_height="61dp"
+        android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/textC"
-        android:layout_width="match_parent"
-        android:layout_height="307dp"
-        android:text="@string/C"
-        android:textSize="100sp"
-        android:gravity="center"/>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.cse110team24.walkwalkrevolution;
 
 import android.os.Bundle;
 
+import com.cse110team24.walkwalkrevolution.models.Route;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -9,12 +10,18 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class Routes extends AppCompatActivity {
+
+    ArrayList<Route> routes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,15 @@ public class Routes extends AppCompatActivity {
                 return true;
             }
         });
+
+        RecyclerView rvRoutes = (RecyclerView)findViewById(R.id.recycler_view);
+        Route rt = new Route("Rose Canyon");
+        Route rt2 = new Route("Marian Bear");
+        routes.add(rt);
+        routes.add(rt2);
+        RouteAdapter adapter = new RouteAdapter(routes);
+        rvRoutes.setAdapter(adapter);
+        rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
 }
