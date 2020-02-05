@@ -61,6 +61,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/loop"
+                android:gravity="center"
                 android:text="Loop" />
 
             <RadioButton
@@ -68,6 +70,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/backandforth"
+                android:gravity="center"
                 android:text="Out-and-back" />
         </RadioGroup>
 
@@ -83,11 +87,13 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-             <RadioButton
+            <RadioButton
                 android:id="@+id/flatButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/flatterrain"
+                android:gravity="center"
                 android:text="Flat" />
 
             <RadioButton
@@ -95,6 +101,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/hills"
+                android:gravity="center"
                 android:text="Hilly" />
         </RadioGroup>
 
@@ -114,6 +122,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/evenroad"
+                android:gravity="center"
                 android:text="Even" />
 
             <RadioButton
@@ -121,6 +131,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/unevenroad"
+                android:gravity="center"
                 android:text="Uneven" />
         </RadioGroup>
 
@@ -140,6 +152,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/street"
+                android:gravity="center"
                 android:text="Street" />
 
             <RadioButton
@@ -147,6 +161,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/hillyroad"
+                android:gravity="center"
                 android:text="Trail" />
         </RadioGroup>
 
@@ -166,6 +182,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/hardicon"
+                android:gravity="center"
                 android:text="Hard" />
 
             <RadioButton
@@ -173,6 +191,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/easyicon"
+                android:gravity="center"
                 android:text="Easy" />
         </RadioGroup>
 
