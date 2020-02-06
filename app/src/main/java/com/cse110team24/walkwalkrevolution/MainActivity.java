@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EmptyActivity.class);
         intent.putExtra(HEIGHT_FT_KEY, feet);
         intent.putExtra(HEIGHT_IN_KEY, inches);
+        finish();
         startActivity(intent);
     }
 
