@@ -8,12 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
     public static final String HEIGHT_FT_KEY = "Height Feet";
@@ -80,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchHome() {
-        Intent intent = new Intent(this, EmptyActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra(HEIGHT_FT_KEY, feet);
         intent.putExtra(HEIGHT_IN_KEY, inches);
         finish();
