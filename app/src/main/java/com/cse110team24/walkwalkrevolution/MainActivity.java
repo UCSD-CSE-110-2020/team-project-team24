@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     public static final float MAX_INCHES = 11.99f;
     public static final float INVALID_VAL = -1.0f;
 
+    private String fitnessServiceKey = "GOOGLE_FIT";
+
     EditText feetEditText;
     EditText inchesEditText;
     Button finishBtn;
@@ -47,10 +49,14 @@ public class MainActivity extends AppCompatActivity {
                 editor.putInt(HEIGHT_FT_KEY, feet);
                 editor.putFloat(HEIGHT_IN_KEY, inches);
                 editor.apply();
-                launchHome();
+                launchHomeActivity();
             }
         });
 
+    }
+
+    public void setFitnessServiceKey(String fitnessServiceKey) {
+        this.fitnessServiceKey = fitnessServiceKey;
     }
 
     private void getFields() {
@@ -76,10 +82,11 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private void launchHome() {
+    private void launchHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra(HEIGHT_FT_KEY, feet);
         intent.putExtra(HEIGHT_IN_KEY, inches);
+        intent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
         finish();
         startActivity(intent);
     }
@@ -88,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         feet = preferences.getInt(HEIGHT_FT_KEY, (int) INVALID_VAL);
         inches = preferences.getFloat(HEIGHT_IN_KEY, INVALID_VAL);
         if (feet > 0 && inches > 0) {
-            launchHome();
+            launchHomeActivity();
         }
     }
 
