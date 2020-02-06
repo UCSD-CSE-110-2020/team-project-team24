@@ -30,53 +30,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        feetEditText = findViewById(R.id.height_feet_et);
-        inchesEditText = findViewById(R.id.height_remainder_inches_et);
-        finishBtn = findViewById(R.id.finish_btn);
-
         final SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-        feet = preferences.getInt(HEIGHT_FT_KEY, -1);
-        inches = preferences.getFloat(HEIGHT_IN_KEY, -1);
-        checkHeight();
+        checkHeight(preferences);
+
+        getFields();
 
         finishBtn.setEnabled(false);
-        feetEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                finishBtn.setEnabled(false);
-                if (validateFeet() && validateInches()) {
-                    finishBtn.setEnabled(true);
-                }
-            }
-        });
-        inchesEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                finishBtn.setEnabled(false);
-                if (validateFeet() && validateInches()) {
-                    finishBtn.setEnabled(true);
-                }
-            }
-        });
+        TextWatcher textWatcher = getTextWatcher();
+        feetEditText.addTextChangedListener(textWatcher);
+        inchesEditText.addTextChangedListener(textWatcher);
 
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,10 +48,32 @@ public class MainActivity extends AppCompatActivity {
                 editor.putFloat(HEIGHT_IN_KEY, inches);
                 editor.apply();
                 launchHome();
-
             }
         });
 
+    }
+
+    private void getFields() {
+        feetEditText = findViewById(R.id.height_feet_et);
+        inchesEditText = findViewById(R.id.height_remainder_inches_et);
+        finishBtn = findViewById(R.id.finish_btn);
+    }
+
+    private TextWatcher getTextWatcher() {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                finishBtn.setEnabled(validateFeet() && validateInches());
+            }
+        };
     }
 
     private void launchHome() {
@@ -99,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void checkHeight() {
+    private void checkHeight(SharedPreferences preferences) {
+        feet = preferences.getInt(HEIGHT_FT_KEY, -1);
+        inches = preferences.getFloat(HEIGHT_IN_KEY, -1);
         if (feet > 0 && inches > 0) {
             launchHome();
         }
@@ -120,6 +106,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             feet = -1;
         }
-        return feet > 0;
+        return feet <= 8 && feet > 0;
     }
 }
