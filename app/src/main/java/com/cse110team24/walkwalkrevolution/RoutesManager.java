@@ -39,10 +39,25 @@ public class RoutesManager {
     }
 
     /**
+     * write a Route object to a file
+     * @param route Route object to be written
+     * @param filename file to be written to in app storage
+     * @param context application context from which to get file
+     * @throws IOException if the file stream could not be created
+     */
+    public static void writeSingle(Route route, String filename, Context context) throws IOException {
+        FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(route);
+        oos.close();
+        Log.d(RoutesManager.class.getName(), String.format(SUCCESSFUL_WRITE, filename));
+    }
+
+    /**
      * read a list of Route objects from a file
      * @param filename file to be read from in app storage
      * @param context application context from which to get file
-     * @return a List<Route> object
+     * @return a List<Route> object (empty if file was not read)
      * @throws IOException if the file stream could not be created
      */
     public static List<Route> readList(String filename, Context context) throws IOException {
@@ -60,6 +75,31 @@ public class RoutesManager {
         }
         ois.close();
         return (routes == null) ? new ArrayList<>() : routes;
+    }
+
+    /**
+     * read a route object from a file
+     * @param filename file to be read from in app storage
+     * @param context application context from which to get file
+     * @return a Route object (caution: returns null if not read)
+     * @throws IOException if the file stream could not be created
+     */
+    public static Route readSingle(String filename, Context context) throws IOException {
+        ObjectInputStream ois = getInputStream(filename, context);
+        if (ois == null) {
+            Log.e(RoutesManager.class.getName(), String.format(FAIL_READ, filename));
+            return null;
+        }
+
+        Route route = null;
+        try {
+            route = (Route) ois.readObject();
+            Log.d(RoutesManager.class.getName(), String.format(SUCCESSFUL_READ, filename));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        ois.close();
+        return route;
     }
 
     // for convenience - gets input stream, handling exceptions
