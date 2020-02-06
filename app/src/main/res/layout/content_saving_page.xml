@@ -188,7 +188,6 @@
                 android:layout_width="5dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:cursorVisible="false"
                 android:drawableTop="@drawable/hardicon"
                 android:gravity="center"
                 android:text="Hard"
