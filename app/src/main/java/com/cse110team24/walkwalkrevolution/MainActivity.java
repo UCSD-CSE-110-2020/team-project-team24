@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void setFitnessServiceKey(String fitnessServiceKey) {
+        this.fitnessServiceKey = fitnessServiceKey;
+    }
+
     private void getFields() {
         feetEditText = findViewById(R.id.height_feet_et);
         inchesEditText = findViewById(R.id.height_remainder_inches_et);
