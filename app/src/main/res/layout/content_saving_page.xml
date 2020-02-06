@@ -17,7 +17,7 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title: (this is REQUIRED) " />
+            android:text="@string/title" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:id="@+id/startingLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Starting Location:" />
+            android:text="@string/starting_location" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -49,7 +49,7 @@
             android:id="@+id/routeType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Route Type:" />
+            android:text="@string/route_type" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/loop"
                 android:gravity="center"
-                android:text="Loop" />
+                android:text="@string/loop" />
 
             <RadioButton
                 android:id="@+id/outAndForthButton"
@@ -73,14 +73,14 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/backandforth"
                 android:gravity="center"
-                android:text="Out-and-back" />
+                android:text="@string/out_and_back" />
         </RadioGroup>
 
         <TextView
             android:id="@+id/terrainType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Terrain Type:" />
+            android:text="@string/terrain_type" />
 
 
         <RadioGroup
@@ -96,7 +96,7 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/flatterrain"
                 android:gravity="center"
-                android:text="Flat" />
+                android:text="@string/flat_button" />
 
             <RadioButton
                 android:id="@+id/hillyButton"
@@ -105,14 +105,14 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/hills"
                 android:gravity="center"
-                android:text="Hilly" />
+                android:text="@string/hilly_button" />
         </RadioGroup>
 
         <TextView
             android:id="@+id/surfaceType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Surface Type:" />
+            android:text="@string/surface_type" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/evenroad"
                 android:gravity="center"
-                android:text="Even" />
+                android:text="@string/even" />
 
             <RadioButton
                 android:id="@+id/unevenButton"
@@ -136,15 +136,14 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/unevenroad"
                 android:gravity="center"
-                android:text="Uneven" />
+                android:text="@string/uneven" />
         </RadioGroup>
 
         <TextView
             android:id="@+id/landType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:text="Land Type:" />
+            android:text="@string/land_type" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -159,7 +158,7 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/street"
                 android:gravity="center"
-                android:text="Street" />
+                android:text="@string/street" />
 
             <RadioButton
                 android:id="@+id/trailButton"
@@ -168,14 +167,14 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/trailicon"
                 android:gravity="center"
-                android:text="Trail" />
+                android:text="@string/trail" />
         </RadioGroup>
 
         <TextView
             android:id="@+id/difficultyType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Difficulty" />
+            android:text="@string/difficulty" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -190,9 +189,7 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/hardicon"
                 android:gravity="center"
-                android:text="Hard"
-                android:visibility="visible"
-                tools:visibility="visible" />
+                android:text="@string/hard" />
 
             <RadioButton
                 android:id="@+id/easyButton"
@@ -201,7 +198,7 @@
                 android:layout_weight="1"
                 android:drawableTop="@drawable/easyicon"
                 android:gravity="center"
-                android:text="Easy" />
+                android:text="@string/easy" />
         </RadioGroup>
 
     </LinearLayout>
