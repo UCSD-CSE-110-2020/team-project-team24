@@ -3,6 +3,7 @@
     <string name="title_activity_saving_page">SavingPage</string>
     <string name="title">Title: (this is REQUIRED) </string>
     <string name="starting_location">Starting Location:</string>
+    <string name="route_type">Route Type:</string>
     <string name="loop">Loop</string>
     <string name="out_and_back">Out-and-back</string>
     <string name="terrain_type">Terrain Type:</string>
