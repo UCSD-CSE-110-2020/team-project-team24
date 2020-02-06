@@ -18,6 +18,9 @@ import org.w3c.dom.Text;
 public class MainActivity extends AppCompatActivity {
     public static final String HEIGHT_FT_KEY = "Height Feet";
     public static final String HEIGHT_IN_KEY = "Height Remainder Inches";
+    public static final int MAX_FEET = 8;
+    public static final float MAX_INCHES = 11.99f;
+    public static final float INVALID_VAL = -1.0f;
 
     EditText feetEditText;
     EditText inchesEditText;
@@ -84,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkHeight(SharedPreferences preferences) {
-        feet = preferences.getInt(HEIGHT_FT_KEY, -1);
-        inches = preferences.getFloat(HEIGHT_IN_KEY, -1);
+        feet = preferences.getInt(HEIGHT_FT_KEY, (int) INVALID_VAL);
+        inches = preferences.getFloat(HEIGHT_IN_KEY, INVALID_VAL);
         if (feet > 0 && inches > 0) {
             launchHome();
         }
@@ -95,17 +98,17 @@ public class MainActivity extends AppCompatActivity {
         try {
             inches = Float.parseFloat(inchesEditText.getText().toString());
         } catch (NumberFormatException e) {
-            inches = -1;
+            inches = INVALID_VAL;
         }
-        return inches <= 12.0 && inches > 0;
+        return inches <= MAX_INCHES && inches > 0;
     }
 
     private boolean validateFeet() {
         try {
             feet = Integer.parseInt(feetEditText.getText().toString());
         } catch (NumberFormatException e) {
-            feet = -1;
+            feet = (int) INVALID_VAL;
         }
-        return feet <= 8 && feet > 0;
+        return feet <= MAX_FEET && feet > 0;
     }
 }
