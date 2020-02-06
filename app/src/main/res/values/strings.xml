@@ -18,6 +18,9 @@
     <string name="difficulty">Difficulty:</string>
     <string name="hard">Hard</string>
     <string name="easy">Easy</string>
+    <string name = "goto_page"> Go to saving page</string>
+    <string name = "name_route_hint">Name Route</string>
+    <string name="location_det_hint">Location Details</string>
 
 
 
