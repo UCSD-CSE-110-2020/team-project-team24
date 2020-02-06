@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     public static final float MAX_INCHES = 11.99f;
     public static final float INVALID_VAL = -1.0f;
 
+    private String fitnessServiceKey = "GOOGLE_FIT";
+
     EditText feetEditText;
     EditText inchesEditText;
     Button finishBtn;
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra(HEIGHT_FT_KEY, feet);
         intent.putExtra(HEIGHT_IN_KEY, inches);
+        intent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
         finish();
         startActivity(intent);
     }
