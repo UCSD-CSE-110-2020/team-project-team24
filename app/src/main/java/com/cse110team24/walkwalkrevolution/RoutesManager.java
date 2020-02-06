@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -100,6 +101,38 @@ public class RoutesManager {
         }
         ois.close();
         return route;
+    }
+
+    /**
+     * TODO get the latest route completed if one exists
+     * @param filename filename to look for latest route
+     * @return a route object if a latest route exists or null otherwise
+     */
+    public static Route getLatest(String filename, Context context) {
+        Route latest = null;
+        try {
+            latest = readSingle(filename, context);
+        } catch (IOException e) {}
+
+        return latest;
+    }
+
+    /**
+     * TODO - check first if a latest already exists and delete the file if it does
+     * otherwise just write the new route. if route's stats are null, does nothing
+     * @param route route to be written to file
+     * @param filename file to be written to
+     */
+    public static void writeLatest(Route route, String filename, Context context) throws IllegalArgumentException,
+                                                                                    IOException {
+        if (route.getStats() == null) {
+            throw new IllegalArgumentException("Can't write latest route without stats");
+        }
+        File file = new File(filename);
+        if (file.exists()) {
+            file.delete();
+        }
+        writeSingle(route, filename, context);
     }
 
     // for convenience - gets input stream, handling exceptions
