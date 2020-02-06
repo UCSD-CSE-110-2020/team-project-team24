@@ -108,7 +108,7 @@ public class RoutesManager {
      * @param filename filename to look for latest route
      * @return a route object if a latest route exists or null otherwise
      */
-    public static Route getLatest(String filename, Context context) {
+    public static Route readLatest(String filename, Context context) {
         Route latest = null;
         try {
             latest = readSingle(filename, context);

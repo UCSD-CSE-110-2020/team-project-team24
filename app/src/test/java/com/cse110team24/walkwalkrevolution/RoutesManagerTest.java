@@ -21,12 +21,14 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class RoutesManagerTest {
     private static final String TEST_FILE_LIST = ".WWR_storage_test_list";
     private static final String TEST_FILE_SINGLE = ".WWR_storage_test_single";
+    private static final String TEST_FILE_LATEST = ".WWR_storage_test_latest";
 
     @Rule
     public ActivityScenarioRule<MainActivity> scenarioRule = new ActivityScenarioRule<>(MainActivity.class);
@@ -108,7 +110,6 @@ public class RoutesManagerTest {
     public void testAllFieldsSingle() {
         scenario.onActivity(activity -> {
             Route route = getRoute();
-
             Context context = activity.getApplicationContext();
             try {
                 RoutesManager.writeSingle(route, TEST_FILE_SINGLE, context);
@@ -122,6 +123,66 @@ public class RoutesManagerTest {
             } catch (IOException e) {
                 fail();
             }
+        });
+    }
+
+    @Test
+    public void testWriteLatestNullStats() {
+        scenario.onActivity(activity -> {
+            Route route = new Route("");
+            try {
+                RoutesManager.writeLatest(route, TEST_FILE_LATEST, activity.getApplicationContext());
+                fail();
+            } catch (IOException e) {
+                fail();
+            } catch (IllegalArgumentException e) {
+                assertTrue(true);
+            }
+        });
+    }
+    @Test
+    public void testLatest() {
+        scenario.onActivity(activity -> {
+            Context context = activity.getApplicationContext();
+            Route route = getRoute();
+            try {
+                RoutesManager.writeLatest(route, TEST_FILE_LATEST, context);
+            } catch (Exception e) {
+                fail();
+            }
+
+            try {
+                assertEquals(route, RoutesManager.readLatest(TEST_FILE_LATEST, context));
+            } catch (Exception e) {
+                fail();
+            }
+        });
+    }
+
+    @Test
+    public void testLatestAlreadyWritten() {
+        scenario.onActivity(activity -> {
+            Context context = activity.getApplicationContext();
+            Route route = getRoute();
+            try {
+                RoutesManager.writeLatest(route, TEST_FILE_LATEST, context);
+            } catch (Exception e) {
+                fail();
+            }
+
+            route.getStats().setDistance(0.5);
+            try {
+                RoutesManager.writeLatest(route, TEST_FILE_LATEST, context);
+            } catch (Exception e) {
+                fail();
+            }
+
+            try {
+                assertEquals(route, RoutesManager.readLatest(TEST_FILE_LATEST, context));
+            } catch (Exception e) {
+                fail();
+            }
+
         });
     }
 
