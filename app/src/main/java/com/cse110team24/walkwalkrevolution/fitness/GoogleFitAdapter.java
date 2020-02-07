@@ -11,11 +11,13 @@ import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 public class GoogleFitAdapter implements FitnessService {
+    private static final String TAG = "GoogleFitAdapter";
+    private static final double STRIDE_LEN_CONST = 0.413;
+    private static final int FEET_IN_MILE = 5280;
+    private static final int INCHES_IN_FEET = 12;
 
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
-    private final String TAG = "GoogleFitAdapter";
     private GoogleSignInAccount account;
-
     private HomeActivity activity;
 
     public GoogleFitAdapter(HomeActivity activity) {
@@ -55,8 +57,17 @@ public class GoogleFitAdapter implements FitnessService {
                 });
     }
 
+
     @Override
     public int getRequestCode() {
         return GOOGLE_FIT_PERMISSIONS_REQUEST_CODE;
+    }
+
+    @Override
+    public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
+        double totalHeightInches = (INCHES_IN_FEET * heightFeet) + heightRemainderInches;
+        double avgStrideLen = (totalHeightInches * STRIDE_LEN_CONST) / INCHES_IN_FEET;
+        double stepsPerMile = FEET_IN_MILE / avgStrideLen;
+        return steps / stepsPerMile;
     }
 }

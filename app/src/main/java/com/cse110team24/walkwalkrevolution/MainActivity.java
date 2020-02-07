@@ -17,8 +17,6 @@ import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String HEIGHT_FT_KEY = "Height Feet";
-    public static final String HEIGHT_IN_KEY = "Height Remainder Inches";
     public static final int MAX_FEET = 8;
     public static final float MAX_INCHES = 11.99f;
     public static final float INVALID_VAL = -1.0f;
@@ -58,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putInt(HEIGHT_FT_KEY, feet);
-                editor.putFloat(HEIGHT_IN_KEY, inches);
+                editor.putInt(HomeActivity.HEIGHT_FT_KEY, feet);
+                editor.putFloat(HomeActivity.HEIGHT_IN_KEY, inches);
                 editor.apply();
                 launchHomeActivity();
             }
@@ -95,21 +93,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class)
-                .putExtra(HEIGHT_FT_KEY, feet)
-                .putExtra(HEIGHT_IN_KEY, inches)
+                .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
+                .putExtra(HomeActivity.HEIGHT_IN_KEY, inches)
                 .putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
         finish();
         startActivity(intent);
     }
 
     private void checkHeight(SharedPreferences preferences) {
-        feet = preferences.getInt(HEIGHT_FT_KEY, (int) INVALID_VAL);
-        inches = preferences.getFloat(HEIGHT_IN_KEY, INVALID_VAL);
+        feet = preferences.getInt(HomeActivity.HEIGHT_FT_KEY, (int) INVALID_VAL);
+        inches = preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, INVALID_VAL);
         if (feet > 0 && inches > 0) {
             launchHomeActivity();
         }
     }
 
+    // TODO - change to REGEX to avoid exception
     private boolean validateInches() {
         try {
             inches = Float.parseFloat(inchesEditText.getText().toString());
@@ -119,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         return inches <= MAX_INCHES && inches > 0;
     }
 
+    // TODO - change to REGEX to avoid exception
     private boolean validateFeet() {
         try {
             feet = Integer.parseInt(feetEditText.getText().toString());
@@ -127,4 +127,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return feet <= MAX_FEET && feet > 0;
     }
+
 }
