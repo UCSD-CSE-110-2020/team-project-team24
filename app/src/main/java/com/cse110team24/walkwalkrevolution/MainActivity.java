@@ -12,6 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
+import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
+
 public class MainActivity extends AppCompatActivity {
     public static final String HEIGHT_FT_KEY = "Height Feet";
     public static final String HEIGHT_IN_KEY = "Height Remainder Inches";
@@ -24,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     EditText feetEditText;
     EditText inchesEditText;
     Button finishBtn;
+
     int feet;
     float inches;
 
@@ -42,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
         feetEditText.addTextChangedListener(textWatcher);
         inchesEditText.addTextChangedListener(textWatcher);
 
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(HomeActivity homeActivity) {
+                return new GoogleFitAdapter(homeActivity);
+            }
+        });
+
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 launchHomeActivity();
             }
         });
-
     }
 
     public void setFitnessServiceKey(String fitnessServiceKey) {
@@ -83,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra(HEIGHT_FT_KEY, feet);
-        intent.putExtra(HEIGHT_IN_KEY, inches);
-        intent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+        Intent intent = new Intent(this, HomeActivity.class)
+                .putExtra(HEIGHT_FT_KEY, feet)
+                .putExtra(HEIGHT_IN_KEY, inches)
+                .putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
         finish();
         startActivity(intent);
     }
