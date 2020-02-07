@@ -8,15 +8,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     public static final int MAX_FEET = 8;
     public static final float MAX_INCHES = 11.99f;
     public static final float INVALID_VAL = -1.0f;
@@ -38,40 +38,36 @@ public class MainActivity extends AppCompatActivity {
         final SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
         checkHeight(preferences);
 
-        getFields();
+        getConfiguredFields();
 
-        finishBtn.setEnabled(false);
-        TextWatcher textWatcher = getTextWatcher();
-        feetEditText.addTextChangedListener(textWatcher);
-        inchesEditText.addTextChangedListener(textWatcher);
 
-        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(HomeActivity homeActivity) {
-                return new GoogleFitAdapter(homeActivity);
-            }
-        });
+        FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
 
-        finishBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putInt(HomeActivity.HEIGHT_FT_KEY, feet);
-                editor.putFloat(HomeActivity.HEIGHT_IN_KEY, inches);
-                editor.apply();
-                launchHomeActivity();
-            }
-        });
+        finishBtnOnClickListener(preferences);
     }
 
     public void setFitnessServiceKey(String fitnessServiceKey) {
         this.fitnessServiceKey = fitnessServiceKey;
     }
 
-    private void getFields() {
+    private void finishBtnOnClickListener(final SharedPreferences preferences) {
+        finishBtn.setOnClickListener(view -> {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt(HomeActivity.HEIGHT_FT_KEY, feet);
+            editor.putFloat(HomeActivity.HEIGHT_IN_KEY, inches);
+            editor.apply();
+            launchHomeActivity();
+        });
+    }
+
+    private void getConfiguredFields() {
         feetEditText = findViewById(R.id.height_feet_et);
         inchesEditText = findViewById(R.id.height_remainder_inches_et);
         finishBtn = findViewById(R.id.finish_btn);
+        finishBtn.setEnabled(false);
+        TextWatcher textWatcher = getTextWatcher();
+        feetEditText.addTextChangedListener(textWatcher);
+        inchesEditText.addTextChangedListener(textWatcher);
     }
 
     private TextWatcher getTextWatcher() {
@@ -92,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchHomeActivity() {
+        Log.i(TAG, "launchHomeActivity: valid height params found; launching home.");
         Intent intent = new Intent(this, HomeActivity.class)
                 .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
                 .putExtra(HomeActivity.HEIGHT_IN_KEY, inches)

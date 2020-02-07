@@ -1,14 +1,15 @@
 package com.cse110team24.walkwalkrevolution.fitness;
 
+import android.util.Log;
+
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
-import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.fitness.data.Field;
 
 public class GoogleFitAdapter implements FitnessService {
     private static final String TAG = "GoogleFitAdapter";
@@ -43,18 +44,21 @@ public class GoogleFitAdapter implements FitnessService {
     }
 
     @Override
-    public void updateStepCount() {
+    public void updateDailyStepCount() {
         if (account == null) {
             return;
         }
 
         Fitness.getHistoryClient(activity, account)
                 .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
-                .addOnSuccessListener(new OnSuccessListener<DataSet>() {
-                    @Override
-                    public void onSuccess(DataSet dataSet) {
-                    }
-                });
+                .addOnSuccessListener(dataSet -> {
+                    long steps = dataSet.isEmpty()
+                            ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
+                    activity.setStepCount(steps);
+                })
+                .addOnFailureListener(e ->
+                    Log.e(TAG, "updateDailyStepCount: there was a problem getting the daily step count.", e)
+                );
     }
 
 
