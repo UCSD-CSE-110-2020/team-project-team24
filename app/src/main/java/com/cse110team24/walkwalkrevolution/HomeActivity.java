@@ -13,11 +13,13 @@ import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class HomeActivity extends AppCompatActivity {
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
-    private static final String TAG = "StepCountActivity";
+    private static final String TAG = "HomeCountActivity";
 
     private FitnessService fitnessService;
     private TextView textSteps;
     Context context;
+
+    long stepCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void setStepCount(long stepCount) {
-        textSteps.setText(String.valueOf(stepCount));
+        this.stepCount = stepCount;
     }
 }
