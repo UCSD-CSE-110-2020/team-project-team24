@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.cse110team24.walkwalkrevolution"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
