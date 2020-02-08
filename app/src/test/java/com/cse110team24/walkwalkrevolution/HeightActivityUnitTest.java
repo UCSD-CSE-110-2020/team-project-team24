@@ -55,14 +55,4 @@ public class HeightActivityUnitTest {
         inchesEt.setText("3");
         assertTrue(finishBtn.isEnabled());
     }
-
-    @Test
-    public void testHeightSaved() {
-        feetEt.setText("5");
-        inchesEt.setText("3");
-        finishBtn.performClick();
-        SharedPreferences preferences = testActivity.getPreferences(Context.MODE_PRIVATE);
-        assertEquals(5, preferences.getInt(HomeActivity.HEIGHT_FT_KEY, -1));
-        assertEquals(3, preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, -1), 0.1);
-    }
 }

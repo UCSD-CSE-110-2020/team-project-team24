@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
@@ -22,6 +23,8 @@ public class HeightActivity extends AppCompatActivity {
     public static final float INVALID_VAL = -1.0f;
 
     private String fitnessServiceKey = "GOOGLE_FIT";
+
+    private Intent homeIntent;
 
     EditText feetEditText;
     EditText inchesEditText;
@@ -35,26 +38,24 @@ public class HeightActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_height);
 
-        final SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
+
+        homeIntent = new Intent(this, HomeActivity.class);
         checkHeight(preferences);
 
         getConfiguredFields();
 
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
 
-        finishBtnOnClickListener(preferences);
+        finishBtnOnClickListener();
     }
 
     public void setFitnessServiceKey(String fitnessServiceKey) {
         this.fitnessServiceKey = fitnessServiceKey;
     }
 
-    private void finishBtnOnClickListener(final SharedPreferences preferences) {
+    private void finishBtnOnClickListener() {
         finishBtn.setOnClickListener(view -> {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt(HomeActivity.HEIGHT_FT_KEY, feet);
-            editor.putFloat(HomeActivity.HEIGHT_IN_KEY, inches);
-            editor.apply();
             launchHomeActivity();
         });
     }
@@ -88,17 +89,17 @@ public class HeightActivity extends AppCompatActivity {
 
     private void launchHomeActivity() {
         Log.i(TAG, "launchHomeActivity: valid height params found; launching home.");
-        Intent intent = new Intent(this, HomeActivity.class)
-                .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
-                .putExtra(HomeActivity.HEIGHT_IN_KEY, inches)
-                .putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
+                    .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
+                    .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
         finish();
-        startActivity(intent);
+        startActivity(homeIntent);
     }
 
     private void checkHeight(SharedPreferences preferences) {
         feet = preferences.getInt(HomeActivity.HEIGHT_FT_KEY, (int) INVALID_VAL);
         inches = preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, INVALID_VAL);
+        Log.i(TAG, "checkHeight: checking height in preferences (feet: " + feet + ", inches: " + inches + ").");
         if (feet > 0 && inches > 0) {
             launchHomeActivity();
         }
