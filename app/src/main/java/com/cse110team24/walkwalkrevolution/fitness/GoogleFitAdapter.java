@@ -2,6 +2,8 @@ package com.cse110team24.walkwalkrevolution.fitness;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -10,6 +12,8 @@ import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 public class GoogleFitAdapter implements FitnessService {
     private static final String TAG = "GoogleFitAdapter";
@@ -40,6 +44,8 @@ public class GoogleFitAdapter implements FitnessService {
                     GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
                     account,
                     fitnessOptions);
+        } else {
+            updateDailyStepCount();
         }
     }
 
@@ -55,6 +61,7 @@ public class GoogleFitAdapter implements FitnessService {
                     long steps = dataSet.isEmpty()
                             ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
                     activity.setDailyStats(steps);
+                    Log.i(TAG, "updateDailyStepCount: successful steps update: " + steps);
                 })
                 .addOnFailureListener(e ->
                     Log.e(TAG, "updateDailyStepCount: there was a problem getting the daily step count.", e)

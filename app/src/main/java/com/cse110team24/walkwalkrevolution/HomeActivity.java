@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.DecimalFormat;
+import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,6 +20,7 @@ import static com.cse110team24.walkwalkrevolution.HeightActivity.INVALID_VAL;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
+    private static final String DISTANCE_FMT = "#0.00";
     private static final long UPDATE_PERIOD = 30_000;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -36,7 +39,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    private long stepCount;
     private int heightFeet;
     private float heightRemainderInches;
 
@@ -71,10 +73,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void setDailyStats(long stepCount) {
-        this.stepCount = stepCount;
         dailyStepsTv.setText(String.valueOf(stepCount));
         double distance = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
-        dailyDistanceTv.setText(String.valueOf(distance));
+        NumberFormat formatter = new DecimalFormat(DISTANCE_FMT);
+        dailyDistanceTv.setText(formatter.format(distance));
     }
 
     private void getUIFields() {
