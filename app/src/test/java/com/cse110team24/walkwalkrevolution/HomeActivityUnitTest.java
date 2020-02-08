@@ -87,6 +87,16 @@ public class HomeActivityUnitTest {
         }
 
         @Override
+        public void startRecording() {
+
+        }
+
+        @Override
+        public void stopRecording() {
+
+        }
+
+        @Override
         public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
             return new GoogleFitAdapter(activity).getDistanceFromHeight(steps, heightFeet, heightRemainderInches);
         }
