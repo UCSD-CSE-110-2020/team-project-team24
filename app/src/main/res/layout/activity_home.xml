@@ -78,6 +78,18 @@
         app:layout_constraintBottom_toTopOf="@id/startWalkButton"/>
 
     <Button
+        android:id="@+id/stopWalkButton"
+        android:layout_width="@dimen/btn_start_walk_width"
+        android:layout_height="@dimen/btn_start_walk_height"
+        android:background="@drawable/my_button_bg_2"
+        android:text="STOP WALK"
+        android:textSize="@dimen/start_walk_btn_txt_size"
+        app:layout_constraintLeft_toLeftOf="@id/startWalkButton"
+        app:layout_constraintRight_toRightOf="@id/startWalkButton"
+        app:layout_constraintTop_toTopOf="@id/startWalkButton"
+        app:layout_constraintBottom_toBottomOf="@id/startWalkButton"/>
+
+    <Button
         android:id="@+id/startWalkButton"
         android:layout_width="@dimen/btn_start_walk_width"
         android:layout_height="@dimen/btn_start_walk_height"
@@ -88,6 +100,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dailyDistanceText"
         app:layout_constraintBottom_toTopOf="@id/mostRecentWalk"/>
+
 
     <TextView
         android:id="@+id/mostRecentWalk"

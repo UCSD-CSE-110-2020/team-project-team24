@@ -9,9 +9,13 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
@@ -19,6 +23,8 @@ public class HomeActivity extends AppCompatActivity {
     public static final String HEIGHT_FT_KEY = "Height Feet";
     public static final String HEIGHT_IN_KEY = "Height Remainder Inches";
     private static final long UPDATE_PERIOD = 30_000;
+    Button stopButton;
+    Button  startButton;
 
     private FitnessService fitnessService;
     private Handler handler = new Handler();
@@ -33,8 +39,15 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        startButton = (Button) findViewById(R.id.startWalkButton);
+        stopButton = (Button) findViewById(R.id.stopWalkButton);
+
+        stopButton.setVisibility(INVISIBLE);
+
 
         String fitnessServiceKey = getServiceKey();
 
@@ -42,12 +55,24 @@ public class HomeActivity extends AppCompatActivity {
         fitnessService.setup();
         handler.post(runUpdateSteps);
 
-        Button launchProfileActivity = (Button) findViewById(R.id.startWalkButton);
 
-        launchProfileActivity.setOnClickListener(new View.OnClickListener() {
+
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchActivity();
+                startButton.setVisibility(INVISIBLE);
+                stopButton.setVisibility(VISIBLE);
+
+            }
+        });
+
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopButton.setVisibility(INVISIBLE);
+                startButton.setVisibility(VISIBLE);
+
             }
         });
     }
