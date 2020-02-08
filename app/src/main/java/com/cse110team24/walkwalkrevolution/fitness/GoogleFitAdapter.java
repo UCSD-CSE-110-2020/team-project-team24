@@ -8,10 +8,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
+import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSet;
+import com.google.android.gms.fitness.data.DataSource;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.data.Session;
+import com.google.android.gms.fitness.request.SessionInsertRequest;
 import com.google.android.gms.fitness.request.SessionReadRequest;
 import com.google.android.gms.tasks.Task;
 
@@ -36,6 +39,19 @@ public class GoogleFitAdapter implements FitnessService {
         this.activity = activity;
     }
 
+    @Override
+    public int getRequestCode() {
+        return GOOGLE_FIT_PERMISSIONS_REQUEST_CODE;
+    }
+
+    @Override
+    public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
+        double totalHeightInches = (INCHES_IN_FEET * heightFeet) + heightRemainderInches;
+        double avgStrideLen = (totalHeightInches * STRIDE_LEN_CONST) / INCHES_IN_FEET;
+        double stepsPerMile = FEET_IN_MILE / avgStrideLen;
+        return steps / stepsPerMile;
+    }
+    
     @Override
     public void setup() {
         FitnessOptions fitnessOptions = FitnessOptions.builder()
@@ -77,91 +93,12 @@ public class GoogleFitAdapter implements FitnessService {
 
     @Override
     public void startRecording() {
-        if (account == null) {
-            return;
-        }
-        subscribeRecordingClient();
-        recordingSession = new Session.Builder()
-                .setName(RECORDING_SESSION_NAME)
-                .setIdentifier("recording session")
-                .setStartTime(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                .build();
-        Task<Void> response = Fitness.getSessionsClient(activity, account).startSession(recordingSession);
+
     }
+
 
     @Override
     public void stopRecording() {
-        Task<List<Session>> response = Fitness.getSessionsClient(activity, account).stopSession(recordingSession.getIdentifier());
-        readSessionData();
-        unsubscribeRecordingClient();
     }
 
-
-    @Override
-    public int getRequestCode() {
-        return GOOGLE_FIT_PERMISSIONS_REQUEST_CODE;
-    }
-
-    @Override
-    public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
-        double totalHeightInches = (INCHES_IN_FEET * heightFeet) + heightRemainderInches;
-        double avgStrideLen = (totalHeightInches * STRIDE_LEN_CONST) / INCHES_IN_FEET;
-        double stepsPerMile = FEET_IN_MILE / avgStrideLen;
-        return steps / stepsPerMile;
-    }
-
-    private void subscribeRecordingClient() {
-        Fitness.getRecordingClient(activity, account)
-                .subscribe(DataType.TYPE_STEP_COUNT_CUMULATIVE)
-                .addOnSuccessListener(datSet -> {
-                    Log.i(TAG, "startRecording: recording session started!");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "startRecording: recording session could not be started", e);
-                });
-    }
-
-    private void unsubscribeRecordingClient() {
-        Fitness.getRecordingClient(activity, account)
-                .unsubscribe(DataType.TYPE_STEP_COUNT_CUMULATIVE)
-                .addOnSuccessListener(dataSet -> {
-                    Log.i(TAG, "unsubscribeRecordingClient: sucessfully unsubscribed client");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "unsubscribeRecordingClient: could not unsubscribe from recording client", e);
-                });
-    }
-
-    private void readSessionData() {
-        Calendar cal = Calendar.getInstance();
-        Date now = new Date();
-        cal.setTime(now);
-        long endTime = cal.getTimeInMillis();
-        cal.add(Calendar.WEEK_OF_YEAR, -1);
-        long startTime = cal.getTimeInMillis();
-
-        SessionReadRequest readRequest = new SessionReadRequest.Builder()
-                .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS)
-                .read(DataType.TYPE_STEP_COUNT_CUMULATIVE)
-                .setSessionName(RECORDING_SESSION_NAME)
-                .build();
-
-        Fitness.getSessionsClient(activity, account)
-                .readSession(readRequest)
-                .addOnSuccessListener(sessionReadResponse -> {
-                    List<Session> sessions = sessionReadResponse.getSessions();
-
-                    sessions.forEach(session -> {
-                        List<DataSet> dataSets = sessionReadResponse.getDataSet(session);
-                        dataSets.forEach(dataSet -> {
-                            long steps = dataSet.isEmpty()
-                                    ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
-                            Log.i(TAG, "readSessionData: success reading session data: " + steps);
-                        });
-                    });
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "readSessionData: Error reading session data", e);
-                });
-    }
 }

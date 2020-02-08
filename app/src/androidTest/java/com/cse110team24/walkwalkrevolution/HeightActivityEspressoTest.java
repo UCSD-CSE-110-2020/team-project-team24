@@ -180,6 +180,17 @@ public class HeightActivityEspressoTest {
             System.out.println(TAG + "updateStepCount");
             activity.setDailyStats(nextStepCount);
         }
+
+        @Override
+        public void startRecording() {
+
+        }
+
+        @Override
+        public void stopRecording() {
+
+        }
+
         @Override
         public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
             return new GoogleFitAdapter(null).getDistanceFromHeight(steps, heightFeet, heightRemainderInches);

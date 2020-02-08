@@ -11,6 +11,8 @@ import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
@@ -42,6 +44,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView dailyStepsTv;
     private TextView dailyDistanceTv;
+    private Button startWalkBtn;
+    private Button stopWalkBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,9 @@ public class HomeActivity extends AppCompatActivity {
         getUIFields();
         saveHeight();
         setFitnessService();
+
+        setStartWalkBtnOnClickListener();
+        setStopWalkBtnOnClickListner();
 
         handler.post(runUpdateSteps);
     }
@@ -79,6 +86,31 @@ public class HomeActivity extends AppCompatActivity {
     private void getUIFields() {
         dailyStepsTv = findViewById(R.id.dailyStepsText);
         dailyDistanceTv = findViewById(R.id.dailyDistanceText);
+        startWalkBtn = findViewById(R.id.startWalkButton);
+        stopWalkBtn = findViewById(R.id.stopWalkButton);
+    }
+
+    private void setStartWalkBtnOnClickListener() {
+        startWalkBtn.setOnClickListener(view -> {
+            startWalkBtn.setEnabled(false);
+            startWalkBtn.setVisibility(View.INVISIBLE);
+            stopWalkBtn.setVisibility(View.VISIBLE);
+            stopWalkBtn.setEnabled(true);
+            fitnessService.startRecording();
+
+        });
+    }
+
+    private void setStopWalkBtnOnClickListner() {
+        stopWalkBtn.setVisibility(View.INVISIBLE);
+        stopWalkBtn.setEnabled(false);
+        stopWalkBtn.setOnClickListener(view -> {
+            startWalkBtn.setEnabled(true);
+            startWalkBtn.setVisibility(View.VISIBLE);
+            stopWalkBtn.setVisibility(View.INVISIBLE);
+            stopWalkBtn.setEnabled(false);
+            fitnessService.stopRecording();
+        });
     }
 
     private void setFitnessService() {
