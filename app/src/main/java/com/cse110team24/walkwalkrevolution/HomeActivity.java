@@ -16,8 +16,6 @@ import android.widget.TextView;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 
-import static com.cse110team24.walkwalkrevolution.HeightActivity.INVALID_VAL;
-
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private static final String DISTANCE_FMT = "#0.00";
@@ -50,10 +48,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        saveHeight();
-
         getUIFields();
-
+        saveHeight();
         setFitnessService();
 
         handler.post(runUpdateSteps);
@@ -73,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void setDailyStats(long stepCount) {
+        Log.i(TAG, "setDailyStats: setting daily stats with steps: " + stepCount);
         dailyStepsTv.setText(String.valueOf(stepCount));
         double distance = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
         NumberFormat formatter = new DecimalFormat(DISTANCE_FMT);

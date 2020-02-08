@@ -90,7 +90,5 @@ public class HomeActivityUnitTest {
         public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
             return new GoogleFitAdapter(activity).getDistanceFromHeight(steps, heightFeet, heightRemainderInches);
         }
-
-
     }
 }

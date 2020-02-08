@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.test.espresso.IdlingResource;
 
 import android.content.Context;
 import android.content.Intent;
@@ -41,12 +42,9 @@ public class HeightActivity extends AppCompatActivity {
         final SharedPreferences preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
 
         homeIntent = new Intent(this, HomeActivity.class);
-        checkHeight(preferences);
-
         getConfiguredFields();
-
+        checkHeight(preferences);
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
-
         finishBtnOnClickListener();
     }
 
@@ -88,6 +86,7 @@ public class HeightActivity extends AppCompatActivity {
     }
 
     private void launchHomeActivity() {
+        Log.d(TAG, "launchHomeActivity: fitnessServiceKey passed to home: " + fitnessServiceKey);
         Log.i(TAG, "launchHomeActivity: valid height params found; launching home.");
         homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
                     .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
@@ -97,10 +96,11 @@ public class HeightActivity extends AppCompatActivity {
     }
 
     private void checkHeight(SharedPreferences preferences) {
+        Log.i(TAG, "checkHeight: checking preferences if height already exists");
         feet = preferences.getInt(HomeActivity.HEIGHT_FT_KEY, (int) INVALID_VAL);
         inches = preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, INVALID_VAL);
-        Log.i(TAG, "checkHeight: checking height in preferences (feet: " + feet + ", inches: " + inches + ").");
         if (feet > 0 && inches > 0) {
+            Log.i(TAG, "checkHeight: valid height in preferences already exists (feet: " + feet + ", inches: " + inches + ").");
             launchHomeActivity();
         }
     }
