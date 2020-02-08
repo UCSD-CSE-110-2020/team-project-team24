@@ -11,4 +11,13 @@
     <string name="dailyDistanceBackground">Background for Daily Distance</string>
     <string name="routes">Routes</string>
     <string name="home">Home</string>
+    <string name="startWalk">Start Walk</string>
+    <string name="mostRecentWalk"> Most Recent Walk</string>
+    <string name="totalSteps">Total Steps: </string>
+    <string name="totalDistance">Total Distance: </string>
+    <string name="timeElapsed">Time Elapsed: </string>
+    <string name="noWalkToday">You haven\'t completed a walk today!</string>
+    <string name="currentSteps">Current Steps </string>
+    <string name="distanceTravelled">Distance Travelled </string>
+    <string name="stopWalk">Stop Walk</string>
 </resources>
