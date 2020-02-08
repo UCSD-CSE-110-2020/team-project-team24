@@ -40,6 +40,8 @@ public class GoogleFitAdapter implements FitnessService {
                     GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
                     account,
                     fitnessOptions);
+        } else {
+            updateDailyStepCount();
         }
     }
 
@@ -54,7 +56,8 @@ public class GoogleFitAdapter implements FitnessService {
                 .addOnSuccessListener(dataSet -> {
                     long steps = dataSet.isEmpty()
                             ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
-                    activity.setStepCount(steps);
+                    activity.setDailyStats(steps);
+                    Log.i(TAG, "updateDailyStepCount: successful steps update: " + steps);
                 })
                 .addOnFailureListener(e ->
                     Log.e(TAG, "updateDailyStepCount: there was a problem getting the daily step count.", e)

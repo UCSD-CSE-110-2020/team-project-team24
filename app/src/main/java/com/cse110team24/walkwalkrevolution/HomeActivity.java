@@ -3,32 +3,32 @@ package com.cse110team24.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.icu.text.DecimalFormat;
+import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
+    private static final String DISTANCE_FMT = "#0.00";
+    private static final long UPDATE_PERIOD = 30_000;
+
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final String HEIGHT_FT_KEY = "Height Feet";
     public static final String HEIGHT_IN_KEY = "Height Remainder Inches";
-    private static final long UPDATE_PERIOD = 30_000;
-    Button stopButton;
-    Button  startButton;
+    public static final String HEIGHT_PREF = "height_preferences";
 
     private FitnessService fitnessService;
+
     private Handler handler = new Handler();
-    private long stepCount;
     private Runnable runUpdateSteps = new Runnable() {
         @Override
         public void run() {
@@ -37,48 +37,22 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
+    private int heightFeet;
+    private float heightRemainderInches;
+
+    private TextView dailyStepsTv;
+    private TextView dailyDistanceTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        startButton = (Button) findViewById(R.id.startWalkButton);
-        stopButton = (Button) findViewById(R.id.stopWalkButton);
+        getUIFields();
+        saveHeight();
+        setFitnessService();
 
-        stopButton.setVisibility(INVISIBLE);
-
-
-        String fitnessServiceKey = getServiceKey();
-
-        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
-        fitnessService.setup();
         handler.post(runUpdateSteps);
-
-
-
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startButton.setVisibility(INVISIBLE);
-                stopButton.setVisibility(VISIBLE);
-
-            }
-        });
-
-
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopButton.setVisibility(INVISIBLE);
-                startButton.setVisibility(VISIBLE);
-
-            }
-        });
-    }
-    public void launchActivity() {
-        Intent intent = new Intent(this, RecordWalkActivity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -94,13 +68,38 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    public void setDailyStats(long stepCount) {
+        Log.i(TAG, "setDailyStats: setting daily stats with steps: " + stepCount);
+        dailyStepsTv.setText(String.valueOf(stepCount));
+        double distance = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
+        NumberFormat formatter = new DecimalFormat(DISTANCE_FMT);
+        dailyDistanceTv.setText(formatter.format(distance));
+    }
+
+    private void getUIFields() {
+        dailyStepsTv = findViewById(R.id.dailyStepsText);
+        dailyDistanceTv = findViewById(R.id.dailyDistanceText);
+    }
+
+    private void setFitnessService() {
+        String fitnessServiceKey = getServiceKey();
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+        fitnessService.setup();
+    }
+
     private String getServiceKey() {
         return getIntent().getStringExtra(FITNESS_SERVICE_KEY);
     }
 
-    // TODO use this method to update steps 
-    public void setStepCount(long stepCount) {
-        this.stepCount = stepCount;
+    private void saveHeight() {
+        SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        heightFeet = getIntent().getIntExtra(HEIGHT_FT_KEY, -1);
+        heightRemainderInches =  getIntent().getFloatExtra(HEIGHT_IN_KEY, -1);
+        editor.putInt(HomeActivity.HEIGHT_FT_KEY, heightFeet);
+        editor.putFloat(HomeActivity.HEIGHT_IN_KEY, heightRemainderInches);
+        editor.apply();
+        Log.i(TAG, "saveHeight: saved height (feet: " + heightFeet + ", inches: " + heightRemainderInches + ").");
     }
 
 }
