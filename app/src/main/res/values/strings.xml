@@ -11,4 +11,8 @@
     <string name="dailyDistanceBackground">Background for Daily Distance</string>
     <string name="routes">Routes</string>
     <string name="home">Home</string>
+    <string name="txt_bkg_color_width">298dp</string>
+    <string name="txt_bkg_color_height">73dp</string>
+    <string name="home_title_size">40sp</string>
+    <string name="home_txt_size">35sp</string>
 </resources>
