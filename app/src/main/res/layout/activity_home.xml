@@ -1,9 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/dailySteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="400dp"
+        android:textStyle="bold"
+        android:text="@string/dailySteps"
+        android:textSize="40sp" />
+
+    <ImageView
+        android:id="@+id/dailyStepsBackground"
+        android:layout_width="298dp"
+        android:layout_height="73dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/dailyStepBackground"
+        android:layout_marginBottom="250dp"
+        android:background="@color/colorPrimary"
+        app:srcCompat="@android:drawable/dialog_holo_light_frame" />
+
+    <TextView
+        android:id="@+id/dailyStepsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="250dp"
+        android:textSize="35sp"
+        android:text="" />
+
+
+    <TextView
+        android:id="@+id/dailyDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        android:text="@string/dailyDistance" />
+
+    <ImageView
+        android:id="@+id/dailyDistanceBackground"
+        android:layout_width="298dp"
+        android:layout_height="73dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:background="@color/colorPrimary"
+        android:contentDescription="@string/dailyDistanceBackground"
+        app:srcCompat="@android:drawable/dialog_holo_light_frame" />
+
+    <TextView
+        android:id="@+id/dailyDistanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:textSize="35sp"
+        android:text="" />
+
+    <Button
+        android:id="@+id/startWalkButton"
+        android:layout_width="227dp"
+        android:layout_height="61dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="350dp"
+        android:background="@drawable/my_button_bg"
+
+        android:text="@string/startWalk"
+        android:textSize="25sp" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimaryDark"
+        app:itemTextColor="#000000"
+        app:menu="@menu/bottom_nav_menu" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

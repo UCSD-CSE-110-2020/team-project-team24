@@ -5,4 +5,11 @@
     <string name="feet_units">ft</string>
     <string name="inch_units">in</string>
     <string name="finish_btn_text">Finish</string>
+    <string name="dailySteps">Daily Steps</string>
+    <string name="dailyDistance">Daily Distance</string>
+    <string name="startWalk">Start Walk</string>
+    <string name="dailyStepBackground">Background for Daily Steps</string>
+    <string name="dailyDistanceBackground">Background for Daily Distance</string>
+    <string name="routes">Routes</string>
+    <string name="home">Home</string>
 </resources>
