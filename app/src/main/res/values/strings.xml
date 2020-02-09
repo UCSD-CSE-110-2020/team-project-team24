@@ -17,7 +17,5 @@
     <string name="totalDistance">Total Distance: </string>
     <string name="timeElapsed">Time Elapsed: </string>
     <string name="noWalkToday">You haven\'t completed a walk today!</string>
-    <string name="currentSteps">Current Steps </string>
-    <string name="distanceTravelled">Distance Travelled </string>
     <string name="stopWalk">Stop Walk</string>
 </resources>
