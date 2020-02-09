@@ -22,7 +22,6 @@
         android:id="@+id/dailyStepsBackground"
         android:layout_width="@dimen/txt_bkg_color_width"
         android:layout_height="@dimen/txt_bkg_color_height"
-        android:layout_gravity="center"
         android:contentDescription="@string/dailyStepBackground"
         android:background="@color/colorPrimary"
         app:srcCompat="@android:drawable/dialog_holo_light_frame"
@@ -65,7 +64,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dailyDistance"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
+        app:layout_constraintBottom_toTopOf="@id/startWalkButton"/>
 
     <TextView
         android:id="@+id/dailyDistanceText"
@@ -76,18 +75,124 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dailyDistance"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
+        app:layout_constraintBottom_toTopOf="@id/startWalkButton"/>
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
+    <Button
+        android:id="@+id/stopWalkButton"
+        android:layout_width="@dimen/btn_start_walk_width"
+        android:layout_height="@dimen/btn_start_walk_height"
+        android:background="@drawable/my_button_bg_2"
+        android:text="@string/stopWalk"
+        android:textSize="@dimen/start_walk_btn_txt_size"
+        app:layout_constraintLeft_toLeftOf="@id/startWalkButton"
+        app:layout_constraintRight_toRightOf="@id/startWalkButton"
+        app:layout_constraintTop_toTopOf="@id/startWalkButton"
+        app:layout_constraintBottom_toBottomOf="@id/startWalkButton"/>
+
+    <Button
+        android:id="@+id/startWalkButton"
+        android:layout_width="@dimen/btn_start_walk_width"
+        android:layout_height="@dimen/btn_start_walk_height"
+        android:background="@drawable/my_button_bg"
+        android:text="@string/startWalk"
+        android:textSize="@dimen/start_walk_btn_txt_size"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/dailyDistanceText"
+        app:layout_constraintBottom_toTopOf="@id/mostRecentWalk"/>
 
-    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/mostRecentWalk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mostRecentWalk"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/startWalkButton"
+        app:layout_constraintBottom_toTopOf="@id/totalSteps"/>
+
+    <TextView
+        android:id="@+id/totalSteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/totalSteps"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintHorizontal_bias="@dimen/recent_walk_info_left_bias"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/totalStepsCounter"
+        app:layout_constraintTop_toBottomOf="@id/mostRecentWalk"
+        app:layout_constraintBottom_toTopOf="@id/totalDistance"/>
+
+    <TextView
+        android:id="@+id/totalStepsCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintLeft_toLeftOf="@id/totalSteps"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mostRecentWalk"
+        app:layout_constraintBottom_toTopOf="@id/totalDistanceCounter"/>
+
+
+    <TextView
+        android:id="@+id/totalDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/totalDistance"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintHorizontal_bias="@dimen/recent_walk_info_left_bias"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/totalDistanceCounter"
+        app:layout_constraintTop_toBottomOf="@id/totalSteps"
+        app:layout_constraintBottom_toTopOf="@id/timeElapsed"/>
+
+    <TextView
+        android:id="@+id/totalDistanceCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintLeft_toLeftOf="@id/totalStepsCounter"
+        app:layout_constraintTop_toBottomOf="@id/totalSteps"
+        app:layout_constraintBottom_toTopOf="@id/timeElapsed"/>
+
+    <TextView
+        android:id="@+id/timeElapsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timeElapsed"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintHorizontal_bias="@dimen/recent_walk_info_left_bias"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/timeElapsedCounter"
+        app:layout_constraintTop_toBottomOf="@id/totalDistance"
+        app:layout_constraintBottom_toTopOf="@id/noWalkToday"/>
+
+    <TextView
+        android:id="@+id/timeElapsedCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintLeft_toLeftOf="@id/totalStepsCounter"
+        app:layout_constraintTop_toBottomOf="@id/totalDistance"
+        app:layout_constraintBottom_toTopOf="@id/noWalkToday"/>
+
+    <TextView
+        android:id="@+id/noWalkToday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/noWalkToday"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeElapsed"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -95,8 +200,10 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/black"
+        app:itemTextColor="#000000"
         app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 

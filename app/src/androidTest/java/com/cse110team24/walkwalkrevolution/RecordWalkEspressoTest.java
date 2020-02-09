@@ -7,12 +7,6 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.TextView;
-
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -26,6 +20,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -35,19 +34,18 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.arrayContainingInAnyOrder;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class HeightActivityEspressoTest {
+public class RecordWalkEspressoTest {
 
     /**
      * new activity test rule to forcibly remove app data
      * @param <T>
      * notes: see https://stackoverflow.com/questions/37597080/reset-app-state-between-instrumentationtestcase-runs
      */
-    class HeightActivityTestRule<T extends Activity> extends ActivityTestRule<T> {
-        HeightActivityTestRule(Class<T> activityClass) {
+    class RecordWalkTestRule<T extends Activity> extends ActivityTestRule<T> {
+        RecordWalkTestRule(Class<T> activityClass) {
             super(activityClass);
         }
 
@@ -64,32 +62,32 @@ public class HeightActivityEspressoTest {
 
     }
 
+    @Rule
+    public RecordWalkTestRule<HeightActivity> mActivityTestRule = new RecordWalkTestRule(HeightActivity.class);
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
-    @Rule
-    public HeightActivityTestRule<HeightActivity> mActivityTestRule = new HeightActivityTestRule(HeightActivity.class);
     private long nextStepCount;
     @Before
     public void setup() {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeActivity activity) {
-                return new TestFitnessService(activity);
+                return new RecordWalkEspressoTest.TestFitnessService(activity);
             }
         });
         SharedPreferences.Editor edit = mActivityTestRule.getActivity().getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE).edit();
         edit.putFloat(HomeActivity.HEIGHT_IN_KEY, -1f);
         edit.putInt(HomeActivity.HEIGHT_FT_KEY, -1);
         edit.commit();
-        nextStepCount = 5842;
+        nextStepCount = 0;
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
     }
 
     @Test
-    public void heightActivityEspressoTest() {
+    public void recordWalkEspressoTest() {
         setup();
 
-        ViewInteraction appCompatEditText3 = onView(
+        ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.height_feet_et),
                         childAtPosition(
                                 childAtPosition(
@@ -97,9 +95,9 @@ public class HeightActivityEspressoTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText4 = onView(
+        ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.height_remainder_inches_et),
                         childAtPosition(
                                 childAtPosition(
@@ -107,15 +105,7 @@ public class HeightActivityEspressoTest {
                                         0),
                                 3),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("3"), closeSoftKeyboard());
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.prompt), withText("Please enter your height:"), isDisplayed()));
-        textView.check(matches(withText("Please enter your height:")));
-
-        ViewInteraction button = onView(
-                allOf(withId(R.id.finish_btn), isDisplayed()));
-        button.check(matches(isDisplayed()));
+        appCompatEditText2.perform(replaceText("3"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.finish_btn), withText("Finish"),
@@ -127,42 +117,39 @@ public class HeightActivityEspressoTest {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.startWalkButton), withText("Start Walk"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                7),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
+
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.stopWalkButton), withText("Stop Walk"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                6),
+                        isDisplayed()));
+        appCompatButton3.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.totalStepsCounter), withText("5"), isDisplayed()));
+        textView.check(matches(withText("5")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.dailyStepsText), withText("5842"), isDisplayed()));
-        textView2.check(matches(withText("5842")));
+                allOf(withId(R.id.totalDistanceCounter), withText("0.00 mile(s)"), isDisplayed()));
+        textView2.check(matches(withText("0.00 mile(s)")));
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.dailyDistanceText), withText("2.40"), isDisplayed()));
-        textView3.check(matches(withText("2.40")));
+                allOf(withId(R.id.timeElapsedCounter), withText("0.12 min."), isDisplayed()));
+        textView3.check(matches(withText("0.12 min.")));
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
     private class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
         private HomeActivity activity;
@@ -190,12 +177,31 @@ public class HeightActivityEspressoTest {
 
         @Override
         public void stopRecording() {
-
+            activity.setLatestWalkStats(5, 7200);
         }
 
         @Override
         public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
             return new GoogleFitAdapter(null).getDistanceFromHeight(steps, heightFeet, heightRemainderInches);
         }
+    }
+
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
     }
 }

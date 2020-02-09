@@ -2,8 +2,6 @@ package com.cse110team24.walkwalkrevolution.fitness;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -12,11 +10,13 @@ import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 public class GoogleFitAdapter implements FitnessService {
+    private static final DataType RECORD_DATA_TYPE = DataType.TYPE_STEP_COUNT_DELTA;
+
     private static final String TAG = "GoogleFitAdapter";
+    private static final String RECORDING_SESSION_NAME = "Recording a walk";
+    private static final String RECORDING_SESSION_IDENTIFIER = "record id";
     private static final double STRIDE_LEN_CONST = 0.413;
     private static final int FEET_IN_MILE = 5280;
     private static final int INCHES_IN_FEET = 12;
@@ -25,8 +25,25 @@ public class GoogleFitAdapter implements FitnessService {
     private GoogleSignInAccount account;
     private HomeActivity activity;
 
+    private long recordingStartTime;
+    private long recordingInitSteps;
+    private long updatedSteps;
+
     public GoogleFitAdapter(HomeActivity activity) {
         this.activity = activity;
+    }
+
+    @Override
+    public int getRequestCode() {
+        return GOOGLE_FIT_PERMISSIONS_REQUEST_CODE;
+    }
+
+    @Override
+    public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
+        double totalHeightInches = (INCHES_IN_FEET * heightFeet) + heightRemainderInches;
+        double avgStrideLen = (totalHeightInches * STRIDE_LEN_CONST) / INCHES_IN_FEET;
+        double stepsPerMile = FEET_IN_MILE / avgStrideLen;
+        return steps / stepsPerMile;
     }
 
     @Override
@@ -58,27 +75,33 @@ public class GoogleFitAdapter implements FitnessService {
         Fitness.getHistoryClient(activity, account)
                 .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
                 .addOnSuccessListener(dataSet -> {
-                    long steps = dataSet.isEmpty()
+                    updatedSteps = dataSet.isEmpty()
                             ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
-                    activity.setDailyStats(steps);
-                    Log.i(TAG, "updateDailyStepCount: successful steps update: " + steps);
+                    activity.setDailyStats(updatedSteps);
+                    Log.i(TAG, "updateDailyStepCount: successful steps update: " + updatedSteps);
                 })
                 .addOnFailureListener(e ->
-                    Log.e(TAG, "updateDailyStepCount: there was a problem getting the daily step count.", e)
+                        Log.e(TAG, "updateDailyStepCount: there was a problem getting the daily step count.", e)
                 );
     }
 
-
     @Override
-    public int getRequestCode() {
-        return GOOGLE_FIT_PERMISSIONS_REQUEST_CODE;
+    public void startRecording() {
+        recordingStartTime = System.currentTimeMillis();
+        updateDailyStepCount();
+        recordingInitSteps = updatedSteps;
     }
 
+
     @Override
-    public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
-        double totalHeightInches = (INCHES_IN_FEET * heightFeet) + heightRemainderInches;
-        double avgStrideLen = (totalHeightInches * STRIDE_LEN_CONST) / INCHES_IN_FEET;
-        double stepsPerMile = FEET_IN_MILE / avgStrideLen;
-        return steps / stepsPerMile;
+    public void stopRecording() {
+        long timeElapsed = System.currentTimeMillis() - recordingStartTime;
+        updateDailyStepCount();
+        long totalSteps = updatedSteps - recordingInitSteps;
+        activity.setLatestWalkStats(totalSteps, timeElapsed);
+
     }
+
+
+
 }
