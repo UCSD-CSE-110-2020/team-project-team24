@@ -20,7 +20,7 @@ import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
-    private static final String DISTANCE_FMT = "#0.00";
+    private static final String DECIMAL_FMT = "#0.00";
     private static final long UPDATE_PERIOD = 30_000;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -39,11 +39,17 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
+    NumberFormat formatter;
+
     private int heightFeet;
     private float heightRemainderInches;
 
     private TextView dailyStepsTv;
     private TextView dailyDistanceTv;
+    private TextView latestWalkStepsTv;
+    private TextView latestWalkDistanceTv;
+    private TextView latestWalkTimeElapsedTv;
+    private TextView noWalkTv;
     private Button startWalkBtn;
     private Button stopWalkBtn;
 
@@ -55,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
         getUIFields();
         saveHeight();
         setFitnessService();
+        formatter = new DecimalFormat(DECIMAL_FMT);
 
         setStartWalkBtnOnClickListener();
         setStopWalkBtnOnClickListner();
@@ -79,13 +86,26 @@ public class HomeActivity extends AppCompatActivity {
         Log.i(TAG, "setDailyStats: setting daily stats with steps: " + stepCount);
         dailyStepsTv.setText(String.valueOf(stepCount));
         double distance = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
-        NumberFormat formatter = new DecimalFormat(DISTANCE_FMT);
         dailyDistanceTv.setText(formatter.format(distance));
+    }
+
+    public void setLatestWalkStats(long stepCount, long timeElapsed) {
+        noWalkTv.setVisibility(View.INVISIBLE);
+        latestWalkStepsTv.setText(String.valueOf(stepCount));
+        double distanceTraveled = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
+        latestWalkDistanceTv.setText(formatter.format(distanceTraveled) + " mile(s)");
+        double timeElapsedInSeconds = timeElapsed / 1000;
+        double timeElapsedInMinutes = timeElapsedInSeconds / 60;
+        latestWalkTimeElapsedTv.setText(formatter.format(timeElapsedInMinutes) + " min.");
     }
 
     private void getUIFields() {
         dailyStepsTv = findViewById(R.id.dailyStepsText);
         dailyDistanceTv = findViewById(R.id.dailyDistanceText);
+        latestWalkStepsTv = findViewById(R.id.totalStepsCounter);
+        latestWalkDistanceTv = findViewById(R.id.totalDistanceCounter);
+        latestWalkTimeElapsedTv = findViewById(R.id.timeElapsedCounter);
+        noWalkTv = findViewById(R.id.noWalkToday);
         startWalkBtn = findViewById(R.id.startWalkButton);
         stopWalkBtn = findViewById(R.id.stopWalkButton);
     }
