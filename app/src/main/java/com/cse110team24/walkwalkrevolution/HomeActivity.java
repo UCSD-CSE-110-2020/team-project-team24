@@ -93,10 +93,10 @@ public class HomeActivity extends AppCompatActivity {
         noWalkTv.setVisibility(View.INVISIBLE);
         latestWalkStepsTv.setText(String.valueOf(stepCount));
         double distanceTraveled = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
-        latestWalkDistanceTv.setText(formatter.format(distanceTraveled) + " mile(s)");
+        latestWalkDistanceTv.setText(String.format("%s%s", formatter.format(distanceTraveled), " mile(s)"));
         double timeElapsedInSeconds = timeElapsed / 1000;
         double timeElapsedInMinutes = timeElapsedInSeconds / 60;
-        latestWalkTimeElapsedTv.setText(formatter.format(timeElapsedInMinutes) + " min.");
+        latestWalkTimeElapsedTv.setText(String.format("%s%s", formatter.format(timeElapsedInMinutes), " min."));
     }
 
     private void getUIFields() {
