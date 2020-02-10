@@ -51,7 +51,6 @@ public class Routes extends AppCompatActivity {
                 switch(menuItem.getItemId()) {
                     case R.id.action_home:
                         launchGoToHomeActivity();
-                       // Toast.makeText(Routes.this, "Home", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.action_routes_list:
@@ -62,6 +61,7 @@ public class Routes extends AppCompatActivity {
             }
         });
 
+        // Fake user routes info (needs to be deleted later
         RecyclerView rvRoutes = findViewById(R.id.recycler_view);
         Route rt = new Route("Rose Canyon");
         Route rt2 = new Route("Marian Bear");

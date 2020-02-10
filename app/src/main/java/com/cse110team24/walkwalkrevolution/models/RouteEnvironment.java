@@ -1,6 +1,8 @@
 package com.cse110team24.walkwalkrevolution.models;
 
-public class RouteEnvironment {
+import java.io.Serializable;
+
+public class RouteEnvironment implements Serializable {
     public enum RouteType {
         LOOP, OUT_AND_BACK;
     }
@@ -65,6 +67,18 @@ public class RouteEnvironment {
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof RouteEnvironment) {
+            RouteEnvironment environment = (RouteEnvironment) o;
+            return routeType == environment.routeType && terrainType == environment.terrainType &&
+                    surfaceType == environment.surfaceType && trailType == environment.trailType &&
+                    difficulty == environment.difficulty;
+        }
+
+        return false;
     }
 
 }

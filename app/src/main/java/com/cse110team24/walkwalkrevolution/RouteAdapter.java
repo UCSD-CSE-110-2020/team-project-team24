@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
+import com.cse110team24.walkwalkrevolution.models.WalkStats;
 //import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
 
@@ -72,14 +73,14 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
             viewHolder.distanceTv.setVisibility(View.VISIBLE);
             viewHolder.dateTv.setVisibility(View.VISIBLE);
 
-          //  WalkStats stats = route.getStats();
+            WalkStats stats = route.getStats();
 
             Resources res = context.getResources();
-            //viewHolder.stepsTv.setText(res.getQuantityString(R.plurals.show_steps, 1, stats.getSteps()));
-            //viewHolder.distanceTv.setText(res.getQuantityString(R.plurals.show_miles, 1, stats.getDistance()));
-            //Date date = route.getStats().getDateCompleted().getTime();
+            viewHolder.stepsTv.setText(res.getQuantityString(R.plurals.show_steps, 1, stats.getSteps()));
+            viewHolder.distanceTv.setText(res.getQuantityString(R.plurals.show_miles, 1, stats.getDistance()));
+            Date date = route.getStats().getDateCompleted().getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd", Locale.US);
-            //viewHolder.dateTv.setText(sdf.format(date));
+            viewHolder.dateTv.setText(sdf.format(date));
 
         }
     }

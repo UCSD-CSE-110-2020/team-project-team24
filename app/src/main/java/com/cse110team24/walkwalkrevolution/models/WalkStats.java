@@ -1,8 +1,10 @@
 package com.cse110team24.walkwalkrevolution.models;
 
+import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Objects;
 
-public class WalkStats {
+public class WalkStats implements Serializable {
     private long steps;
     private long timeElapsed;
     private double distance;
@@ -12,7 +14,7 @@ public class WalkStats {
         this.steps = steps;
         this.timeElapsed = timeElapsed;
         this.distance = distance;
-        this.dateCompleted = (Calendar) dateCompleted.clone();
+        this.dateCompleted = dateCompleted;
     }
 
     public long getSteps() {
@@ -47,4 +49,14 @@ public class WalkStats {
         this.dateCompleted = dateCompleted;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof WalkStats) {
+            WalkStats stats = (WalkStats) o;
+            return steps == stats.steps && timeElapsed == stats.timeElapsed &&
+                    distance == stats.distance && Objects.equals(dateCompleted, stats.dateCompleted);
+        }
+
+        return false;
+    }
 }
