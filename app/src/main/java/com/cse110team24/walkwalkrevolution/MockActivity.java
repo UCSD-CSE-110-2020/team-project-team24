@@ -15,7 +15,8 @@ import java.text.ParseException;
 public class MockActivity extends AppCompatActivity {
     public static final String START_WALK_BTN_VISIBILITY = "start button";
     public static final String ADDED_STEPS_KEY = "added_steps";
-    public static final String INPUT_TIME_KEY = "input_time";
+    public static final String INPUT_START_TIME_KEY = "input_start_time";
+    public static final String INPUT_END_TIME_KEY = "input_end_time";
     public static final int REQUEST_CODE = 6;
 
     private static final long ADD_MOCK_CONST = 500;
@@ -23,6 +24,7 @@ public class MockActivity extends AppCompatActivity {
 
     private long totalAddedSteps;
     private String timeSelected;
+    private boolean settingStartTime;
 
     private Button stepsMockBtn;
     
@@ -32,7 +34,7 @@ public class MockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mock);
 
         getUIFields();
-
+        checkWhichTimeToSet();
         setStepsMockOnClickListener();
     }
 
@@ -48,8 +50,12 @@ public class MockActivity extends AppCompatActivity {
 
     private void finishMockAcitivity() {
         Intent intent = new Intent()
-                .putExtra(ADDED_STEPS_KEY, totalAddedSteps)
-                .putExtra(INPUT_TIME_KEY, timeSelected);
+                .putExtra(ADDED_STEPS_KEY, totalAddedSteps);
+        if (settingStartTime) {
+            intent.putExtra(INPUT_START_TIME_KEY, timeSelected);
+        } else {
+            intent.putExtra(INPUT_END_TIME_KEY, timeSelected);
+        }
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
@@ -62,5 +68,13 @@ public class MockActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private boolean checkWhichTimeToSet() {
+        if (getIntent().getIntExtra(START_WALK_BTN_VISIBILITY, -1) == View.VISIBLE) {
+            settingStartTime = true;
+        } else {
+            settingStartTime = false;
+        }
     }
 }
