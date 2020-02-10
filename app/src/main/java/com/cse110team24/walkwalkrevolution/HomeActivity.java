@@ -53,10 +53,10 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView dailyStepsTv;
     private TextView dailyDistanceTv;
-    private TextView latestWalkStepsTv;
-    private TextView latestWalkDistanceTv;
-    private TextView latestWalkTimeElapsedTv;
-    private TextView noWalkTv;
+    private TextView recentStepsTv;
+    private TextView recentDistanceTv;
+    private TextView recentTimeElapsedTv;
+    private TextView noRecentWalkPromptTv;
     private Button startWalkBtn;
     private Button stopWalkBtn;
     private Button launchMockActivityBtn;
@@ -102,22 +102,22 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void setLatestWalkStats(long stepCount, long timeElapsed) {
-        noWalkTv.setVisibility(View.INVISIBLE);
-        latestWalkStepsTv.setText(String.valueOf(stepCount));
+        noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
+        recentStepsTv.setText(String.valueOf(stepCount));
         double distanceTraveled = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
-        latestWalkDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
+        recentDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
         double timeElapsedInSeconds = timeElapsed / 1000;
         double timeElapsedInMinutes = timeElapsedInSeconds / 60;
-        latestWalkTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
+        recentTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
     }
 
     private void getUIFields() {
         dailyStepsTv = findViewById(R.id.tv_daily_steps);
         dailyDistanceTv = findViewById(R.id.tv_daily_distance);
-        latestWalkStepsTv = findViewById(R.id.tv_recent_steps);
-        latestWalkDistanceTv = findViewById(R.id.tv_recent_distance);
-        latestWalkTimeElapsedTv = findViewById(R.id.tv_recent_time_elapsed);
-        noWalkTv = findViewById(R.id.tv_no_recent_walk_prompt);
+        recentStepsTv = findViewById(R.id.tv_recent_steps);
+        recentDistanceTv = findViewById(R.id.tv_recent_distance);
+        recentTimeElapsedTv = findViewById(R.id.tv_recent_time_elapsed);
+        noRecentWalkPromptTv = findViewById(R.id.tv_no_recent_walk_prompt);
         startWalkBtn = findViewById(R.id.btn_start_walk);
         stopWalkBtn = findViewById(R.id.btn_stop_walk);
         launchMockActivityBtn = findViewById(R.id.btn_mock_values);
