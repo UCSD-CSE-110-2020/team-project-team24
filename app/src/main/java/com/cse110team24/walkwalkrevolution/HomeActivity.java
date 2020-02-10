@@ -48,6 +48,7 @@ public class HomeActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormat;
 
     private boolean mocking;
+    private boolean endTimeSet;
 
     private int heightFeet;
     private float heightRemainderInches;
@@ -129,8 +130,8 @@ public class HomeActivity extends AppCompatActivity {
             startWalkBtn.setEnabled(false);
             startWalkBtn.setVisibility(View.INVISIBLE);
             stopWalkBtn.setVisibility(View.VISIBLE);
+            stopWalkBtn.setEnabled(true);
             if (!mocking) {
-                stopWalkBtn.setEnabled(true);
                 fitnessService.setStartRecordingTime(System.currentTimeMillis());
             } else {
                 showSetEndTimeToast();
@@ -143,16 +144,18 @@ public class HomeActivity extends AppCompatActivity {
         stopWalkBtn.setVisibility(View.INVISIBLE);
         stopWalkBtn.setEnabled(false);
         stopWalkBtn.setOnClickListener(view -> {
+            if (mocking && !endTimeSet) {
+                showSetEndTimeToast();
+                return;
+            }
             startWalkBtn.setEnabled(true);
             startWalkBtn.setVisibility(View.VISIBLE);
             stopWalkBtn.setVisibility(View.INVISIBLE);
             stopWalkBtn.setEnabled(false);
             if (!mocking) {
                 fitnessService.setEndRecordingTime(System.currentTimeMillis());
-            } else {
-                showSetEndTimeToast();
             }
-            // TODO: 2020-02-10 set mocking back to false?
+            endTimeSet = false;
             mocking = false;
             fitnessService.stopRecording();
         });
@@ -211,10 +214,9 @@ public class HomeActivity extends AppCompatActivity {
         long timeMillis = dateTime.getTime();
         if (settingStartTime) {
             fitnessService.setStartRecordingTime(timeMillis);
-            stopWalkBtn.setEnabled(false);
         } else {
             fitnessService.setEndRecordingTime(timeMillis);
-            stopWalkBtn.setEnabled(true);
+            endTimeSet = true;
         }
         Log.i(TAG, "setMockedExtras: time + " + time + " correctly parsed with value " + dateTime + " millis: " + timeMillis);
 
@@ -225,7 +227,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showSetEndTimeToast() {
-        Toast.makeText(this, "Remember to set an end time for your walk!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Remember to set an end time for your walk!", Toast.LENGTH_SHORT).show();
     }
 
 }
