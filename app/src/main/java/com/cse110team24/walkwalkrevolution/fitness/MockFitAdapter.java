@@ -24,8 +24,8 @@ public class MockFitAdapter implements FitnessService {
         this.endTime = endTime;
     }
 
-    public void incrementDailySteps() {
-        this.updatedSteps += ADD_MOCK_CONST;
+    public void setDailySteps(long updatedSteps) {
+        this.updatedSteps += updatedSteps;
     }
 
     @Override
