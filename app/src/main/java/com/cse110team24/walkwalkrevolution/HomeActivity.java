@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.DecimalFormat;
 import android.icu.text.NumberFormat;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.MockFitAdapter;
+
+import java.text.ParseException;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
@@ -40,7 +43,8 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    private NumberFormat formatter;
+    private NumberFormat numberFormat;
+    private SimpleDateFormat dateFormat;
 
     private int heightFeet;
     private float heightRemainderInches;
@@ -63,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         getUIFields();
         saveHeight();
         setFitnessService();
-        formatter = new DecimalFormat(DECIMAL_FMT);
+        numberFormat = new DecimalFormat(DECIMAL_FMT);
 
         setStartWalkBtnOnClickListener();
         setStopWalkBtnOnClickListner();
@@ -76,12 +80,14 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == fitnessService.getRequestCode()) {
+        if (requestCode == fitnessService.getRequestCode()) {
+            if (resultCode == Activity.RESULT_OK) {
                 fitnessService.updateDailyStepCount();
+            } else {
+                Log.e(TAG, "onActivityResult: error with fitness result code: " + resultCode);
             }
-        } else {
-            Log.e(TAG, "onActivityResult: Error with google fit result code: " + resultCode);
+        } else if (requestCode == MockActivity.REQUEST_CODE) {
+            setMockedExtras(data);
         }
     }
 
@@ -89,17 +95,17 @@ public class HomeActivity extends AppCompatActivity {
         Log.i(TAG, "setDailyStats: setting daily stats with steps: " + stepCount);
         dailyStepsTv.setText(String.valueOf(stepCount));
         double distance = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
-        dailyDistanceTv.setText(formatter.format(distance));
+        dailyDistanceTv.setText(numberFormat.format(distance));
     }
 
     public void setLatestWalkStats(long stepCount, long timeElapsed) {
         noWalkTv.setVisibility(View.INVISIBLE);
         latestWalkStepsTv.setText(String.valueOf(stepCount));
         double distanceTraveled = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
-        latestWalkDistanceTv.setText(String.format("%s%s", formatter.format(distanceTraveled), " mile(s)"));
+        latestWalkDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
         double timeElapsedInSeconds = timeElapsed / 1000;
         double timeElapsedInMinutes = timeElapsedInSeconds / 60;
-        latestWalkTimeElapsedTv.setText(String.format("%s%s", formatter.format(timeElapsedInMinutes), " min."));
+        latestWalkTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
     }
 
     private void getUIFields() {
@@ -174,6 +180,24 @@ public class HomeActivity extends AppCompatActivity {
         String fitnessServiceKey = MockFitAdapter.MOCK_SERVICE_KEY;
         FitnessServiceFactory.put(fitnessServiceKey, activity -> new MockFitAdapter(activity));
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+    }
+
+    private void setMockedExtras(Intent data) {
+        dateFormat = new SimpleDateFormat(MockActivity.TIME_FMT);
+        MockFitAdapter mockFitAdapter = (MockFitAdapter) fitnessService;
+        String time = data.getStringExtra(MockActivity.INPUT_START_TIME_KEY);
+        try {
+            if (time != null) {
+                mockFitAdapter.setStartTime(dateFormat.parse(time).getTime());
+            } else {
+                time = data.getStringExtra(MockActivity.INPUT_END_TIME_KEY);
+                mockFitAdapter.setEndTime(dateFormat.parse(time).getTime());
+            }
+        } catch (ParseException e) {
+            Log.e(TAG, "setMockedExtras: an exception occurred parsing time string: " + time, e);
+        }
+        long steps = data.getIntExtra(MockActivity.ADDED_STEPS_KEY, 0);
+        mockFitAdapter.setDailySteps(steps);
     }
 
 }
