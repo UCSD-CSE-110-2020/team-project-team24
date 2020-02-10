@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -128,9 +129,11 @@ public class HomeActivity extends AppCompatActivity {
             startWalkBtn.setEnabled(false);
             startWalkBtn.setVisibility(View.INVISIBLE);
             stopWalkBtn.setVisibility(View.VISIBLE);
-            stopWalkBtn.setEnabled(true);
             if (!mocking) {
+                stopWalkBtn.setEnabled(true);
                 fitnessService.setStartRecordingTime(System.currentTimeMillis());
+            } else {
+                showSetEndTimeToast();
             }
             fitnessService.startRecording();
         });
@@ -146,6 +149,8 @@ public class HomeActivity extends AppCompatActivity {
             stopWalkBtn.setEnabled(false);
             if (!mocking) {
                 fitnessService.setEndRecordingTime(System.currentTimeMillis());
+            } else {
+                showSetEndTimeToast();
             }
             // TODO: 2020-02-10 set mocking back to false?
             mocking = false;
@@ -206,8 +211,10 @@ public class HomeActivity extends AppCompatActivity {
         long timeMillis = dateTime.getTime();
         if (settingStartTime) {
             fitnessService.setStartRecordingTime(timeMillis);
+            stopWalkBtn.setEnabled(false);
         } else {
             fitnessService.setEndRecordingTime(timeMillis);
+            stopWalkBtn.setEnabled(true);
         }
         Log.i(TAG, "setMockedExtras: time + " + time + " correctly parsed with value " + dateTime + " millis: " + timeMillis);
 
@@ -215,6 +222,10 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "setMockedExtras: steps to add " + stepsToAdd);
         fitnessService.setStepsToAdd(stepsToAdd);
         fitnessService.updateDailyStepCount();
+    }
+
+    private void showSetEndTimeToast() {
+        Toast.makeText(this, "Remember to set an end time for your walk!", Toast.LENGTH_LONG).show();
     }
 
 }
