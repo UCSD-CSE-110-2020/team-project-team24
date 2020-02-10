@@ -13,6 +13,7 @@
     <dimen name="recent_walk_info_left_bias">0.3</dimen>
     <dimen name="mock_btn_margin">64dp</dimen>
     <dimen name="added_steps_top_margin">20dp</dimen>
+    <dimen name="added_steps_start_margin">32dp</dimen>
     <dimen name="added_steps_size">36sp</dimen>
     <dimen name="section_top_margin">40sp</dimen>
     <dimen name="desired_time_size">28sp</dimen>
