@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".MockActivity"></activity>
+        <activity android:name=".HomeActivity" />
         <activity android:name=".HeightActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+import com.cse110team24.walkwalkrevolution.fitness.MockFitAdapter;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
@@ -117,7 +118,6 @@ public class HomeActivity extends AppCompatActivity {
             stopWalkBtn.setVisibility(View.VISIBLE);
             stopWalkBtn.setEnabled(true);
             fitnessService.startRecording();
-
         });
     }
 
@@ -152,6 +152,19 @@ public class HomeActivity extends AppCompatActivity {
         editor.putFloat(HomeActivity.HEIGHT_IN_KEY, heightRemainderInches);
         editor.apply();
         Log.i(TAG, "saveHeight: saved height (feet: " + heightFeet + ", inches: " + heightRemainderInches + ").");
+    }
+
+    private void launchMockActivity() {
+        getMockFitnessService();
+        Intent intent = new Intent(this, MockActivity.class); 
+        intent.putExtra(MockActivity.START_WALK_BTN_VISIBILITY, startWalkBtn.getVisibility());
+        startActivityForResult(intent, MockActivity.REQUEST_CODE);        
+    }
+
+    private void getMockFitnessService() {
+        String fitnessServiceKey = MockFitAdapter.MOCK_SERVICE_KEY;
+        FitnessServiceFactory.put(fitnessServiceKey, activity -> new MockFitAdapter(activity));
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
     }
 
 }
