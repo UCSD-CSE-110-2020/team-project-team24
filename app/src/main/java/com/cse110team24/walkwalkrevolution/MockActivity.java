@@ -8,6 +8,7 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 import java.text.ParseException;
 
 public class MockActivity extends AppCompatActivity {
+    private static final String TAG = "MockActivity";
+    private static final int ADD_MOCK_CONST = 500;
+
     public static final String START_WALK_BTN_VISIBILITY_KEY = "start button";
     public static final String ADDED_STEPS_KEY = "added_steps";
     public static final String INPUT_START_TIME_KEY = "input_start_time";
@@ -23,7 +27,6 @@ public class MockActivity extends AppCompatActivity {
     public static final String EXISTING_STEPS_KEY = "existing_time";
     public static final String TIME_FMT = "HH:mm:ss";
     public static final int REQUEST_CODE = 6;
-    private static final int ADD_MOCK_CONST = 500;
 
     private int totalAddedSteps;
     private boolean settingStartTime;
@@ -33,7 +36,8 @@ public class MockActivity extends AppCompatActivity {
     private EditText inputtedTime;
     private TextView totalStepsView;
     private TextView enterTimePromptTv;
-    
+    private long existingSteps;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +93,7 @@ public class MockActivity extends AppCompatActivity {
 
     private void finishMockActivity() {
         Intent intent = new Intent()
-                .putExtra(ADDED_STEPS_KEY, totalAddedSteps);
+                .putExtra(ADDED_STEPS_KEY, totalAddedSteps + existingSteps);
         if (settingStartTime) {
             intent.putExtra(INPUT_START_TIME_KEY, inputtedTime.getText().toString());
         } else {
@@ -119,8 +123,6 @@ public class MockActivity extends AppCompatActivity {
     }
 
     private void checkCurrentDailySteps() {
-        long existingSteps = getIntent().getLongExtra(EXISTING_STEPS_KEY, 0);
-        totalAddedSteps += existingSteps;
-        totalStepsView.setText(String.valueOf(totalAddedSteps));
+        existingSteps = getIntent().getLongExtra(EXISTING_STEPS_KEY, 0);
     }
 }

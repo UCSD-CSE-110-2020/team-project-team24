@@ -207,7 +207,7 @@ public class HomeActivity extends AppCompatActivity {
         } catch (ParseException e) {
             Log.e(TAG, "setMockedExtras: an exception occurred parsing time string: " + time, e);
         }
-        long steps = data.getIntExtra(MockActivity.ADDED_STEPS_KEY, 0);
+        long steps = data.getLongExtra(MockActivity.ADDED_STEPS_KEY, 0);
         mockFitAdapter.setDailySteps(steps);
         fitnessService.updateDailyStepCount();
     }

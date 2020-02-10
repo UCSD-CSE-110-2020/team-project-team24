@@ -22,7 +22,6 @@ public class MockFitAdapter implements FitnessService {
  
     public void setStartTime(long startTime) {
         this.startTime = startTime;
-        Log.d(TAG, "setStartTime: setting startTime to " + startTime);
     }
 
     public void setEndTime(long endTime) {
@@ -30,7 +29,7 @@ public class MockFitAdapter implements FitnessService {
     }
 
     public void setDailySteps(long updatedSteps) {
-        this.updatedSteps += updatedSteps;
+        this.updatedSteps = updatedSteps;
     }
 
     @Override
