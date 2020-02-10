@@ -16,6 +16,7 @@ public class GoogleFitAdapter implements FitnessService {
     private static final double STRIDE_LEN_CONST = 0.413;
     private static final int FEET_IN_MILE = 5280;
     private static final int INCHES_IN_FEET = 12;
+    private static final long MILLIS_IN_DAY = 86_400_000;
 
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private GoogleSignInAccount account;
@@ -107,6 +108,9 @@ public class GoogleFitAdapter implements FitnessService {
     @Override
     public void stopRecording() {
         long timeElapsed = recordingEndTime - recordingStartTime;
+        if (timeElapsed < 0) {
+            timeElapsed += MILLIS_IN_DAY;
+        }
         updateDailyStepCount();
         long totalSteps = updatedSteps + stepsToAdd - recordingInitSteps;
         activity.setLatestWalkStats(totalSteps, timeElapsed);
