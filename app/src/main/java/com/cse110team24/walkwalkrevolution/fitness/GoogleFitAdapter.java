@@ -90,12 +90,11 @@ public class GoogleFitAdapter implements FitnessService {
                     updatedSteps = dataSet.isEmpty()
                             ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
                     Log.i(TAG, "updateDailyStepCount: successful steps update: " + updatedSteps);
-                    activity.setDailyStats(updatedSteps + stepsToAdd);
                 })
                 .addOnFailureListener(e ->
                         Log.e(TAG, "updateDailyStepCount: there was a problem getting the daily step count.", e)
                 );
-        Log.i(TAG, "updateDailyStepCount: updated daily step count");
+        activity.setDailyStats(updatedSteps + stepsToAdd);
     }
 
     @Override
