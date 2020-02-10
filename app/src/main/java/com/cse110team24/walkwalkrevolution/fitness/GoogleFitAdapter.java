@@ -56,7 +56,7 @@ public class GoogleFitAdapter implements FitnessService {
 
     @Override
     public void setStepsToAdd(long stepsToAdd) {
-        this.stepsToAdd = stepsToAdd;
+        this.stepsToAdd += stepsToAdd;
     }
 
     @Override

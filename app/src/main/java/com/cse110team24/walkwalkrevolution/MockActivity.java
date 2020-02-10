@@ -27,7 +27,7 @@ public class MockActivity extends AppCompatActivity {
     public static final String TIME_FMT = "HH:mm:ss";
     public static final int REQUEST_CODE = 6;
 
-    private int totalAddedSteps;
+    private long totalAddedSteps;
     private boolean settingStartTime;
 
     private Button stepsMockBtn;
@@ -92,7 +92,7 @@ public class MockActivity extends AppCompatActivity {
 
     private void finishMockActivity() {
         Intent intent = new Intent()
-                .putExtra(ADDED_STEPS_KEY, totalAddedSteps + existingSteps)
+                .putExtra(ADDED_STEPS_KEY, totalAddedSteps)
                 .putExtra(SETTING_START_TIME_KEY, settingStartTime)
                 .putExtra(INPUT_TIME_KEY, inputtedTime.getText().toString());
         setResult(Activity.RESULT_OK, intent);

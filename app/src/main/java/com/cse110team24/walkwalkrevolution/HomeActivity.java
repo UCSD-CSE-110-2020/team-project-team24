@@ -148,6 +148,7 @@ public class HomeActivity extends AppCompatActivity {
                 fitnessService.setEndRecordingTime(System.currentTimeMillis());
             }
             // TODO: 2020-02-10 set mocking back to false?
+            mocking = false;
             fitnessService.stopRecording();
         });
     }
@@ -211,6 +212,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.i(TAG, "setMockedExtras: time + " + time + " correctly parsed with value " + dateTime + " millis: " + timeMillis);
 
         long stepsToAdd = data.getLongExtra(MockActivity.ADDED_STEPS_KEY, 0);
+        Log.d(TAG, "setMockedExtras: steps to add " + stepsToAdd);
         fitnessService.setStepsToAdd(stepsToAdd);
         fitnessService.updateDailyStepCount();
     }
