@@ -25,5 +25,6 @@
     <string name="total_steps">0</string>
     <string name="time_hint">hh:mm:ss</string>
     <string name="max_input_chars">8</string>
-    <string name="enter_time">Enter Desired Time: </string>
+    <string name="enter_start_time">Enter Desired Start Time: </string>
+    <string name="enter_end_time">Enter Desired End Time: </string>
 </resources>

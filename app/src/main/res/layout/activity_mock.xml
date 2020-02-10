@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/section_top_margin"
-        android:text="@string/enter_time"
+        android:text="@string/enter_start_time"
         android:textSize="@dimen/desired_time_size"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -32,6 +32,7 @@ public class MockActivity extends AppCompatActivity {
     private Button finishBtn;
     private EditText inputtedTime;
     private TextView totalStepsView;
+    private TextView enterTimePromptTv;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class MockActivity extends AppCompatActivity {
         finishBtn.setEnabled(false);
         inputtedTime = findViewById(R.id.edit_time);
         totalStepsView = findViewById(R.id.total_steps);
+        enterTimePromptTv = findViewById(R.id.tv_enter_time);
         TextWatcher textWatcher = getTextWatcher();
         inputtedTime.addTextChangedListener(textWatcher);
     }
@@ -111,6 +113,8 @@ public class MockActivity extends AppCompatActivity {
     private void checkWhichTimeToSet() {
         if (getIntent().getIntExtra(START_WALK_BTN_VISIBILITY_KEY, -1) == View.VISIBLE) {
             settingStartTime = true;
+        } else {
+            enterTimePromptTv.setText(R.string.enter_end_time);
         }
     }
 

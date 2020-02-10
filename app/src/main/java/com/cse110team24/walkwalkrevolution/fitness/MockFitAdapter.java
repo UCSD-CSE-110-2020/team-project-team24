@@ -1,8 +1,11 @@
 package com.cse110team24.walkwalkrevolution.fitness;
 
+import android.util.Log;
+
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 
 public class MockFitAdapter implements FitnessService {
+    private static final String TAG = "MockFitAdapter";
     public static final String MOCK_SERVICE_KEY = "Mock_Fit";
     private static final long ADD_MOCK_CONST = 500;
 
@@ -18,6 +21,7 @@ public class MockFitAdapter implements FitnessService {
  
     public void setStartTime(long startTime) {
         this.startTime = startTime;
+        Log.d(TAG, "setStartTime: setting startTime to " + startTime);
     }
 
     public void setEndTime(long endTime) {

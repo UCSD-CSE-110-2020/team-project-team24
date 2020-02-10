@@ -21,6 +21,7 @@ import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.MockFitAdapter;
 
 import java.text.ParseException;
+import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
@@ -170,12 +171,13 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void launchMockActivity() {
-        getMockFitnessService();
-        Intent intent = new Intent(this, MockActivity.class); 
+        Intent intent = new Intent(this, MockActivity.class);
         intent.putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
         if (fitnessService instanceof MockFitAdapter) {
             long currentDailySteps = Long.valueOf(dailyStepsTv.getText().toString());
             intent.putExtra(MockActivity.EXISTING_STEPS_KEY, currentDailySteps);
+        } else {
+            getMockFitnessService();
         }
         startActivityForResult(intent, MockActivity.REQUEST_CODE);        
     }
@@ -190,13 +192,18 @@ public class HomeActivity extends AppCompatActivity {
         dateFormat = new SimpleDateFormat(MockActivity.TIME_FMT);
         MockFitAdapter mockFitAdapter = (MockFitAdapter) fitnessService;
         String time = data.getStringExtra(MockActivity.INPUT_START_TIME_KEY);
+
         try {
+            Date dateTime;
             if (time != null) {
-                mockFitAdapter.setStartTime(dateFormat.parse(time).getTime());
+                dateTime = dateFormat.parse(time);
+                mockFitAdapter.setStartTime(dateTime.getTime());
             } else {
                 time = data.getStringExtra(MockActivity.INPUT_END_TIME_KEY);
-                mockFitAdapter.setEndTime(dateFormat.parse(time).getTime());
+                dateTime = dateFormat.parse(time);
+                mockFitAdapter.setEndTime(dateTime.getTime());
             }
+            Log.i(TAG, "setMockedExtras: successful time parsing: " + dateTime + " with time value: " + dateTime.getTime());
         } catch (ParseException e) {
             Log.e(TAG, "setMockedExtras: an exception occurred parsing time string: " + time, e);
         }
