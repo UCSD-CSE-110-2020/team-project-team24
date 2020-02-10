@@ -84,24 +84,24 @@ public class GoogleFitAdapter implements FitnessService {
         if (account == null) {
             return;
         }
-
         Fitness.getHistoryClient(activity, account)
                 .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
                 .addOnSuccessListener(dataSet -> {
                     updatedSteps = dataSet.isEmpty()
                             ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
-                    activity.setDailyStats(updatedSteps + stepsToAdd);
                     Log.i(TAG, "updateDailyStepCount: successful steps update: " + updatedSteps);
+                    activity.setDailyStats(updatedSteps + stepsToAdd);
                 })
                 .addOnFailureListener(e ->
                         Log.e(TAG, "updateDailyStepCount: there was a problem getting the daily step count.", e)
                 );
+        Log.i(TAG, "updateDailyStepCount: updated daily step count");
     }
 
     @Override
     public void startRecording() {
         updateDailyStepCount();
-        recordingInitSteps = updatedSteps;
+        recordingInitSteps = updatedSteps + stepsToAdd;
     }
 
 
@@ -109,7 +109,7 @@ public class GoogleFitAdapter implements FitnessService {
     public void stopRecording() {
         long timeElapsed = recordingEndTime - recordingStartTime;
         updateDailyStepCount();
-        long totalSteps = updatedSteps - recordingInitSteps;
+        long totalSteps = updatedSteps + stepsToAdd - recordingInitSteps;
         activity.setLatestWalkStats(totalSteps, timeElapsed);
 
     }

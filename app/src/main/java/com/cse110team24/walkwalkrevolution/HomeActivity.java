@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
-import com.cse110team24.walkwalkrevolution.fitness.MockFitAdapter;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -26,7 +25,7 @@ import java.util.Date;
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
-    private static final long UPDATE_PERIOD = 30_000;
+    private static final long UPDATE_PERIOD = 1000;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final String HEIGHT_FT_KEY = "Height Feet";
@@ -46,6 +45,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private NumberFormat numberFormat;
     private SimpleDateFormat dateFormat;
+
+    private boolean mocking;
 
     private int heightFeet;
     private float heightRemainderInches;
@@ -67,14 +68,15 @@ public class HomeActivity extends AppCompatActivity {
 
         getUIFields();
         saveHeight();
-        setFitnessService();
         numberFormat = new DecimalFormat(DECIMAL_FMT);
+        setFitnessService();
 
         setStartWalkBtnOnClickListener();
         setStopWalkBtnOnClickListner();
-        setLaunchMockActivityBtn();
+        setLaunchMockActivityBtnOnClickListener();
 
         handler.post(runUpdateSteps);
+        Log.i(TAG, "onCreate: handler posted");
     }
 
     @Override
@@ -87,7 +89,7 @@ public class HomeActivity extends AppCompatActivity {
             } else {
                 Log.e(TAG, "onActivityResult: error with fitness result code: " + resultCode);
             }
-        } else if (requestCode == MockActivity.REQUEST_CODE) {
+        } else if (requestCode == MockActivity.REQUEST_CODE && data != null) {
             setMockedExtras(data);
         }
     }
@@ -127,6 +129,9 @@ public class HomeActivity extends AppCompatActivity {
             startWalkBtn.setVisibility(View.INVISIBLE);
             stopWalkBtn.setVisibility(View.VISIBLE);
             stopWalkBtn.setEnabled(true);
+            if (!mocking) {
+                fitnessService.setStartRecordingTime(System.currentTimeMillis());
+            }
             fitnessService.startRecording();
         });
     }
@@ -139,11 +144,15 @@ public class HomeActivity extends AppCompatActivity {
             startWalkBtn.setVisibility(View.VISIBLE);
             stopWalkBtn.setVisibility(View.INVISIBLE);
             stopWalkBtn.setEnabled(false);
+            if (!mocking) {
+                fitnessService.setEndRecordingTime(System.currentTimeMillis());
+            }
+            // TODO: 2020-02-10 set mocking back to false?
             fitnessService.stopRecording();
         });
     }
 
-    private void setLaunchMockActivityBtn() {
+    private void setLaunchMockActivityBtnOnClickListener() {
         launchMockActivityBtn.setOnClickListener(view -> {
             launchMockActivity();
         });
@@ -171,44 +180,38 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void launchMockActivity() {
-        Intent intent = new Intent(this, MockActivity.class);
-        intent.putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
-        if (fitnessService instanceof MockFitAdapter) {
-            long currentDailySteps = Long.valueOf(dailyStepsTv.getText().toString());
-            intent.putExtra(MockActivity.EXISTING_STEPS_KEY, currentDailySteps);
-        } else {
-            getMockFitnessService();
-        }
-        startActivityForResult(intent, MockActivity.REQUEST_CODE);        
-    }
+        mocking = true;
+        String dailyStepsStr = dailyStepsTv.getText().toString();
+        long currentDailySteps = dailyStepsStr.isEmpty() ? 0 : Long.valueOf(dailyStepsStr);
 
-    private void getMockFitnessService() {
-        String fitnessServiceKey = MockFitAdapter.MOCK_SERVICE_KEY;
-        FitnessServiceFactory.put(fitnessServiceKey, activity -> new MockFitAdapter(activity));
-        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+        Intent intent = new Intent(this, MockActivity.class)
+                .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility())
+                .putExtra(MockActivity.EXISTING_STEPS_KEY, currentDailySteps);
+
+        startActivityForResult(intent, MockActivity.REQUEST_CODE);
     }
 
     private void setMockedExtras(Intent data) {
         dateFormat = new SimpleDateFormat(MockActivity.TIME_FMT);
-        MockFitAdapter mockFitAdapter = (MockFitAdapter) fitnessService;
-        String time = data.getStringExtra(MockActivity.INPUT_START_TIME_KEY);
-
+        String time = data.getStringExtra(MockActivity.INPUT_TIME_KEY);
+        Date dateTime = null;
         try {
-            Date dateTime;
-            if (time != null) {
-                dateTime = dateFormat.parse(time);
-                mockFitAdapter.setStartTime(dateTime.getTime());
-            } else {
-                time = data.getStringExtra(MockActivity.INPUT_END_TIME_KEY);
-                dateTime = dateFormat.parse(time);
-                mockFitAdapter.setEndTime(dateTime.getTime());
-            }
-            Log.i(TAG, "setMockedExtras: successful time parsing: " + dateTime + " with time value: " + dateTime.getTime());
+            dateTime = dateFormat.parse(time);
         } catch (ParseException e) {
-            Log.e(TAG, "setMockedExtras: an exception occurred parsing time string: " + time, e);
+            Log.e(TAG, "setMockedExtras: there was a problem parsing the time string " + time, e);
         }
-        long steps = data.getLongExtra(MockActivity.ADDED_STEPS_KEY, 0);
-        mockFitAdapter.setDailySteps(steps);
+
+        boolean settingStartTime = data.getBooleanExtra(MockActivity.SETTING_START_TIME_KEY, false);
+        long timeMillis = dateTime.getTime();
+        if (settingStartTime) {
+            fitnessService.setStartRecordingTime(timeMillis);
+        } else {
+            fitnessService.setEndRecordingTime(timeMillis);
+        }
+        Log.i(TAG, "setMockedExtras: time + " + time + " correctly parsed with value " + dateTime + " millis: " + timeMillis);
+
+        long stepsToAdd = data.getLongExtra(MockActivity.ADDED_STEPS_KEY, 0);
+        fitnessService.setStepsToAdd(stepsToAdd);
         fitnessService.updateDailyStepCount();
     }
 

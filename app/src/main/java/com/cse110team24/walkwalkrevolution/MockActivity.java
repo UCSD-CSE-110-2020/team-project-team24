@@ -22,8 +22,8 @@ public class MockActivity extends AppCompatActivity {
 
     public static final String START_WALK_BTN_VISIBILITY_KEY = "start button";
     public static final String ADDED_STEPS_KEY = "added_steps";
-    public static final String INPUT_START_TIME_KEY = "input_start_time";
-    public static final String INPUT_END_TIME_KEY = "input_end_time";
+    public static final String SETTING_START_TIME_KEY = "setting_start_time";
+    public static final String INPUT_TIME_KEY = "input_time";
     public static final String EXISTING_STEPS_KEY = "existing_time";
     public static final String TIME_FMT = "HH:mm:ss";
     public static final int REQUEST_CODE = 6;
@@ -93,12 +93,9 @@ public class MockActivity extends AppCompatActivity {
 
     private void finishMockActivity() {
         Intent intent = new Intent()
-                .putExtra(ADDED_STEPS_KEY, totalAddedSteps + existingSteps);
-        if (settingStartTime) {
-            intent.putExtra(INPUT_START_TIME_KEY, inputtedTime.getText().toString());
-        } else {
-            intent.putExtra(INPUT_END_TIME_KEY, inputtedTime.getText().toString());
-        }
+                .putExtra(ADDED_STEPS_KEY, totalAddedSteps + existingSteps)
+                .putExtra(SETTING_START_TIME_KEY, settingStartTime)
+                .putExtra(INPUT_TIME_KEY, inputtedTime.getText().toString());
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
@@ -115,9 +112,8 @@ public class MockActivity extends AppCompatActivity {
     }
 
     private void checkWhichTimeToSet() {
-        if (getIntent().getIntExtra(START_WALK_BTN_VISIBILITY_KEY, -1) == View.VISIBLE) {
-            settingStartTime = true;
-        } else {
+        settingStartTime = getIntent().getIntExtra(START_WALK_BTN_VISIBILITY_KEY, -1) == View.VISIBLE;
+        if (!settingStartTime) {
             enterTimePromptTv.setText(R.string.enter_end_time);
         }
     }
