@@ -20,7 +20,7 @@ public class RouteEnvironment {
     public enum TrailType {
         STREETS, TRAIL;
     }
-  
+
     private RouteType routeType;
     private TerrainType terrainType;
     private SurfaceType surfaceType;

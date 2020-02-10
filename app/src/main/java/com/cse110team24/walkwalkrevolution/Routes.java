@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
@@ -49,7 +50,8 @@ public class Routes extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()) {
                     case R.id.action_home:
-                        Toast.makeText(Routes.this, "Home", Toast.LENGTH_SHORT).show();
+                        launchGoToHomeActivity();
+                       // Toast.makeText(Routes.this, "Home", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.action_routes_list:
@@ -74,6 +76,11 @@ public class Routes extends AppCompatActivity {
         RouteAdapter adapter = new RouteAdapter(routes, this);
         rvRoutes.setAdapter(adapter);
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+    }
+
+    public void launchGoToHomeActivity() {
+        //Intent intent = new Intent(this, HomeActivity.class);
+        finish();
     }
 
 }
