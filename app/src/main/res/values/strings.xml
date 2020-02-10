@@ -19,4 +19,6 @@
     <string name="noWalkToday">You haven\'t completed a walk today!</string>
     <string name="stopWalk">Stop Walk</string>
     <string name="mock_btn_text">Mock Values</string>
+    <string name="click_to_add">Click to add 500 to your step count</string>
+    <string name="increment_btn_text">+500</string>
 </resources>
