@@ -58,7 +58,7 @@ public class HeightActivity extends AppCompatActivity {
 
     private void getConfiguredFields() {
         feetEditText = findViewById(R.id.et_height_feet);
-        inchesEditText = findViewById(R.id.height_remainder_inches_et);
+        inchesEditText = findViewById(R.id.et_height_remainder_inches);
         finishBtn = findViewById(R.id.btn_height_finish);
         finishBtn.setEnabled(false);
         TextWatcher textWatcher = getTextWatcher();

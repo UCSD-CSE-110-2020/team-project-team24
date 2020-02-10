@@ -112,14 +112,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void getUIFields() {
-        dailyStepsTv = findViewById(R.id.dailyStepsText);
-        dailyDistanceTv = findViewById(R.id.dailyDistanceText);
-        latestWalkStepsTv = findViewById(R.id.totalStepsCounter);
-        latestWalkDistanceTv = findViewById(R.id.totalDistanceCounter);
-        latestWalkTimeElapsedTv = findViewById(R.id.timeElapsedCounter);
-        noWalkTv = findViewById(R.id.noWalkToday);
-        startWalkBtn = findViewById(R.id.startWalkButton);
-        stopWalkBtn = findViewById(R.id.stopWalkButton);
+        dailyStepsTv = findViewById(R.id.tv_daily_steps);
+        dailyDistanceTv = findViewById(R.id.tv_daily_distance);
+        latestWalkStepsTv = findViewById(R.id.tv_recent_steps);
+        latestWalkDistanceTv = findViewById(R.id.tv_recent_distance);
+        latestWalkTimeElapsedTv = findViewById(R.id.tv_recent_time_elapsed);
+        noWalkTv = findViewById(R.id.tv_no_recent_walk_prompt);
+        startWalkBtn = findViewById(R.id.btn_start_walk);
+        stopWalkBtn = findViewById(R.id.btn_stop_walk);
         launchMockActivityBtn = findViewById(R.id.btn_mock_values);
     }
 

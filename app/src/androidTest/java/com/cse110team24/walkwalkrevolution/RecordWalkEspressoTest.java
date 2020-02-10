@@ -98,7 +98,7 @@ public class RecordWalkEspressoTest {
         appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.height_remainder_inches_et),
+                allOf(withId(R.id.et_height_remainder_inches),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -118,7 +118,7 @@ public class RecordWalkEspressoTest {
         appCompatButton.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.startWalkButton), withText("Start Walk"),
+                allOf(withId(R.id.btn_start_walk), withText("Start Walk"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -128,7 +128,7 @@ public class RecordWalkEspressoTest {
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.stopWalkButton), withText("Stop Walk"),
+                allOf(withId(R.id.btn_stop_walk), withText("Stop Walk"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -138,15 +138,15 @@ public class RecordWalkEspressoTest {
         appCompatButton3.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.totalStepsCounter), withText("5"), isDisplayed()));
+                allOf(withId(R.id.tv_recent_steps), withText("5"), isDisplayed()));
         textView.check(matches(withText("5")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.totalDistanceCounter), withText("0.00 mile(s)"), isDisplayed()));
+                allOf(withId(R.id.tv_recent_distance), withText("0.00 mile(s)"), isDisplayed()));
         textView2.check(matches(withText("0.00 mile(s)")));
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.timeElapsedCounter), withText("0.12 min."), isDisplayed()));
+                allOf(withId(R.id.tv_recent_time_elapsed), withText("0.12 min."), isDisplayed()));
         textView3.check(matches(withText("0.12 min.")));
     }
 

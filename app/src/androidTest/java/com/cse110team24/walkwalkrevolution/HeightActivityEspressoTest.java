@@ -99,7 +99,7 @@ public class HeightActivityEspressoTest {
         appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.height_remainder_inches_et),
+                allOf(withId(R.id.et_height_remainder_inches),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -136,11 +136,11 @@ public class HeightActivityEspressoTest {
         }
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.dailyStepsText), withText("5842"), isDisplayed()));
+                allOf(withId(R.id.tv_daily_steps), withText("5842"), isDisplayed()));
         textView2.check(matches(withText("5842")));
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.dailyDistanceText), withText("2.40"), isDisplayed()));
+                allOf(withId(R.id.tv_daily_distance), withText("2.40"), isDisplayed()));
         textView3.check(matches(withText("2.40")));
     }
 

@@ -28,7 +28,7 @@ public class HeightActivityUnitTest {
             testActivity = activity;
             finishBtn = testActivity.findViewById(R.id.btn_height_finish);
             feetEt = testActivity.findViewById(R.id.et_height_feet);
-            inchesEt = testActivity.findViewById(R.id.height_remainder_inches_et);
+            inchesEt = testActivity.findViewById(R.id.et_height_remainder_inches);
         });
     }
 

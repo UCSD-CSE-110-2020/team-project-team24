@@ -34,7 +34,7 @@
         android:layout_alignBaseline="@id/et_height_feet" />
 
     <EditText
-        android:id="@+id/height_remainder_inches_et"
+        android:id="@+id/et_height_remainder_inches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/tv_feet"
@@ -47,8 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/inch_units"
-        android:layout_toEndOf="@id/height_remainder_inches_et"
-        android:layout_alignBaseline="@id/height_remainder_inches_et" />
+        android:layout_toEndOf="@id/et_height_remainder_inches"
+        android:layout_alignBaseline="@id/et_height_remainder_inches" />
     <Button
         android:id="@+id/btn_height_finish"
         android:layout_width="wrap_content"

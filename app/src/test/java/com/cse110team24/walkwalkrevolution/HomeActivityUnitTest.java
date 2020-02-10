@@ -67,8 +67,8 @@ public class HomeActivityUnitTest {
         double expectedMiles = 2.39;
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            TextView stepsTv = activity.findViewById(R.id.dailyStepsText);
-            TextView distanceTv = activity.findViewById(R.id.dailyDistanceText);
+            TextView stepsTv = activity.findViewById(R.id.tv_daily_steps);
+            TextView distanceTv = activity.findViewById(R.id.tv_daily_distance);
             activity.onActivityResult(0, Activity.RESULT_OK, null);
             assertEquals(String.valueOf(nextStepCount), stepsTv.getText().toString());
             assertEquals(expectedMiles, Double.valueOf(distanceTv.getText().toString()), 0.1);
@@ -121,12 +121,12 @@ public class HomeActivityUnitTest {
     }
 
     private void getLatestUIViews(HomeActivity activity) {
-        noWalkTodayTv = activity.findViewById(R.id.noWalkToday);
-        latestDistanceTv = activity.findViewById(R.id.totalDistanceCounter);
-        latestStepsTv = activity.findViewById(R.id.totalStepsCounter);
-        latestTimeTv = activity.findViewById(R.id.timeElapsedCounter);
-        startButton = activity.findViewById(R.id.startWalkButton);
-        stopButton = activity.findViewById(R.id.stopWalkButton);
+        noWalkTodayTv = activity.findViewById(R.id.tv_no_recent_walk_prompt);
+        latestDistanceTv = activity.findViewById(R.id.tv_recent_distance);
+        latestStepsTv = activity.findViewById(R.id.tv_recent_steps);
+        latestTimeTv = activity.findViewById(R.id.tv_recent_time_elapsed);
+        startButton = activity.findViewById(R.id.btn_start_walk);
+        stopButton = activity.findViewById(R.id.btn_stop_walk);
     }
 
 
