@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.TextView;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
@@ -90,7 +89,7 @@ public class HeightActivityEspressoTest {
         setup();
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.height_feet_et),
+                allOf(withId(R.id.et_height_feet),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -110,15 +109,15 @@ public class HeightActivityEspressoTest {
         appCompatEditText4.perform(replaceText("3"), closeSoftKeyboard());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.prompt), withText("Please enter your height:"), isDisplayed()));
+                allOf(withId(R.id.tv_prompt), withText("Please enter your height:"), isDisplayed()));
         textView.check(matches(withText("Please enter your height:")));
 
         ViewInteraction button = onView(
-                allOf(withId(R.id.finish_btn), isDisplayed()));
+                allOf(withId(R.id.btn_height_finish), isDisplayed()));
         button.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.finish_btn), withText("Finish"),
+                allOf(withId(R.id.btn_height_finish), withText("Finish"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),

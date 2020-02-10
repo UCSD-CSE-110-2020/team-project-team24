@@ -26,8 +26,8 @@ public class HeightActivityUnitTest {
         ActivityScenario<HeightActivity> scenario = ActivityScenario.launch(HeightActivity.class);
         scenario.onActivity(activity -> {
             testActivity = activity;
-            finishBtn = testActivity.findViewById(R.id.finish_btn);
-            feetEt = testActivity.findViewById(R.id.height_feet_et);
+            finishBtn = testActivity.findViewById(R.id.btn_height_finish);
+            feetEt = testActivity.findViewById(R.id.et_height_feet);
             inchesEt = testActivity.findViewById(R.id.height_remainder_inches_et);
         });
     }

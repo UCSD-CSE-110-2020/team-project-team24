@@ -8,7 +8,6 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,7 +51,7 @@ public class MockActivity extends AppCompatActivity {
 
     private void getUIFields() {
         stepsMockBtn = findViewById(R.id.btn_increment_steps);
-        finishBtn = findViewById(R.id.finish_btn);
+        finishBtn = findViewById(R.id.btn_mock_finish);
         finishBtn.setEnabled(false);
         inputtedTime = findViewById(R.id.edit_time);
         totalStepsView = findViewById(R.id.total_steps);

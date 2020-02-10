@@ -88,7 +88,7 @@ public class RecordWalkEspressoTest {
         setup();
 
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.height_feet_et),
+                allOf(withId(R.id.et_height_feet),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -108,7 +108,7 @@ public class RecordWalkEspressoTest {
         appCompatEditText2.perform(replaceText("3"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.finish_btn), withText("Finish"),
+                allOf(withId(R.id.btn_height_finish), withText("Finish"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
