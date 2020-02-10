@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    NumberFormat formatter;
+    private NumberFormat formatter;
 
     private int heightFeet;
     private float heightRemainderInches;
@@ -53,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView noWalkTv;
     private Button startWalkBtn;
     private Button stopWalkBtn;
+    private Button launchMockActivityBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
 
         setStartWalkBtnOnClickListener();
         setStopWalkBtnOnClickListner();
+        setLaunchMockActivityBtn();
 
         handler.post(runUpdateSteps);
     }
@@ -109,6 +111,7 @@ public class HomeActivity extends AppCompatActivity {
         noWalkTv = findViewById(R.id.noWalkToday);
         startWalkBtn = findViewById(R.id.startWalkButton);
         stopWalkBtn = findViewById(R.id.stopWalkButton);
+        launchMockActivityBtn = findViewById(R.id.btn_mock_values);
     }
 
     private void setStartWalkBtnOnClickListener() {
@@ -130,6 +133,12 @@ public class HomeActivity extends AppCompatActivity {
             stopWalkBtn.setVisibility(View.INVISIBLE);
             stopWalkBtn.setEnabled(false);
             fitnessService.stopRecording();
+        });
+    }
+
+    private void setLaunchMockActivityBtn() {
+        launchMockActivityBtn.setOnClickListener(view -> {
+            launchMockActivity();
         });
     }
 

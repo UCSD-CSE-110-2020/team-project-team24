@@ -113,6 +113,16 @@
         app:layout_constraintTop_toBottomOf="@id/startWalkButton"
         app:layout_constraintBottom_toTopOf="@id/totalSteps"/>
 
+    <Button
+        android:id="@+id/btn_mock_values"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mock_btn_text"
+        android:layout_marginStart="@dimen/mock_btn_margin"
+        app:layout_constraintLeft_toRightOf="@+id/mostRecentWalk"
+        app:layout_constraintTop_toBottomOf="@id/startWalkButton"
+        app:layout_constraintBottom_toTopOf="@id/totalSteps"/>
+
     <TextView
         android:id="@+id/totalSteps"
         android:layout_width="wrap_content"

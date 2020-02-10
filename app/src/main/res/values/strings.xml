@@ -18,4 +18,5 @@
     <string name="timeElapsed">Time Elapsed: </string>
     <string name="noWalkToday">You haven\'t completed a walk today!</string>
     <string name="stopWalk">Stop Walk</string>
+    <string name="mock_btn_text">Mock Values</string>
 </resources>

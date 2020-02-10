@@ -11,4 +11,5 @@
     <dimen name="start_walk_btn_txt_size">25sp</dimen>
     <dimen name="recent_walk_info_text_size">20sp</dimen>
     <dimen name="recent_walk_info_left_bias">0.3</dimen>
+    <dimen name="mock_btn_margin">64dp</dimen>
 </resources>
