@@ -184,6 +184,21 @@ public class RecordWalkEspressoTest {
         public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
             return new GoogleFitAdapter(null).getDistanceFromHeight(steps, heightFeet, heightRemainderInches);
         }
+
+        @Override
+        public void setStartRecordingTime(long startTime) {
+
+        }
+
+        @Override
+        public void setEndRecordingTime(long startTime) {
+
+        }
+
+        @Override
+        public void setStepsToAdd(long stepsToAdd) {
+
+        }
     }
 
     private static Matcher<View> childAtPosition(

@@ -47,6 +47,21 @@ public class GoogleFitAdapter implements FitnessService {
     }
 
     @Override
+    public void setStartRecordingTime(long startTime) {
+        
+    }
+
+    @Override
+    public void setEndRecordingTime(long startTime) {
+
+    }
+
+    @Override
+    public void setStepsToAdd(long stepsToAdd) {
+
+    }
+
+    @Override
     public void setup() {
         FitnessOptions fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
