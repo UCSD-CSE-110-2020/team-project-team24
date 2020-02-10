@@ -45,7 +45,6 @@ public class HomeActivity extends AppCompatActivity {
     };
 
     private NumberFormat numberFormat;
-    private SimpleDateFormat dateFormat;
 
     private boolean mocking;
     private boolean endTimeSet;
@@ -69,16 +68,22 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         getUIFields();
+        stopWalkBtn.setVisibility(View.INVISIBLE);
+        stopWalkBtn.setEnabled(false);
         saveHeight();
         numberFormat = new DecimalFormat(DECIMAL_FMT);
         setFitnessService();
 
-        setStartWalkBtnOnClickListener();
-        setStopWalkBtnOnClickListner();
-        setLaunchMockActivityBtnOnClickListener();
+        setButtonOnClickListeners();
 
         handler.post(runUpdateSteps);
         Log.i(TAG, "onCreate: handler posted");
+    }
+
+    private void setButtonOnClickListeners() {
+        setStartWalkBtnOnClickListener();
+        setStopWalkBtnOnClickListner();
+        setLaunchMockActivityBtnOnClickListener();
     }
 
     @Override
@@ -127,10 +132,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setStartWalkBtnOnClickListener() {
         startWalkBtn.setOnClickListener(view -> {
-            startWalkBtn.setEnabled(false);
-            startWalkBtn.setVisibility(View.INVISIBLE);
-            stopWalkBtn.setVisibility(View.VISIBLE);
-            stopWalkBtn.setEnabled(true);
+            toggleStartAndStopBtns();
             if (!mocking) {
                 fitnessService.setStartRecordingTime(System.currentTimeMillis());
             } else {
@@ -141,17 +143,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setStopWalkBtnOnClickListner() {
-        stopWalkBtn.setVisibility(View.INVISIBLE);
-        stopWalkBtn.setEnabled(false);
         stopWalkBtn.setOnClickListener(view -> {
             if (mocking && !endTimeSet) {
                 showSetEndTimeToast();
                 return;
             }
-            startWalkBtn.setEnabled(true);
-            startWalkBtn.setVisibility(View.VISIBLE);
-            stopWalkBtn.setVisibility(View.INVISIBLE);
-            stopWalkBtn.setEnabled(false);
+            toggleStartAndStopBtns();
             if (!mocking) {
                 fitnessService.setEndRecordingTime(System.currentTimeMillis());
             }
@@ -165,6 +162,17 @@ public class HomeActivity extends AppCompatActivity {
         launchMockActivityBtn.setOnClickListener(view -> {
             launchMockActivity();
         });
+    }
+
+    private void toggleStartAndStopBtns() {
+        toggleBtn(startWalkBtn);
+        toggleBtn(stopWalkBtn);
+    }
+
+    private void toggleBtn(Button btn) {
+        btn.setEnabled(!btn.isEnabled());
+        int visibility = (btn.getVisibility() == View.VISIBLE) ? View.INVISIBLE : View.VISIBLE;
+        btn.setVisibility(visibility);
     }
 
     private void setFitnessService() {
@@ -201,14 +209,21 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setMockedExtras(Intent data) {
-        dateFormat = new SimpleDateFormat(MockActivity.TIME_FMT);
+        setMockedTime(data);
+        setMockedSteps(data);
+        fitnessService.updateDailyStepCount();
+    }
+
+    private void setMockedSteps(Intent data) {
+        long stepsToAdd = data.getLongExtra(MockActivity.ADDED_STEPS_KEY, 0);
+        Log.d(TAG, "setMockedExtras: steps to add " + stepsToAdd);
+        fitnessService.setStepsToAdd(stepsToAdd);
+    }
+
+    private void setMockedTime(Intent data) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(MockActivity.TIME_FMT);
         String time = data.getStringExtra(MockActivity.INPUT_TIME_KEY);
-        Date dateTime = null;
-        try {
-            dateTime = dateFormat.parse(time);
-        } catch (ParseException e) {
-            Log.e(TAG, "setMockedExtras: there was a problem parsing the time string " + time, e);
-        }
+        Date dateTime = parseMockedTime(dateFormat, time);
 
         boolean settingStartTime = data.getBooleanExtra(MockActivity.SETTING_START_TIME_KEY, false);
         long timeMillis = dateTime.getTime();
@@ -218,16 +233,20 @@ public class HomeActivity extends AppCompatActivity {
             fitnessService.setEndRecordingTime(timeMillis);
             endTimeSet = true;
         }
-        Log.i(TAG, "setMockedExtras: time + " + time + " correctly parsed with value " + dateTime + " millis: " + timeMillis);
+    }
 
-        long stepsToAdd = data.getLongExtra(MockActivity.ADDED_STEPS_KEY, 0);
-        Log.d(TAG, "setMockedExtras: steps to add " + stepsToAdd);
-        fitnessService.setStepsToAdd(stepsToAdd);
-        fitnessService.updateDailyStepCount();
+    private Date parseMockedTime(SimpleDateFormat dateFormat, String time) {
+        Date dateTime = null;
+        try {
+            dateTime = dateFormat.parse(time);
+        } catch (ParseException e) {
+            Log.e(TAG, "setMockedExtras: there was a problem parsing the time string " + time, e);
+        }
+        Log.i(TAG, "setMockedExtras: time string " + time + " correctly parsed with value " + dateTime);
+        return dateTime;
     }
 
     private void showSetEndTimeToast() {
         Toast.makeText(this, "Remember to set an end time for your walk!", Toast.LENGTH_SHORT).show();
     }
-
 }

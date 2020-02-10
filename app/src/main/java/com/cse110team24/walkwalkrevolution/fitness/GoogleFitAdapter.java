@@ -114,6 +114,5 @@ public class GoogleFitAdapter implements FitnessService {
         updateDailyStepCount();
         long totalSteps = updatedSteps + stepsToAdd - recordingInitSteps;
         activity.setLatestWalkStats(totalSteps, timeElapsed);
-
     }
 }
