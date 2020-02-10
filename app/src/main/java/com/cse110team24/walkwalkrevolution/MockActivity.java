@@ -53,8 +53,8 @@ public class MockActivity extends AppCompatActivity {
         stepsMockBtn = findViewById(R.id.btn_increment_steps);
         finishBtn = findViewById(R.id.btn_mock_finish);
         finishBtn.setEnabled(false);
-        inputtedTime = findViewById(R.id.edit_time);
-        totalStepsView = findViewById(R.id.total_steps);
+        inputtedTime = findViewById(R.id.et_edit_time);
+        totalStepsView = findViewById(R.id.tv_added_steps);
         enterTimePromptTv = findViewById(R.id.tv_enter_time);
         TextWatcher textWatcher = getTextWatcher();
         inputtedTime.addTextChangedListener(textWatcher);
