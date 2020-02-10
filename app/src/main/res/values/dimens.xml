@@ -14,5 +14,6 @@
     <dimen name="mock_btn_margin">64dp</dimen>
     <dimen name="added_steps_top_margin">20dp</dimen>
     <dimen name="added_steps_size">36sp</dimen>
-    <dimen name="finish_btn_margin">40sp</dimen>
+    <dimen name="section_top_margin">40sp</dimen>
+    <dimen name="desired_time_size">28sp</dimen>
 </resources>
