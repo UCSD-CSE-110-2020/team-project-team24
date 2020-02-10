@@ -6,8 +6,9 @@ import com.cse110team24.walkwalkrevolution.HomeActivity;
 
 public class MockFitAdapter implements FitnessService {
     private static final String TAG = "MockFitAdapter";
+    private static final long HOURS_MILLIS = 86_400_000;
+
     public static final String MOCK_SERVICE_KEY = "Mock_Fit";
-    private static final long ADD_MOCK_CONST = 500;
 
     private HomeActivity activity;
     private long updatedSteps;
@@ -54,6 +55,9 @@ public class MockFitAdapter implements FitnessService {
     @Override
     public void stopRecording() {
         long timeElapsed = endTime - startTime;
+        if (timeElapsed < 0) {
+            timeElapsed += HOURS_MILLIS;
+        }
         activity.setLatestWalkStats(updatedSteps - startSteps, timeElapsed);
     }
 
