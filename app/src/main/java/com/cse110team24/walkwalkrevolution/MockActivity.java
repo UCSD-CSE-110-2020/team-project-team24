@@ -56,7 +56,7 @@ public class MockActivity extends AppCompatActivity {
     private void setStepsMockOnClickListener() {
         stepsMockBtn.setOnClickListener(view -> {
             totalAddedSteps += ADD_MOCK_CONST;
-            totalStepsView.setText(Integer.toString(totalAddedSteps));
+            totalStepsView.setText(String.valueOf(totalAddedSteps));
         });
     }
 
