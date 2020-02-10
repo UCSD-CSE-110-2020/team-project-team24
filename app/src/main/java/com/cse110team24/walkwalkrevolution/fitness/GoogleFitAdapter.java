@@ -12,11 +12,7 @@ import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 
 public class GoogleFitAdapter implements FitnessService {
-    private static final DataType RECORD_DATA_TYPE = DataType.TYPE_STEP_COUNT_DELTA;
-
     private static final String TAG = "GoogleFitAdapter";
-    private static final String RECORDING_SESSION_NAME = "Recording a walk";
-    private static final String RECORDING_SESSION_IDENTIFIER = "record id";
     private static final double STRIDE_LEN_CONST = 0.413;
     private static final int FEET_IN_MILE = 5280;
     private static final int INCHES_IN_FEET = 12;
@@ -26,8 +22,10 @@ public class GoogleFitAdapter implements FitnessService {
     private HomeActivity activity;
 
     private long recordingStartTime;
+    private long recordingEndTime;
     private long recordingInitSteps;
     private long updatedSteps;
+    private long stepsToAdd;
 
     public GoogleFitAdapter(HomeActivity activity) {
         this.activity = activity;
@@ -48,17 +46,17 @@ public class GoogleFitAdapter implements FitnessService {
 
     @Override
     public void setStartRecordingTime(long startTime) {
-        
+        recordingStartTime = startTime;
     }
 
     @Override
     public void setEndRecordingTime(long startTime) {
-
+        recordingEndTime = startTime;
     }
 
     @Override
     public void setStepsToAdd(long stepsToAdd) {
-
+        this.stepsToAdd = stepsToAdd;
     }
 
     @Override
@@ -92,7 +90,7 @@ public class GoogleFitAdapter implements FitnessService {
                 .addOnSuccessListener(dataSet -> {
                     updatedSteps = dataSet.isEmpty()
                             ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
-                    activity.setDailyStats(updatedSteps);
+                    activity.setDailyStats(updatedSteps + stepsToAdd);
                     Log.i(TAG, "updateDailyStepCount: successful steps update: " + updatedSteps);
                 })
                 .addOnFailureListener(e ->
@@ -102,7 +100,6 @@ public class GoogleFitAdapter implements FitnessService {
 
     @Override
     public void startRecording() {
-        recordingStartTime = System.currentTimeMillis();
         updateDailyStepCount();
         recordingInitSteps = updatedSteps;
     }
@@ -110,13 +107,10 @@ public class GoogleFitAdapter implements FitnessService {
 
     @Override
     public void stopRecording() {
-        long timeElapsed = System.currentTimeMillis() - recordingStartTime;
+        long timeElapsed = recordingEndTime - recordingStartTime;
         updateDailyStepCount();
         long totalSteps = updatedSteps - recordingInitSteps;
         activity.setLatestWalkStats(totalSteps, timeElapsed);
 
     }
-
-
-
 }
