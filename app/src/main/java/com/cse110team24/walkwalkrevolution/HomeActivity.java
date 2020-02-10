@@ -172,7 +172,11 @@ public class HomeActivity extends AppCompatActivity {
     private void launchMockActivity() {
         getMockFitnessService();
         Intent intent = new Intent(this, MockActivity.class); 
-        intent.putExtra(MockActivity.START_WALK_BTN_VISIBILITY, startWalkBtn.getVisibility());
+        intent.putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
+        if (fitnessService instanceof MockFitAdapter) {
+            long currentDailySteps = Long.valueOf(dailyStepsTv.getText().toString());
+            intent.putExtra(MockActivity.EXISTING_STEPS_KEY, currentDailySteps);
+        }
         startActivityForResult(intent, MockActivity.REQUEST_CODE);        
     }
 
@@ -198,6 +202,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         long steps = data.getIntExtra(MockActivity.ADDED_STEPS_KEY, 0);
         mockFitAdapter.setDailySteps(steps);
+        fitnessService.updateDailyStepCount();
     }
 
 }
