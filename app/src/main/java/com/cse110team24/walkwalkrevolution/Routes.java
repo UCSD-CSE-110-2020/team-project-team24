@@ -54,7 +54,6 @@ public class Routes extends AppCompatActivity {
                         break;
 
                     case R.id.action_routes_list:
-                        Toast.makeText(Routes.this, "Routes", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return true;
@@ -79,8 +78,8 @@ public class Routes extends AppCompatActivity {
     }
 
     public void launchGoToHomeActivity() {
-        //Intent intent = new Intent(this, HomeActivity.class);
         finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
 }

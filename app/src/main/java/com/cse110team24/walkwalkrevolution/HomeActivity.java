@@ -146,12 +146,10 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()) {
                     case R.id.action_home:
-                        Toast.makeText(HomeActivity.this, "Home", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.action_routes_list:
                         launchGoToRoutesActivity();
-                        //Toast.makeText(HomeActivity.this, "Routes", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return true;
@@ -162,6 +160,7 @@ public class HomeActivity extends AppCompatActivity {
     public void launchGoToRoutesActivity() {
         Intent intent = new Intent(this, Routes.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
     private void setFitnessService() {
