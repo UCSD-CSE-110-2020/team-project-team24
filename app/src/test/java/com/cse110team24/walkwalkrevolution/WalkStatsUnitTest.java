@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class WalkStatsUnitTest {
-    WalkStats stats;
+    private WalkStats stats;
 
     @Before
     public void setUp() {
@@ -20,43 +20,42 @@ public class WalkStatsUnitTest {
     @Test
     public void testConstructorRegularUse() {
         Calendar dateCompleted = new GregorianCalendar(2020, 2, 3);
-        WalkStats stat = new WalkStats(1500, 1800000, 1.8, dateCompleted);
-        assertEquals(1500, stat.getSteps());
-        assertEquals(1800000, stat.getTimeElapsed());
-        assertEquals(1.8, stat.getDistance(), 0.001);
-        assertEquals(dateCompleted, stat.getDateCompleted());
+        assertEquals(1500, stats.getSteps());
+        assertEquals(1800000, stats.getTimeElapsed());
+        assertEquals(1.8, stats.getDistance(), 0.001);
+        assertEquals(dateCompleted, stats.getDateCompleted());
     }
 
     @Test
     public void testEqualsObjectsEqual() {
         Calendar date = new GregorianCalendar(2020, 2, 3);
         WalkStats secondStats = new WalkStats(1500, 1800000, 1.8, date);
-        assertTrue(stats.equals(secondStats));
+        assertEquals(stats, secondStats);
     }
 
     @Test
     public void testEqualsDifferByOne() {
         Calendar date = new GregorianCalendar(2020, 2, 4);
         WalkStats secondStats = new WalkStats(1500, 1800000, 1.8, date);
-        assertFalse(stats.equals(secondStats));
+        assertNotEquals(stats, secondStats);
     }
 
     @Test
     public void testEqualsObjectsCompletelyDifferent() {
         Calendar date = new GregorianCalendar(2020, 2, 8);
         WalkStats secondStats = new WalkStats(234, 345, 4.5, date);
-        assertFalse(stats.equals(secondStats));
+        assertNotEquals(stats, secondStats);
     }
 
     @Test
     public void testEqualsNullParam() {
         WalkStats nullStats = null;
-        assertFalse(stats.equals(nullStats));
+        assertNotEquals(stats, nullStats);
     }
 
     @Test
     public void testEqualsParamNotWalkStatsInstance() {
         Route route = new Route("test");
-        assertFalse(stats.equals(route));
+        assertNotEquals(stats, route);
     }
 }

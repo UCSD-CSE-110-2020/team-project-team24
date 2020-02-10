@@ -19,10 +19,7 @@ import java.util.List;
  * provides various methods to help manage Routes
  */
 public class RoutesManager {
-    private static final String SUCCESSFUL_WRITE = "write: successfully written to file '%s'";
-    private static final String SUCCESSFUL_READ = "read: successfully read from file '%s'";
-    private static final String FAIL_READ = "read: failed to read from file '%s'";
-
+    private static final String TAG = "RoutesManager";
 
     /**
      * write a list of Route objects to a file
@@ -36,7 +33,7 @@ public class RoutesManager {
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(routes);
         oos.close();
-        Log.d(RoutesManager.class.getName(), String.format(SUCCESSFUL_WRITE, filename));
+        Log.i(TAG, "writeList: sucessfully wrote list of routes to " + filename);
     }
 
     /**
@@ -51,7 +48,7 @@ public class RoutesManager {
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(route);
         oos.close();
-        Log.d(RoutesManager.class.getName(), String.format(SUCCESSFUL_WRITE, filename));
+        Log.i(TAG, "writeSingle: successfully wrote single Route object to " + filename);
     }
 
     /**
@@ -64,13 +61,11 @@ public class RoutesManager {
     public static List<Route> readList(String filename, Context context) throws IOException {
         ObjectInputStream ois = getInputStream(filename, context);
         if (ois == null) {
-            Log.e(RoutesManager.class.getName(), String.format(FAIL_READ, filename));
             return new ArrayList<>();
         }
         List<Route> routes = null;
         try {
             routes = (List<Route>) ois.readObject();
-            Log.d(RoutesManager.class.getName(), String.format(SUCCESSFUL_READ, filename));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -88,14 +83,12 @@ public class RoutesManager {
     public static Route readSingle(String filename, Context context) throws IOException {
         ObjectInputStream ois = getInputStream(filename, context);
         if (ois == null) {
-            Log.e(RoutesManager.class.getName(), String.format(FAIL_READ, filename));
             return null;
         }
 
         Route route = null;
         try {
             route = (Route) ois.readObject();
-            Log.d(RoutesManager.class.getName(), String.format(SUCCESSFUL_READ, filename));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -104,7 +97,6 @@ public class RoutesManager {
     }
 
     /**
-     * TODO get the latest route completed if one exists
      * @param filename filename to look for latest route
      * @return a route object if a latest route exists or null otherwise
      */
@@ -118,7 +110,6 @@ public class RoutesManager {
     }
 
     /**
-     * TODO - check first if a latest already exists and delete the file if it does
      * otherwise just write the new route. if route's stats are null, does nothing
      * @param route route to be written to file
      * @param filename file to be written to
@@ -128,11 +119,15 @@ public class RoutesManager {
         if (route.getStats() == null) {
             throw new IllegalArgumentException("Can't write latest route without stats");
         }
+        deleteExistingFile(filename);
+        writeSingle(route, filename, context);
+    }
+
+    private static void deleteExistingFile(String filename) {
         File file = new File(filename);
         if (file.exists()) {
             file.delete();
         }
-        writeSingle(route, filename, context);
     }
 
     // for convenience - gets input stream, handling exceptions

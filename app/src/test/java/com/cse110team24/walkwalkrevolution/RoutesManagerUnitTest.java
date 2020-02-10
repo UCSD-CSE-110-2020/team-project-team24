@@ -25,15 +25,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
-public class RoutesManagerTest {
+public class RoutesManagerUnitTest {
     private static final String TEST_FILE_LIST = ".WWR_storage_test_list";
     private static final String TEST_FILE_SINGLE = ".WWR_storage_test_single";
     private static final String TEST_FILE_LATEST = ".WWR_storage_test_latest";
 
     @Rule
-    public ActivityScenarioRule<MainActivity> scenarioRule = new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<HeightActivity> scenarioRule = new ActivityScenarioRule<>(HeightActivity.class);
 
-    private ActivityScenario<MainActivity> scenario;
+    private ActivityScenario<HeightActivity> scenario;
 
     @Before
     public void setup() {

@@ -9,10 +9,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class RouteUnitTest {
-    WalkStats stats;
-    RouteEnvironment env;
-    Route route;
-    Calendar date = new GregorianCalendar(2020, 2,4 );
+    private WalkStats stats;
+    private RouteEnvironment env;
+    private Route route;
+    private Calendar date = new GregorianCalendar(2020, 2,4 );
 
     @Before
     public void setUp() {
@@ -42,7 +42,7 @@ public class RouteUnitTest {
         route2.setStartingLocation(start);
         route2.setStats(stats);
 
-        assertTrue(route.equals(route2));
+        assertEquals(route, route2);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class RouteUnitTest {
         route2.setNotes(notes);
         route2.setStartingLocation(start);
 
-        assertTrue(route.equals(route2));
+        assertEquals(route, route2);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class RouteUnitTest {
         route2.setNotes(notes);
         route2.setStats(stats);
 
-        assertTrue(route.equals(route2));
+        assertEquals(route, route2);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class RouteUnitTest {
         route2.setEnvironment(env);
         route2.setNotes(notes);
 
-        assertTrue(route.equals(route2));
+        assertEquals(route, route2);
     }
 
     @Test
@@ -97,13 +97,13 @@ public class RouteUnitTest {
         Route route2 = new Route("Main Route");
         route2.setStats(stats);
 
-        assertTrue(route.equals(route2));
+        assertEquals(route, route2);
     }
 
     @Test
     public void testEqualNoInformationAndNotCompleted() {
         Route route2 = new Route("Main Route");
-        assertTrue(route.equals(route2));
+        assertEquals(route, route2);
     }
 
     @Test
@@ -122,7 +122,7 @@ public class RouteUnitTest {
         route2.setStartingLocation(start);
         route2.setStats(stats2);
 
-        assertFalse(route.equals(route2));
+        assertNotEquals(route, route2);
     }
 
     @Test
@@ -138,7 +138,7 @@ public class RouteUnitTest {
         route2.setNotes(notes);
         route2.setStartingLocation(start);
 
-        assertFalse(route.equals(route2));
+        assertNotEquals(route, route2);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class RouteUnitTest {
         route2.setEnvironment(env);
         route2.setNotes(notes);
 
-        assertFalse(route.equals(route2));
+        assertNotEquals(route, route2);
     }
 
     @Test
@@ -168,23 +168,23 @@ public class RouteUnitTest {
         route2.setNotes(notes);
         route2.setStats(stats);
 
-        assertFalse(route.equals(route2));
+        assertNotEquals(route, route2);
     }
 
     @Test
     public void testNullParam() {
         Route route2 = null;
-        assertFalse(route.equals(route2));
+        assertNotEquals(route, route2);
     }
 
     @Test
     public void testNotRouteInstance() {
-        assertFalse(route.equals(date));
+        assertNotEquals(route, date);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullName() throws IllegalArgumentException{
-        Route nullName = new Route(null);
+        new Route(null);
     }
 
     @Test
