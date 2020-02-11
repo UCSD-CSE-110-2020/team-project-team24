@@ -97,10 +97,10 @@ public class SavingPage extends AppCompatActivity {
                     }
 
                     route.setEnvironment(env);
-
+                    finish();
                 }
 
-                finish();
+                //finish();
             }
         });
     }
