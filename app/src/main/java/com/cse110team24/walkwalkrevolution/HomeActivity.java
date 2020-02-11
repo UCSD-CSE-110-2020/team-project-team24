@@ -190,7 +190,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void launchGoToRoutesActivity() {
-        Intent intent = new Intent(this, Routes.class);
+        Intent intent = new Intent(this, RoutesActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }

@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
         <activity
-            android:name=".Routes"
+            android:name=".RoutesActivity"
             android:label="@string/title_activity_routes"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".MockActivity"></activity>

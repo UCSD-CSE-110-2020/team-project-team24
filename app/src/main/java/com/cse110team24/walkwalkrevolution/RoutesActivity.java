@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
-public class Routes extends AppCompatActivity {
+public class RoutesActivity extends AppCompatActivity {
 
     ArrayList<Route> routes = new ArrayList<>();
 
