@@ -86,13 +86,15 @@ public class HeightActivity extends AppCompatActivity {
     }
 
     private void launchHomeActivity() {
-        Log.d(TAG, "launchHomeActivity: fitnessServiceKey passed to home: " + fitnessServiceKey);
-        Log.i(TAG, "launchHomeActivity: valid height params found; launching home.");
-        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
-                    .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
-                    .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
-        finish();
-        startActivity(homeIntent);
+//        Log.d(TAG, "launchHomeActivity: fitnessServiceKey passed to home: " + fitnessServiceKey);
+//        Log.i(TAG, "launchHomeActivity: valid height params found; launching home.");
+//        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
+//                    .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
+//                    .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
+//        finish();
+//        startActivity(homeIntent);
+        Intent intent = new Intent(this, SavingPage.class);
+        startActivity(intent);
     }
 
     private void checkHeight(SharedPreferences preferences) {
