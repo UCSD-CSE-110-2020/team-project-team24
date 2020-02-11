@@ -52,6 +52,7 @@
             android:text="@string/route_type" />
 
         <RadioGroup
+            android:id="@+id/routeTypeRdGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"

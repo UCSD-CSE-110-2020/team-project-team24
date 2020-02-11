@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <TextView
+        android:id="@+id/dailySteps"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:text="@string/dailySteps"
+        android:textSize="@dimen/home_title_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/dailyStepsBackground"/>
+
+    <ImageView
+        android:id="@+id/dailyStepsBackground"
+        android:layout_width="@dimen/txt_bkg_color_width"
+        android:layout_height="@dimen/txt_bkg_color_height"
+        android:layout_gravity="center"
+        android:contentDescription="@string/dailyStepBackground"
+        android:background="@color/colorPrimary"
+        app:srcCompat="@android:drawable/dialog_holo_light_frame"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dailySteps"
+        app:layout_constraintBottom_toTopOf="@id/dailyDistance"/>
+
+    <TextView
+        android:id="@+id/dailyStepsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/home_txt_size"
+        android:text=""
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dailySteps"
+        app:layout_constraintBottom_toTopOf="@id/dailyDistance"/>
+
+
+    <TextView
+        android:id="@+id/dailyDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/home_title_size"
+        android:text="@string/dailyDistance"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dailyStepsText"
+        app:layout_constraintBottom_toTopOf="@id/dailyDistanceBackground"/>
+
+    <ImageView
+        android:id="@+id/dailyDistanceBackground"
+        android:layout_width="@dimen/txt_bkg_color_width"
+        android:layout_height="@dimen/txt_bkg_color_height"
+        android:background="@color/colorPrimary"
+        android:contentDescription="@string/dailyDistanceBackground"
+        app:srcCompat="@android:drawable/dialog_holo_light_frame"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dailyDistance"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
+
+    <TextView
+        android:id="@+id/dailyDistanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/home_txt_size"
+        android:text=""
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dailyDistance"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimaryDark"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
