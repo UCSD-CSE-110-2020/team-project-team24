@@ -19,6 +19,7 @@ import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.shadows.ShadowToast;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -28,6 +29,7 @@ public class HomeActivityUnitTest {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     private static final int FEET = 5;
     private static final float INCHES = 3f;
+    private static final String TOAST_MESSAGE = "Remember to set an end time for your walk!";
 
     private TextView latestStepsTv;
     private TextView latestDistanceTv;
@@ -35,6 +37,7 @@ public class HomeActivityUnitTest {
     private TextView noWalkTodayTv;
     private Button startButton;
     private Button stopButton;
+    private Button mockButton;
 
     private Intent intent;
     private long nextStepCount;
@@ -120,6 +123,45 @@ public class HomeActivityUnitTest {
         });
     }
 
+    @Test
+    public void testDisableStopWalkWithToast() {
+        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            getLatestUIViews(activity);
+            startButton.performClick();
+            assertEquals(startButton.getVisibility(), View.INVISIBLE);
+            assertEquals(stopButton.getVisibility(), View.VISIBLE);
+            mockButton.performClick();
+            Intent mockIntent = getMockIntent()
+                    .putExtra(MockActivity.SETTING_START_TIME_KEY, false);
+            activity.onActivityResult(0, Activity.RESULT_OK, mockIntent);
+            stopButton.performClick();
+            assertEquals(startButton.getVisibility(), View.INVISIBLE);
+            assertEquals(stopButton.getVisibility(), View.VISIBLE);
+            assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MESSAGE);
+        });
+    }
+
+    @Test
+    public void testMockIncrementBeforeStarting() {
+
+    }
+
+    @Test
+    public void testMockedWalkStatsNoAddedSteps() {
+
+    }
+
+    @Test
+    public void testMockedWalkStatsAddedSteps() {
+
+    }
+
+    @Test
+    public void testMockedWalkStatsNegativeWalkTime() {
+
+    }
+
     private void getLatestUIViews(HomeActivity activity) {
         noWalkTodayTv = activity.findViewById(R.id.tv_no_recent_walk_prompt);
         latestDistanceTv = activity.findViewById(R.id.tv_recent_distance);
@@ -127,8 +169,14 @@ public class HomeActivityUnitTest {
         latestTimeTv = activity.findViewById(R.id.tv_recent_time_elapsed);
         startButton = activity.findViewById(R.id.btn_start_walk);
         stopButton = activity.findViewById(R.id.btn_stop_walk);
+        mockButton = activity.findViewById(R.id.btn_mock_values);
     }
 
+    private Intent getMockIntent() {
+        return new Intent(ApplicationProvider.getApplicationContext(), MockActivity.class)
+                .putExtra(MockActivity.ADDED_STEPS_KEY, 1500)
+                .putExtra(MockActivity.INPUT_TIME_KEY, "7:20:00");
+    }
 
     private class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
