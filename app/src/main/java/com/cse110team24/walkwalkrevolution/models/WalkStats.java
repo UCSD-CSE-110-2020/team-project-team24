@@ -49,6 +49,10 @@ public class WalkStats implements Serializable {
         this.dateCompleted = dateCompleted;
     }
 
+    public long timeElapsedInMinutes() {
+        return timeElapsed / 1000 / 60;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof WalkStats) {

@@ -19,8 +19,10 @@ import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
@@ -104,18 +106,23 @@ public class HomeActivity extends AppCompatActivity {
     public void setDailyStats(long stepCount) {
         Log.i(TAG, "setDailyStats: setting daily stats with steps: " + stepCount);
         dailyStepsTv.setText(String.valueOf(stepCount));
-        double distance = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
+        double distance = calculateDistance(stepCount);
         dailyDistanceTv.setText(numberFormat.format(distance));
     }
 
-    public void setLatestWalkStats(long stepCount, long timeElapsed) {
+    private double calculateDistance(long stepCount) {
+        return fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
+    }
+
+    public WalkStats setLatestWalkStats(long stepCount, long timeElapsed) {
         noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
+        double distanceTraveled = calculateDistance(stepCount);
+        WalkStats stats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
         recentStepsTv.setText(String.valueOf(stepCount));
-        double distanceTraveled = fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
         recentDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
-        double timeElapsedInSeconds = timeElapsed / 1000;
-        double timeElapsedInMinutes = timeElapsedInSeconds / 60;
+        long timeElapsedInMinutes = stats.timeElapsedInMinutes();
         recentTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
+        return stats;
     }
 
     private void getUIFields() {
