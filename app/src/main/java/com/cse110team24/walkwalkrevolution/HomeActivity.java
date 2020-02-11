@@ -204,7 +204,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void launchMockActivity() {
-        mocking = true;
         String dailyStepsStr = dailyStepsTv.getText().toString();
         long currentDailySteps = dailyStepsStr.isEmpty() ? 0 : Long.valueOf(dailyStepsStr);
 
@@ -234,6 +233,7 @@ public class HomeActivity extends AppCompatActivity {
         boolean settingStartTime = data.getBooleanExtra(MockActivity.SETTING_START_TIME_KEY, false);
         long timeMillis = dateTime.getTime();
         if (settingStartTime) {
+            mocking = true;
             fitnessService.setStartRecordingTime(timeMillis);
         } else {
             fitnessService.setEndRecordingTime(timeMillis);
