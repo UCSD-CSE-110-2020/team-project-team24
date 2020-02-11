@@ -85,6 +85,7 @@
 
 
         <RadioGroup
+            android:id="@+id/terrainTypeRdGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"
@@ -116,6 +117,7 @@
             android:text="@string/surface_type" />
 
         <RadioGroup
+            android:id="@+id/surfaceTypeRdGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"
@@ -147,6 +149,7 @@
             android:text="@string/land_type" />
 
         <RadioGroup
+            android:id="@+id/landTypeRdGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"
@@ -178,6 +181,7 @@
             android:text="@string/difficulty" />
 
         <RadioGroup
+            android:id="@+id/difficultyTypeRdGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/textview_border"

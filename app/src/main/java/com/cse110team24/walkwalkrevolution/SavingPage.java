@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 //import com.cse110team24.walkwalkrevolution.models.Route;
 //import com.cse110team24.walkwalkrevolution.models.RouteEnvironment;
+import com.cse110team24.walkwalkrevolution.models.Route;
+import com.cse110team24.walkwalkrevolution.models.RouteEnvironment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -38,9 +40,12 @@ public class SavingPage extends AppCompatActivity {
 
         final EditText editTextTitle = findViewById(R.id.editTextTitle);
         final EditText editTextLocation = findViewById(R.id.editTextLocation);
+        final EditText editTextNotes = findViewById(R.id.editTextNotes);
         final RadioGroup routeTypeRdGroup = findViewById(R.id.routeTypeRdGroup);
-        //final RadioButton loopButton = findViewById(R.id.loopButton);
-        //final RadioButton outAndForthButton = findViewById(R.id.outAndForthButton);
+        final RadioGroup terrainTypeRdGroup = findViewById(R.id.terrainTypeRdGroup);
+        final RadioGroup surfaceTypeRdGroup = findViewById(R.id.surfaceTypeRdGroup);
+        final RadioGroup landTypeRdGroup = findViewById(R.id.landTypeRdGroup);
+        final RadioGroup difficultyTypeRdGroup = findViewById(R.id.difficultyTypeRdGroup);
 
 
 
@@ -52,16 +57,46 @@ public class SavingPage extends AppCompatActivity {
                 if(editTextTitle.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Title is required", Toast.LENGTH_SHORT).show();
                 } else {
-                    // set terrain type
-//                    Route route = new Route("title");
-//                    RouteEnvironment env = new RouteEnvironment();
-//                    env.setTerrainType(RouteEnvironment.TerrainType.FLAT);
-//                    route.setEnvironment(env);
-//
-//                    int routeTypeRdBtnID = radioButtonGroup.getCheckedRadioButtonId();
-//                    if(routeTypeRdGroup.getCheckedRadioButtonId() == R.id.loopButton) {
-//
-//                    }
+                    Route route = new Route("title");
+                    route.setTitle(editTextTitle.getText().toString());
+                    route.setStartingLocation(editTextLocation.getText().toString());
+                    route.setNotes(editTextNotes.getText().toString());
+                    RouteEnvironment env = new RouteEnvironment();
+
+                    if(routeTypeRdGroup.getCheckedRadioButtonId() == R.id.loopButton) {
+                        env.setRouteType(RouteEnvironment.RouteType.LOOP);
+                    }else if(routeTypeRdGroup.getCheckedRadioButtonId() == R.id.outAndForthButton) {
+                        env.setRouteType(RouteEnvironment.RouteType.OUT_AND_BACK);
+                    }
+
+                    if(routeTypeRdGroup.getCheckedRadioButtonId() == R.id.loopButton) {
+                        env.setRouteType(RouteEnvironment.RouteType.LOOP);
+                    }else if(routeTypeRdGroup.getCheckedRadioButtonId() == R.id.outAndForthButton) {
+                        env.setRouteType(RouteEnvironment.RouteType.OUT_AND_BACK);
+                    }
+
+
+                    if(terrainTypeRdGroup.getCheckedRadioButtonId() == R.id.flatButton) {
+                        env.setTerrainType(RouteEnvironment.TerrainType.FLAT);
+                    }else if(terrainTypeRdGroup.getCheckedRadioButtonId() == R.id.hillyButton) {
+                        env.setTerrainType(RouteEnvironment.TerrainType.HILLY);
+                    }
+
+
+                    if(surfaceTypeRdGroup.getCheckedRadioButtonId() == R.id.evenButton) {
+                        env.setSurfaceType(RouteEnvironment.SurfaceType.EVEN);
+                    }else if(surfaceTypeRdGroup.getCheckedRadioButtonId() == R.id.unevenButton) {
+                        env.setSurfaceType(RouteEnvironment.SurfaceType.UNEVEN);
+                    }
+
+
+                    if(difficultyTypeRdGroup.getCheckedRadioButtonId() == R.id.hardButton) {
+                        env.setDifficulty(RouteEnvironment.Difficulty.HARD);
+                    }else if(difficultyTypeRdGroup.getCheckedRadioButtonId() == R.id.easyButton) {
+                        env.setDifficulty(RouteEnvironment.Difficulty.EASY);
+                    }
+
+                    route.setEnvironment(env);
 
                 }
 
