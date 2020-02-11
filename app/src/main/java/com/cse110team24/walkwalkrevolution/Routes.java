@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,7 +28,7 @@ public class Routes extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_routes2);
+        setContentView(R.layout.activity_routes);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

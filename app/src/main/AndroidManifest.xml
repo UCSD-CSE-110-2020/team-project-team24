@@ -14,7 +14,8 @@
             android:name=".Routes"
             android:label="@string/title_activity_routes"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".MockActivity"></activity>
+        <activity android:name=".HomeActivity" />
         <activity android:name=".HeightActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -58,4 +58,23 @@ public class WalkStatsUnitTest {
         Route route = new Route("test");
         assertNotEquals(stats, route);
     }
+
+    @Test
+    public void testTimeElapsedInMinuteSingle() {
+        stats.setTimeElapsed(60_000);
+        assertEquals(1.0, stats.timeElapsedInMinutes(), 0.1);
+    }
+
+    @Test
+    public void testTimeElapsedInMinutesMultiple() {
+        stats.setTimeElapsed(90_000);
+        assertEquals(1.5, stats.timeElapsedInMinutes(), 0.1);
+    }
+
+    @Test
+    public void testTimeElapsedIinMinuteZero() {
+        stats.setTimeElapsed(0);
+        assertEquals(0.0, stats.timeElapsedInMinutes(), 0.1);
+    }
+
 }

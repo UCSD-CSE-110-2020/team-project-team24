@@ -12,22 +12,21 @@ import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 
 public class GoogleFitAdapter implements FitnessService {
-    private static final DataType RECORD_DATA_TYPE = DataType.TYPE_STEP_COUNT_DELTA;
-
     private static final String TAG = "GoogleFitAdapter";
-    private static final String RECORDING_SESSION_NAME = "Recording a walk";
-    private static final String RECORDING_SESSION_IDENTIFIER = "record id";
     private static final double STRIDE_LEN_CONST = 0.413;
     private static final int FEET_IN_MILE = 5280;
     private static final int INCHES_IN_FEET = 12;
+    private static final long MILLIS_IN_DAY = 86_400_000;
 
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private GoogleSignInAccount account;
     private HomeActivity activity;
 
     private long recordingStartTime;
+    private long recordingEndTime;
     private long recordingInitSteps;
     private long updatedSteps;
+    private long stepsToAdd;
 
     public GoogleFitAdapter(HomeActivity activity) {
         this.activity = activity;
@@ -44,6 +43,21 @@ public class GoogleFitAdapter implements FitnessService {
         double avgStrideLen = (totalHeightInches * STRIDE_LEN_CONST) / INCHES_IN_FEET;
         double stepsPerMile = FEET_IN_MILE / avgStrideLen;
         return steps / stepsPerMile;
+    }
+
+    @Override
+    public void setStartRecordingTime(long startTime) {
+        recordingStartTime = startTime;
+    }
+
+    @Override
+    public void setEndRecordingTime(long startTime) {
+        recordingEndTime = startTime;
+    }
+
+    @Override
+    public void setStepsToAdd(long stepsToAdd) {
+        this.stepsToAdd += stepsToAdd;
     }
 
     @Override
@@ -71,37 +85,34 @@ public class GoogleFitAdapter implements FitnessService {
         if (account == null) {
             return;
         }
-
         Fitness.getHistoryClient(activity, account)
                 .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
                 .addOnSuccessListener(dataSet -> {
                     updatedSteps = dataSet.isEmpty()
                             ? 0 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
-                    activity.setDailyStats(updatedSteps);
                     Log.i(TAG, "updateDailyStepCount: successful steps update: " + updatedSteps);
                 })
                 .addOnFailureListener(e ->
                         Log.e(TAG, "updateDailyStepCount: there was a problem getting the daily step count.", e)
                 );
+        activity.setDailyStats(updatedSteps + stepsToAdd);
     }
 
     @Override
     public void startRecording() {
-        recordingStartTime = System.currentTimeMillis();
         updateDailyStepCount();
-        recordingInitSteps = updatedSteps;
+        recordingInitSteps = updatedSteps + stepsToAdd;
     }
 
 
     @Override
     public void stopRecording() {
-        long timeElapsed = System.currentTimeMillis() - recordingStartTime;
+        long timeElapsed = recordingEndTime - recordingStartTime;
+        if (timeElapsed < 0) {
+            timeElapsed += MILLIS_IN_DAY;
+        }
         updateDailyStepCount();
-        long totalSteps = updatedSteps - recordingInitSteps;
+        long totalSteps = updatedSteps + stepsToAdd - recordingInitSteps;
         activity.setLatestWalkStats(totalSteps, timeElapsed);
-
     }
-
-
-
 }
