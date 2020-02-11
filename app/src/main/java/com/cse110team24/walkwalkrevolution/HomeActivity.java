@@ -209,8 +209,7 @@ public class HomeActivity extends AppCompatActivity {
         long currentDailySteps = dailyStepsStr.isEmpty() ? 0 : Long.valueOf(dailyStepsStr);
 
         Intent intent = new Intent(this, MockActivity.class)
-                .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility())
-                .putExtra(MockActivity.EXISTING_STEPS_KEY, currentDailySteps);
+                .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
 
         startActivityForResult(intent, MockActivity.REQUEST_CODE);
     }
