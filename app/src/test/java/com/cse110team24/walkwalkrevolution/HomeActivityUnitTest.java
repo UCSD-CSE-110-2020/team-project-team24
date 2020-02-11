@@ -39,14 +39,10 @@ public class HomeActivityUnitTest {
     private TextView noWalkTodayTv;
     private Button startButton;
     private Button stopButton;
-    private Button mockButton;
 
     private Intent intent;
     private long nextStepCount;
     private long timeElapsed;
-    private long endStepCount;
-    private long startTime;
-    private long endTime;
 
     @Before
     public void setup() {
@@ -234,7 +230,6 @@ public class HomeActivityUnitTest {
         latestTimeTv = activity.findViewById(R.id.tv_recent_time_elapsed);
         startButton = activity.findViewById(R.id.btn_start_walk);
         stopButton = activity.findViewById(R.id.btn_stop_walk);
-        mockButton = activity.findViewById(R.id.btn_mock_values);
     }
 
     private Intent getMockIntent() {
