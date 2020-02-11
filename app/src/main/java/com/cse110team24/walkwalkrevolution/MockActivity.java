@@ -35,7 +35,6 @@ public class MockActivity extends AppCompatActivity {
     private EditText inputtedTime;
     private TextView totalStepsView;
     private TextView enterTimePromptTv;
-    private long existingSteps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,6 @@ public class MockActivity extends AppCompatActivity {
         checkWhichTimeToSet();
         setStepsMockOnClickListener();
         setFinishBtnOnClickListener();
-        checkCurrentDailySteps();
     }
 
     private void getUIFields() {
@@ -115,9 +113,5 @@ public class MockActivity extends AppCompatActivity {
         if (!settingStartTime) {
             enterTimePromptTv.setText(R.string.enter_end_time);
         }
-    }
-
-    private void checkCurrentDailySteps() {
-        existingSteps = getIntent().getLongExtra(EXISTING_STEPS_KEY, 0);
     }
 }
