@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -11,12 +12,14 @@ import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
@@ -52,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView noWalkTv;
     private Button startWalkBtn;
     private Button stopWalkBtn;
+    private BottomNavigationView routesSwitchBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
 
         setStartWalkBtnOnClickListener();
         setStopWalkBtnOnClickListner();
+        setRoutesScreenOnClickListener();
 
         handler.post(runUpdateSteps);
     }
@@ -108,6 +113,7 @@ public class HomeActivity extends AppCompatActivity {
         noWalkTv = findViewById(R.id.noWalkToday);
         startWalkBtn = findViewById(R.id.startWalkButton);
         stopWalkBtn = findViewById(R.id.stopWalkButton);
+        routesSwitchBtn = findViewById(R.id.bottom_navigation);
     }
 
     private void setStartWalkBtnOnClickListener() {
@@ -132,6 +138,24 @@ public class HomeActivity extends AppCompatActivity {
             fitnessService.stopRecording();
         });
     }
+    private void setRoutesScreenOnClickListener() {
+        routesSwitchBtn.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.action_routes_list) {
+                    launchRouteScreenSwitch();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+    public void launchRouteScreenSwitch(){
+        Intent intent = new Intent(this, RoutesPage.class);
+        startActivity(intent);
+    }
+
+
 
     private void setFitnessService() {
         String fitnessServiceKey = getServiceKey();

@@ -17,6 +17,7 @@
 <!--            android:theme="@style/AppTheme.NoActionBar"-->
 
         <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".RoutesPage"></activity>
         <activity android:name=".HeightActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
