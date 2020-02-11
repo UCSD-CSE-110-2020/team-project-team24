@@ -6,4 +6,10 @@
     <dimen name="txt_bkg_color_height">73dp</dimen>
     <dimen name="home_title_size">40sp</dimen>
     <dimen name="home_txt_size">35sp</dimen>
+    <dimen name="btn_start_walk_width">230dp</dimen>
+    <dimen name="btn_start_walk_height">60dp</dimen>
+    <dimen name="start_walk_btn_txt_size">25sp</dimen>
+    <dimen name="recent_walk_info_text_size">20sp</dimen>
+    <dimen name="recent_walk_info_left_bias">0.3</dimen>
 </resources>
+
