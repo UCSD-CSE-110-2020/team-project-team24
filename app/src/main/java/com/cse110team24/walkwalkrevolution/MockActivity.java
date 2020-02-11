@@ -23,7 +23,6 @@ public class MockActivity extends AppCompatActivity {
     public static final String ADDED_STEPS_KEY = "added_steps";
     public static final String SETTING_START_TIME_KEY = "setting_start_time";
     public static final String INPUT_TIME_KEY = "input_time";
-    public static final String EXISTING_STEPS_KEY = "existing_time";
     public static final String TIME_FMT = "HH:mm:ss";
     public static final int REQUEST_CODE = 6;
 
