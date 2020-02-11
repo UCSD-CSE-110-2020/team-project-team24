@@ -8,16 +8,20 @@ import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
+@RunWith(AndroidJUnit4.class)
 public class MockActivityUnitTest {
     private static final String ENTER_START_TIME_PROMPT_TXT = "Enter Desired Start Time:";
-    private static final String ENTER_END_TIME_PROMPT_TXT = "Enter Desired End TIme";
+    private static final String ENTER_END_TIME_PROMPT_TXT = "Enter Desired End Time:";
 
     private TextView addedStepsNum;
     private TextView enterTimePrompt;
