@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
         WalkStats stats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
         recentStepsTv.setText(String.valueOf(stepCount));
         recentDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
-        long timeElapsedInMinutes = stats.timeElapsedInMinutes();
+        double timeElapsedInMinutes = stats.timeElapsedInMinutes();
         recentTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
         return stats;
     }

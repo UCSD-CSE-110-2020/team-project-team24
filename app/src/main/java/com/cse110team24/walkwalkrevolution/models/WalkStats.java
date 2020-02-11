@@ -49,8 +49,8 @@ public class WalkStats implements Serializable {
         this.dateCompleted = dateCompleted;
     }
 
-    public long timeElapsedInMinutes() {
-        return timeElapsed / 1000 / 60;
+    public double timeElapsedInMinutes() {
+        return timeElapsed / 1000.0 / 60;
     }
 
     @Override
