@@ -172,24 +172,6 @@ public class HomeActivity extends AppCompatActivity {
             fitnessService.stopRecording();
         });
     }
-//    private void setRoutesScreenOnClickListener() {
-//        routesSwitchBtn.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                if (item.getItemId() == R.id.action_routes_list) {
-//                    launchRouteScreenSwitch();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//    }
-//    public void launchRouteScreenSwitch(){
-//        Intent intent = new Intent(this, RoutesPage.class);
-//        startActivity(intent);
-//    }
-
-
 
     private void setBottomNavigationOnClickListener() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);

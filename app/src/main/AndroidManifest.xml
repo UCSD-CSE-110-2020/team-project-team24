@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
         <activity
-            android:name=".SavingPage"
+            android:name=".SaveRouteActivity"
             android:label="@string/title_activity_saving_page"></activity>
         <activity
             android:name=".RoutesActivity"
