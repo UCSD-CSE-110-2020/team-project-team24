@@ -23,8 +23,6 @@ import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
 import java.text.ParseException;
@@ -53,6 +51,8 @@ public class HomeActivity extends AppCompatActivity {
     };
 
     private NumberFormat numberFormat;
+
+    private WalkStats latestStats;
 
     private boolean mocking;
     private boolean endTimeSet;
@@ -122,15 +122,14 @@ public class HomeActivity extends AppCompatActivity {
         return fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
     }
 
-    public WalkStats setLatestWalkStats(long stepCount, long timeElapsed) {
+    public void setLatestWalkStats(long stepCount, long timeElapsed) {
         noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
         double distanceTraveled = calculateDistance(stepCount);
-        WalkStats stats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
+        latestStats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
         recentStepsTv.setText(String.valueOf(stepCount));
         recentDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
-        double timeElapsedInMinutes = stats.timeElapsedInMinutes();
+        double timeElapsedInMinutes = latestStats.timeElapsedInMinutes();
         recentTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
-        return stats;
     }
 
     private void getUIFields() {
@@ -170,25 +169,31 @@ public class HomeActivity extends AppCompatActivity {
             endTimeSet = false;
             mocking = false;
             fitnessService.stopRecording();
+
+            launchSaveRouteActivity();
         });
     }
 
+    private void launchSaveRouteActivity() {
+        Log.i(TAG, "launchSaveRouteActivity: route stopped, going to save");
+        Intent saveRouteIntent = new Intent(this, SaveRouteActivity.class)
+                .putExtra(SaveRouteActivity.WALK_STATS_KEY, latestStats);
+        startActivityForResult(saveRouteIntent, SaveRouteActivity.REQUEST_CODE);
+    }
+
     private void setBottomNavigationOnClickListener() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()) {
-                    case R.id.action_home:
-                        break;
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            switch(menuItem.getItemId()) {
+                case R.id.action_home:
+                    break;
 
-                    case R.id.action_routes_list:
-                        launchGoToRoutesActivity();
-                        break;
-                }
-                return true;
+                case R.id.action_routes_list:
+                    launchGoToRoutesActivity();
+                    break;
             }
+            return true;
         });
     }
 
@@ -237,9 +242,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void launchMockActivity() {
-        String dailyStepsStr = dailyStepsTv.getText().toString();
-        long currentDailySteps = dailyStepsStr.isEmpty() ? 0 : Long.valueOf(dailyStepsStr);
-
         Intent intent = new Intent(this, MockActivity.class)
                 .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
 

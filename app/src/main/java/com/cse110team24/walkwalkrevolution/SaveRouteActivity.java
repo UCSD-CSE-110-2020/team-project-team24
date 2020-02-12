@@ -17,8 +17,11 @@ import android.widget.Toast;
 import java.io.IOException;
 
 public class SaveRouteActivity extends AppCompatActivity {
+    private static final String TAG = "SaveRouteActivity";
 
     public static final String FILE_NAME = "aFileNameICameUpWith.txt";
+    public static final String WALK_STATS_KEY = "walk_stats";
+    public static final int REQUEST_CODE = 7;
     public final Context thisActivity = this;
 
     @Override
