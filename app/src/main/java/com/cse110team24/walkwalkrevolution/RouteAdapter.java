@@ -2,6 +2,7 @@ package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
-//import com.cse110team24.walkwalkrevolution.models.WalkStats;
-
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +21,7 @@ import java.util.Locale;
 
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> {
-
+    private static final String TAG = "RouteAdapter";
     private List<Route> mRoutes;
     private Context context;
 
@@ -31,7 +30,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         mRoutes = myRoutes;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView routeNameTv;
         private TextView stepsTv;
         private TextView distanceTv;
@@ -45,6 +44,15 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
             distanceTv = itemView.findViewById(R.id.distance);
             dateTv = itemView.findViewById(R.id.date_completed);
             favoriteBtn = itemView.findViewById(R.id.favorite);
+            favoriteBtn.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Route currRoute = mRoutes.get(getAdapterPosition());
+            boolean isFavorite = !currRoute.isFavorite();
+            currRoute.setFavorite(isFavorite);
+            notifyDataSetChanged();
         }
     }
 
@@ -59,29 +67,41 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder (RouteAdapter.ViewHolder viewHolder, int position) {
-        Route route = mRoutes.get(position);
+    public void onBindViewHolder(RouteAdapter.ViewHolder viewHolder, int position) {
+        Route currRoute = mRoutes.get(position);
 
-        viewHolder.routeNameTv.setText(route.getTitle());
+        viewHolder.routeNameTv.setText(currRoute.getTitle());
 
-        if(route.getStats() == null) {
-            viewHolder.stepsTv.setVisibility(View.INVISIBLE);
-            viewHolder.distanceTv.setVisibility(View.INVISIBLE);
-            viewHolder.dateTv.setVisibility(View.INVISIBLE);
+        WalkStats stats = currRoute.getStats();
+        if(stats == null) {
+            setStatsVisibility(viewHolder, View.INVISIBLE);
         } else {
-            viewHolder.stepsTv.setVisibility(View.VISIBLE);
-            viewHolder.distanceTv.setVisibility(View.VISIBLE);
-            viewHolder.dateTv.setVisibility(View.VISIBLE);
-
-            WalkStats stats = route.getStats();
+            setStatsVisibility(viewHolder, View.VISIBLE);
 
             Resources res = context.getResources();
             viewHolder.stepsTv.setText(res.getQuantityString(R.plurals.show_steps, 1, stats.getSteps()));
             viewHolder.distanceTv.setText(res.getQuantityString(R.plurals.show_miles, 1, stats.getDistance()));
-            Date date = route.getStats().getDateCompleted().getTime();
+            Date date = currRoute.getStats().getDateCompleted().getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd", Locale.US);
             viewHolder.dateTv.setText(sdf.format(date));
+        }
+        checkFavorite(viewHolder, currRoute.isFavorite());
+    }
 
+
+
+    private void setStatsVisibility(ViewHolder viewHolder, int visibility) {
+        viewHolder.stepsTv.setVisibility(visibility);
+        viewHolder.distanceTv.setVisibility(visibility);
+        viewHolder.dateTv.setVisibility(visibility);
+    }
+
+    private void checkFavorite(ViewHolder viewHolder, boolean isFavorite) {
+        Log.i(TAG, "checkFavorite: toggling route is favorite");
+        if (isFavorite) {
+            viewHolder.favoriteBtn.setBackgroundResource(R.drawable.ic_star_yellow_24dp);
+        } else {
+            viewHolder.favoriteBtn.setBackgroundResource(R.drawable.ic_star_border_black_24dp);
         }
     }
 
