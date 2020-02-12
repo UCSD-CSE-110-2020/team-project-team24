@@ -26,6 +26,7 @@ public class RoutesActivity extends AppCompatActivity {
     public static final int TO_REQUEST_CODE = 9;
 
     public static final String LIST_SAVE_FILE = ".WWR_route_list_data";
+    public static final String SAVE_FILE_KEY = "save_file";
 
     RouteAdapter adapter;
     RecyclerView rvRoutes;
@@ -93,8 +94,10 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     private void checkForExistingSavedRoutes() {
+        String filename = getIntent().getStringExtra(SAVE_FILE_KEY);
+        filename = (filename == null) ? LIST_SAVE_FILE : filename;
         try {
-            List<Route> tempList = RoutesManager.readList(LIST_SAVE_FILE, this);
+            List<Route> tempList = RoutesManager.readList(filename, this);
             routes.addAll(tempList);
         } catch (IOException e) {
             e.printStackTrace();
