@@ -108,6 +108,9 @@ public class HomeActivity extends AppCompatActivity {
             }
         } else if (requestCode == MockActivity.REQUEST_CODE && data != null) {
             setMockedExtras(data);
+        } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK) {
+            saveRouteBtn.setEnabled(false);
+            saveRouteBtn.setVisibility(View.INVISIBLE);
         }
     }
 
