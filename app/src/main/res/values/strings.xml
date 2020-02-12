@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">WalkWalkRevolution</string>
-    <string name="title_activity_saving_page">SavingPage</string>
+    <string name="title_activity_saving_page">Save your walk</string>
     <string name="title">Title: (this is REQUIRED) </string>
     <string name="starting_location">Starting Location:</string>
     <string name="route_type">Route Type:</string>
