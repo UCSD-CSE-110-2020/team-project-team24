@@ -41,11 +41,11 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            routeNameTv = itemView.findViewById(R.id.route_name);
-            stepsTv = itemView.findViewById(R.id.steps);
-            distanceTv = itemView.findViewById(R.id.distance);
-            dateTv = itemView.findViewById(R.id.date_completed);
-            favoriteBtn = itemView.findViewById(R.id.favorite);
+            routeNameTv = itemView.findViewById(R.id.tv_route_name);
+            stepsTv = itemView.findViewById(R.id.tv_routes_steps);
+            distanceTv = itemView.findViewById(R.id.tv_routes_distance);
+            dateTv = itemView.findViewById(R.id.tv_routes_date_completed);
+            favoriteBtn = itemView.findViewById(R.id.btn_routes_favorite);
             favoriteBtn.setOnClickListener(this);
         }
 

@@ -163,27 +163,27 @@ public class RoutesActivityEspressoTest {
         bottomNavigationItemView.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.route_name), withText("CSE Building"), isDisplayed()));
+                allOf(withId(R.id.tv_route_name), withText("CSE Building"), isDisplayed()));
         textView.check(matches(withText("CSE Building")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.route_name), withText("Center Hall"), isDisplayed()));
+                allOf(withId(R.id.tv_route_name), withText("Center Hall"), isDisplayed()));
         textView2.check(matches(withText("Center Hall")));
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.route_name), withText("ECE Building"), isDisplayed()));
+                allOf(withId(R.id.tv_route_name), withText("ECE Building"), isDisplayed()));
         textView3.check(matches(withText("ECE Building")));
 
         ViewInteraction textView4 = onView(
-                allOf(withId(R.id.steps), withText("1000 steps"), isDisplayed()));
+                allOf(withId(R.id.tv_routes_steps), withText("1000 steps"), isDisplayed()));
         textView4.check(matches(withText("1000 steps")));
 
         ViewInteraction textView5 = onView(
-                allOf(withId(R.id.distance), withText("1.50 mile(s)"), isDisplayed()));
+                allOf(withId(R.id.tv_routes_distance), withText("1.50 mile(s)"), isDisplayed()));
         textView5.check(matches(withText("1.50 mile(s)")));
 
         ViewInteraction textView6 = onView(
-                allOf(withId(R.id.date_completed), withText("06/06"), isDisplayed()));
+                allOf(withId(R.id.tv_routes_date_completed), withText("06/06"), isDisplayed()));
         textView6.check(matches(withText("06/06")));
     }
 
