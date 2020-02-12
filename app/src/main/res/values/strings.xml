@@ -22,7 +22,6 @@
     <string name="notes">Notes</string>
     <string name="notesHint">Extra information about the route</string>
     <string name="save">SAVE</string>
-    <string name = "addRoute">ADD ROUTE</string>
     <string name = "name_route_hint">Name Route</string>
     <string name="location_det_hint">Location Details</string>
     <string name="title_activity_routes">Routes</string>
