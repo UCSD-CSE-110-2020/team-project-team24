@@ -59,6 +59,8 @@ public class SaveRouteActivity extends AppCompatActivity {
             if(route == null) {
                 return;
             }
+            route.setEnvironment(env);
+            route.setStats(stats);
             setRouteType();
             setTerrainType();
             setSurfaceType();
