@@ -17,6 +17,7 @@
     <string name="trail">Trail</string>
     <string name="difficulty">Difficulty:</string>
     <string name="hard">Hard</string>
+    <string name="moderate">Moderate</string>
     <string name="easy">Easy</string>
     <string name="notes">Notes</string>
     <string name="notesHint">Extra information about the route</string>
