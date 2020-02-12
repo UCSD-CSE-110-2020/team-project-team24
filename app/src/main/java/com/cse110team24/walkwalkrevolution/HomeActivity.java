@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -13,7 +12,6 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -69,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button startWalkBtn;
     private Button stopWalkBtn;
     private Button launchMockActivityBtn;
+    private Button saveRouteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +93,7 @@ public class HomeActivity extends AppCompatActivity {
         setStopWalkBtnOnClickListner();
         setLaunchMockActivityBtnOnClickListener();
         setBottomNavigationOnClickListener();
+        setSaveRouteBtnOnClickListener();
     }
 
     @Override
@@ -123,7 +123,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void setLatestWalkStats(long stepCount, long timeElapsed) {
-        noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
         double distanceTraveled = calculateDistance(stepCount);
         latestStats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
         recentStepsTv.setText(String.valueOf(stepCount));
@@ -142,6 +141,14 @@ public class HomeActivity extends AppCompatActivity {
         startWalkBtn = findViewById(R.id.btn_start_walk);
         stopWalkBtn = findViewById(R.id.btn_stop_walk);
         launchMockActivityBtn = findViewById(R.id.btn_mock_values);
+        saveRouteBtn = findViewById(R.id.btn_save_this_route);
+        saveRouteBtn.setEnabled(false);
+    }
+
+    private void setSaveRouteBtnOnClickListener() {
+        saveRouteBtn.setOnClickListener(view -> {
+            launchSaveRouteActivity();
+        });
     }
 
     private void setStartWalkBtnOnClickListener() {
@@ -170,7 +177,9 @@ public class HomeActivity extends AppCompatActivity {
             mocking = false;
             fitnessService.stopRecording();
 
-            launchSaveRouteActivity();
+            noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
+            saveRouteBtn.setEnabled(true);
+            saveRouteBtn.setVisibility(View.VISIBLE);
         });
     }
 
