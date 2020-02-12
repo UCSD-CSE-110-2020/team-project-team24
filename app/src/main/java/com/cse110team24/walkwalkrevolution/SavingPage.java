@@ -57,8 +57,8 @@ public class SavingPage extends AppCompatActivity {
                 if(editTextTitle.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Title is required", Toast.LENGTH_SHORT).show();
                 } else {
-                    Route route = new Route("title");
-                    route.setTitle(editTextTitle.getText().toString());
+                    Route route = new Route(editTextTitle.getText().toString());
+                    //route.setTitle(editTextTitle.getText().toString());
                     route.setStartingLocation(editTextLocation.getText().toString());
                     route.setNotes(editTextNotes.getText().toString());
                     RouteEnvironment env = new RouteEnvironment();
@@ -97,10 +97,10 @@ public class SavingPage extends AppCompatActivity {
                     }
 
                     route.setEnvironment(env);
+                    //RoutesManager.writeSingle();
                     finish();
                 }
 
-                //finish();
             }
         });
     }

@@ -15,7 +15,7 @@ public class RoutesPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_page);
-       addRoute = findViewById(R.id.addRoute);
+        addRoute = findViewById(R.id.addRoute);
 
         addButtonAction();
     }

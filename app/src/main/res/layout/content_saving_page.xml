@@ -210,7 +210,7 @@
             android:id="@+id/notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/notes" />
 
         <EditText
             android:id="@+id/editTextNotes"
@@ -218,15 +218,14 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:hint="Notes"
-            android:text="Name"
+            android:hint="@string/notesHint"
             android:importantForAutofill="no"/>
 
         <Button
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SAVE" />
+            android:text="@string/save" />
 
     </LinearLayout>
 </ScrollView>
