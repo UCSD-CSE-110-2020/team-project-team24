@@ -21,11 +21,9 @@ import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
-<<<<<<< HEAD
-=======
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
->>>>>>> 2c5e0518012e886ce0e6df35a585893a0c19b991
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
 import java.text.ParseException;
@@ -173,8 +171,6 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD
-=======
     private void setBottomNavigationOnClickListener() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
@@ -200,7 +196,6 @@ public class HomeActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
->>>>>>> 2c5e0518012e886ce0e6df35a585893a0c19b991
     private void setLaunchMockActivityBtnOnClickListener() {
         launchMockActivityBtn.setOnClickListener(view -> {
             launchMockActivity();

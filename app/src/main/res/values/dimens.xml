@@ -18,4 +18,5 @@
     <dimen name="added_steps_size">36sp</dimen>
     <dimen name="section_top_margin">40sp</dimen>
     <dimen name="desired_time_size">28sp</dimen>
+    <dimen name="recycle_view_margin">64dp</dimen>
 </resources>

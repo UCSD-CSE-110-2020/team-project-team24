@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -27,6 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:layout_margin="@dimen/fab_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/ic_add_black_24dp"
         app:backgroundTint="@color/colorPrimaryDark" />
 
@@ -36,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:itemIconTint="@color/colorPrimaryDark"
         app:itemTextColor="#000"
         app:menu="@menu/bottom_nav_menu" />
@@ -44,8 +48,11 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        android:layout_marginBottom="@dimen/recycle_view_margin"
+        android:layout_marginTop="@dimen/recycle_view_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
     </androidx.recyclerview.widget.RecyclerView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

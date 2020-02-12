@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
-import com.cse110team24.walkwalkrevolution.models.WalkStats;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -19,7 +18,6 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,22 +44,8 @@ public class RoutesActivity extends AppCompatActivity {
         getUIElements();
         setListeners();
 
-        // Fake user routes info (needs to be deleted later
-        Route rt = new Route("Rose Canyon");
-        Route rt2 = new Route("Marian Bear");
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2066,5,6);
-        WalkStats ws = new WalkStats(22, 33, 0.01, calendar);
-        rt.setStats(ws);
-        routes.add(rt);
-        routes.add(rt2);
-        Collections.sort(routes);
-
-        adapter = new RouteAdapter(routes, this);
-        rvRoutes.setAdapter(adapter);
-        rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         checkForExistingSavedRoutes();
+        configureRecyclerViewAdapter();
     }
 
     @Override
@@ -116,8 +100,13 @@ public class RoutesActivity extends AppCompatActivity {
             e.printStackTrace();
             Log.e(TAG, "checkForExistingSavedRoutes: no routes found ", e);
         }
-        adapter.notifyDataSetChanged();
+        Collections.sort(routes);
         Log.i(TAG, "checkForExistingSavedRoutes: list of saved routes found with size " + routes.size());
     }
 
+    private void configureRecyclerViewAdapter() {
+        adapter = new RouteAdapter(routes, this);
+        rvRoutes.setAdapter(adapter);
+        rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+    }
 }
