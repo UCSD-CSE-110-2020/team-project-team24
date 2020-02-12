@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -30,28 +28,26 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
+import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.instanceOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RoutesEspressoTest {
+public class RoutesActivityEspressoTest {
+
 
     /**
      * new activity test rule to forcibly remove app data
@@ -75,6 +71,7 @@ public class RoutesEspressoTest {
         }
 
     }
+
     private static final String TEST_SERVICE = "TEST_SERVICE";
     @Rule
     public RoutesActivityTestRule<HeightActivity> mActivityTestRule = new RoutesActivityTestRule<>(HeightActivity.class);
@@ -84,7 +81,7 @@ public class RoutesEspressoTest {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeActivity activity) {
-                return new RoutesEspressoTest.TestFitnessService(activity);
+                return new TestFitnessService(activity);
             }
         });
         SharedPreferences.Editor edit = mActivityTestRule.getActivity().getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE).edit();
@@ -93,12 +90,40 @@ public class RoutesEspressoTest {
         edit.commit();
         nextStepCount = 0;
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+
+        Route routeUno = new Route("CSE Building");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2019,5,6);
+        WalkStats stats = new WalkStats(1000, 90_000_000, 1.5,  calendar);
+        Route routeDos = new Route("ECE Building")
+                .setStartingLocation("ECE Makerspace")
+                .setFavorite(true)
+                .setStats(stats);
+        calendar = Calendar.getInstance();
+        calendar.set(2019, 1, 11);
+        stats = new WalkStats(500, 90_000, 2.0, calendar);
+        Route routTres = new Route("Center Hall")
+                .setFavorite(false)
+                .setStartingLocation("Tu madre")
+                .setStats(stats);
+
+        List<Route> routes = new ArrayList<>();
+        routes.add(routeUno);
+        routes.add(routeDos);
+        routes.add(routTres);
+        try {
+            RoutesManager.writeList(routes, RoutesActivity.LIST_SAVE_FILE, InstrumentationRegistry.getInstrumentation().getTargetContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
     @Test
-    public void routesEspressoTest() {
+    public void routesActivityEspressoTest() {
         setup();
+
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.height_feet_et),
+                allOf(withId(R.id.et_height_feet),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -108,17 +133,17 @@ public class RoutesEspressoTest {
         appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.height_remainder_inches_et),
+                allOf(withId(R.id.et_height_remainder_inches),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 3),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("9"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("3"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.finish_btn), withText("Finish"),
+                allOf(withId(R.id.btn_height_finish), withText("Finish"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -137,57 +162,29 @@ public class RoutesEspressoTest {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        onView(withText("Marian Bear")).check(matches(isDisplayed()));
-    }
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.route_name), withText("CSE Building"), isDisplayed()));
+        textView.check(matches(withText("CSE Building")));
 
-    private class TestFitnessService implements FitnessService {
-        private static final String TAG = "[TestFitnessService]: ";
-        private HomeActivity activity;
-        public TestFitnessService(HomeActivity activity) {
-            this.activity = activity;
-        }
-        @Override
-        public int getRequestCode() {
-            return 0;
-        }
-        @Override
-        public void setup() {
-            System.out.println(TAG + "setup");
-        }
-        @Override
-        public void updateDailyStepCount() {
-            System.out.println(TAG + "updateStepCount");
-           // activity.setDailyStats(nextStepCount);
-        }
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.route_name), withText("Center Hall"), isDisplayed()));
+        textView2.check(matches(withText("Center Hall")));
 
-        @Override
-        public void startRecording() {
+        ViewInteraction textView3 = onView(
+                allOf(withId(R.id.route_name), withText("ECE Building"), isDisplayed()));
+        textView3.check(matches(withText("ECE Building")));
 
-        }
+        ViewInteraction textView4 = onView(
+                allOf(withId(R.id.steps), withText("1000 steps"), isDisplayed()));
+        textView4.check(matches(withText("1000 steps")));
 
-        @Override
-        public void stopRecording() {
+        ViewInteraction textView5 = onView(
+                allOf(withId(R.id.distance), withText("1.50 mile(s)"), isDisplayed()));
+        textView5.check(matches(withText("1.50 mile(s)")));
 
-        }
-
-        @Override
-        public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
-            return new GoogleFitAdapter(null).getDistanceFromHeight(steps, heightFeet, heightRemainderInches);
-        }
-        @Override
-        public void setStartRecordingTime(long startTime) {
-
-        }
-
-        @Override
-        public void setEndRecordingTime(long startTime) {
-
-        }
-
-        @Override
-        public void setStepsToAdd(long stepsToAdd) {
-
-        }
+        ViewInteraction textView6 = onView(
+                allOf(withId(R.id.date_completed), withText("06/06"), isDisplayed()));
+        textView6.check(matches(withText("06/06")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -207,5 +204,56 @@ public class RoutesEspressoTest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
+    }
+
+    private class TestFitnessService implements FitnessService {
+        private static final String TAG = "[TestFitnessService]: ";
+        private HomeActivity activity;
+        public TestFitnessService(HomeActivity activity) {
+            this.activity = activity;
+        }
+        @Override
+        public int getRequestCode() {
+            return 0;
+        }
+        @Override
+        public void setup() {
+            System.out.println(TAG + "setup");
+        }
+        @Override
+        public void updateDailyStepCount() {
+            System.out.println(TAG + "updateStepCount");
+            activity.setDailyStats(nextStepCount);
+        }
+
+        @Override
+        public void startRecording() {
+
+        }
+
+        @Override
+        public void stopRecording() {
+
+        }
+
+        @Override
+        public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
+            return new GoogleFitAdapter(null).getDistanceFromHeight(steps, heightFeet, heightRemainderInches);
+        }
+
+        @Override
+        public void setStartRecordingTime(long startTime) {
+
+        }
+
+        @Override
+        public void setEndRecordingTime(long startTime) {
+
+        }
+
+        @Override
+        public void setStepsToAdd(long stepsToAdd) {
+
+        }
     }
 }

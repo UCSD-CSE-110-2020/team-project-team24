@@ -7,14 +7,6 @@
     <string name="fake_steps">22 steps</string>
     <string name="fake_distance">0.01 miles</string>
     <string name="fake_date">1/20</string>
-    <plurals name="show_steps">
-        <item quantity="one">%d step</item>
-        <item quantity="other">%d steps</item>
-    </plurals>
-    <plurals name="show_miles">
-        <item quantity="one">%1$,.2f mile</item>
-        <item quantity="other">%1$,.2f miles</item>
-    </plurals>
     <string name="height_prompt">Please enter your height:</string>
     <string name="num_hint">0</string>
     <string name="feet_units">ft</string>

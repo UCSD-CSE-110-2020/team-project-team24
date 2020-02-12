@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
+import com.cse110team24.walkwalkrevolution.models.WalkStats;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,7 +24,6 @@ import java.util.List;
 
 public class RoutesActivity extends AppCompatActivity {
     public static final String TAG = "RoutesActivity";
-    public static final int TO_REQUEST_CODE = 9;
 
     public static final String LIST_SAVE_FILE = ".WWR_route_list_data";
     public static final String SAVE_FILE_KEY = "save_file";

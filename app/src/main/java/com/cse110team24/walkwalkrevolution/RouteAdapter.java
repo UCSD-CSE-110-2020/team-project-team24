@@ -2,6 +2,8 @@ package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.icu.text.DecimalFormat;
+import android.icu.text.NumberFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,8 +81,9 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
             setStatsVisibility(viewHolder, View.VISIBLE);
 
             Resources res = context.getResources();
-            viewHolder.stepsTv.setText(res.getQuantityString(R.plurals.show_steps, 1, stats.getSteps()));
-            viewHolder.distanceTv.setText(res.getQuantityString(R.plurals.show_miles, 1, stats.getDistance()));
+            viewHolder.stepsTv.setText(String.format("%s%s", String.valueOf(stats.getSteps()), " steps"));
+            NumberFormat numberFormat = new DecimalFormat("#0.00");
+            viewHolder.distanceTv.setText(String.format("%s%s", numberFormat.format(stats.getDistance()), " mile(s)"));
             Date date = currRoute.getStats().getDateCompleted().getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd", Locale.US);
             viewHolder.dateTv.setText(sdf.format(date));
