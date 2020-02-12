@@ -7,4 +7,7 @@ public interface FitnessService {
     void startRecording();
     void stopRecording();
     double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches);
+    void setStartRecordingTime(long startTime);
+    void setEndRecordingTime(long startTime);
+    void setStepsToAdd(long stepsToAdd);
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MockActivity">
+
+    <TextView
+        android:id="@+id/tv_added_steps_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="@string/added_steps"
+        android:textSize="@dimen/added_steps_size"
+        android:layout_marginTop="@dimen/added_steps_top_margin"
+        android:layout_marginStart="@dimen/added_steps_start_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_increment_steps"/>
+
+    <TextView
+        android:id="@+id/tv_added_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/total_steps"
+        android:textSize="@dimen/added_steps_size"
+        android:layout_marginTop="@dimen/added_steps_top_margin"
+        app:layout_constraintLeft_toRightOf="@+id/tv_added_steps_prompt"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_increment_steps"/>
+
+    <Button
+        android:id="@+id/btn_increment_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/increment_btn_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_added_steps_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_increment_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/click_to_add"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_increment_steps"/>
+
+    <TextView
+        android:id="@+id/tv_enter_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/section_top_margin"
+        android:text="@string/enter_start_time"
+        android:textSize="@dimen/desired_time_size"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_increment_steps"/>
+
+    <EditText
+        android:id="@+id/et_edit_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/time_hint"
+        android:maxLength="@string/max_input_chars"
+        android:inputType="time"
+        android:importantForAutofill="no"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_enter_time"/>
+
+    <Button
+        android:id="@+id/btn_mock_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/finish_btn_text"
+        android:layout_marginTop="@dimen/section_top_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_edit_time"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

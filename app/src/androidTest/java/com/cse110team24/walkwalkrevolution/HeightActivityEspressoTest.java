@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.TextView;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
@@ -35,7 +34,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.arrayContainingInAnyOrder;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -90,7 +88,7 @@ public class HeightActivityEspressoTest {
         setup();
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.height_feet_et),
+                allOf(withId(R.id.et_height_feet),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -100,7 +98,7 @@ public class HeightActivityEspressoTest {
         appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.height_remainder_inches_et),
+                allOf(withId(R.id.et_height_remainder_inches),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -110,15 +108,15 @@ public class HeightActivityEspressoTest {
         appCompatEditText4.perform(replaceText("3"), closeSoftKeyboard());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.prompt), withText("Please enter your height:"), isDisplayed()));
+                allOf(withId(R.id.tv_prompt), withText("Please enter your height:"), isDisplayed()));
         textView.check(matches(withText("Please enter your height:")));
 
         ViewInteraction button = onView(
-                allOf(withId(R.id.finish_btn), isDisplayed()));
+                allOf(withId(R.id.btn_height_finish), isDisplayed()));
         button.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.finish_btn), withText("Finish"),
+                allOf(withId(R.id.btn_height_finish), withText("Finish"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -137,11 +135,11 @@ public class HeightActivityEspressoTest {
         }
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.dailyStepsText), withText("5842"), isDisplayed()));
+                allOf(withId(R.id.tv_daily_steps), withText("5842"), isDisplayed()));
         textView2.check(matches(withText("5842")));
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.dailyDistanceText), withText("2.40"), isDisplayed()));
+                allOf(withId(R.id.tv_daily_distance), withText("2.40"), isDisplayed()));
         textView3.check(matches(withText("2.40")));
     }
 
@@ -196,6 +194,21 @@ public class HeightActivityEspressoTest {
         @Override
         public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
             return new GoogleFitAdapter(null).getDistanceFromHeight(steps, heightFeet, heightRemainderInches);
+        }
+
+        @Override
+        public void setStartRecordingTime(long startTime) {
+
+        }
+
+        @Override
+        public void setEndRecordingTime(long startTime) {
+
+        }
+
+        @Override
+        public void setStepsToAdd(long stepsToAdd) {
+
         }
     }
 }

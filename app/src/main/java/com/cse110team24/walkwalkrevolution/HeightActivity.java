@@ -1,7 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.test.espresso.IdlingResource;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +9,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
@@ -59,9 +58,9 @@ public class HeightActivity extends AppCompatActivity {
     }
 
     private void getConfiguredFields() {
-        feetEditText = findViewById(R.id.height_feet_et);
-        inchesEditText = findViewById(R.id.height_remainder_inches_et);
-        finishBtn = findViewById(R.id.finish_btn);
+        feetEditText = findViewById(R.id.et_height_feet);
+        inchesEditText = findViewById(R.id.et_height_remainder_inches);
+        finishBtn = findViewById(R.id.btn_height_finish);
         finishBtn.setEnabled(false);
         TextWatcher textWatcher = getTextWatcher();
         feetEditText.addTextChangedListener(textWatcher);

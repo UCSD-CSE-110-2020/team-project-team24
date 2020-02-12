@@ -24,6 +24,13 @@
     <string name = "addRoute">ADD ROUTE</string>
     <string name = "name_route_hint">Name Route</string>
     <string name="location_det_hint">Location Details</string>
+    <string name="title_activity_routes">Routes</string>
+    <string name="routes">Routes</string>
+    <string name="home">Home</string>
+    <string name="fake_title">Canyon View Hiking Trail</string>
+    <string name="fake_steps">22 steps</string>
+    <string name="fake_distance">0.01 miles</string>
+    <string name="fake_date">1/20</string>
     <string name="height_prompt">Please enter your height:</string>
     <string name="num_hint">0</string>
     <string name="feet_units">ft</string>
@@ -33,8 +40,6 @@
     <string name="dailyDistance">Daily Distance</string>
     <string name="dailyStepBackground">Background for Daily Steps</string>
     <string name="dailyDistanceBackground">Background for Daily Distance</string>
-    <string name="routes">Routes</string>
-    <string name="home">Home</string>
     <string name="startWalk">Start Walk</string>
     <string name="mostRecentWalk"> Most Recent Walk</string>
     <string name="totalSteps">Total Steps: </string>
@@ -42,4 +47,13 @@
     <string name="timeElapsed">Time Elapsed: </string>
     <string name="noWalkToday">You haven\'t completed a walk today!</string>
     <string name="stopWalk">Stop Walk</string>
+    <string name="mock_btn_text">Mock Values</string>
+    <string name="click_to_add">Click to add 500 to your step count</string>
+    <string name="increment_btn_text">+500</string>
+    <string name="added_steps">Added Steps:</string>
+    <string name="total_steps">0</string>
+    <string name="time_hint">hh:mm:ss</string>
+    <string name="max_input_chars">8</string>
+    <string name="enter_start_time">Enter Desired Start Time: </string>
+    <string name="enter_end_time">Enter Desired End Time: </string>
 </resources>

@@ -22,7 +22,7 @@ public class RouteEnvironment implements Serializable {
     public enum TrailType {
         STREETS, TRAIL;
     }
-  
+
     private RouteType routeType;
     private TerrainType terrainType;
     private SurfaceType surfaceType;

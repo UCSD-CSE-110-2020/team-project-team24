@@ -19,6 +19,7 @@ import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.shadows.ShadowToast;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -28,7 +29,10 @@ public class HomeActivityUnitTest {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     private static final int FEET = 5;
     private static final float INCHES = 3f;
+    private static final String TOAST_MESSAGE = "Remember to set an end time for your walk!";
 
+    private TextView stepsTv;
+    private TextView distanceTv;
     private TextView latestStepsTv;
     private TextView latestDistanceTv;
     private TextView latestTimeTv;
@@ -38,9 +42,7 @@ public class HomeActivityUnitTest {
 
     private Intent intent;
     private long nextStepCount;
-    private long endStepCount;
-    private long startTime;
-    private long endTime;
+    private long timeElapsed;
 
     @Before
     public void setup() {
@@ -49,6 +51,7 @@ public class HomeActivityUnitTest {
                     .putExtra(HomeActivity.FITNESS_SERVICE_KEY, TEST_SERVICE)
                     .putExtra(HomeActivity.HEIGHT_FT_KEY, FEET)
                     .putExtra(HomeActivity.HEIGHT_IN_KEY, INCHES);
+        timeElapsed = 90_000;
     }
 
     @Test
@@ -67,8 +70,7 @@ public class HomeActivityUnitTest {
         double expectedMiles = 2.39;
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            TextView stepsTv = activity.findViewById(R.id.dailyStepsText);
-            TextView distanceTv = activity.findViewById(R.id.dailyDistanceText);
+            getUIViews(activity);
             activity.onActivityResult(0, Activity.RESULT_OK, null);
             assertEquals(String.valueOf(nextStepCount), stepsTv.getText().toString());
             assertEquals(expectedMiles, Double.valueOf(distanceTv.getText().toString()), 0.1);
@@ -80,7 +82,7 @@ public class HomeActivityUnitTest {
         nextStepCount = 5842;
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            getLatestUIViews(activity);
+            getUIViews(activity);
             assertEquals(noWalkTodayTv.getVisibility(), View.VISIBLE);
             assertTrue(latestDistanceTv.getText().toString().isEmpty());
             assertTrue(latestStepsTv.getText().toString().isEmpty());
@@ -92,7 +94,7 @@ public class HomeActivityUnitTest {
     public void testOnGoingLatestWalk() {
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-           getLatestUIViews(activity);
+           getUIViews(activity);
             assertEquals(startButton.getVisibility(), View.VISIBLE);
             assertEquals(stopButton.getVisibility(), View.INVISIBLE);
            startButton.performClick();
@@ -108,7 +110,7 @@ public class HomeActivityUnitTest {
         double expectedMiles = 2.39;
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            getLatestUIViews(activity);
+            getUIViews(activity);
             startButton.performClick();
             stopButton.performClick();
             assertEquals(startButton.getVisibility(), View.VISIBLE);
@@ -120,15 +122,122 @@ public class HomeActivityUnitTest {
         });
     }
 
-    private void getLatestUIViews(HomeActivity activity) {
-        noWalkTodayTv = activity.findViewById(R.id.noWalkToday);
-        latestDistanceTv = activity.findViewById(R.id.totalDistanceCounter);
-        latestStepsTv = activity.findViewById(R.id.totalStepsCounter);
-        latestTimeTv = activity.findViewById(R.id.timeElapsedCounter);
-        startButton = activity.findViewById(R.id.startWalkButton);
-        stopButton = activity.findViewById(R.id.stopWalkButton);
+    @Test
+    public void testDisableStopWalkWithToast() {
+        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            getUIViews(activity);
+            Intent mockIntent = getMockIntent();
+            activity.onActivityResult(MockActivity.REQUEST_CODE, Activity.RESULT_OK, mockIntent);
+            startButton.performClick();
+            assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MESSAGE);
+            assertEquals(startButton.getVisibility(), View.INVISIBLE);
+            assertEquals(stopButton.getVisibility(), View.VISIBLE);
+            stopButton.performClick();
+            assertEquals(startButton.getVisibility(), View.INVISIBLE);
+            assertEquals(stopButton.getVisibility(), View.VISIBLE);
+            assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MESSAGE);
+        });
     }
 
+    @Test
+    public void testMockIncrementBeforeStarting() {
+        nextStepCount = 1500;
+        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            getUIViews(activity);
+            Intent mockIntent = getMockIntent();
+            activity.onActivityResult(MockActivity.REQUEST_CODE, Activity.RESULT_OK, mockIntent);
+            assertEquals(1500, (int) Integer.valueOf(stepsTv.getText().toString()));
+        });
+    }
+
+    @Test
+    public void testMockedWalkStatsNoAddedSteps() {
+        nextStepCount = 1500;
+        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            getUIViews(activity);
+            Intent mockIntent = getMockIntent();
+            activity.onActivityResult(MockActivity.REQUEST_CODE, Activity.RESULT_OK, mockIntent);
+            startButton.performClick();
+
+            nextStepCount = 0;
+            timeElapsed = 7_200_000;
+            Intent endWalkIntent = new Intent(ApplicationProvider.getApplicationContext(), MockActivity.class)
+                    .putExtra(MockActivity.ADDED_STEPS_KEY, 0)
+                    .putExtra(MockActivity.INPUT_TIME_KEY, "9:20:00")
+                    .putExtra(MockActivity.SETTING_START_TIME_KEY, false);
+            activity.onActivityResult(MockActivity.REQUEST_CODE, Activity.RESULT_OK, endWalkIntent);
+            stopButton.performClick();
+            assertEquals("0", latestStepsTv.getText().toString());
+            assertEquals("0.00 mile(s)", latestDistanceTv.getText().toString());
+            assertEquals("120.00 min.", latestTimeTv.getText().toString());
+        });
+    }
+
+    @Test
+    public void testMockedWalkStatsAddedSteps() {
+        nextStepCount = 1500;
+        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            getUIViews(activity);
+            Intent mockIntent = getMockIntent();
+            activity.onActivityResult(MockActivity.REQUEST_CODE, Activity.RESULT_OK, mockIntent);
+            startButton.performClick();
+
+            nextStepCount = 1500;
+            timeElapsed = 7_200_000;
+            Intent endWalkIntent = new Intent(ApplicationProvider.getApplicationContext(), MockActivity.class)
+                    .putExtra(MockActivity.ADDED_STEPS_KEY, 1500)
+                    .putExtra(MockActivity.INPUT_TIME_KEY, "9:20:00")
+                    .putExtra(MockActivity.SETTING_START_TIME_KEY, false);
+            activity.onActivityResult(MockActivity.REQUEST_CODE, Activity.RESULT_OK, endWalkIntent);
+            stopButton.performClick();
+            assertEquals("1500", latestStepsTv.getText().toString());
+            assertEquals("0.62 mile(s)", latestDistanceTv.getText().toString());
+            assertEquals("120.00 min.", latestTimeTv.getText().toString());
+        });
+    }
+
+    @Test
+    public void testMockedWalkStatsNegativeWalkTime() {
+        nextStepCount = 1500;
+        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            getUIViews(activity);
+            Intent mockIntent = getMockIntent();
+            activity.onActivityResult(MockActivity.REQUEST_CODE, Activity.RESULT_OK, mockIntent);
+            startButton.performClick();
+
+            timeElapsed = 79_200_000;
+            Intent endWalkIntent = new Intent(ApplicationProvider.getApplicationContext(), MockActivity.class)
+                    .putExtra(MockActivity.ADDED_STEPS_KEY, 0)
+                    .putExtra(MockActivity.INPUT_TIME_KEY, "5:20:00")
+                    .putExtra(MockActivity.SETTING_START_TIME_KEY, false);
+            activity.onActivityResult(MockActivity.REQUEST_CODE, Activity.RESULT_OK, endWalkIntent);
+            stopButton.performClick();
+            assertEquals("1320.00 min.", latestTimeTv.getText().toString());
+        });
+    }
+
+    private void getUIViews(HomeActivity activity) {
+        stepsTv = activity.findViewById(R.id.tv_daily_steps);
+        distanceTv = activity.findViewById(R.id.tv_daily_distance);
+        noWalkTodayTv = activity.findViewById(R.id.tv_no_recent_walk_prompt);
+        latestDistanceTv = activity.findViewById(R.id.tv_recent_distance);
+        latestStepsTv = activity.findViewById(R.id.tv_recent_steps);
+        latestTimeTv = activity.findViewById(R.id.tv_recent_time_elapsed);
+        startButton = activity.findViewById(R.id.btn_start_walk);
+        stopButton = activity.findViewById(R.id.btn_stop_walk);
+    }
+
+    private Intent getMockIntent() {
+        return new Intent(ApplicationProvider.getApplicationContext(), MockActivity.class)
+                .putExtra(MockActivity.ADDED_STEPS_KEY, 1500)
+                .putExtra(MockActivity.INPUT_TIME_KEY, "7:20:00")
+                .putExtra(MockActivity.SETTING_START_TIME_KEY, true);
+    }
 
     private class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
@@ -160,12 +269,27 @@ public class HomeActivityUnitTest {
 
         @Override
         public void stopRecording() {
-            activity.setLatestWalkStats(nextStepCount, 90_000);
+            activity.setLatestWalkStats(nextStepCount, timeElapsed);
         }
 
         @Override
         public double getDistanceFromHeight(long steps, int heightFeet, float heightRemainderInches) {
             return new GoogleFitAdapter(activity).getDistanceFromHeight(steps, heightFeet, heightRemainderInches);
+        }
+
+        @Override
+        public void setStartRecordingTime(long startTime) {
+
+        }
+
+        @Override
+        public void setEndRecordingTime(long startTime) {
+
+        }
+
+        @Override
+        public void setStepsToAdd(long stepsToAdd) {
+
         }
     }
 }

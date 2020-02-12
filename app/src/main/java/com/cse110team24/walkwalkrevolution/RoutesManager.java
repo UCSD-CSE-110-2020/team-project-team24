@@ -131,14 +131,17 @@ public class RoutesManager {
     }
 
     // for convenience - gets input stream, handling exceptions
-    private static ObjectInputStream getInputStream(String filename, Context context) throws FileNotFoundException {
-        FileInputStream fis = context.openFileInput(filename);
+    private static ObjectInputStream getInputStream(String filename, Context context) {
+        FileInputStream fis = null;
+        try {
+            fis = context.openFileInput(filename);
+        } catch (FileNotFoundException e) {
+            return null;
+        }
         ObjectInputStream ois = null;
         try {
             ois = new ObjectInputStream(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) {}
         return ois;
     }
 }

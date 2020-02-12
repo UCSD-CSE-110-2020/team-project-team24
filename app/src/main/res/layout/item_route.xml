@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    >
+
+    <TextView
+        android:id="@+id/tv_route_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fake_title"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/tv_routes_date_completed"/>
+
+    <TextView
+        android:id="@+id/tv_routes_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fake_steps"
+        android:layout_below="@+id/tv_route_name" />
+
+    <TextView
+        android:id="@+id/tv_routes_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_route_name"
+        android:layout_toEndOf="@+id/tv_routes_steps"
+        android:layout_marginStart="8dp"
+        android:text="@string/fake_distance" />
+
+    <TextView
+        android:id="@+id/tv_routes_date_completed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fake_date"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/btn_routes_favorite"
+        android:layout_width="47dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/tv_routes_date_completed"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/ic_star_border_black_24dp" />
+
+</RelativeLayout>
