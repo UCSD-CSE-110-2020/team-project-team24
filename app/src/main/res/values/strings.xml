@@ -31,4 +31,13 @@
     <string name="timeElapsed">Time Elapsed: </string>
     <string name="noWalkToday">You haven\'t completed a walk today!</string>
     <string name="stopWalk">Stop Walk</string>
+    <string name="mock_btn_text">Mock Values</string>
+    <string name="click_to_add">Click to add 500 to your step count</string>
+    <string name="increment_btn_text">+500</string>
+    <string name="added_steps">Added Steps:</string>
+    <string name="total_steps">0</string>
+    <string name="time_hint">hh:mm:ss</string>
+    <string name="max_input_chars">8</string>
+    <string name="enter_start_time">Enter Desired Start Time: </string>
+    <string name="enter_end_time">Enter Desired End Time: </string>
 </resources>

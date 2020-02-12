@@ -7,7 +7,7 @@
     tools:context=".HomeActivity">
 
     <TextView
-        android:id="@+id/dailySteps"
+        android:id="@+id/tv_daily_steps_prompt"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textStyle="bold"
@@ -16,10 +16,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/dailyStepsBackground"/>
+        app:layout_constraintBottom_toTopOf="@+id/imageview_daily_steps_background"/>
 
     <ImageView
-        android:id="@+id/dailyStepsBackground"
+        android:id="@+id/imageview_daily_steps_background"
         android:layout_width="@dimen/txt_bkg_color_width"
         android:layout_height="@dimen/txt_bkg_color_height"
         android:contentDescription="@string/dailyStepBackground"
@@ -27,23 +27,23 @@
         app:srcCompat="@android:drawable/dialog_holo_light_frame"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailySteps"
-        app:layout_constraintBottom_toTopOf="@id/dailyDistance"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_daily_steps_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_daily_distance_prompt"/>
 
     <TextView
-        android:id="@+id/dailyStepsText"
+        android:id="@+id/tv_daily_steps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/home_txt_size"
         android:text=""
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailySteps"
-        app:layout_constraintBottom_toTopOf="@id/dailyDistance"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_daily_steps_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_daily_distance_prompt"/>
 
 
     <TextView
-        android:id="@+id/dailyDistance"
+        android:id="@+id/tv_daily_distance_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
@@ -51,11 +51,11 @@
         android:text="@string/dailyDistance"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailyStepsText"
-        app:layout_constraintBottom_toTopOf="@id/dailyDistanceBackground"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_daily_steps"
+        app:layout_constraintBottom_toTopOf="@id/imageview_daily_distance_background"/>
 
     <ImageView
-        android:id="@+id/dailyDistanceBackground"
+        android:id="@+id/imageview_daily_distance_background"
         android:layout_width="@dimen/txt_bkg_color_width"
         android:layout_height="@dimen/txt_bkg_color_height"
         android:background="@color/colorPrimary"
@@ -63,34 +63,34 @@
         app:srcCompat="@android:drawable/dialog_holo_light_frame"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dailyDistance"
-        app:layout_constraintBottom_toTopOf="@id/startWalkButton"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_daily_distance_prompt"
+        app:layout_constraintBottom_toTopOf="@id/btn_start_walk"/>
 
     <TextView
-        android:id="@+id/dailyDistanceText"
+        android:id="@+id/tv_daily_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/home_txt_size"
         android:text=""
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dailyDistance"
-        app:layout_constraintBottom_toTopOf="@id/startWalkButton"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_daily_distance_prompt"
+        app:layout_constraintBottom_toTopOf="@id/btn_start_walk"/>
 
     <Button
-        android:id="@+id/stopWalkButton"
+        android:id="@+id/btn_stop_walk"
         android:layout_width="@dimen/btn_start_walk_width"
         android:layout_height="@dimen/btn_start_walk_height"
         android:background="@drawable/my_button_bg_2"
         android:text="@string/stopWalk"
         android:textSize="@dimen/start_walk_btn_txt_size"
-        app:layout_constraintLeft_toLeftOf="@id/startWalkButton"
-        app:layout_constraintRight_toRightOf="@id/startWalkButton"
-        app:layout_constraintTop_toTopOf="@id/startWalkButton"
-        app:layout_constraintBottom_toBottomOf="@id/startWalkButton"/>
+        app:layout_constraintLeft_toLeftOf="@id/btn_start_walk"
+        app:layout_constraintRight_toRightOf="@id/btn_start_walk"
+        app:layout_constraintTop_toTopOf="@id/btn_start_walk"
+        app:layout_constraintBottom_toBottomOf="@id/btn_start_walk"/>
 
     <Button
-        android:id="@+id/startWalkButton"
+        android:id="@+id/btn_start_walk"
         android:layout_width="@dimen/btn_start_walk_width"
         android:layout_height="@dimen/btn_start_walk_height"
         android:background="@drawable/my_button_bg"
@@ -98,91 +98,101 @@
         android:textSize="@dimen/start_walk_btn_txt_size"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dailyDistanceText"
-        app:layout_constraintBottom_toTopOf="@id/mostRecentWalk"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_daily_distance"
+        app:layout_constraintBottom_toTopOf="@id/tv_recent_walk_prompt"/>
 
 
     <TextView
-        android:id="@+id/mostRecentWalk"
+        android:id="@+id/tv_recent_walk_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/mostRecentWalk"
         android:textSize="@dimen/recent_walk_info_text_size"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/startWalkButton"
-        app:layout_constraintBottom_toTopOf="@id/totalSteps"/>
+        app:layout_constraintTop_toBottomOf="@id/btn_start_walk"
+        app:layout_constraintBottom_toTopOf="@id/tv_recent_steps_prompt"/>
+
+    <Button
+        android:id="@+id/btn_mock_values"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mock_btn_text"
+        android:layout_marginStart="@dimen/mock_btn_margin"
+        app:layout_constraintLeft_toRightOf="@+id/tv_recent_walk_prompt"
+        app:layout_constraintTop_toBottomOf="@id/btn_start_walk"
+        app:layout_constraintBottom_toTopOf="@id/tv_recent_steps_prompt"/>
 
     <TextView
-        android:id="@+id/totalSteps"
+        android:id="@+id/tv_recent_steps_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/totalSteps"
         android:textSize="@dimen/recent_walk_info_text_size"
         app:layout_constraintHorizontal_bias="@dimen/recent_walk_info_left_bias"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/totalStepsCounter"
-        app:layout_constraintTop_toBottomOf="@id/mostRecentWalk"
-        app:layout_constraintBottom_toTopOf="@id/totalDistance"/>
+        app:layout_constraintRight_toLeftOf="@id/tv_recent_steps"
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_walk_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_recent_distance_prompt"/>
 
     <TextView
-        android:id="@+id/totalStepsCounter"
+        android:id="@+id/tv_recent_steps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="@dimen/recent_walk_info_text_size"
-        app:layout_constraintLeft_toLeftOf="@id/totalSteps"
+        app:layout_constraintLeft_toLeftOf="@id/tv_recent_steps_prompt"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mostRecentWalk"
-        app:layout_constraintBottom_toTopOf="@id/totalDistanceCounter"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_walk_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_recent_distance"/>
 
 
     <TextView
-        android:id="@+id/totalDistance"
+        android:id="@+id/tv_recent_distance_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/totalDistance"
         android:textSize="@dimen/recent_walk_info_text_size"
         app:layout_constraintHorizontal_bias="@dimen/recent_walk_info_left_bias"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/totalDistanceCounter"
-        app:layout_constraintTop_toBottomOf="@id/totalSteps"
-        app:layout_constraintBottom_toTopOf="@id/timeElapsed"/>
+        app:layout_constraintRight_toLeftOf="@id/tv_recent_distance"
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_steps_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_recent_time_elapsed_prompt"/>
 
     <TextView
-        android:id="@+id/totalDistanceCounter"
+        android:id="@+id/tv_recent_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="@dimen/recent_walk_info_text_size"
-        app:layout_constraintLeft_toLeftOf="@id/totalStepsCounter"
-        app:layout_constraintTop_toBottomOf="@id/totalSteps"
-        app:layout_constraintBottom_toTopOf="@id/timeElapsed"/>
+        app:layout_constraintLeft_toLeftOf="@id/tv_recent_steps"
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_steps_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_recent_time_elapsed_prompt"/>
 
     <TextView
-        android:id="@+id/timeElapsed"
+        android:id="@+id/tv_recent_time_elapsed_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/timeElapsed"
         android:textSize="@dimen/recent_walk_info_text_size"
         app:layout_constraintHorizontal_bias="@dimen/recent_walk_info_left_bias"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/timeElapsedCounter"
-        app:layout_constraintTop_toBottomOf="@id/totalDistance"
-        app:layout_constraintBottom_toTopOf="@id/noWalkToday"/>
+        app:layout_constraintRight_toLeftOf="@id/tv_recent_time_elapsed"
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_distance_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_no_recent_walk_prompt"/>
 
     <TextView
-        android:id="@+id/timeElapsedCounter"
+        android:id="@+id/tv_recent_time_elapsed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="@dimen/recent_walk_info_text_size"
-        app:layout_constraintLeft_toLeftOf="@id/totalStepsCounter"
-        app:layout_constraintTop_toBottomOf="@id/totalDistance"
-        app:layout_constraintBottom_toTopOf="@id/noWalkToday"/>
+        app:layout_constraintLeft_toLeftOf="@id/tv_recent_steps"
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_distance_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_no_recent_walk_prompt"/>
 
     <TextView
-        android:id="@+id/noWalkToday"
+        android:id="@+id/tv_no_recent_walk_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/noWalkToday"
@@ -191,7 +201,7 @@
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timeElapsed"
+        app:layout_constraintTop_toBottomOf="@id/tv_recent_time_elapsed_prompt"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
