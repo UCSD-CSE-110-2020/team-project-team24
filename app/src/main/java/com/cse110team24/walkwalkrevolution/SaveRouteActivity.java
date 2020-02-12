@@ -28,26 +28,27 @@ public class SaveRouteActivity extends AppCompatActivity {
     public static final String FILE_NAME = ".WRR_new_saved_route";
     public static final String WALK_STATS_KEY = "walk_stats";
     public static final int REQUEST_CODE = 7;
-    public final Context thisActivity = this;
 
     private Route route;
     private RouteEnvironment env;
     private WalkStats stats;
 
-    private EditText editTextTitle = findViewById(R.id.et_save_route_title);
-    private EditText editTextLocation = findViewById(R.id.et_save_route_location);
-    private EditText editTextNotes = findViewById(R.id.et_route_notes);
-    private RadioGroup routeTypeRdGroup = findViewById(R.id.radiogroup_route_type);
-    private RadioGroup terrainTypeRdGroup = findViewById(R.id.rd_group_terrain_type);
-    private RadioGroup surfaceTypeRdGroup = findViewById(R.id.rd_group_surface_type);
-    private RadioGroup landTypeRdGroup = findViewById(R.id.rd_group_land_type);
-    private RadioGroup difficultyTypeRdGroup = findViewById(R.id.rd_group_difficulty);
-    private Button doneButton = findViewById(R.id.btn_save_route);
+    private EditText editTextTitle;
+    private EditText editTextLocation;
+    private EditText editTextNotes;
+    private RadioGroup routeTypeRdGroup;
+    private RadioGroup terrainTypeRdGroup;
+    private RadioGroup surfaceTypeRdGroup;
+    private RadioGroup landTypeRdGroup;
+    private RadioGroup difficultyTypeRdGroup;
+    private Button doneButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_route);
+
+        getUIFields();
 
         env = new RouteEnvironment();
         stats = (WalkStats) getIntent().getSerializableExtra(WALK_STATS_KEY);
@@ -57,17 +58,28 @@ public class SaveRouteActivity extends AppCompatActivity {
             createRoute(title);
             if(route == null) {
                 return;
-            } else {
-                setRouteType();
-                setTerrainType();
-                setSurfaceType();
-                setTrailType();
-                setDifficulty();
-                saveNewRouteToStorage();
-                setResult(Activity.RESULT_OK);
-                finish();
             }
+            setRouteType();
+            setTerrainType();
+            setSurfaceType();
+            setTrailType();
+            setDifficulty();
+            saveNewRouteToStorage();
+            setResult(Activity.RESULT_OK);
+            finish();
         });
+    }
+
+    private void getUIFields() {
+        editTextTitle = findViewById(R.id.et_save_route_title);
+        editTextLocation = findViewById(R.id.et_save_route_location);
+        editTextNotes = findViewById(R.id.et_route_notes);
+        routeTypeRdGroup = findViewById(R.id.radiogroup_route_type);
+        terrainTypeRdGroup = findViewById(R.id.rd_group_terrain_type);
+        surfaceTypeRdGroup = findViewById(R.id.rd_group_surface_type);
+        landTypeRdGroup = findViewById(R.id.rd_group_land_type);
+        difficultyTypeRdGroup = findViewById(R.id.rd_group_difficulty);
+        doneButton = findViewById(R.id.btn_save_route);
     }
 
     private void createRoute(String title) {
@@ -130,6 +142,7 @@ public class SaveRouteActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e(TAG, "saveNewRouteToStorage: could not write new route to file", e);
         }
+        Log.i(TAG, "saveNewRouteToStorage: " + craftRouteLogMessage());
     }
 
     private List<Route> getStoredRoutes() {
@@ -142,6 +155,20 @@ public class SaveRouteActivity extends AppCompatActivity {
         }
 
         return storedRoutes;
+    }
+
+    private String craftRouteLogMessage() {
+        if (stats == null ) {
+            return "new Route object created with: \n"
+                    + "\ttitle: " + '"' + route.getTitle() + "\"\n";
+        }
+        return "new Route object created with: \n"
+                + "\ttitle: " + '"' + route.getTitle() + "\"\n"
+                + "\tWalkStats: \n"
+                    + "\t\tsteps: " + stats.getSteps() + "\n"
+                    + "\t\tdistance (miles): " + stats.getDistance() + "\n"
+                    + "\t\ttime elapsed (minutes): " + stats.timeElapsedInMinutes() + "\n"
+                    + "\t\tdate of completion: " + stats.getDateCompleted().getTime();
     }
 
 }
