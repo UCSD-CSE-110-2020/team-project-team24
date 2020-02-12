@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">WalkWalkRevolution</string>
+    <string name="title_activity_routes">Routes</string>
+    <string name="routes">Routes</string>
+    <string name="home">Home</string>
+    <string name="fake_title">Canyon View Hiking Trail</string>
+    <string name="fake_steps">22 steps</string>
+    <string name="fake_distance">0.01 miles</string>
+    <string name="fake_date">1/20</string>
     <string name="height_prompt">Please enter your height:</string>
     <string name="num_hint">0</string>
     <string name="feet_units">ft</string>
@@ -9,8 +16,6 @@
     <string name="dailyDistance">Daily Distance</string>
     <string name="dailyStepBackground">Background for Daily Steps</string>
     <string name="dailyDistanceBackground">Background for Daily Distance</string>
-    <string name="routes">Routes</string>
-    <string name="home">Home</string>
     <string name="startWalk">Start Walk</string>
     <string name="mostRecentWalk"> Most Recent Walk</string>
     <string name="totalSteps">Total Steps: </string>

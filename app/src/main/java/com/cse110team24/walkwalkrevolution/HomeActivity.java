@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +21,9 @@ import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
 import java.text.ParseException;
@@ -86,6 +91,7 @@ public class HomeActivity extends AppCompatActivity {
         setStartWalkBtnOnClickListener();
         setStopWalkBtnOnClickListner();
         setLaunchMockActivityBtnOnClickListener();
+        setBottomNavigationOnClickListener();
     }
 
     @Override
@@ -163,6 +169,31 @@ public class HomeActivity extends AppCompatActivity {
             mocking = false;
             fitnessService.stopRecording();
         });
+    }
+
+    private void setBottomNavigationOnClickListener() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch(menuItem.getItemId()) {
+                    case R.id.action_home:
+                        break;
+
+                    case R.id.action_routes_list:
+                        launchGoToRoutesActivity();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    public void launchGoToRoutesActivity() {
+        Intent intent = new Intent(this, RoutesActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
     private void setLaunchMockActivityBtnOnClickListener() {
