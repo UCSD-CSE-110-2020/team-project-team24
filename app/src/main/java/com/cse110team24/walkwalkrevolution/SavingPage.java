@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.content.Context;
 import android.os.Bundle;
 
 //import com.cse110team24.walkwalkrevolution.models.Route;
@@ -20,7 +21,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
+
 public class SavingPage extends AppCompatActivity {
+
+    public static final String FILE_NAME = "aFileNameICameUpWith.txt";
+    public final Context thisActivity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +106,13 @@ public class SavingPage extends AppCompatActivity {
                     }
 
                     route.setEnvironment(env);
-                    //RoutesManager.writeSingle();
+
+                    try {
+                        RoutesManager.writeSingle(route, FILE_NAME, thisActivity);
+                    } catch(IOException ex){}
+
                     finish();
                 }
-
             }
         });
     }
