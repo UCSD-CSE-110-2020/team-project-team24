@@ -21,6 +21,11 @@ import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+<<<<<<< HEAD
+=======
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+>>>>>>> 2c5e0518012e886ce0e6df35a585893a0c19b991
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
 import java.text.ParseException;
@@ -88,6 +93,7 @@ public class HomeActivity extends AppCompatActivity {
         setStartWalkBtnOnClickListener();
         setStopWalkBtnOnClickListner();
         setLaunchMockActivityBtnOnClickListener();
+        setBottomNavigationOnClickListener();
     }
 
     @Override
@@ -167,6 +173,34 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+<<<<<<< HEAD
+=======
+    private void setBottomNavigationOnClickListener() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch(menuItem.getItemId()) {
+                    case R.id.action_home:
+                        break;
+
+                    case R.id.action_routes_list:
+                        launchGoToRoutesActivity();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    public void launchGoToRoutesActivity() {
+        Intent intent = new Intent(this, RoutesActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
+>>>>>>> 2c5e0518012e886ce0e6df35a585893a0c19b991
     private void setLaunchMockActivityBtnOnClickListener() {
         launchMockActivityBtn.setOnClickListener(view -> {
             launchMockActivity();
