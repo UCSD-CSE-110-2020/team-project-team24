@@ -61,11 +61,11 @@ public class SaveRouteActivity extends AppCompatActivity {
             }
             route.setEnvironment(env);
             route.setStats(stats);
-            setRouteType();
-            setTerrainType();
-            setSurfaceType();
-            setTrailType();
-            setDifficulty();
+//            setRouteType();
+//            setTerrainType();
+//            setSurfaceType();
+//            setTrailType();
+//            setDifficulty();
             saveNewRouteToStorage();
             setResult(Activity.RESULT_OK);
             finish();
@@ -93,7 +93,16 @@ public class SaveRouteActivity extends AppCompatActivity {
             route = new Route(title);
             route.setStartingLocation(editTextLocation.getText().toString());
             route.setNotes(editTextNotes.getText().toString());
+            createRouteEnv();
         }
+    }
+
+    private void createRouteEnv() {
+        setRouteType();
+        setTerrainType();
+        setSurfaceType();
+        setTrailType();
+        setDifficulty();
     }
 
     private void setRouteType() {
