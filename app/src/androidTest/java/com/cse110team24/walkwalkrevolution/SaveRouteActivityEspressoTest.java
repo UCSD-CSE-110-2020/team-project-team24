@@ -4,9 +4,6 @@ package com.cse110team24.walkwalkrevolution;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
@@ -17,9 +14,6 @@ import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,16 +27,15 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class SaveRouteActivityEspressoTest {
+
     /**
      * new activity test rule to forcibly remove app data
      * @param <T>
@@ -67,7 +60,6 @@ public class SaveRouteActivityEspressoTest {
     }
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
-
     @Rule
     public SaveRouteActivityTestRule<HeightActivity> mActivityTestRule = new SaveRouteActivityTestRule<>(HeightActivity.class);
 
@@ -91,66 +83,28 @@ public class SaveRouteActivityEspressoTest {
 
     @Test
     public void saveRouteActivityEspressoTest() {
-        setup();
-
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.et_height_feet),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
+                allOf(withId(R.id.et_height_feet), isDisplayed()));
         appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.et_height_remainder_inches),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
+                allOf(withId(R.id.et_height_remainder_inches), isDisplayed()));
         appCompatEditText2.perform(replaceText("9"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.btn_height_finish), withText("Finish"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                5),
-                        isDisplayed()));
+                allOf(withId(R.id.btn_height_finish), withText("Finish"), isDisplayed()));
         appCompatButton.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.btn_start_walk), withText("Start Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
+                allOf(withId(R.id.btn_start_walk), withText("Start Walk"), isDisplayed()));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.btn_stop_walk), withText("Stop Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
+                allOf(withId(R.id.btn_stop_walk), withText("Stop Walk"), isDisplayed()));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.btn_save_this_route), withText("Save this route?"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                17),
-                        isDisplayed()));
+                allOf(withId(R.id.btn_save_this_route), withText("Save this route?"), isDisplayed()));
         appCompatButton4.perform(click());
 
         ViewInteraction textView = onView(
@@ -230,132 +184,52 @@ public class SaveRouteActivityEspressoTest {
         textView8.check(matches(withText("Notes")));
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.et_save_route_title),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                1)));
-        appCompatEditText3.perform(scrollTo(), replaceText("Marian Bear"), closeSoftKeyboard());
+                allOf(withId(R.id.et_save_route_title), isDisplayed()));
+        appCompatEditText3.perform(replaceText("Marian Bear"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.et_save_route_location),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatEditText4.perform(scrollTo(), replaceText("My house"), closeSoftKeyboard());
+                allOf(withId(R.id.et_save_route_location), isDisplayed()));
+        appCompatEditText4.perform(replaceText("My house"), closeSoftKeyboard());
 
         ViewInteraction appCompatRadioButton = onView(
-                allOf(withId(R.id.radio_btn_loop), withText("Loop"),
-                        childAtPosition(
-                                allOf(withId(R.id.radiogroup_route_type),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                5)),
-                                0)));
-        appCompatRadioButton.perform(scrollTo(), click());
+                allOf(withId(R.id.radio_btn_loop), withText("Loop"), isDisplayed()));
+        appCompatRadioButton.perform(click());
 
         ViewInteraction appCompatRadioButton2 = onView(
-                allOf(withId(R.id.rd_btn_hilly), withText("Hilly"),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_terrain_type),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                7)),
-                                1)));
-        appCompatRadioButton2.perform(scrollTo(), click());
+                allOf(withId(R.id.rd_btn_hilly), withText("Hilly"), isDisplayed()));
+        appCompatRadioButton2.perform(click());
 
         ViewInteraction appCompatRadioButton3 = onView(
-                allOf(withId(R.id.rd_btn_uneven), withText("Uneven"),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_surface_type),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                9)),
-                                1)));
-        appCompatRadioButton3.perform(scrollTo(), click());
+                allOf(withId(R.id.rd_btn_uneven), withText("Uneven"), isDisplayed()));
+        appCompatRadioButton3.perform(click());
 
         ViewInteraction appCompatRadioButton4 = onView(
-                allOf(withId(R.id.rd_btn_trail), withText("Trail"),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_land_type),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                11)),
-                                1)));
-        appCompatRadioButton4.perform(scrollTo(), click());
+                allOf(withId(R.id.rd_btn_trail), withText("Trail"), isDisplayed()));
+        appCompatRadioButton4.perform(click());
 
         ViewInteraction appCompatRadioButton5 = onView(
-                allOf(withId(R.id.rd_btn_moderate), withText("Moderate"),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_difficulty),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                13)),
-                                1)));
-        appCompatRadioButton5.perform(scrollTo(), click());
+                allOf(withId(R.id.rd_btn_moderate), withText("Moderate"), isDisplayed()));
+        appCompatRadioButton5.perform(click());
 
         ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.et_route_notes),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                15)));
-        appCompatEditText5.perform(scrollTo(), replaceText("Lovely"), closeSoftKeyboard());
+                allOf(withId(R.id.et_route_notes), isDisplayed()));
+        appCompatEditText5.perform(replaceText("Nice"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.et_route_notes), withText("Lovely"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                15)));
+                allOf(withId(R.id.et_route_notes), withText("Nice"), isDisplayed()));
         appCompatEditText6.perform(pressImeActionButton());
 
         ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.btn_save_route), withText("SAVE"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                16)));
+                allOf(withId(R.id.btn_save_route), withText("SAVE"), isDisplayed()));
         appCompatButton5.perform(scrollTo(), click());
 
         ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.action_routes_list), withContentDescription("Routes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.bottom_navigation),
-                                        0),
-                                1),
-                        isDisplayed()));
+                allOf(withId(R.id.action_routes_list), withContentDescription("Routes"), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
         ViewInteraction textView9 = onView(
                 allOf(withId(R.id.tv_route_name), withText("Marian Bear"), isDisplayed()));
         textView9.check(matches(withText("Marian Bear")));
-    }
-
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
     }
 
     private class TestFitnessService implements FitnessService {
