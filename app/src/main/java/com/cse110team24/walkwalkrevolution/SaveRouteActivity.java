@@ -61,11 +61,6 @@ public class SaveRouteActivity extends AppCompatActivity {
             }
             route.setEnvironment(env);
             route.setStats(stats);
-//            setRouteType();
-//            setTerrainType();
-//            setSurfaceType();
-//            setTrailType();
-//            setDifficulty();
             saveNewRouteToStorage();
             setResult(Activity.RESULT_OK);
             finish();
