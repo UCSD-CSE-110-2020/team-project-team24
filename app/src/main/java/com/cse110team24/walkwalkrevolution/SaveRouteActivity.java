@@ -140,6 +140,8 @@ public class SaveRouteActivity extends AppCompatActivity {
     private void setDifficulty() {
         if(difficultyTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_hard) {
             env.setDifficulty(RouteEnvironment.Difficulty.HARD);
+        }else if(difficultyTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_moderate) {
+            env.setDifficulty(RouteEnvironment.Difficulty.MODERATE);
         }else if(difficultyTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_easy) {
             env.setDifficulty(RouteEnvironment.Difficulty.EASY);
         }
