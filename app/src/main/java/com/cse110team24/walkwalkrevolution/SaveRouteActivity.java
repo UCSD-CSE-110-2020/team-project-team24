@@ -1,8 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
@@ -12,7 +10,6 @@ import com.cse110team24.walkwalkrevolution.models.WalkStats;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -25,7 +22,6 @@ import java.util.List;
 public class SaveRouteActivity extends AppCompatActivity {
     private static final String TAG = "SaveRouteActivity";
 
-    public static final String FILE_NAME = ".WRR_new_saved_route";
     public static final String WALK_STATS_KEY = "walk_stats";
     public static final int REQUEST_CODE = 7;
 
