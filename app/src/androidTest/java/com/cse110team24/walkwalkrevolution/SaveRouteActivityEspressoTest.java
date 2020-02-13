@@ -20,7 +20,6 @@ import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -44,7 +43,6 @@ import static org.hamcrest.Matchers.is;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class SaveRouteActivityEspressoTest {
-
     /**
      * new activity test rule to forcibly remove app data
      * @param <T>
@@ -69,10 +67,12 @@ public class SaveRouteActivityEspressoTest {
     }
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
+
     @Rule
     public SaveRouteActivityTestRule<HeightActivity> mActivityTestRule = new SaveRouteActivityTestRule<>(HeightActivity.class);
 
     private long nextStepCount;
+
     @Before
     public void setup() {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
@@ -154,216 +154,80 @@ public class SaveRouteActivityEspressoTest {
         appCompatButton4.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.tv_save_route_title), withText("Title: (this is REQUIRED)"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                        0),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.tv_save_route_title), withText("Title: (this is REQUIRED)"), isDisplayed()));
         textView.check(matches(withText("Title: (this is REQUIRED)")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.tv_save_route_starting_location), withText("Starting Location:"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                        0),
-                                2),
-                        isDisplayed()));
+                allOf(withId(R.id.tv_save_route_starting_location), withText("Starting Location:"), isDisplayed()));
         textView2.check(matches(withText("Starting Location:")));
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.tv_route_type), withText("Route Type:"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                        0),
-                                4),
-                        isDisplayed()));
+                allOf(withId(R.id.tv_route_type), withText("Route Type:"), isDisplayed()));
         textView3.check(matches(withText("Route Type:")));
 
         ViewInteraction radioButton = onView(
-                allOf(withId(R.id.radio_btn_loop),
-                        childAtPosition(
-                                allOf(withId(R.id.radiogroup_route_type),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                5)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.radio_btn_loop), isDisplayed()));
         radioButton.check(matches(isDisplayed()));
 
         ViewInteraction radioButton2 = onView(
-                allOf(withId(R.id.radio_btn_out_back),
-                        childAtPosition(
-                                allOf(withId(R.id.radiogroup_route_type),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                5)),
-                                1),
-                        isDisplayed()));
+                allOf(withId(R.id.radio_btn_out_back), isDisplayed()));
         radioButton2.check(matches(isDisplayed()));
 
+        ViewInteraction textView4 = onView(
+                allOf(withId(R.id.tv_terrain_type), withText("Terrain Type:"), isDisplayed()));
+        textView4.check(matches(withText("Terrain Type:")));
+
         ViewInteraction radioButton3 = onView(
-                allOf(withId(R.id.rd_btn_flat),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_terrain_type),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                7)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.rd_btn_flat), isDisplayed()));
         radioButton3.check(matches(isDisplayed()));
 
         ViewInteraction radioButton4 = onView(
-                allOf(withId(R.id.rd_btn_hilly),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_terrain_type),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                7)),
-                                1),
-                        isDisplayed()));
+                allOf(withId(R.id.rd_btn_hilly), isDisplayed()));
         radioButton4.check(matches(isDisplayed()));
 
-        ViewInteraction textView4 = onView(
-                allOf(withId(R.id.tv_terrain_type), withText("Terrain Type:"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                        0),
-                                6),
-                        isDisplayed()));
-        textView4.check(matches(withText("Terrain Type:")));
-
         ViewInteraction textView5 = onView(
-                allOf(withId(R.id.tv_surface_type), withText("Surface Type:"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                        0),
-                                8),
-                        isDisplayed()));
+                allOf(withId(R.id.tv_surface_type), withText("Surface Type:"), isDisplayed()));
         textView5.check(matches(withText("Surface Type:")));
 
         ViewInteraction radioButton5 = onView(
-                allOf(withId(R.id.rd_btn_even),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_surface_type),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                9)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.rd_btn_even), isDisplayed()));
         radioButton5.check(matches(isDisplayed()));
 
         ViewInteraction radioButton6 = onView(
-                allOf(withId(R.id.rd_btn_uneven),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_surface_type),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                9)),
-                                1),
-                        isDisplayed()));
+                allOf(withId(R.id.rd_btn_uneven), isDisplayed()));
         radioButton6.check(matches(isDisplayed()));
 
         ViewInteraction textView6 = onView(
-                allOf(withId(R.id.tv_land_type), withText("Land Type:"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                        0),
-                                10),
-                        isDisplayed()));
+                allOf(withId(R.id.tv_land_type), withText("Land Type:"), isDisplayed()));
         textView6.check(matches(withText("Land Type:")));
 
         ViewInteraction radioButton7 = onView(
-                allOf(withId(R.id.rd_btn_street),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_land_type),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                11)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.rd_btn_street), isDisplayed()));
         radioButton7.check(matches(isDisplayed()));
 
         ViewInteraction radioButton8 = onView(
-                allOf(withId(R.id.rd_btn_trail),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_land_type),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                11)),
-                                1),
-                        isDisplayed()));
+                allOf(withId(R.id.rd_btn_trail), isDisplayed()));
         radioButton8.check(matches(isDisplayed()));
 
         ViewInteraction textView7 = onView(
-                allOf(withId(R.id.tv_difficulty), withText("Difficulty:"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                        0),
-                                12),
-                        isDisplayed()));
+                allOf(withId(R.id.tv_difficulty), withText("Difficulty:"), isDisplayed()));
         textView7.check(matches(withText("Difficulty:")));
 
         ViewInteraction radioButton9 = onView(
-                allOf(withId(R.id.rd_btn_hard),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_difficulty),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                13)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.rd_btn_hard), isDisplayed()));
         radioButton9.check(matches(isDisplayed()));
 
         ViewInteraction radioButton10 = onView(
-                allOf(withId(R.id.rd_btn_moderate),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_difficulty),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                13)),
-                                1),
-                        isDisplayed()));
+                allOf(withId(R.id.rd_btn_moderate), isDisplayed()));
         radioButton10.check(matches(isDisplayed()));
 
         ViewInteraction radioButton11 = onView(
-                allOf(withId(R.id.rd_btn_easy),
-                        childAtPosition(
-                                allOf(withId(R.id.rd_group_difficulty),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                13)),
-                                2),
-                        isDisplayed()));
+                allOf(withId(R.id.rd_btn_easy), isDisplayed()));
         radioButton11.check(matches(isDisplayed()));
 
         ViewInteraction textView8 = onView(
-                allOf(withId(R.id.tv_route_notes), withText("Notes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                        0),
-                                14),
-                        isDisplayed()));
+                allOf(withId(R.id.tv_route_notes), withText("Notes"), isDisplayed()));
         textView8.check(matches(withText("Notes")));
-
-        ViewInteraction textView9 = onView(
-                allOf(withText("Save your walk"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        textView9.check(matches(withText("Save your walk")));
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.et_save_route_title),
@@ -440,10 +304,10 @@ public class SaveRouteActivityEspressoTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 15)));
-        appCompatEditText5.perform(scrollTo(), replaceText("Had a relaxing walk"), closeSoftKeyboard());
+        appCompatEditText5.perform(scrollTo(), replaceText("Lovely"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.et_route_notes), withText("Had a relaxing walk"),
+                allOf(withId(R.id.et_route_notes), withText("Lovely"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
@@ -470,15 +334,9 @@ public class SaveRouteActivityEspressoTest {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        ViewInteraction textView10 = onView(
-                allOf(withId(R.id.tv_route_name), withText("Marian Bear"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.recycler_view),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView10.check(matches(withText("Marian Bear")));
+        ViewInteraction textView9 = onView(
+                allOf(withId(R.id.tv_route_name), withText("Marian Bear"), isDisplayed()));
+        textView9.check(matches(withText("Marian Bear")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -550,4 +408,5 @@ public class SaveRouteActivityEspressoTest {
 
         }
     }
+
 }
