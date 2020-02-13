@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.icu.text.DecimalFormat;
 import android.icu.text.NumberFormat;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,9 +40,11 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         private TextView distanceTv;
         private TextView dateTv;
         private Button favoriteBtn;
+        RelativeLayout container;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            container = itemView.findViewById(R.id.routes_container);
             routeNameTv = itemView.findViewById(R.id.tv_route_name);
             stepsTv = itemView.findViewById(R.id.tv_routes_steps);
             distanceTv = itemView.findViewById(R.id.tv_routes_distance);
@@ -55,6 +59,14 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
             boolean isFavorite = !currRoute.isFavorite();
             currRoute.setFavorite(isFavorite);
             notifyDataSetChanged();
+        }
+
+        public void bind(Route route) {
+            container.setOnClickListener(view -> {
+                Intent intent = new Intent(context, RouteDetailsActivity.class);
+                intent.putExtra(RouteDetailsActivity.ROUTE_KEY, route);
+                context.startActivity(intent);
+            });
         }
     }
 
@@ -89,6 +101,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
             viewHolder.dateTv.setText(sdf.format(date));
         }
         checkFavorite(viewHolder, currRoute.isFavorite());
+        viewHolder.bind(currRoute);
     }
 
 
