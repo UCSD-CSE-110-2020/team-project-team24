@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -65,7 +66,9 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
             container.setOnClickListener(view -> {
                 Intent intent = new Intent(context, RouteDetailsActivity.class);
                 intent.putExtra(RouteDetailsActivity.ROUTE_KEY, route);
-                context.startActivity(intent);
+                if (context instanceof Activity) {
+                    ((Activity) context).startActivityForResult(intent, RouteDetailsActivity.REQUEST_CODE);
+                }
             });
         }
     }

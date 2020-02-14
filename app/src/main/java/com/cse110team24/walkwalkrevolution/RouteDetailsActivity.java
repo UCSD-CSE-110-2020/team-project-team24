@@ -2,7 +2,10 @@ package com.cse110team24.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,7 +17,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class RouteDetailsActivity extends AppCompatActivity {
+    private static final String TAG = "RouteDetailsActivity";
+    
     public static final String ROUTE_KEY = "route";
+    public static final int REQUEST_CODE = 99;
 
     private Route displayedRoute;
     private WalkStats stats;
@@ -33,7 +39,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         displayedRoute = (Route) getIntent().getSerializableExtra(ROUTE_KEY);
         stats = displayedRoute.getStats();
         getSupportActionBar().setTitle(displayedRoute.getTitle());
-        
+
         findUIElements();
         checkRouteCompletion();
     }
@@ -56,6 +62,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displayLatestWalkStats() {
+        Log.i(TAG, "displayLatestWalkStats: stats found for current route, displaying them now");
         recentStepsTv.setText(String.valueOf(stats.getSteps()));
         String distance = formattedDistanceTime(stats.getDistance(), "mile(s)");
         recentDistanceTv.setText(distance);
@@ -71,8 +78,14 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
     private void setStartWalkBtnOnClickListener() {
         startWalkBtn.setOnClickListener(view -> {
-
+            returnToRoutesActivityForWalk();
         });
+    }
+
+    private void returnToRoutesActivityForWalk() {
+        Intent intent = new Intent().putExtra(ROUTE_KEY, displayedRoute);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 
 }
