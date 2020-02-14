@@ -64,8 +64,9 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
 
         public void bind(Route route) {
             container.setOnClickListener(view -> {
-                Intent intent = new Intent(context, RouteDetailsActivity.class);
-                intent.putExtra(RouteDetailsActivity.ROUTE_KEY, route);
+                Intent intent = new Intent(context, RouteDetailsActivity.class)
+                        .putExtra(RouteDetailsActivity.ROUTE_KEY, route)
+                        .putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, getAdapterPosition());
                 if (context instanceof Activity) {
                     ((Activity) context).startActivityForResult(intent, RouteDetailsActivity.REQUEST_CODE);
                 }
@@ -77,7 +78,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     public RouteAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View contactView = inflater.inflate(R.layout.item_route, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
@@ -106,8 +106,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         checkFavorite(viewHolder, currRoute.isFavorite());
         viewHolder.bind(currRoute);
     }
-
-
 
     private void setStatsVisibility(ViewHolder viewHolder, int visibility) {
         viewHolder.stepsTv.setVisibility(visibility);

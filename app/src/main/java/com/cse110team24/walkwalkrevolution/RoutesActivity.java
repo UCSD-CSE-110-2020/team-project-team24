@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
-import com.cse110team24.walkwalkrevolution.models.WalkStats;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +26,7 @@ import java.util.List;
 public class RoutesActivity extends AppCompatActivity {
     public static final String TAG = "RoutesActivity";
 
+    public static final String ROUTES_LIST_KEY = "list_or_routes";
     public static final String LIST_SAVE_FILE = ".WWR_route_list_data";
     public static final String SAVE_FILE_KEY = "save_file";
     public static final int REQUEST_CODE = 11;
@@ -55,6 +56,7 @@ public class RoutesActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RouteDetailsActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            data.putExtra(ROUTES_LIST_KEY, (Serializable) routes);
             returnToHomeForWalk(data);
         }
 
@@ -121,6 +123,7 @@ public class RoutesActivity extends AppCompatActivity {
         Collections.sort(routes);
         Log.i(TAG, "checkForExistingSavedRoutes: list of saved routes found with size " + routes.size());
     }
+
 
     private void configureRecyclerViewAdapter() {
         adapter = new RouteAdapter(routes, this);

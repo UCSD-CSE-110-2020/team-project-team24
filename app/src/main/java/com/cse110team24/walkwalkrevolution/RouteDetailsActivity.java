@@ -20,9 +20,11 @@ public class RouteDetailsActivity extends AppCompatActivity {
     private static final String TAG = "RouteDetailsActivity";
     
     public static final String ROUTE_KEY = "route";
+    public static final String ROUTE_IDX_KEY = "route_adapter_idx";
     public static final int REQUEST_CODE = 99;
 
     private Route displayedRoute;
+    private int routeIdx;
     private WalkStats stats;
 
     private TextView recentStepsTv;
@@ -36,12 +38,17 @@ public class RouteDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_details);
 
-        displayedRoute = (Route) getIntent().getSerializableExtra(ROUTE_KEY);
-        stats = displayedRoute.getStats();
+        getRouteInfo();
         getSupportActionBar().setTitle(displayedRoute.getTitle());
 
         findUIElements();
         checkRouteCompletion();
+    }
+
+    private void getRouteInfo() {
+        displayedRoute = (Route) getIntent().getSerializableExtra(ROUTE_KEY);
+        routeIdx = getIntent().getIntExtra(ROUTE_IDX_KEY, 0);
+        stats = displayedRoute.getStats();
     }
 
     private void findUIElements() {
@@ -83,7 +90,10 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void returnToRoutesActivityForWalk() {
-        Intent intent = new Intent().putExtra(ROUTE_KEY, displayedRoute);
+        Log.i(TAG, "returnToRoutesActivityForWalk: returning to home for automatic recording");
+        Intent intent = new Intent()
+                .putExtra(ROUTE_KEY, displayedRoute)
+                .putExtra(ROUTE_IDX_KEY, routeIdx);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -13,7 +12,6 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,9 +25,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
@@ -145,12 +145,26 @@ public class HomeActivity extends AppCompatActivity {
 
     private void checkIfRouteExisted(WalkStats stats) {
         if (recordingExistingRoute) {
+            recordingExistingRoute  = false;
+            Log.i(TAG, "checkIfRouteExisted: returning to route details view for automatic recording");
             Route existingRoute = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
             existingRoute.setStats(stats);
-            Intent intent = new Intent(this, RoutesActivity.class)
-                    .putExtra(RouteDetailsActivity.ROUTE_KEY, existingRoute);
-            launchGoToRoutesActivity(intent);
+            saveIntoList(existingRoute);
         }
+    }
+
+    private void saveIntoList(Route route) {
+        int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
+        List<Route> routes = (List<Route>) data.getSerializableExtra(RoutesActivity.ROUTES_LIST_KEY);
+        routes.remove(idx);
+        routes.add(idx, route);
+
+        try {
+            RoutesManager.writeList(routes, RoutesActivity.LIST_SAVE_FILE, this);
+        } catch (IOException e) {
+            Log.e(TAG, "saveIntoList: could not save list into file", e);
+        }
+        Toast.makeText(this, "Route updated!", Toast.LENGTH_LONG).show();
     }
 
     private void getUIFields() {
@@ -254,7 +268,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void launchMockActivity() {
         String dailyStepsStr = dailyStepsTv.getText().toString();
-        long currentDailySteps = dailyStepsStr.isEmpty() ? 0 : Long.valueOf(dailyStepsStr);
 
         Intent intent = new Intent(this, MockActivity.class)
                 .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
