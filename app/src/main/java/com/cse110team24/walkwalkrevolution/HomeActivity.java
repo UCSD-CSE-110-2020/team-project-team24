@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 
+import com.cse110team24.walkwalkrevolution.models.Route;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
@@ -55,6 +56,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private boolean mocking;
     private boolean endTimeSet;
+    private boolean recordingExistingRoute;
+    private Intent data;
 
     private int heightFeet;
     private float heightRemainderInches;
@@ -106,7 +109,15 @@ public class HomeActivity extends AppCompatActivity {
             }
         } else if (requestCode == MockActivity.REQUEST_CODE && data != null) {
             setMockedExtras(data);
+        } else if (requestCode == RoutesActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            this.data = data;
+            startRecordingExistingRoute();
         }
+    }
+
+    private void startRecordingExistingRoute() {
+        recordingExistingRoute = true;
+        startWalkBtn.performClick();
     }
 
     public void setDailyStats(long stepCount) {
@@ -128,7 +139,18 @@ public class HomeActivity extends AppCompatActivity {
         recentDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
         double timeElapsedInMinutes = stats.timeElapsedInMinutes();
         recentTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
+        checkIfRouteExisted(stats);
         return stats;
+    }
+
+    private void checkIfRouteExisted(WalkStats stats) {
+        if (recordingExistingRoute) {
+            Route existingRoute = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
+            existingRoute.setStats(stats);
+            Intent intent = new Intent(this, RoutesActivity.class)
+                    .putExtra(RouteDetailsActivity.ROUTE_KEY, existingRoute);
+            launchGoToRoutesActivity(intent);
+        }
     }
 
     private void getUIFields() {
@@ -180,15 +202,14 @@ public class HomeActivity extends AppCompatActivity {
                     break;
 
                 case R.id.action_routes_list:
-                    launchGoToRoutesActivity();
+                    launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
                     break;
             }
             return true;
         });
     }
 
-    public void launchGoToRoutesActivity() {
-        Intent intent = new Intent(this, RoutesActivity.class);
+    public void launchGoToRoutesActivity(Intent intent) {
         startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
