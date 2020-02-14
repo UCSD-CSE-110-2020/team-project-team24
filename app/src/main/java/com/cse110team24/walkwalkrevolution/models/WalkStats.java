@@ -1,5 +1,8 @@
 package com.cse110team24.walkwalkrevolution.models;
 
+import android.icu.text.DecimalFormat;
+import android.icu.text.NumberFormat;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
@@ -62,5 +65,18 @@ public class WalkStats implements Serializable {
         }
 
         return false;
+    }
+
+    public String formattedDistance() {
+        return format(distance,"mile(s)");
+    }
+
+    public String formattedTime() {
+        return format(timeElapsedInMinutes(), "min.");
+    }
+
+    private String format(double val, String suffix) {
+        NumberFormat format = new DecimalFormat("#0.00");
+        return String.format("%s %s", format.format(val), suffix);
     }
 }

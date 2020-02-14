@@ -142,9 +142,8 @@ public class HomeActivity extends AppCompatActivity {
         double distanceTraveled = calculateDistance(stepCount);
         latestStats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
         recentStepsTv.setText(String.valueOf(stepCount));
-        recentDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
-        double timeElapsedInMinutes = latestStats.timeElapsedInMinutes();
-        recentTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
+        recentDistanceTv.setText(latestStats.formattedDistance());
+        recentTimeElapsedTv.setText(latestStats.formattedTime());
         checkIfRouteExisted(latestStats);
     }
 
