@@ -82,8 +82,6 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         getUIFields();
-        stopWalkBtn.setVisibility(View.INVISIBLE);
-        stopWalkBtn.setEnabled(false);
         saveHeight();
         numberFormat = new DecimalFormat(DECIMAL_FMT);
         setFitnessService();
@@ -119,8 +117,7 @@ public class HomeActivity extends AppCompatActivity {
             this.data = data;
             startRecordingExistingRoute();
         } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK) {
-            saveRouteBtn.setEnabled(false);
-            saveRouteBtn.setVisibility(View.INVISIBLE);
+            toggleBtn(saveRouteBtn);
         }
     }
 
@@ -160,10 +157,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void saveIntoList(Route route) {
-        int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
-        List<Route> routes = (List<Route>) data.getSerializableExtra(RoutesActivity.ROUTES_LIST_KEY);
-        routes.remove(idx);
-        routes.add(idx, route);
+        List<Route> routes = replaceOldRoute(route);
 
         try {
             RoutesManager.writeList(routes, RoutesActivity.LIST_SAVE_FILE, this);
@@ -171,6 +165,14 @@ public class HomeActivity extends AppCompatActivity {
             Log.e(TAG, "saveIntoList: could not save list into file", e);
         }
         Toast.makeText(this, "Route updated!", Toast.LENGTH_LONG).show();
+    }
+
+    private List<Route> replaceOldRoute(Route route) {
+        int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
+        List<Route> routes = (List<Route>) data.getSerializableExtra(RoutesActivity.ROUTES_LIST_KEY);
+        routes.remove(idx);
+        routes.add(idx, route);
+        return routes;
     }
 
     private void getUIFields() {
@@ -184,7 +186,8 @@ public class HomeActivity extends AppCompatActivity {
         stopWalkBtn = findViewById(R.id.btn_stop_walk);
         launchMockActivityBtn = findViewById(R.id.btn_mock_values);
         saveRouteBtn = findViewById(R.id.btn_save_this_route);
-        saveRouteBtn.setEnabled(false);
+        toggleBtn(stopWalkBtn);
+        toggleBtn(saveRouteBtn);
     }
 
     private void setSaveRouteBtnOnClickListener() {
@@ -297,7 +300,6 @@ public class HomeActivity extends AppCompatActivity {
     private void launchMockActivity() {
         Intent intent = new Intent(this, MockActivity.class)
                 .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
-
         startActivityForResult(intent, MockActivity.REQUEST_CODE);
     }
 

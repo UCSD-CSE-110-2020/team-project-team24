@@ -39,8 +39,6 @@ public class RouteDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route_details);
 
         getRouteInfo();
-        getSupportActionBar().setTitle(displayedRoute.getTitle());
-
         findUIElements();
         checkRouteCompletion();
     }
@@ -49,6 +47,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         displayedRoute = (Route) getIntent().getSerializableExtra(ROUTE_KEY);
         routeIdx = getIntent().getIntExtra(ROUTE_IDX_KEY, 0);
         stats = displayedRoute.getStats();
+        getSupportActionBar().setTitle(displayedRoute.getTitle());
     }
 
     private void findUIElements() {
