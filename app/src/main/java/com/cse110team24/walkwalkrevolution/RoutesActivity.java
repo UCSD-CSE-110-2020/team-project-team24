@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -27,6 +28,7 @@ public class RoutesActivity extends AppCompatActivity {
 
     public static final String LIST_SAVE_FILE = ".WWR_route_list_data";
     public static final String SAVE_FILE_KEY = "save_file";
+    public static final int REQUEST_CODE = 11;
 
     RouteAdapter adapter;
     RecyclerView rvRoutes;
@@ -52,10 +54,23 @@ public class RoutesActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RouteDetailsActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            returnToHomeForWalk(data);
+        }
 
     }
 
+    private void returnToHomeForWalk(Intent data) {
+        setResult(Activity.RESULT_OK, data);
+        transitionWithAnimation();
+    }
+
     public void launchGoToHomeActivity() {
+        setResult(Activity.RESULT_CANCELED);
+        transitionWithAnimation();
+    }
+
+    private void transitionWithAnimation() {
         finish();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }

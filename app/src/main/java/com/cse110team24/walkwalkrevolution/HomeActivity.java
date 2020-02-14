@@ -172,27 +172,24 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setBottomNavigationOnClickListener() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()) {
-                    case R.id.action_home:
-                        break;
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            switch(menuItem.getItemId()) {
+                case R.id.action_home:
+                    break;
 
-                    case R.id.action_routes_list:
-                        launchGoToRoutesActivity();
-                        break;
-                }
-                return true;
+                case R.id.action_routes_list:
+                    launchGoToRoutesActivity();
+                    break;
             }
+            return true;
         });
     }
 
     public void launchGoToRoutesActivity() {
         Intent intent = new Intent(this, RoutesActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
