@@ -162,7 +162,7 @@ public class SaveRouteActivity extends AppCompatActivity {
         return storedRoutes;
     }
 
-    // TODO: 2020-02-14 this can probably be turned into a to-string inside Route 
+    // TODO: 2020-02-14 this can probably be turned into a to-string inside Route
     private String craftRouteLogMessage() {
         if (stats == null ) {
             return "new Route object created with: \n"
