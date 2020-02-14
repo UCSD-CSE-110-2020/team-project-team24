@@ -35,7 +35,7 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
-    private static final long UPDATE_PERIOD = 1000;
+    private static final long UPDATE_PERIOD = 10_000;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final String HEIGHT_FT_KEY = "Height Feet";
@@ -137,6 +137,7 @@ public class HomeActivity extends AppCompatActivity {
         return fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
     }
 
+    // TODO: 2020-02-14 refactor to have walk stats give formatted strings
     public void setLatestWalkStats(long stepCount, long timeElapsed) {
         double distanceTraveled = calculateDistance(stepCount);
         latestStats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
@@ -208,6 +209,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    // TODO: 2020-02-14 refactor various parts this listener does
     private void setStopWalkBtnOnClickListner() {
         stopWalkBtn.setOnClickListener(view -> {
             if (mocking && !endTimeSet) {
