@@ -138,6 +138,7 @@ public class SaveRouteActivity extends AppCompatActivity {
         }
     }
 
+    // TODO: 2020-02-14 again, these RoutesManager methods are used the same way in many places
     private void saveNewRouteToStorage() {
         List<Route> storedRoutes = getStoredRoutes();
         storedRoutes.add(route);
@@ -161,6 +162,7 @@ public class SaveRouteActivity extends AppCompatActivity {
         return storedRoutes;
     }
 
+    // TODO: 2020-02-14 this can probably be turned into a to-string inside Route 
     private String craftRouteLogMessage() {
         if (stats == null ) {
             return "new Route object created with: \n"

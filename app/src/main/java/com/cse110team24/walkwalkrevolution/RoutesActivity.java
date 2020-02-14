@@ -136,7 +136,7 @@ public class RoutesActivity extends AppCompatActivity {
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
-    // TODO: 2020-02-14 this AsyncTask can probably be in a different place so all classes can use it 
+    // TODO: 2020-02-14 this AsyncTask can probably be in a different place so all classes can use it
     private static class AsyncSaveRoutesTask extends AsyncTask<Object, Object, Object> {
         RecyclerView.Adapter adapter;
         @Override
