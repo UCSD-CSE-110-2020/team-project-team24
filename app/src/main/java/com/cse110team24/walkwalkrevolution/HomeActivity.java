@@ -19,11 +19,9 @@ import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
-<<<<<<< HEAD
 
 import com.cse110team24.walkwalkrevolution.models.Route;
-=======
->>>>>>> master
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
@@ -149,16 +147,11 @@ public class HomeActivity extends AppCompatActivity {
         recentDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
         double timeElapsedInMinutes = latestStats.timeElapsedInMinutes();
         recentTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
-<<<<<<< HEAD
-        checkIfRouteExisted(stats);
-        return stats;
-=======
->>>>>>> master
+        checkIfRouteExisted(latestStats);
     }
 
     private void checkIfRouteExisted(WalkStats stats) {
         if (recordingExistingRoute) {
-            recordingExistingRoute  = false;
             Log.i(TAG, "checkIfRouteExisted: returning to route details view for automatic recording");
             Route existingRoute = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
             existingRoute.setStats(stats);
@@ -225,8 +218,11 @@ public class HomeActivity extends AppCompatActivity {
             endTimeSet = false;
             mocking = false;
             fitnessService.stopRecording();
-
             noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
+            if (recordingExistingRoute) {
+                recordingExistingRoute  = false;
+                return;
+            }
             saveRouteBtn.setEnabled(true);
             saveRouteBtn.setVisibility(View.VISIBLE);
         });
@@ -248,11 +244,7 @@ public class HomeActivity extends AppCompatActivity {
                     break;
 
                 case R.id.action_routes_list:
-<<<<<<< HEAD
                     launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
-=======
-                    launchGoToRoutesActivity();
->>>>>>> master
                     break;
             }
             return true;
@@ -303,11 +295,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void launchMockActivity() {
-<<<<<<< HEAD
-        String dailyStepsStr = dailyStepsTv.getText().toString();
-
-=======
->>>>>>> master
         Intent intent = new Intent(this, MockActivity.class)
                 .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
 
