@@ -147,7 +147,7 @@ public class SaveRouteActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e(TAG, "saveNewRouteToStorage: could not write new route to file", e);
         }
-        Log.i(TAG, "saveNewRouteToStorage: " + craftRouteLogMessage());
+        Log.i(TAG, "saveNewRouteToStorage: " + route);
     }
 
     private List<Route> getStoredRoutes() {
@@ -162,19 +162,5 @@ public class SaveRouteActivity extends AppCompatActivity {
         return storedRoutes;
     }
 
-    // TODO: 2020-02-14 this can probably be turned into a to-string inside Route
-    private String craftRouteLogMessage() {
-        if (stats == null ) {
-            return "new Route object created with: \n"
-                    + "\ttitle: " + '"' + route.getTitle() + "\"\n";
-        }
-        return "new Route object created with: \n"
-                + "\ttitle: " + '"' + route.getTitle() + "\"\n"
-                + "\tWalkStats: \n"
-                    + "\t\tsteps: " + stats.getSteps() + "\n"
-                    + "\t\tdistance (miles): " + stats.getDistance() + "\n"
-                    + "\t\ttime elapsed (minutes): " + stats.timeElapsedInMinutes() + "\n"
-                    + "\t\tdate of completion: " + stats.getDateCompleted().getTime();
-    }
 
 }

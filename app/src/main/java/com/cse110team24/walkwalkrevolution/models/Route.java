@@ -102,5 +102,12 @@ public class Route implements Serializable, Comparable<Route> {
         return false;
     }
 
+    // TODO: 2020-02-14 test
+    @Override
+    public String toString() {
+        return "\ntitle: " + title +
+                "\nstats: " + ((stats == null) ? "none" : stats);
+    }
+
 }
 

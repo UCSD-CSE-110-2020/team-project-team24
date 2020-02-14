@@ -67,6 +67,14 @@ public class WalkStats implements Serializable {
         return false;
     }
 
+    // TODO: 2020-02-14 write tests for this 
+    @Override
+    public String toString() {
+        return "\ndistance: " + formattedDistance() +
+                "\ntime: " + formattedTime() +
+                "\ndate completed: " + dateCompleted.getTime();
+    }
+
     public String formattedDistance() {
         return format(distance,"mile(s)");
     }
