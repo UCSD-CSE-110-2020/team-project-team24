@@ -95,7 +95,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setButtonOnClickListeners() {
         setStartWalkBtnOnClickListener();
-        setStopWalkBtnOnClickListner();
+        setStopWalkBtnOnClickListener();
         setLaunchMockActivityBtnOnClickListener();
         setBottomNavigationOnClickListener();
         setSaveRouteBtnOnClickListener();
@@ -137,7 +137,6 @@ public class HomeActivity extends AppCompatActivity {
         return fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
     }
 
-    // TODO: 2020-02-14 refactor to have walk stats give formatted strings
     public void setLatestWalkStats(long stepCount, long timeElapsed) {
         double distanceTraveled = calculateDistance(stepCount);
         latestStats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
@@ -208,8 +207,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    // TODO: 2020-02-14 refactor various parts this listener does
-    private void setStopWalkBtnOnClickListner() {
+    private void setStopWalkBtnOnClickListener() {
         stopWalkBtn.setOnClickListener(view -> {
             if (mocking && !endTimeSet) {
                 showSetEndTimeToast();
@@ -227,8 +225,7 @@ public class HomeActivity extends AppCompatActivity {
                 recordingExistingRoute  = false;
                 return;
             }
-            saveRouteBtn.setEnabled(true);
-            saveRouteBtn.setVisibility(View.VISIBLE);
+            toggleBtn(saveRouteBtn);
         });
     }
 
