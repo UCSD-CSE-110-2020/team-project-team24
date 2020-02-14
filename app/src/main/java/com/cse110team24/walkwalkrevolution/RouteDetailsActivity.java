@@ -67,7 +67,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         }
     }
 
-    // TODO: 2020-02-14 these two methods need to be handled by stats parsing its own values 
+    // TODO: 2020-02-14 these two methods need to be handled by stats parsing its own values
     private void displayLatestWalkStats() {
         Log.i(TAG, "displayLatestWalkStats: stats found for current route, displaying them now");
         recentStepsTv.setText(String.valueOf(stats.getSteps()));

@@ -33,12 +33,12 @@ public class RoutesActivity extends AppCompatActivity {
     public static final String SAVE_FILE_KEY = "save_file";
     public static final int REQUEST_CODE = 11;
 
-    RouteAdapter adapter;
-    RecyclerView rvRoutes;
-    FloatingActionButton fab;
-    BottomNavigationView bottomNavigationView;
+    private RouteAdapter adapter;
+    private RecyclerView rvRoutes;
+    private FloatingActionButton fab;
+    private BottomNavigationView bottomNavigationView;
 
-    List<Route> routes = new ArrayList<>();
+    private List<Route> routes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +114,7 @@ public class RoutesActivity extends AppCompatActivity {
         });
     }
 
+    // TODO: 2020-02-14 this happens in a few places. probably need to refactor to a different place
     private void checkForExistingSavedRoutes() {
         String filename = getIntent().getStringExtra(SAVE_FILE_KEY);
         filename = (filename == null) ? LIST_SAVE_FILE : filename;
@@ -135,6 +136,7 @@ public class RoutesActivity extends AppCompatActivity {
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
+    // TODO: 2020-02-14 this AsyncTask can probably be in a different place so all classes can use it 
     private static class AsyncSaveRoutesTask extends AsyncTask<Object, Object, Object> {
         RecyclerView.Adapter adapter;
         @Override
