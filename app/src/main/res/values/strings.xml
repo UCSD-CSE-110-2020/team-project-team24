@@ -1,5 +1,29 @@
 <resources>
     <string name="app_name">WalkWalkRevolution</string>
+    <string name="title_activity_saving_page">Save your walk</string>
+    <string name="title">Title: (this is REQUIRED) </string>
+    <string name="starting_location">Starting Location:</string>
+    <string name="route_type">Route Type:</string>
+    <string name="loop">Loop</string>
+    <string name="out_and_back">Out-and-back</string>
+    <string name="terrain_type">Terrain Type:</string>
+    <string name="flat_button">Flat</string>
+    <string name="hilly_button">Hilly</string>
+    <string name="surface_type">Surface Type:</string>
+    <string name="even">Even</string>
+    <string name="uneven">Uneven</string>
+    <string name="land_type">Land Type:</string>
+    <string name="street">Street</string>
+    <string name="trail">Trail</string>
+    <string name="difficulty">Difficulty:</string>
+    <string name="hard">Hard</string>
+    <string name="moderate">Moderate</string>
+    <string name="easy">Easy</string>
+    <string name="notes">Notes</string>
+    <string name="notesHint">Extra information about the route</string>
+    <string name="save">SAVE</string>
+    <string name = "name_route_hint">Name Route</string>
+    <string name="location_det_hint">Location Details</string>
     <string name="title_activity_routes">Routes</string>
     <string name="routes">Routes</string>
     <string name="home">Home</string>
@@ -33,4 +57,5 @@
     <string name="enter_start_time">Enter Desired Start Time: </string>
     <string name="enter_end_time">Enter Desired End Time: </string>
     <string name="never_walked">You have never gone on this walk</string>
+    <string name="save_prompt">Save this route?</string>
 </resources>

@@ -19,8 +19,11 @@ import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+<<<<<<< HEAD
 
 import com.cse110team24.walkwalkrevolution.models.Route;
+=======
+>>>>>>> master
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
@@ -54,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private NumberFormat numberFormat;
 
+    private WalkStats latestStats;
+
     private boolean mocking;
     private boolean endTimeSet;
     private boolean recordingExistingRoute;
@@ -71,6 +76,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button startWalkBtn;
     private Button stopWalkBtn;
     private Button launchMockActivityBtn;
+    private Button saveRouteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +92,7 @@ public class HomeActivity extends AppCompatActivity {
 
         setButtonOnClickListeners();
 
+
         handler.post(runUpdateSteps);
         Log.i(TAG, "onCreate: handler posted");
     }
@@ -95,6 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         setStopWalkBtnOnClickListner();
         setLaunchMockActivityBtnOnClickListener();
         setBottomNavigationOnClickListener();
+        setSaveRouteBtnOnClickListener();
     }
 
     @Override
@@ -112,6 +120,9 @@ public class HomeActivity extends AppCompatActivity {
         } else if (requestCode == RoutesActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             this.data = data;
             startRecordingExistingRoute();
+        } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK) {
+            saveRouteBtn.setEnabled(false);
+            saveRouteBtn.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -131,16 +142,18 @@ public class HomeActivity extends AppCompatActivity {
         return fitnessService.getDistanceFromHeight(stepCount, heightFeet, heightRemainderInches);
     }
 
-    public WalkStats setLatestWalkStats(long stepCount, long timeElapsed) {
-        noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
+    public void setLatestWalkStats(long stepCount, long timeElapsed) {
         double distanceTraveled = calculateDistance(stepCount);
-        WalkStats stats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
+        latestStats = new WalkStats(stepCount, timeElapsed, distanceTraveled, Calendar.getInstance());
         recentStepsTv.setText(String.valueOf(stepCount));
         recentDistanceTv.setText(String.format("%s%s", numberFormat.format(distanceTraveled), " mile(s)"));
-        double timeElapsedInMinutes = stats.timeElapsedInMinutes();
+        double timeElapsedInMinutes = latestStats.timeElapsedInMinutes();
         recentTimeElapsedTv.setText(String.format("%s%s", numberFormat.format(timeElapsedInMinutes), " min."));
+<<<<<<< HEAD
         checkIfRouteExisted(stats);
         return stats;
+=======
+>>>>>>> master
     }
 
     private void checkIfRouteExisted(WalkStats stats) {
@@ -177,6 +190,14 @@ public class HomeActivity extends AppCompatActivity {
         startWalkBtn = findViewById(R.id.btn_start_walk);
         stopWalkBtn = findViewById(R.id.btn_stop_walk);
         launchMockActivityBtn = findViewById(R.id.btn_mock_values);
+        saveRouteBtn = findViewById(R.id.btn_save_this_route);
+        saveRouteBtn.setEnabled(false);
+    }
+
+    private void setSaveRouteBtnOnClickListener() {
+        saveRouteBtn.setOnClickListener(view -> {
+            launchSaveRouteActivity();
+        });
     }
 
     private void setStartWalkBtnOnClickListener() {
@@ -204,7 +225,18 @@ public class HomeActivity extends AppCompatActivity {
             endTimeSet = false;
             mocking = false;
             fitnessService.stopRecording();
+
+            noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
+            saveRouteBtn.setEnabled(true);
+            saveRouteBtn.setVisibility(View.VISIBLE);
         });
+    }
+
+    private void launchSaveRouteActivity() {
+        Log.i(TAG, "launchSaveRouteActivity: route stopped, going to save");
+        Intent saveRouteIntent = new Intent(this, SaveRouteActivity.class)
+                .putExtra(SaveRouteActivity.WALK_STATS_KEY, latestStats);
+        startActivityForResult(saveRouteIntent, SaveRouteActivity.REQUEST_CODE);
     }
 
     private void setBottomNavigationOnClickListener() {
@@ -216,7 +248,11 @@ public class HomeActivity extends AppCompatActivity {
                     break;
 
                 case R.id.action_routes_list:
+<<<<<<< HEAD
                     launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
+=======
+                    launchGoToRoutesActivity();
+>>>>>>> master
                     break;
             }
             return true;
@@ -267,8 +303,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void launchMockActivity() {
+<<<<<<< HEAD
         String dailyStepsStr = dailyStepsTv.getText().toString();
 
+=======
+>>>>>>> master
         Intent intent = new Intent(this, MockActivity.class)
                 .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
 

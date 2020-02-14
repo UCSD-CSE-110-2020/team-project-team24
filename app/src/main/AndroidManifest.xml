@@ -8,9 +8,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
         <activity android:name=".RouteDetailsActivity"></activity>
+        <activity
+            android:name=".SaveRouteActivity"
+            android:label="@string/title_activity_saving_page"></activity>
         <activity
             android:name=".RoutesActivity"
             android:label="@string/title_activity_routes"
