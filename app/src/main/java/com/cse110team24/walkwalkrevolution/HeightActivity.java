@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -92,6 +91,8 @@ public class HeightActivity extends AppCompatActivity {
                     .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
         finish();
         startActivity(homeIntent);
+   //     Intent intent = new Intent(this, HomeActivity.class);
+    //    startActivity(intent);
     }
 
     private void checkHeight(SharedPreferences preferences) {
