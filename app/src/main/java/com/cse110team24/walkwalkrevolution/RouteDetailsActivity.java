@@ -32,6 +32,8 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
         displayedRoute = (Route) getIntent().getSerializableExtra(ROUTE_KEY);
         stats = displayedRoute.getStats();
+        getSupportActionBar().setTitle(displayedRoute.getTitle());
+        
         findUIElements();
         checkRouteCompletion();
     }
