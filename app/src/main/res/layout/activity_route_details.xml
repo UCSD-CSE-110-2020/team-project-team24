@@ -6,17 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".RouteDetailsActivity">
 
-    <Button
-        android:id="@+id/btn_details_stop_walk"
-        android:layout_width="@dimen/btn_start_walk_width"
-        android:layout_height="@dimen/btn_start_walk_height"
-        android:background="@drawable/my_button_bg_2"
-        android:text="@string/stopWalk"
-        android:textSize="@dimen/start_walk_btn_txt_size"
-        app:layout_constraintLeft_toLeftOf="@id/btn_details_start_walk"
-        app:layout_constraintRight_toRightOf="@id/btn_details_start_walk"
-        app:layout_constraintTop_toTopOf="@id/btn_details_start_walk"
-        app:layout_constraintBottom_toBottomOf="@id/btn_details_start_walk"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_details_stop_walk"-->
+<!--        android:layout_width="@dimen/btn_start_walk_width"-->
+<!--        android:layout_height="@dimen/btn_start_walk_height"-->
+<!--        android:background="@drawable/my_button_bg_2"-->
+<!--        android:text="@string/stopWalk"-->
+<!--        android:textSize="@dimen/start_walk_btn_txt_size"-->
+<!--        app:layout_constraintLeft_toLeftOf="@id/btn_details_start_walk"-->
+<!--        app:layout_constraintRight_toRightOf="@id/btn_details_start_walk"-->
+<!--        app:layout_constraintTop_toTopOf="@id/btn_details_start_walk"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/btn_details_start_walk"/>-->
 
     <Button
         android:id="@+id/btn_details_start_walk"
@@ -117,6 +117,7 @@
         android:textSize="@dimen/recent_walk_info_text_size"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
+        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_details_recent_time_elapsed_prompt"
