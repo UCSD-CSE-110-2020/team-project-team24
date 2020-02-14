@@ -6,4 +6,121 @@
     android:layout_height="match_parent"
     tools:context=".RouteDetailsActivity">
 
+    <Button
+        android:id="@+id/btn_details_stop_walk"
+        android:layout_width="@dimen/btn_start_walk_width"
+        android:layout_height="@dimen/btn_start_walk_height"
+        android:background="@drawable/my_button_bg_2"
+        android:text="@string/stopWalk"
+        android:textSize="@dimen/start_walk_btn_txt_size"
+        app:layout_constraintLeft_toLeftOf="@id/btn_details_start_walk"
+        app:layout_constraintRight_toRightOf="@id/btn_details_start_walk"
+        app:layout_constraintTop_toTopOf="@id/btn_details_start_walk"
+        app:layout_constraintBottom_toBottomOf="@id/btn_details_start_walk"/>
+
+    <Button
+        android:id="@+id/btn_details_start_walk"
+        android:layout_width="@dimen/btn_start_walk_width"
+        android:layout_height="@dimen/btn_start_walk_height"
+        android:background="@drawable/my_button_bg"
+        android:text="@string/startWalk"
+        android:textSize="@dimen/start_walk_btn_txt_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_details_recent_walk_prompt"/>
+
+
+    <TextView
+        android:id="@+id/tv_details_recent_walk_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mostRecentWalk"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_details_start_walk"
+        app:layout_constraintBottom_toTopOf="@id/tv_details_recent_steps_prompt"/>
+    <TextView
+        android:id="@+id/tv_details_recent_steps_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/totalSteps"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintHorizontal_bias="@dimen/recent_walk_info_left_bias"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tv_details_recent_steps"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_walk_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_details_recent_distance_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_details_recent_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintLeft_toLeftOf="@id/tv_details_recent_steps_prompt"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_walk_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_details_recent_distance"/>
+
+
+    <TextView
+        android:id="@+id/tv_details_recent_distance_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/totalDistance"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintHorizontal_bias="@dimen/recent_walk_info_left_bias"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tv_details_recent_distance"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_steps_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_details_recent_time_elapsed_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_details_recent_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintLeft_toLeftOf="@id/tv_details_recent_steps"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_steps_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_details_recent_time_elapsed_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_details_recent_time_elapsed_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timeElapsed"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintHorizontal_bias="@dimen/recent_walk_info_left_bias"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tv_details_recent_time_elapsed"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_distance_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_details_never_walked"/>
+
+    <TextView
+        android:id="@+id/tv_details_recent_time_elapsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/recent_walk_info_text_size"
+        app:layout_constraintLeft_toLeftOf="@id/tv_details_recent_steps"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_distance_prompt"
+        app:layout_constraintBottom_toTopOf="@id/tv_details_never_walked"/>
+
+    <TextView
+        android:id="@+id/tv_details_never_walked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/never_walked"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_time_elapsed_prompt"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
