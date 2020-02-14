@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
@@ -28,6 +29,7 @@ import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -156,31 +158,31 @@ public class SaveRouteActivityEspressoTest {
         textView6.check(matches(withText("Land Type:")));
 
         ViewInteraction radioButton7 = onView(
-                allOf(withId(R.id.rd_btn_street), isDisplayed()));
-        radioButton7.check(matches(isDisplayed()));
+                withId(R.id.rd_btn_street));
+        radioButton7.check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
         ViewInteraction radioButton8 = onView(
-                allOf(withId(R.id.rd_btn_trail), isDisplayed()));
-        radioButton8.check(matches(isDisplayed()));
+                withId(R.id.rd_btn_trail));
+        radioButton8.check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
         ViewInteraction textView7 = onView(
-                allOf(withId(R.id.tv_difficulty), withText("Difficulty:"), isDisplayed()));
+                allOf(withId(R.id.tv_difficulty), withText("Difficulty:")));
         textView7.check(matches(withText("Difficulty:")));
 
         ViewInteraction radioButton9 = onView(
-                allOf(withId(R.id.rd_btn_hard), isDisplayed()));
-        radioButton9.check(matches(isDisplayed()));
+                withId(R.id.rd_btn_hard));
+        radioButton9.check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
         ViewInteraction radioButton10 = onView(
-                allOf(withId(R.id.rd_btn_moderate), isDisplayed()));
-        radioButton10.check(matches(isDisplayed()));
+                withId(R.id.rd_btn_moderate));
+        radioButton10.check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
         ViewInteraction radioButton11 = onView(
-                allOf(withId(R.id.rd_btn_easy), isDisplayed()));
-        radioButton11.check(matches(isDisplayed()));
+                withId(R.id.rd_btn_easy));
+        radioButton11.check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
         ViewInteraction textView8 = onView(
-                allOf(withId(R.id.tv_route_notes), withText("Notes"), isDisplayed()));
+                allOf(withId(R.id.tv_route_notes), withText("Notes")));
         textView8.check(matches(withText("Notes")));
 
         ViewInteraction appCompatEditText3 = onView(
@@ -200,27 +202,26 @@ public class SaveRouteActivityEspressoTest {
         appCompatRadioButton2.perform(click());
 
         ViewInteraction appCompatRadioButton3 = onView(
-                allOf(withId(R.id.rd_btn_uneven), withText("Uneven"), isDisplayed()));
-        appCompatRadioButton3.perform(click());
+                allOf(withId(R.id.rd_btn_uneven), withText("Uneven")));
+        appCompatRadioButton3.perform(scrollTo(), click());
 
         ViewInteraction appCompatRadioButton4 = onView(
-                allOf(withId(R.id.rd_btn_trail), withText("Trail"), isDisplayed()));
-        appCompatRadioButton4.perform(click());
+                allOf(withId(R.id.rd_btn_trail), withText("Trail")));
+        appCompatRadioButton4.perform(scrollTo(), click());
 
         ViewInteraction appCompatRadioButton5 = onView(
-                allOf(withId(R.id.rd_btn_moderate), withText("Moderate"), isDisplayed()));
-        appCompatRadioButton5.perform(click());
+                allOf(withId(R.id.rd_btn_moderate), withText("Moderate")));
+        appCompatRadioButton5.perform(scrollTo(), click());
 
         ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.et_route_notes), isDisplayed()));
-        appCompatEditText5.perform(replaceText("Nice"), closeSoftKeyboard());
+                withId(R.id.et_route_notes));
+        appCompatEditText5.perform(scrollTo(), replaceText("Nice"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.et_route_notes), withText("Nice"), isDisplayed()));
-        appCompatEditText6.perform(pressImeActionButton());
+                allOf(withId(R.id.et_route_notes), withText("Nice")));
+        appCompatEditText6.perform(scrollTo(), pressImeActionButton());
 
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.btn_save_route), withText("SAVE"), isDisplayed()));
+        ViewInteraction appCompatButton5 = onView(allOf(withId(R.id.btn_save_route), withText("SAVE"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         appCompatButton5.perform(scrollTo(), click());
 
         ViewInteraction bottomNavigationItemView = onView(
