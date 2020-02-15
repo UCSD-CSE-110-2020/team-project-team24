@@ -66,7 +66,6 @@ public class WalkStats implements Serializable {
         return false;
     }
 
-    // TODO: 2020-02-14 write tests for this
     @Override
     public String toString() {
         return "\ndistance: " + formattedDistance() +
@@ -74,12 +73,12 @@ public class WalkStats implements Serializable {
                 "\ndate completed: " + dateCompleted.getTime();
     }
 
-    // TODO: 2020-02-14 test
+
     public String formattedDistance() {
         return format(distance,"mile(s)");
     }
 
-    // TODO: 2020-02-14 test
+
     public String formattedTime() {
         return format(timeElapsedInMinutes(), "min.");
     }

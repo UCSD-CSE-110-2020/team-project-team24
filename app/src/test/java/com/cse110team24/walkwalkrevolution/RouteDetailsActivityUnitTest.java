@@ -56,9 +56,9 @@ public class RouteDetailsActivityUnitTest {
         ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             getUIFields(activity);
-            assertEquals(expectedRoute.getStats().getSteps(), Long.parseLong(stepsField.getText().toString()));
-            assertEquals(expectedRoute.getStats().getDistance(), Double.parseDouble((distanceField.getText().toString().replace(" mile(s)", ""))));
-            assertEquals((double)(expectedRoute.getStats().getTimeElapsed()/60000), Double.parseDouble(timeElapsedField.getText().toString().replace(" min.", "")));
+            assertEquals(expectedRoute.getStats().getSteps(),  Long.parseLong(stepsField.getText().toString()), 0.1);
+            assertEquals(expectedRoute.getStats().getDistance(), Double.parseDouble((distanceField.getText().toString().replace(" mile(s)", ""))), 0.1);
+            assertEquals((double)(expectedRoute.getStats().getTimeElapsed()/60000), Double.parseDouble(timeElapsedField.getText().toString().replace(" min.", "")), 0.1);
         });
     }
 

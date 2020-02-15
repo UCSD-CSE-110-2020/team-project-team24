@@ -1,6 +1,8 @@
 package com.cse110team24.walkwalkrevolution;
 
 import com.cse110team24.walkwalkrevolution.models.*;
+
+import java.text.DecimalFormat;
 import java.util.*;
 
 import org.junit.Before;
@@ -15,6 +17,7 @@ public class WalkStatsUnitTest {
     public void setUp() {
         Calendar dateCompleted = new GregorianCalendar(2020, 2, 3);
         stats = new WalkStats(1500, 1800000, 1.8, dateCompleted);
+
     }
 
     @Test
@@ -75,5 +78,31 @@ public class WalkStatsUnitTest {
     public void testTimeElapsedIinMinuteZero() {
         stats.setTimeElapsed(0);
         assertEquals(0.0, stats.timeElapsedInMinutes(), 0.1);
+    }
+
+    @Test
+    public void testFormattedDistanceNotZero() {
+        assertEquals("1.80 mile(s)", stats.formattedDistance());
+    }
+    @Test
+    public void testFormattedDistanceZero() {
+        Calendar dateCompleted = new GregorianCalendar(2020, 2, 3);
+        WalkStats tests2 = new WalkStats(0, 1800000, 0, dateCompleted);
+        assertEquals("0.00 mile(s)", tests2.formattedDistance());
+    }
+    @Test
+    public void testFormattedTimeNotZero() {
+       // float timeToMin =  Math.round(1800000/1000.0/60);
+        double timeToMin =  (1800000/60000.0);
+        assertEquals( String.format("%.2f", timeToMin) +" min.", stats.formattedTime());
+    }
+
+    @Test
+    public void testToString() {
+        double timeToMin =  (1800000/60000.0);
+        assertEquals( "\ndistance: 1.80 mile(s)" +
+                "\ntime: " + String.format("%.2f", timeToMin) +" min."
+                +"\ndate completed: Tue Mar 03 00:00:00 PST 2020", stats.toString());
+
     }
 }
