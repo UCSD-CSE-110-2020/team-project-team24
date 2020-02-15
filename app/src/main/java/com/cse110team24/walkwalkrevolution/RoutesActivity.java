@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -51,7 +52,11 @@ public class RoutesActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            routes = new ArrayList<>();
+            checkForExistingSavedRoutes();
+            configureRecyclerViewAdapter();
+        }
     }
 
     public void launchGoToHomeActivity() {
@@ -73,9 +78,13 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void setFabOnClickListener() {
         fab.setOnClickListener(view -> {
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            launchSaveActivity();
         });
+    }
+
+    private void launchSaveActivity() {
+        Intent intent = new Intent(this, SaveRouteActivity.class);
+        startActivityForResult(intent, SaveRouteActivity.REQUEST_CODE);
     }
 
     private void setBottomNavItemSelectedListener() {
