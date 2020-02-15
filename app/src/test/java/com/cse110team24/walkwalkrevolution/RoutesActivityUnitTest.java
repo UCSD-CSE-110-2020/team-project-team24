@@ -16,10 +16,12 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.cse110team24.walkwalkrevolution.models.Route;
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.LooperMode;
 import org.w3c.dom.Text;
 
@@ -42,6 +44,7 @@ public class RoutesActivityUnitTest {
     private Button thirdBtn;
     private TextView firstTv;
     private TextView thirdTv;
+    private FloatingActionButton fab;
 
 
     ActivityScenario<RoutesActivity> scenario;
@@ -94,7 +97,26 @@ public class RoutesActivityUnitTest {
         });
     }
 
+    @Test
+    public void fabIsThere() {
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            assertNotNull(fab);
+        });
+    }
+
+    @Test
+    public void fabClickShouldStartNewActivity() throws Exception {
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            fab.performClick();
+            Intent intent = Shadows.shadowOf(activity).peekNextStartedActivity();
+            assertEquals(SaveRouteActivity.class.getCanonicalName(), intent.getComponent().getClassName());
+        });
+    }
+
     private void getUIFields(RoutesActivity activity) {
+        fab = activity.findViewById(R.id.fab);
         bottomNavigation = activity.findViewById(R.id.bottom_navigation);
 
         RecyclerView recyclerView = activity.findViewById(R.id.recycler_view);
