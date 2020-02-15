@@ -204,4 +204,17 @@ public class RouteUnitTest {
         Route route2 = new Route("Breeze");
         assertTrue(route.compareTo(route2) > 0);
     }
+
+    @Test
+    public void testToStringNotEqual() {
+        Route route2 = new Route("Breeze");
+        assertNotEquals(route.toString(), route2.toString());
+    }
+    @Test
+    public void testToStringEqual() {
+
+        Route route2 = new Route("Main Route");
+        route2.setStats(stats);
+        assertEquals(route.toString(), route2.toString());
+    }
 }
