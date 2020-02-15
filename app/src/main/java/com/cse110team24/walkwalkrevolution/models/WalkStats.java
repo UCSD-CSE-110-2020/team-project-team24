@@ -80,7 +80,7 @@ public class WalkStats implements Serializable {
         return format(distance,"mile(s)");
     }
 
-    // TODO: 2020-02-14 test 
+    // TODO: 2020-02-14 test
     public String formattedTime() {
         return format(timeElapsedInMinutes(), "min.");
     }
