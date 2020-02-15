@@ -1,11 +1,10 @@
 package com.cse110team24.walkwalkrevolution.models;
 
-import android.icu.text.DecimalFormat;
-import android.icu.text.NumberFormat;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 public class WalkStats implements Serializable {
     private long steps;
