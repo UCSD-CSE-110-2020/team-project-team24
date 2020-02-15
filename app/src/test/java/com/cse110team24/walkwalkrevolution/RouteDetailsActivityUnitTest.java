@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
 import com.cse110team24.walkwalkrevolution.models.RouteEnvironment;
@@ -14,6 +15,7 @@ import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -21,6 +23,7 @@ import java.util.GregorianCalendar;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+@RunWith(AndroidJUnit4.class)
 public class RouteDetailsActivityUnitTest {
 
     private Intent intent;
