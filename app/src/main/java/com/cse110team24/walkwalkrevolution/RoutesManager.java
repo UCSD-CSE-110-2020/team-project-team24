@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
@@ -143,5 +144,21 @@ public class RoutesManager {
             ois = new ObjectInputStream(fis);
         } catch (IOException e) {}
         return ois;
+    }
+
+    public static class AsyncTaskSaveRoutes extends AsyncTask<Object, Object, Object> {
+        @Override
+        protected Object doInBackground(Object... params) {
+            List<Route> routes = (List<Route>) params[0];
+            Context context = (Context) params[1];
+            try {
+                writeList(routes, RoutesActivity.LIST_SAVE_FILE, context);
+            } catch (IOException e) {
+                Log.e(TAG, "doInBackground: Couldn't save to file", e);
+                return null;
+            }
+            Log.i(TAG, "doInBackground: saved current instance of routes to file");
+            return null;
+        }
     }
 }

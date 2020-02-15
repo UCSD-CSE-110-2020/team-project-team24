@@ -75,8 +75,8 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     private void transitionWithAnimation() {
-        AsyncSaveRoutesTask saver = new AsyncSaveRoutesTask();
-        saver.execute(routes, adapter, this);
+        RoutesManager.AsyncTaskSaveRoutes saver = new RoutesManager.AsyncTaskSaveRoutes();
+        saver.execute(routes, this);
         finish();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
@@ -134,32 +134,5 @@ public class RoutesActivity extends AppCompatActivity {
         adapter = new RouteAdapter(routes, this);
         rvRoutes.setAdapter(adapter);
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-    }
-
-    // TODO: 2020-02-14 this AsyncTask can probably be in a different place so all classes can use it
-    private static class AsyncSaveRoutesTask extends AsyncTask<Object, Object, Object> {
-        RecyclerView.Adapter adapter;
-        @Override
-        protected Object doInBackground(Object... params) {
-            adapter = (RecyclerView.Adapter) params[1];
-            Context context = (Context) params[2];
-            List<Route> routes = (List<Route>) params[0];
-            try {
-                RoutesManager.writeList(routes, LIST_SAVE_FILE, context);
-            } catch (IOException e) {
-                Log.e(TAG, "doInBackground: Couldn't save to file", e);
-                return null;
-            }
-            Log.i(TAG, "doInBackground: saved current instance of routes to file");
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object obj) {
-            super.onPostExecute(obj);
-            adapter.notifyDataSetChanged();
-        }
-
-
     }
 }
