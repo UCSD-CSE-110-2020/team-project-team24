@@ -1,7 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Intent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,7 +20,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class RouteDetailsActivityUnitTest {
@@ -31,8 +29,6 @@ public class RouteDetailsActivityUnitTest {
     private Route expectedRoute;
     private Calendar date = new GregorianCalendar(2020, 2, 14);
     Button startWalkBtn;
-    Button homeScreenStartBtn;
-    Button homeScreenStopBtn;
     TextView stepsField;
     TextView distanceField;
     TextView timeElapsedField;
@@ -71,31 +67,5 @@ public class RouteDetailsActivityUnitTest {
         //homeScreenStartBtn = activity.findViewById(R.id.btn_start_walk);
         //homeScreenStopBtn = activity.findViewById(R.id.btn_stop_walk);
     }
-
- /*   @Test
-    public void testSwitchToHomeScreenAfterStartWalk() {
-
-        Intent endWalkIntent = new Intent(ApplicationProvider.getApplicationContext(), HomeActivity.class);
-
-        startWalkBtn.performClick();
-        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(endWalkIntent);
-        scenario.onActivity(activity -> {
-            assertEquals(homeScreenStartBtn.getVisibility(), View.INVISIBLE);
-            assertEquals(homeScreenStopBtn.getVisibility(), View.VISIBLE);
-        });
-
-        ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intent);
-        scenario.onActivity(activity -> {
-            getUIFields(activity);
-            startWalkBtn.performClick();
-            assertEquals(homeScreenStartBtn.getVisibility(), View.INVISIBLE);
-            assertEquals(homeScreenStopBtn.getVisibility(), View.VISIBLE);
-        });
-
-    }
-    */
-
-
-
 
 }
