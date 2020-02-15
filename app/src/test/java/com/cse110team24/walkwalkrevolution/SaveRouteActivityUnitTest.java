@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -24,6 +25,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static com.cse110team24.walkwalkrevolution.RoutesActivity.TAG;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
@@ -32,6 +34,7 @@ public class SaveRouteActivityUnitTest {
     private Intent intent;
     private WalkStats stats;
     private Route expectedRoute;
+    private Route expectedFabRoute;
     private Calendar date = new GregorianCalendar(2020, 2, 14);
 
     private EditText editTextTitle;
@@ -47,17 +50,40 @@ public class SaveRouteActivityUnitTest {
     @Before
     public void setup() {
         stats = new WalkStats(1500, 1800000, 0.82, date);
-        intent = new Intent(ApplicationProvider.getApplicationContext(), SaveRouteActivity.class)
-                .putExtra(SaveRouteActivity.WALK_STATS_KEY, stats);
+        intent = new Intent(ApplicationProvider.getApplicationContext(), SaveRouteActivity.class);
         expectedRoute = new Route("Test Title")
                 .setStartingLocation("")
                 .setEnvironment(new RouteEnvironment())
                 .setNotes("")
                 .setStats(stats);
+        expectedFabRoute = new Route("some route")
+                .setNotes("")
+                .setStartingLocation("")
+                .setEnvironment(new RouteEnvironment());
+    }
+
+    @Test
+    public void addRouteFromRoutes() {
+        ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+           getUIFields(activity);
+           editTextTitle.setText("some route");
+           doneButton.performClick();
+           Route actualRoute = null;
+
+            try {
+                actualRoute = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, activity.getApplicationContext())
+                        .get(0);
+            }
+            catch (IOException e) { e.printStackTrace(); }
+            assertEquals(expectedFabRoute, actualRoute);
+            assertEquals(expectedFabRoute.getStats(), actualRoute.getStats());
+        });
     }
 
     @Test
     public void testNoTitleEntered() {
+        intent.putExtra(SaveRouteActivity.WALK_STATS_KEY, stats);
         ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             getUIFields(activity);
@@ -74,6 +100,7 @@ public class SaveRouteActivityUnitTest {
 
     @Test
     public void testJustTitleEntered() {
+        intent.putExtra(SaveRouteActivity.WALK_STATS_KEY, stats);
         ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             getUIFields(activity);
@@ -91,6 +118,7 @@ public class SaveRouteActivityUnitTest {
 
     @Test
     public void testAllFieldsEntered() {
+        intent.putExtra(SaveRouteActivity.WALK_STATS_KEY, stats);
         ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             getUIFields(activity);
@@ -125,6 +153,7 @@ public class SaveRouteActivityUnitTest {
 
     @Test
     public void testSaveToPopulatedList() {
+        intent.putExtra(SaveRouteActivity.WALK_STATS_KEY, stats);
         ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             getUIFields(activity);
