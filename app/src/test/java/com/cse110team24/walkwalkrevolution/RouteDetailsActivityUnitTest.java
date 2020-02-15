@@ -31,6 +31,8 @@ public class RouteDetailsActivityUnitTest {
     private Route expectedRoute;
     private Calendar date = new GregorianCalendar(2020, 2, 14);
     Button startWalkBtn;
+    Button homeScreenStartBtn;
+    Button homeScreenStopBtn;
     TextView stepsField;
     TextView distanceField;
     TextView timeElapsedField;
@@ -55,38 +57,42 @@ public class RouteDetailsActivityUnitTest {
         scenario.onActivity(activity -> {
             getUIFields(activity);
             assertEquals(expectedRoute.getStats().getSteps(), Integer.parseInt(stepsField.getText().toString()));
-            assertEquals(expectedRoute.getStats().getDistance(), Integer.parseInt(distanceField.getText().toString()));
-            assertEquals(expectedRoute.getStats().getTimeElapsed(), Integer.parseInt(timeElapsedField.getText().toString()));
+            assertEquals(expectedRoute.getStats().getDistance(), Double.parseDouble((distanceField.getText().toString().replace(" mile(s)", ""))));
+            assertEquals((float)(expectedRoute.getStats().getTimeElapsed()/60000), Float.valueOf(timeElapsedField.getText().toString().replace(" min.", "")));
         });
     }
+
     private void getUIFields(RouteDetailsActivity activity) {
 
         startWalkBtn = activity.findViewById(R.id.btn_details_start_walk);
         stepsField = activity.findViewById(R.id.tv_details_recent_steps);
         distanceField = activity.findViewById(R.id.tv_details_recent_distance);
         timeElapsedField = activity.findViewById(R.id.tv_details_recent_time_elapsed);
-    }
-    /*
-    @Test
-    public void testInfoIsNotTheSameAsStore() {
-        assertNotEquals(expectedRoute.getStats().getDistance(), 1.02);
+        //homeScreenStartBtn = activity.findViewById(R.id.btn_start_walk);
+        //homeScreenStopBtn = activity.findViewById(R.id.btn_stop_walk);
     }
 
     @Test
     public void testSwitchToHomeScreenAfterStartWalk() {
-        Button switchScreenBt = activity.findViewById(R.id.btn_details_start_walk);
-        Button homeScreenStartBtn = activity.findViewById(R.id.btn_start_walk);
-        Button homeScreenStopBtn = activity.findViewById(R.id.btn_stop_walk);
-       Intent endWalkIntent = new Intent(ApplicationProvider.getApplicationContext(), HomeActivity.class);
 
-        switchScreenBt.performClick();
+        /*Intent endWalkIntent = new Intent(ApplicationProvider.getApplicationContext(), HomeActivity.class);
+
+        startWalkBtn.performClick();
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(endWalkIntent);
         scenario.onActivity(activity -> {
+            assertEquals(homeScreenStartBtn.getVisibility(), View.INVISIBLE);
+            assertEquals(homeScreenStopBtn.getVisibility(), View.VISIBLE);
+        });*/
+
+        ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            startWalkBtn.performClick();
             assertEquals(homeScreenStartBtn.getVisibility(), View.INVISIBLE);
             assertEquals(homeScreenStopBtn.getVisibility(), View.VISIBLE);
         });
 
     }
 
-  */
+
 }
