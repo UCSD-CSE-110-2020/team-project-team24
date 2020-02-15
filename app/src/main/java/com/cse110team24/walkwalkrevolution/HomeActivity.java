@@ -53,8 +53,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    private NumberFormat numberFormat;
-
     private WalkStats latestStats;
 
     private boolean mocking;
@@ -83,7 +81,6 @@ public class HomeActivity extends AppCompatActivity {
 
         getUIFields();
         saveHeight();
-        numberFormat = new DecimalFormat(DECIMAL_FMT);
         setFitnessService();
 
         setButtonOnClickListeners();
@@ -130,6 +127,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.i(TAG, "setDailyStats: setting daily stats with steps: " + stepCount);
         dailyStepsTv.setText(String.valueOf(stepCount));
         double distance = calculateDistance(stepCount);
+        NumberFormat numberFormat = new DecimalFormat(DECIMAL_FMT);
         dailyDistanceTv.setText(numberFormat.format(distance));
     }
 
