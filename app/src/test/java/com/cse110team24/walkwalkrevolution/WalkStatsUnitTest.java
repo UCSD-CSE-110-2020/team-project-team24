@@ -100,9 +100,11 @@ public class WalkStatsUnitTest {
     @Test
     public void testToString() {
         double timeToMin =  (1800000/60000.0);
+        String result = stats.toString();
+        String cutOff = result.substring(0,result.indexOf("00:00:00")+8);
         assertEquals( "\ndistance: 1.80 mile(s)" +
                 "\ntime: " + String.format("%.2f", timeToMin) +" min."
-                +"\ndate completed: Tue Mar 03 00:00:00 PST 2020", stats.toString());
+                +"\ndate completed: Tue Mar 03 00:00:00",cutOff);
 
     }
 }
