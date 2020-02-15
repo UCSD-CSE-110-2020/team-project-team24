@@ -31,23 +31,22 @@ public class RouteDetailsActivityUnitTest {
     private Route expectedRoute;
     private Calendar date = new GregorianCalendar(2020, 2, 14);
     Button startWalkBtn;
-    TextView getStepsField;
-    TextView getDistanceField;
-    TextView getTimeElapsedField;
+    TextView stepsField;
+    TextView distanceField;
+    TextView timeElapsedField;
 
 
     @Before
     public void setup() {
-        intent = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
-        intent.putExtra(RouteDetailsActivity.ROUTE_KEY, expectedRoute);
-        intent.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
-
         stats = new WalkStats(1500, 1800000, 0.82, date);
         expectedRoute = new Route("Test Title")
                 .setStartingLocation("")
                 .setEnvironment(new RouteEnvironment())
                 .setNotes("")
                 .setStats(stats);
+        intent = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
+        intent.putExtra(RouteDetailsActivity.ROUTE_KEY, expectedRoute);
+        intent.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
     }
 
     @Test
@@ -55,15 +54,17 @@ public class RouteDetailsActivityUnitTest {
         ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             getUIFields(activity);
-            assertEquals(expectedRoute.getStats().getSteps(), getStepsField.getText().toString());
+            assertEquals(expectedRoute.getStats().getSteps(), Integer.parseInt(stepsField.getText().toString()));
+            assertEquals(expectedRoute.getStats().getDistance(), Integer.parseInt(distanceField.getText().toString()));
+            assertEquals(expectedRoute.getStats().getTimeElapsed(), Integer.parseInt(timeElapsedField.getText().toString()));
         });
     }
     private void getUIFields(RouteDetailsActivity activity) {
 
         startWalkBtn = activity.findViewById(R.id.btn_details_start_walk);
-        getStepsField = activity.findViewById(R.id.tv_details_recent_steps);
-        getDistanceField = activity.findViewById(R.id.tv_details_recent_distance);
-        getTimeElapsedField = activity.findViewById(R.id.tv_details_recent_time_elapsed);
+        stepsField = activity.findViewById(R.id.tv_details_recent_steps);
+        distanceField = activity.findViewById(R.id.tv_details_recent_distance);
+        timeElapsedField = activity.findViewById(R.id.tv_details_recent_time_elapsed);
     }
     /*
     @Test
