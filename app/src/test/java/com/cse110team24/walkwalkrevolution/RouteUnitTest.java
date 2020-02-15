@@ -206,15 +206,26 @@ public class RouteUnitTest {
     }
 
     @Test
-    public void testToStringNotEqual() {
+    public void testToStringNotEqualTitle() {
         Route route2 = new Route("Breeze");
         assertNotEquals(route.toString(), route2.toString());
     }
     @Test
-    public void testToStringEqual() {
+    public void testToStringEqualTitle() {
 
         Route route2 = new Route("Main Route");
-        route2.setStats(stats);
         assertEquals(route.toString(), route2.toString());
+    }
+    @Test
+    public void testToStringEqualTitleDifferentStats() {
+         WalkStats statsTester;
+         statsTester = new WalkStats(1500,10000,1.20, date);
+        WalkStats stats3 = new WalkStats(1000,5000,3.29, date);
+        Route route2 = new Route("Main Route");
+        route2.setStats(statsTester);
+        route.setStats(stats3);
+        assertNotEquals(route.toString(), route2.toString());
+
+
     }
 }
