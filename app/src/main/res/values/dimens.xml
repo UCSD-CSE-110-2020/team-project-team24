@@ -22,4 +22,5 @@
     <dimen name="details_size">20sp</dimen>
     <dimen name="details_indent">12dp</dimen>
     <dimen name="subdetails_indent">32dp</dimen>
+    <dimen name="details_start_btn_margin">40dp</dimen>
 </resources>
