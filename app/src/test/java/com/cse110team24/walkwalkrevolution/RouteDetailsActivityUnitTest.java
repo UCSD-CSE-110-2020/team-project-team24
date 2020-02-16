@@ -26,12 +26,15 @@ import static junit.framework.TestCase.assertEquals;
 public class RouteDetailsActivityUnitTest {
 
     RouteEnvironment env = new RouteEnvironment();
+    RouteEnvironment semiEnv = new RouteEnvironment();
 
     private Intent intent;
     private Intent intentIncomplete;
+    private Intent intentSemiComplete;
     private WalkStats stats;
     private Route expectedRoute;
     private Route incompleteExpectedRoute;
+    private Route semiCompleteExpectedRoute;
     private Calendar date = new GregorianCalendar(2020, 2, 14);
     private TextView startLocationText;
     private TextView routeTypeText;
@@ -57,14 +60,23 @@ public class RouteDetailsActivityUnitTest {
         env.setTrailType(RouteEnvironment.TrailType.TRAIL);
         env.setDifficulty(RouteEnvironment.Difficulty.MODERATE);
 
+        semiEnv.setSurfaceType(RouteEnvironment.SurfaceType.EVEN);
+        semiEnv.setTrailType(RouteEnvironment.TrailType.TRAIL);
+        semiEnv.setDifficulty(RouteEnvironment.Difficulty.MODERATE);
+
         stats = new WalkStats(1500, 1800000, 0.82, date);
         expectedRoute = new Route("Route has all the info")
-                .setStartingLocation("")
+                .setStartingLocation("THIS IS AT UCSD")
                 .setEnvironment(env)
                 .setNotes("This team is AWESOME!")
                 .setStats(stats);
 
         incompleteExpectedRoute = new Route("Route has no Info");
+
+        semiCompleteExpectedRoute = new Route("This route has some info")
+                .setStartingLocation(" This is idk where")
+                .setEnvironment(semiEnv)
+                .setStats(stats);
 
         intent = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
         intent.putExtra(RouteDetailsActivity.ROUTE_KEY, expectedRoute);
@@ -74,6 +86,9 @@ public class RouteDetailsActivityUnitTest {
         intentIncomplete.putExtra(RouteDetailsActivity.ROUTE_KEY, incompleteExpectedRoute);
         intentIncomplete.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
 
+        intentSemiComplete = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
+        intentSemiComplete.putExtra(RouteDetailsActivity.ROUTE_KEY, semiCompleteExpectedRoute);
+        intentSemiComplete.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
     }
 
     @Test
@@ -112,6 +127,34 @@ public class RouteDetailsActivityUnitTest {
                     routeTypeText.getText().toString().toLowerCase());
             assertEquals(expectedRoute.getEnvironment().getTerrainType().toString().toLowerCase(),
                     terrainTypeText.getText().toString().toLowerCase());
+            assertEquals(expectedRoute.getEnvironment().getSurfaceType().toString().toLowerCase(),
+                    surfaceTypeText.getText().toString().toLowerCase());
+            assertEquals(expectedRoute.getEnvironment().getTrailType().toString().toLowerCase(),
+                    landTypeText.getText().toString().toLowerCase());
+            assertEquals(expectedRoute.getEnvironment().getDifficulty().toString().toLowerCase(),
+                    difficultyText.getText().toString().toLowerCase());
+        });
+    }
+    @Test
+    public void testEnvironmentVariablesNotSet() {
+        ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intentIncomplete);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            assertEquals(routeTypeText.getVisibility(), View.GONE);
+            assertEquals(terrainTypeText.getVisibility(), View.GONE);
+            assertEquals(surfaceTypeText.getVisibility(), View.GONE);
+            assertEquals(landTypeText.getVisibility(), View.GONE);
+            assertEquals(difficultyText.getVisibility(), View.GONE);
+        });
+    }
+
+    @Test
+    public void testEnvironmentVariablesSemiCompleted() {
+        ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intentSemiComplete);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            assertEquals(routeTypeText.getVisibility(), View.GONE);
+            assertEquals(terrainTypeText.getVisibility(), View.GONE);
             assertEquals(expectedRoute.getEnvironment().getSurfaceType().toString().toLowerCase(),
                     surfaceTypeText.getText().toString().toLowerCase());
             assertEquals(expectedRoute.getEnvironment().getTrailType().toString().toLowerCase(),
