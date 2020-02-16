@@ -195,4 +195,22 @@ public class RouteDetailsActivityUnitTest {
 
     }
 
+    @Test
+    public void testStartingLocationSet() {
+        ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            assertEquals(expectedRoute.getStartingLocation().toString(), startLocationText.getText().toString());
+
+        });
+    }
+    @Test
+    public void testStartingLocationNotSet() {
+        ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intentIncomplete);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            assertEquals(startLocationText.getVisibility(), View.GONE);
+        });
+    }
+
 }
