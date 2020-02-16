@@ -98,17 +98,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     private void displayRouteInformation() {
         displayStartingLocation();
         displayRouteEnvironment();
-        if (stats == null) {
-            recentStepsPromptTv.setVisibility(View.GONE);
-            recentStepsTv.setVisibility(View.GONE);
-            recentDistancePromptTv.setVisibility(View.GONE);
-            recentDistanceTv.setVisibility(View.GONE);
-            recentTimeElapsedPromptTv.setVisibility(View.GONE);
-            recentTimeElapsedTv.setVisibility(View.GONE);
-            neverWalkedPromptTv.setVisibility(View.VISIBLE);
-        } else {
-            displayLatestWalkStats();
-        }
+        displayLatestWalkStats();
         displayNotes();
     }
 
@@ -123,16 +113,28 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displayRouteEnvironment() {
-        displayRouteType();
-        displayTerrainType();
-        displaySurfaceType();
-        displayLandType();
-        displayDifficulty();
-
         RouteEnvironment env = displayedRoute.getEnvironment();
-        if (env.getRouteType() == null && env.getTerrainType() == null && env.getSurfaceType() == null
-            && env.getTrailType() == null && env.getDifficulty() == null) {
+        if( env == null || (env.getRouteType() == null && env.getTerrainType() == null &&
+                            env.getSurfaceType() == null && env.getTrailType() == null &&
+                            env.getDifficulty() == null) ) {
             findViewById(R.id.tv_route_env_prompt).setVisibility(View.GONE);
+            routeTypePromptTv.setVisibility(View.GONE);
+            routeTypeTv.setVisibility(View.GONE);
+            terrainTypePromptTv.setVisibility(View.GONE);
+            terrainTypeTv.setVisibility(View.GONE);
+            surfaceTypePromptTv.setVisibility(View.GONE);
+            surfaceTypeTv.setVisibility(View.GONE);
+            landTypePromptTv.setVisibility(View.GONE);
+            landTypeTv.setVisibility(View.GONE);
+            difficultyPromptTv.setVisibility(View.GONE);
+            difficultyTv.setVisibility(View.GONE);
+        }
+        else {
+            displayRouteType();
+            displayTerrainType();
+            displaySurfaceType();
+            displayLandType();
+            displayDifficulty();
         }
     }
 
@@ -147,10 +149,21 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displayLatestWalkStats() {
-        Log.i(TAG, "displayLatestWalkStats: stats found for current route, displaying them now");
-        recentStepsTv.setText(String.valueOf(stats.getSteps()));
-        recentDistanceTv.setText(stats.formattedDistance());
-        recentTimeElapsedTv.setText(stats.formattedTime());
+        if(stats == null) {
+            recentStepsPromptTv.setVisibility(View.GONE);
+            recentStepsTv.setVisibility(View.GONE);
+            recentDistancePromptTv.setVisibility(View.GONE);
+            recentDistanceTv.setVisibility(View.GONE);
+            recentTimeElapsedPromptTv.setVisibility(View.GONE);
+            recentTimeElapsedTv.setVisibility(View.GONE);
+            neverWalkedPromptTv.setVisibility(View.VISIBLE);
+        }
+        else {
+            Log.i(TAG, "displayLatestWalkStats: stats found for current route, displaying them now");
+            recentStepsTv.setText(String.valueOf(stats.getSteps()));
+            recentDistanceTv.setText(stats.formattedDistance());
+            recentTimeElapsedTv.setText(stats.formattedTime());
+        }
     }
 
     private void displayRouteType() {
