@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: 2020-02-16 refactor add logging to this class
 public class SaveRouteActivity extends AppCompatActivity {
     private static final String TAG = "SaveRouteActivity";
 
@@ -96,6 +97,7 @@ public class SaveRouteActivity extends AppCompatActivity {
         setDifficulty();
     }
 
+    // TODO: 2020-02-16 refactor: maybe use cases statements here for readability
     private void setRouteType() {
         if(routeTypeRdGroup.getCheckedRadioButtonId() == R.id.radio_btn_loop) {
             env.setRouteType(RouteEnvironment.RouteType.LOOP);

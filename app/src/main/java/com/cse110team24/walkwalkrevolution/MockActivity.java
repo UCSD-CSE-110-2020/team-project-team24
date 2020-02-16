@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 
+// TODO: 2020-02-16 add logging to this class
 public class MockActivity extends AppCompatActivity {
     private static final String TAG = "MockActivity";
     private static final int ADD_MOCK_CONST = 500;

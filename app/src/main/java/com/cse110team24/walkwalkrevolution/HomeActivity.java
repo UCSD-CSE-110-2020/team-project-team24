@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+// TODO: 2020-02-16 refactor: probably reorganize methods in more logical way
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";

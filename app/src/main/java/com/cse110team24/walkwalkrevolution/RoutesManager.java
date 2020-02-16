@@ -30,11 +30,12 @@ public class RoutesManager {
      * @throws IOException if the file stream could not be created
      */
     public static void writeList(List<Route> routes, String filename, Context context) throws IOException {
+        // TODO: 2020-02-16 refactor write function to get oos and use it in these 2 methods
         FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(routes);
         oos.close();
-        Log.i(TAG, "writeList: sucessfully wrote list of routes to " + filename);
+        Log.i(TAG, "writeList: successfully wrote list of routes to " + filename);
     }
 
     /**
@@ -120,15 +121,12 @@ public class RoutesManager {
         if (route.getStats() == null) {
             throw new IllegalArgumentException("Can't write latest route without stats");
         }
-        deleteExistingFile(filename);
+        deleteExistingFile(filename, context);
         writeSingle(route, filename, context);
     }
 
-    private static void deleteExistingFile(String filename) {
-        File file = new File(filename);
-        if (file.exists()) {
-            file.delete();
-        }
+    private static void deleteExistingFile(String filename, Context context) {
+        context.deleteFile(filename);
     }
 
     // for convenience - gets input stream, handling exceptions

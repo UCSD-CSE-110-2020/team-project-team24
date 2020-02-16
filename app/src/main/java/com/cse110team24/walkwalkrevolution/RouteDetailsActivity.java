@@ -14,9 +14,6 @@ import com.cse110team24.walkwalkrevolution.models.Route;
 import com.cse110team24.walkwalkrevolution.models.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 public class RouteDetailsActivity extends AppCompatActivity {
     private static final String TAG = "RouteDetailsActivity";
     

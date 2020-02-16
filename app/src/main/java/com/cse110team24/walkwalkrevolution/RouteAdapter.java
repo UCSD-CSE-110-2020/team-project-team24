@@ -84,6 +84,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     }
 
     // TODO: 2020-02-14 most of the UI stuff should be handled by the ViewHolder
+        // probably in viewHolder.bind
         // again, walk stats should handle parsing its values into strings
     @Override
     public void onBindViewHolder(RouteAdapter.ViewHolder viewHolder, int position) {
