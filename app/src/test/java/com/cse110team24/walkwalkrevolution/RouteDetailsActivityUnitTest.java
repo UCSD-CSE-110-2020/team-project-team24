@@ -108,7 +108,16 @@ public class RouteDetailsActivityUnitTest {
         ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             getUIFields(activity);
-            assertEquals(expectedRoute.getEnvironment().getRouteType(), routeTypeText.getText().toString());
+            assertEquals(expectedRoute.getEnvironment().getRouteType().toString().toLowerCase(),
+                    routeTypeText.getText().toString().toLowerCase());
+            assertEquals(expectedRoute.getEnvironment().getTerrainType().toString().toLowerCase(),
+                    terrainTypeText.getText().toString().toLowerCase());
+            assertEquals(expectedRoute.getEnvironment().getSurfaceType().toString().toLowerCase(),
+                    surfaceTypeText.getText().toString().toLowerCase());
+            assertEquals(expectedRoute.getEnvironment().getTrailType().toString().toLowerCase(),
+                    landTypeText.getText().toString().toLowerCase());
+            assertEquals(expectedRoute.getEnvironment().getDifficulty().toString().toLowerCase(),
+                    difficultyText.getText().toString().toLowerCase());
         });
     }
 
