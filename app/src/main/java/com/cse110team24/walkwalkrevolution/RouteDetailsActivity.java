@@ -45,6 +45,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     private TextView surfaceTypeTv;
     private TextView landTypeTv;
     private TextView difficultyTv;
+    private TextView detailsPromptTv;
     private TextView recentStepsTv;
     private TextView recentDistanceTv;
     private TextView recentTimeElapsedTv;
@@ -92,6 +93,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         notesTv = findViewById(R.id.tv_notes);
         neverWalkedPromptTv = findViewById(R.id.tv_details_never_walked);
         startWalkBtn = findViewById(R.id.btn_details_start_walk);
+        detailsPromptTv = findViewById(R.id.tv_details_recent_walk_prompt);
         setStartWalkBtnOnClickListener();
     }
 
@@ -156,6 +158,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
             recentDistanceTv.setVisibility(View.GONE);
             recentTimeElapsedPromptTv.setVisibility(View.GONE);
             recentTimeElapsedTv.setVisibility(View.GONE);
+            detailsPromptTv.setVisibility(View.GONE);
             neverWalkedPromptTv.setVisibility(View.VISIBLE);
         }
         else {
