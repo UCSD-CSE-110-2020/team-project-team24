@@ -19,4 +19,7 @@
     <dimen name="section_top_margin">40sp</dimen>
     <dimen name="desired_time_size">28sp</dimen>
     <dimen name="recycle_view_margin">64dp</dimen>
+    <dimen name="details_size">20sp</dimen>
+    <dimen name="details_indent">12dp</dimen>
+    <dimen name="subdetails_indent">32dp</dimen>
 </resources>

@@ -58,4 +58,8 @@
     <string name="enter_end_time">Enter Desired End Time: </string>
     <string name="never_walked">You have never gone on this walk</string>
     <string name="save_prompt">Save this route?</string>
+    <string name="route_env"><u>Environment Details</u></string>
+    <string name="recent_walk"><u>Most Recent Walk</u></string>
+    <string name="note_details">Notes:</string>
+    <string name="unspecified">(unspecified)</string>
 </resources>
