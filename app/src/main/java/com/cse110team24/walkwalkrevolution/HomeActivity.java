@@ -91,12 +91,139 @@ public class HomeActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate: handler posted");
     }
 
+    private void getUIFields() {
+        dailyStepsTv = findViewById(R.id.tv_daily_steps);
+        dailyDistanceTv = findViewById(R.id.tv_daily_distance);
+        recentStepsTv = findViewById(R.id.tv_recent_steps);
+        recentDistanceTv = findViewById(R.id.tv_recent_distance);
+        recentTimeElapsedTv = findViewById(R.id.tv_recent_time_elapsed);
+        noRecentWalkPromptTv = findViewById(R.id.tv_no_recent_walk_prompt);
+        startWalkBtn = findViewById(R.id.btn_start_walk);
+        stopWalkBtn = findViewById(R.id.btn_stop_walk);
+        launchMockActivityBtn = findViewById(R.id.btn_mock_values);
+        saveRouteBtn = findViewById(R.id.btn_save_this_route);
+        toggleBtn(stopWalkBtn);
+        toggleBtn(saveRouteBtn);
+    }
+
+    private void saveHeight() {
+        SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        heightFeet = getIntent().getIntExtra(HEIGHT_FT_KEY, -1);
+        heightRemainderInches =  getIntent().getFloatExtra(HEIGHT_IN_KEY, -1);
+        editor.putInt(HomeActivity.HEIGHT_FT_KEY, heightFeet);
+        editor.putFloat(HomeActivity.HEIGHT_IN_KEY, heightRemainderInches);
+        editor.apply();
+        Log.i(TAG, "saveHeight: saved height (feet: " + heightFeet + ", inches: " + heightRemainderInches + ").");
+    }
+
+    private void setFitnessService() {
+        String fitnessServiceKey = getServiceKey();
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+        fitnessService.setup();
+    }
+
+    private String getServiceKey() {
+        return getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+    }
+
     private void setButtonOnClickListeners() {
         setStartWalkBtnOnClickListener();
         setStopWalkBtnOnClickListener();
         setLaunchMockActivityBtnOnClickListener();
         setBottomNavigationOnClickListener();
         setSaveRouteBtnOnClickListener();
+    }
+
+    private void setStartWalkBtnOnClickListener() {
+        startWalkBtn.setOnClickListener(view -> {
+            toggleStartAndStopBtns();
+            if (!mocking) {
+                fitnessService.setStartRecordingTime(System.currentTimeMillis());
+            } else {
+                showSetEndTimeToast();
+            }
+            fitnessService.startRecording();
+        });
+    }
+
+    private void setStopWalkBtnOnClickListener() {
+        stopWalkBtn.setOnClickListener(view -> {
+            if (mocking && !endTimeSet) {
+                showSetEndTimeToast();
+                return;
+            }
+            toggleStartAndStopBtns();
+            if (!mocking) {
+                fitnessService.setEndRecordingTime(System.currentTimeMillis());
+            }
+            endTimeSet = false;
+            mocking = false;
+            fitnessService.stopRecording();
+            noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
+            if (recordingExistingRoute) {
+                recordingExistingRoute  = false;
+                return;
+            }
+            toggleBtn(saveRouteBtn);
+        });
+    }
+
+    private void setLaunchMockActivityBtnOnClickListener() {
+        launchMockActivityBtn.setOnClickListener(view -> {
+            launchMockActivity();
+        });
+    }
+
+    private void setBottomNavigationOnClickListener() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            switch(menuItem.getItemId()) {
+                case R.id.action_home:
+                    break;
+
+                case R.id.action_routes_list:
+                    launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
+                    break;
+            }
+            return true;
+        });
+    }
+
+    private void setSaveRouteBtnOnClickListener() {
+        saveRouteBtn.setOnClickListener(view -> {
+            launchSaveRouteActivity();
+        });
+    }
+
+    private void toggleStartAndStopBtns() {
+        toggleBtn(startWalkBtn);
+        toggleBtn(stopWalkBtn);
+    }
+
+    private void toggleBtn(Button btn) {
+        btn.setEnabled(!btn.isEnabled());
+        int visibility = (btn.getVisibility() == View.VISIBLE) ? View.INVISIBLE : View.VISIBLE;
+        btn.setVisibility(visibility);
+    }
+
+    private void launchMockActivity() {
+        Intent intent = new Intent(this, MockActivity.class)
+                .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
+        startActivityForResult(intent, MockActivity.REQUEST_CODE);
+    }
+
+    public void launchGoToRoutesActivity(Intent intent) {
+        startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
+    private void launchSaveRouteActivity() {
+        Log.i(TAG, "launchSaveRouteActivity: route stopped, going to save");
+        Intent saveRouteIntent = new Intent(this, SaveRouteActivity.class)
+                .putExtra(SaveRouteActivity.WALK_STATS_KEY, latestStats);
+        startActivityForResult(saveRouteIntent, SaveRouteActivity.REQUEST_CODE);
     }
 
     @Override
@@ -171,133 +298,6 @@ public class HomeActivity extends AppCompatActivity {
         routes.remove(idx);
         routes.add(idx, route);
         return routes;
-    }
-
-    private void getUIFields() {
-        dailyStepsTv = findViewById(R.id.tv_daily_steps);
-        dailyDistanceTv = findViewById(R.id.tv_daily_distance);
-        recentStepsTv = findViewById(R.id.tv_recent_steps);
-        recentDistanceTv = findViewById(R.id.tv_recent_distance);
-        recentTimeElapsedTv = findViewById(R.id.tv_recent_time_elapsed);
-        noRecentWalkPromptTv = findViewById(R.id.tv_no_recent_walk_prompt);
-        startWalkBtn = findViewById(R.id.btn_start_walk);
-        stopWalkBtn = findViewById(R.id.btn_stop_walk);
-        launchMockActivityBtn = findViewById(R.id.btn_mock_values);
-        saveRouteBtn = findViewById(R.id.btn_save_this_route);
-        toggleBtn(stopWalkBtn);
-        toggleBtn(saveRouteBtn);
-    }
-
-    private void setSaveRouteBtnOnClickListener() {
-        saveRouteBtn.setOnClickListener(view -> {
-            launchSaveRouteActivity();
-        });
-    }
-
-    private void setStartWalkBtnOnClickListener() {
-        startWalkBtn.setOnClickListener(view -> {
-            toggleStartAndStopBtns();
-            if (!mocking) {
-                fitnessService.setStartRecordingTime(System.currentTimeMillis());
-            } else {
-                showSetEndTimeToast();
-            }
-            fitnessService.startRecording();
-        });
-    }
-
-    private void setStopWalkBtnOnClickListener() {
-        stopWalkBtn.setOnClickListener(view -> {
-            if (mocking && !endTimeSet) {
-                showSetEndTimeToast();
-                return;
-            }
-            toggleStartAndStopBtns();
-            if (!mocking) {
-                fitnessService.setEndRecordingTime(System.currentTimeMillis());
-            }
-            endTimeSet = false;
-            mocking = false;
-            fitnessService.stopRecording();
-            noRecentWalkPromptTv.setVisibility(View.INVISIBLE);
-            if (recordingExistingRoute) {
-                recordingExistingRoute  = false;
-                return;
-            }
-            toggleBtn(saveRouteBtn);
-        });
-    }
-
-    private void launchSaveRouteActivity() {
-        Log.i(TAG, "launchSaveRouteActivity: route stopped, going to save");
-        Intent saveRouteIntent = new Intent(this, SaveRouteActivity.class)
-                .putExtra(SaveRouteActivity.WALK_STATS_KEY, latestStats);
-        startActivityForResult(saveRouteIntent, SaveRouteActivity.REQUEST_CODE);
-    }
-
-    private void setBottomNavigationOnClickListener() {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch(menuItem.getItemId()) {
-                case R.id.action_home:
-                    break;
-
-                case R.id.action_routes_list:
-                    launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
-                    break;
-            }
-            return true;
-        });
-    }
-
-    public void launchGoToRoutesActivity(Intent intent) {
-        startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-    }
-
-    private void setLaunchMockActivityBtnOnClickListener() {
-        launchMockActivityBtn.setOnClickListener(view -> {
-            launchMockActivity();
-        });
-    }
-
-    private void toggleStartAndStopBtns() {
-        toggleBtn(startWalkBtn);
-        toggleBtn(stopWalkBtn);
-    }
-
-    private void toggleBtn(Button btn) {
-        btn.setEnabled(!btn.isEnabled());
-        int visibility = (btn.getVisibility() == View.VISIBLE) ? View.INVISIBLE : View.VISIBLE;
-        btn.setVisibility(visibility);
-    }
-
-    private void setFitnessService() {
-        String fitnessServiceKey = getServiceKey();
-        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
-        fitnessService.setup();
-    }
-
-    private String getServiceKey() {
-        return getIntent().getStringExtra(FITNESS_SERVICE_KEY);
-    }
-
-    private void saveHeight() {
-        SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        heightFeet = getIntent().getIntExtra(HEIGHT_FT_KEY, -1);
-        heightRemainderInches =  getIntent().getFloatExtra(HEIGHT_IN_KEY, -1);
-        editor.putInt(HomeActivity.HEIGHT_FT_KEY, heightFeet);
-        editor.putFloat(HomeActivity.HEIGHT_IN_KEY, heightRemainderInches);
-        editor.apply();
-        Log.i(TAG, "saveHeight: saved height (feet: " + heightFeet + ", inches: " + heightRemainderInches + ").");
-    }
-
-    private void launchMockActivity() {
-        Intent intent = new Intent(this, MockActivity.class)
-                .putExtra(MockActivity.START_WALK_BTN_VISIBILITY_KEY, startWalkBtn.getVisibility());
-        startActivityForResult(intent, MockActivity.REQUEST_CODE);
     }
 
     private void setMockedExtras(Intent data) {
