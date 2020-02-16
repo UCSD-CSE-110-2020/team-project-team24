@@ -10,8 +10,9 @@
         android:id="@+id/tv_starting_loc_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/starting_location"
+        android:text="@string/starting_loc"
         android:textSize="@dimen/details_size"
+        android:textStyle="bold"
         android:layout_marginStart="@dimen/details_indent"
         android:layout_marginTop="@dimen/details_indent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -19,13 +20,16 @@
 
     <TextView
         android:id="@+id/tv_starting_loc"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/unspecified"
         android:textSize="@dimen/details_size"
-        android:layout_marginStart="@dimen/details_indent"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_starting_loc_prompt"
-        app:layout_constraintStart_toEndOf="@id/tv_starting_loc_prompt"/>
+        android:layout_marginTop="@dimen/details_indent"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginEnd="@dimen/details_indent"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_starting_loc_prompt"/>
 
     <TextView
         android:id="@+id/tv_route_env_prompt"
@@ -37,7 +41,7 @@
         android:layout_marginStart="@dimen/details_indent"
         android:layout_marginTop="@dimen/details_indent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_starting_loc_prompt"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_starting_loc"/>
 
     <TextView
         android:id="@+id/tv_rte_type_prompt"
@@ -172,7 +176,7 @@
         android:id="@+id/tv_details_recent_steps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="steps"
+        android:text=""
         android:textSize="@dimen/details_size"
         android:layout_marginStart="@dimen/details_indent"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_details_recent_steps_prompt"
@@ -193,7 +197,7 @@
         android:id="@+id/tv_details_recent_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="distnace"
+        android:text=""
         android:textSize="@dimen/details_size"
         android:layout_marginStart="@dimen/details_indent"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_details_recent_distance_prompt"
@@ -214,7 +218,7 @@
         android:id="@+id/tv_details_recent_time_elapsed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="time"
+        android:text=""
         android:textSize="@dimen/details_size"
         android:layout_marginStart="@dimen/details_indent"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_details_recent_time_elapsed_prompt"
@@ -226,6 +230,7 @@
         android:layout_height="wrap_content"
         android:text="@string/note_details"
         android:textSize="@dimen/details_size"
+        android:textStyle="bold"
         android:layout_marginStart="@dimen/details_indent"
         android:layout_marginTop="@dimen/details_indent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -233,13 +238,16 @@
 
     <TextView
         android:id="@+id/tv_notes"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/unspecified"
         android:textSize="@dimen/details_size"
-        android:layout_marginStart="@dimen/details_indent"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_notes_prompt"
-        app:layout_constraintStart_toEndOf="@id/tv_notes_prompt"/>
+        android:layout_marginTop="@dimen/details_indent"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginEnd="@dimen/details_indent"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_notes_prompt"/>
 
     <Button
         android:id="@+id/btn_details_start_walk"
@@ -250,7 +258,7 @@
         android:textSize="@dimen/start_walk_btn_txt_size"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_notes_prompt"
+        app:layout_constraintTop_toBottomOf="@id/tv_notes"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
