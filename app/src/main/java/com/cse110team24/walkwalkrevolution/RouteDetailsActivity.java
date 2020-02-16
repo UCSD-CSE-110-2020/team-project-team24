@@ -113,7 +113,8 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displayStartingLocation() {
-        if ( displayedRoute.getStartingLocation().equals("") ) {
+        String startingLoc = displayedRoute.getStartingLocation();
+        if ( startingLoc == null || startingLoc.isEmpty() ) {
             startingLocPromptTv.setVisibility(View.GONE);
             startingLocTv.setVisibility(View.GONE);
             return;
@@ -127,10 +128,17 @@ public class RouteDetailsActivity extends AppCompatActivity {
         displaySurfaceType();
         displayLandType();
         displayDifficulty();
+
+        RouteEnvironment env = displayedRoute.getEnvironment();
+        if (env.getRouteType() == null && env.getTerrainType() == null && env.getSurfaceType() == null
+            && env.getTrailType() == null && env.getDifficulty() == null) {
+            findViewById(R.id.tv_route_env_prompt).setVisibility(View.GONE);
+        }
     }
 
     private void displayNotes() {
-        if ( displayedRoute.getNotes().equals("") ) {
+        String notes = displayedRoute.getNotes();
+        if ( notes == null || notes.isEmpty() ) {
             notesPromptTv.setVisibility(View.GONE);
             notesTv.setVisibility(View.GONE);
             return;
