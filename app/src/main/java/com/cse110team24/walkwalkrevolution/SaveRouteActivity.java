@@ -97,46 +97,56 @@ public class SaveRouteActivity extends AppCompatActivity {
         setDifficulty();
     }
 
-    // TODO: 2020-02-16 refactor: maybe use cases statements here for readability
     private void setRouteType() {
-        if(routeTypeRdGroup.getCheckedRadioButtonId() == R.id.radio_btn_loop) {
-            env.setRouteType(RouteEnvironment.RouteType.LOOP);
-        }else if(routeTypeRdGroup.getCheckedRadioButtonId() == R.id.radio_btn_out_back) {
-            env.setRouteType(RouteEnvironment.RouteType.OUT_AND_BACK);
+        switch(routeTypeRdGroup.getCheckedRadioButtonId()) {
+            case R.id.radio_btn_loop:
+                env.setRouteType(RouteEnvironment.RouteType.LOOP);
+                break;
+            case R.id.radio_btn_out_back:
+                env.setRouteType(RouteEnvironment.RouteType.OUT_AND_BACK);
         }
     }
 
     private void setTerrainType() {
-        if(terrainTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_flat) {
-            env.setTerrainType(RouteEnvironment.TerrainType.FLAT);
-        }else if(terrainTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_hilly) {
-            env.setTerrainType(RouteEnvironment.TerrainType.HILLY);
+        switch(terrainTypeRdGroup.getCheckedRadioButtonId()) {
+            case R.id.rd_btn_flat:
+                env.setTerrainType(RouteEnvironment.TerrainType.FLAT);
+                break;
+            case R.id.rd_btn_hilly:
+                env.setTerrainType(RouteEnvironment.TerrainType.HILLY);
         }
     }
 
     private void setSurfaceType() {
-        if(surfaceTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_even) {
-            env.setSurfaceType(RouteEnvironment.SurfaceType.EVEN);
-        }else if(surfaceTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_uneven) {
-            env.setSurfaceType(RouteEnvironment.SurfaceType.UNEVEN);
+        switch(surfaceTypeRdGroup.getCheckedRadioButtonId()) {
+            case R.id.rd_btn_even:
+                env.setSurfaceType(RouteEnvironment.SurfaceType.EVEN);
+                break;
+            case R.id.rd_btn_uneven:
+                env.setSurfaceType(RouteEnvironment.SurfaceType.UNEVEN);
         }
     }
 
     private void setTrailType() {
-        if (landTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_street) {
-            env.setTrailType(RouteEnvironment.TrailType.STREETS);
-        } else if (landTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_trail) {
-            env.setTrailType(RouteEnvironment.TrailType.TRAIL);
+        switch(landTypeRdGroup.getCheckedRadioButtonId()) {
+            case R.id.rd_btn_street:
+                env.setTrailType(RouteEnvironment.TrailType.STREETS);
+                break;
+            case R.id.rd_btn_trail:
+                env.setTrailType(RouteEnvironment.TrailType.TRAIL);
         }
     }
 
     private void setDifficulty() {
-        if(difficultyTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_hard) {
-            env.setDifficulty(RouteEnvironment.Difficulty.HARD);
-        }else if(difficultyTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_moderate) {
-            env.setDifficulty(RouteEnvironment.Difficulty.MODERATE);
-        }else if(difficultyTypeRdGroup.getCheckedRadioButtonId() == R.id.rd_btn_easy) {
-            env.setDifficulty(RouteEnvironment.Difficulty.EASY);
+        switch(difficultyTypeRdGroup.getCheckedRadioButtonId()) {
+            case R.id.rd_btn_hard:
+                env.setDifficulty(RouteEnvironment.Difficulty.HARD);
+                break;
+            case R.id.rd_btn_moderate:
+                env.setDifficulty(RouteEnvironment.Difficulty.MODERATE);
+                break;
+            case R.id.rd_btn_easy:
+                env.setDifficulty(RouteEnvironment.Difficulty.EASY);
         }
     }
 
