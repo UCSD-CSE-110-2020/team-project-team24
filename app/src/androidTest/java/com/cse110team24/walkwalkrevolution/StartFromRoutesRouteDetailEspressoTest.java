@@ -41,15 +41,14 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SaveRouteActivityEspressoTest {
-
+public class StartFromRoutesRouteDetailEspressoTest {
     /**
      * new activity test rule to forcibly remove app data
      * @param <T>
      * notes: see https://stackoverflow.com/questions/37597080/reset-app-state-between-instrumentationtestcase-runs
      */
-    class SaveRouteActivityTestRule<T extends Activity> extends ActivityTestRule<T> {
-        SaveRouteActivityTestRule(Class<T> activityClass) {
+    class StartFromRoutesRouteDetailTestRule<T extends Activity> extends ActivityTestRule<T> {
+        StartFromRoutesRouteDetailTestRule(Class<T> activityClass) {
             super(activityClass);
         }
 
@@ -64,13 +63,11 @@ public class SaveRouteActivityEspressoTest {
                     .apply();
         }
 
-
-
     }
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     @Rule
-    public SaveRouteActivityTestRule<HeightActivity> mActivityTestRule = new SaveRouteActivityTestRule<>(HeightActivity.class);
+    public StartFromRoutesRouteDetailTestRule<HeightActivity> mActivityTestRule = new StartFromRoutesRouteDetailTestRule<>(HeightActivity.class);
 
     private long nextStepCount;
 
@@ -88,11 +85,15 @@ public class SaveRouteActivityEspressoTest {
         edit.commit();
         nextStepCount = 0;
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+                .getTargetContext()
+                .deleteFile(RoutesActivity.LIST_SAVE_FILE);
     }
 
-
     @Test
-    public void saveActivityEspressoTest() {
+    public void startFromRoutesRouteDetailEspressoTest() {
+        setup();
+
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.et_height_feet),
                         childAtPosition(
@@ -123,45 +124,25 @@ public class SaveRouteActivityEspressoTest {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        ViewInteraction bottomNavigationItemView2 = onView(
-                allOf(withId(R.id.action_home), withContentDescription("Home"),
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.action_routes_list), withContentDescription("Routes"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.bottom_navigation),
                                         0),
-                                0),
+                                1),
                         isDisplayed()));
-        bottomNavigationItemView2.perform(click());
+        bottomNavigationItemView.perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.btn_start_walk), withText("Start Walk"),
+        ViewInteraction floatingActionButton = onView(
+                allOf(withId(R.id.fab),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                7),
+                                1),
                         isDisplayed()));
-        appCompatButton2.perform(click());
-
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.btn_stop_walk), withText("Stop Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
-
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.btn_save_this_route), withText("Save this route?"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                17),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
+        floatingActionButton.perform(click());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.et_save_route_title),
@@ -170,30 +151,131 @@ public class SaveRouteActivityEspressoTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 1)));
-        appCompatEditText3.perform(scrollTo(), replaceText("Marian Bear"), closeSoftKeyboard());
+        appCompatEditText3.perform(scrollTo(), replaceText("route"), closeSoftKeyboard());
 
-        ViewInteraction appCompatButton5 = onView(
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.et_save_route_location),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatEditText4.perform(scrollTo(), replaceText("wherever"), closeSoftKeyboard());
+
+        ViewInteraction appCompatRadioButton = onView(
+                allOf(withId(R.id.radio_btn_out_back), withText("Out-and-back"),
+                        childAtPosition(
+                                allOf(withId(R.id.radiogroup_route_type),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                5)),
+                                1)));
+        appCompatRadioButton.perform(scrollTo(), click());
+
+        ViewInteraction appCompatRadioButton2 = onView(
+                allOf(withId(R.id.rd_btn_hilly), withText("Hilly"),
+                        childAtPosition(
+                                allOf(withId(R.id.rd_group_terrain_type),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                7)),
+                                1)));
+        appCompatRadioButton2.perform(scrollTo(), click());
+
+        ViewInteraction appCompatRadioButton3 = onView(
+                allOf(withId(R.id.rd_btn_uneven), withText("Uneven"),
+                        childAtPosition(
+                                allOf(withId(R.id.rd_group_surface_type),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                9)),
+                                1)));
+        appCompatRadioButton3.perform(scrollTo(), click());
+
+        ViewInteraction appCompatRadioButton4 = onView(
+                allOf(withId(R.id.rd_btn_trail), withText("Trail"),
+                        childAtPosition(
+                                allOf(withId(R.id.rd_group_land_type),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                11)),
+                                1)));
+        appCompatRadioButton4.perform(scrollTo(), click());
+
+        ViewInteraction appCompatRadioButton5 = onView(
+                allOf(withId(R.id.rd_btn_easy), withText("Easy"),
+                        childAtPosition(
+                                allOf(withId(R.id.rd_group_difficulty),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                13)),
+                                2)));
+        appCompatRadioButton5.perform(scrollTo(), click());
+
+        ViewInteraction appCompatEditText5 = onView(
+                allOf(withId(R.id.et_route_notes),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                15)));
+        appCompatEditText5.perform(scrollTo(), replaceText("hi"), closeSoftKeyboard());
+
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {}
+
+        ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.btn_save_route), withText("SAVE"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 16)));
-        appCompatButton5.perform(scrollTo(), click());
+        appCompatButton2.perform(scrollTo(), click());
 
-        ViewInteraction bottomNavigationItemView3 = onView(
-                allOf(withId(R.id.action_routes_list), withContentDescription("Routes"),
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {}
+
+        ViewInteraction relativeLayout = onView(
+                allOf(withId(R.id.routes_container),
                         childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.bottom_navigation),
-                                        0),
-                                1),
+                                allOf(withId(R.id.recycler_view),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                3)),
+                                0),
                         isDisplayed()));
-        bottomNavigationItemView3.perform(click());
+        relativeLayout.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.tv_route_name), withText("Marian Bear"), isDisplayed()));
-        textView.check(matches(withText("Marian Bear")));
+                allOf(withId(R.id.tv_starting_loc), withText("wherever"), isDisplayed()));
+        textView.check(matches(withText("wherever")));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.tv_rte_type), withText("Out-and-Back"), isDisplayed()));
+        textView2.check(matches(withText("Out-and-Back")));
+
+        ViewInteraction textView3 = onView(
+                allOf(withId(R.id.tv_terr_type), withText("Hilly"), isDisplayed()));
+        textView3.check(matches(withText("Hilly")));
+
+        ViewInteraction textView4 = onView(
+                allOf(withId(R.id.tv_srfce_type), withText("Uneven"), isDisplayed()));
+        textView4.check(matches(withText("Uneven")));
+
+        ViewInteraction textView5 = onView(
+                allOf(withId(R.id.tv_lnd_type), withText("Trail"), isDisplayed()));
+        textView5.check(matches(withText("Trail")));
+
+        ViewInteraction textView6 = onView(
+                allOf(withId(R.id.tv_diff), withText("Easy"), isDisplayed()));
+        textView6.check(matches(withText("Easy")));
+
+        ViewInteraction textView7 = onView(
+                allOf(withId(R.id.tv_notes), withText("hi"), isDisplayed()));
+        textView7.check(matches(withText("hi")));
     }
 
     private static Matcher<View> childAtPosition(
