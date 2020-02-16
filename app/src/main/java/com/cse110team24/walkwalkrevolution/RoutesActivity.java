@@ -1,15 +1,12 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,6 +57,10 @@ public class RoutesActivity extends AppCompatActivity {
         if (requestCode == RouteDetailsActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             data.putExtra(ROUTES_LIST_KEY, (Serializable) routes);
             returnToHomeForWalk(data);
+        } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            routes = new ArrayList<>();
+            checkForExistingSavedRoutes();
+            configureRecyclerViewAdapter();
         }
 
     }
@@ -95,9 +96,13 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void setFabOnClickListener() {
         fab.setOnClickListener(view -> {
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            launchSaveActivity();
         });
+    }
+
+    private void launchSaveActivity() {
+        Intent intent = new Intent(this, SaveRouteActivity.class);
+        startActivityForResult(intent, SaveRouteActivity.REQUEST_CODE);
     }
 
     private void setBottomNavItemSelectedListener() {
