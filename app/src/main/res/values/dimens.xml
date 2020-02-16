@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
+    <!--    In activity_height.xml-->
     <dimen name="prompt_left_margin">8dp</dimen>
     <dimen name="prompt_top_margin">175dp</dimen>
+
+    <!--    In activity_home.xml-->
+    <dimen name="home_title_size">40sp</dimen>
     <dimen name="txt_bkg_color_width">298dp</dimen>
     <dimen name="txt_bkg_color_height">73dp</dimen>
-    <dimen name="home_title_size">40sp</dimen>
     <dimen name="home_txt_size">35sp</dimen>
-    <dimen name="btn_start_walk_width">230dp</dimen>
-    <dimen name="btn_start_walk_height">60dp</dimen>
-    <dimen name="start_walk_btn_txt_size">25sp</dimen>
-    <dimen name="recent_walk_info_text_size">20sp</dimen>
     <dimen name="recent_walk_info_left_bias">0.3</dimen>
     <dimen name="mock_btn_margin">64dp</dimen>
+    <dimen name="save_prompt_size">12sp</dimen>
+
+    <!--    In activity_mock.xml-->
     <dimen name="added_steps_top_margin">20dp</dimen>
     <dimen name="added_steps_start_margin">32dp</dimen>
     <dimen name="added_steps_size">36sp</dimen>
     <dimen name="section_top_margin">40sp</dimen>
     <dimen name="desired_time_size">28sp</dimen>
-    <dimen name="recycle_view_margin">64dp</dimen>
+
+    <!--    In activity_route_details.xml-->
     <dimen name="details_size">20sp</dimen>
     <dimen name="details_indent">12dp</dimen>
     <dimen name="subdetails_indent">32dp</dimen>
     <dimen name="details_start_btn_margin">48dp</dimen>
+
+    <!--    In both activity_home.xml and activity_route_details.xml-->
+    <dimen name="recent_walk_info_text_size">20sp</dimen>
+    <dimen name="btn_start_walk_width">230dp</dimen>
+    <dimen name="btn_start_walk_height">60dp</dimen>
+    <dimen name="start_walk_btn_txt_size">25sp</dimen>
+
+    <!--    In activity_routes.xml-->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="recycle_view_margin">64dp</dimen>
 </resources>
