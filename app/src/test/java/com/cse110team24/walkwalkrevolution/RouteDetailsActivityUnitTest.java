@@ -102,6 +102,17 @@ public class RouteDetailsActivityUnitTest {
         });
     }
     @Test
+    public void testStatsNeverRunBefore() {
+        ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intentIncomplete);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            assertEquals(detailsRecentStepsText.getVisibility(), View.GONE);
+            assertEquals(detailsRecentDistanceText.getVisibility(), View.GONE);
+            assertEquals(detailsRcentTimeElapsedText.getVisibility(), View.GONE);
+            assertEquals(neverWalkedBeforeText.getVisibility(), View.VISIBLE);
+        });
+    }
+    @Test
     public void testNoteIsSet() {
         ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
