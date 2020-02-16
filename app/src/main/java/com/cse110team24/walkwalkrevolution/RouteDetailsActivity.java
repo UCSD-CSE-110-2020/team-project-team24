@@ -176,8 +176,10 @@ public class RouteDetailsActivity extends AppCompatActivity {
         switch (rteType) {
             case LOOP:
                 routeTypeTv.setText(String.format("%s", "Loop"));
+                break;
             case OUT_AND_BACK:
                 routeTypeTv.setText(String.format("%s", "Out-and-Back"));
+                break;
         }
     }
 
@@ -191,8 +193,10 @@ public class RouteDetailsActivity extends AppCompatActivity {
         switch (terrType) {
             case FLAT:
                 terrainTypeTv.setText(String.format("%s", "Flat"));
+                break;
             case HILLY:
                 terrainTypeTv.setText(String.format("%s", "Hilly"));
+                break;
         }
     }
 
@@ -206,8 +210,10 @@ public class RouteDetailsActivity extends AppCompatActivity {
         switch (srfceType) {
             case EVEN:
                 surfaceTypeTv.setText(String.format("%s", "Even"));
+                break;
             case UNEVEN:
                 surfaceTypeTv.setText(String.format("%s", "Uneven"));
+                break;
         }
     }
 
@@ -221,8 +227,10 @@ public class RouteDetailsActivity extends AppCompatActivity {
         switch (lndType) {
             case TRAIL:
                 landTypeTv.setText(String.format("%s", "Trail"));
+                break;
             case STREETS:
                 landTypeTv.setText(String.format("%s", "Streets"));
+                break;
         }
     }
 
@@ -236,10 +244,13 @@ public class RouteDetailsActivity extends AppCompatActivity {
         switch (difficulty) {
             case EASY:
                 difficultyTv.setText(String.format("%s", "Easy"));
+                break;
             case MODERATE:
                 difficultyTv.setText(String.format("%s", "Moderate"));
+                break;
             case HARD:
                 difficultyTv.setText(String.format("%s", "Hard"));
+                break;
         }
     }
 
