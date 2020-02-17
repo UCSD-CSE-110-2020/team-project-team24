@@ -35,6 +35,26 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         mRoutes = myRoutes;
     }
 
+    @Override
+    public RouteAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View contactView = inflater.inflate(R.layout.item_route, parent, false);
+        ViewHolder viewHolder = new ViewHolder(contactView);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(RouteAdapter.ViewHolder viewHolder, int position) {
+        Route currRoute = mRoutes.get(position);
+        viewHolder.bind(currRoute);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mRoutes.size();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView routeNameTv;
         private TextView stepsTv;
@@ -62,6 +82,21 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
             notifyDataSetChanged();
         }
 
+        private void setStatsVisibility(int visibility) {
+            stepsTv.setVisibility(visibility);
+            distanceTv.setVisibility(visibility);
+            dateTv.setVisibility(visibility);
+        }
+
+        private void checkFavorite(boolean isFavorite) {
+            Log.i(TAG, "checkFavorite: toggling route is favorite");
+            if (isFavorite) {
+                favoriteBtn.setBackgroundResource(R.drawable.ic_star_yellow_24dp);
+            } else {
+                favoriteBtn.setBackgroundResource(R.drawable.ic_star_border_black_24dp);
+            }
+        }
+
         public void bind(Route route) {
             container.setOnClickListener(view -> {
                 Intent intent = new Intent(context, RouteDetailsActivity.class)
@@ -71,63 +106,20 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
                     ((Activity) context).startActivityForResult(intent, RouteDetailsActivity.REQUEST_CODE);
                 }
             });
+
+            checkFavorite(route.isFavorite());
+            routeNameTv.setText(route.getTitle());
+            WalkStats stats = route.getStats();
+            if(stats == null) {
+                setStatsVisibility(View.INVISIBLE);
+            } else {
+                setStatsVisibility(View.VISIBLE);
+
+                stepsTv.setText(String.format("%s%s", String.valueOf(stats.getSteps()), " steps"));
+                distanceTv.setText(stats.formattedDistance());
+                dateTv.setText(stats.formattedDate());
+            }
         }
-    }
-
-    @Override
-    public RouteAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View contactView = inflater.inflate(R.layout.item_route, parent, false);
-        ViewHolder viewHolder = new ViewHolder(contactView);
-        return viewHolder;
-    }
-
-    // TODO: 2020-02-14 most of the UI stuff should be handled by the ViewHolder
-        // probably in viewHolder.bind
-        // again, walk stats should handle parsing its values into strings
-    @Override
-    public void onBindViewHolder(RouteAdapter.ViewHolder viewHolder, int position) {
-        Route currRoute = mRoutes.get(position);
-
-        viewHolder.routeNameTv.setText(currRoute.getTitle());
-
-        WalkStats stats = currRoute.getStats();
-        if(stats == null) {
-            setStatsVisibility(viewHolder, View.INVISIBLE);
-        } else {
-            setStatsVisibility(viewHolder, View.VISIBLE);
-
-            Resources res = context.getResources();
-            viewHolder.stepsTv.setText(String.format("%s%s", String.valueOf(stats.getSteps()), " steps"));
-            NumberFormat numberFormat = new DecimalFormat("#0.00");
-            viewHolder.distanceTv.setText(String.format("%s%s", numberFormat.format(stats.getDistance()), " mile(s)"));
-            Date date = currRoute.getStats().getDateCompleted().getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd", Locale.US);
-            viewHolder.dateTv.setText(sdf.format(date));
-        }
-        checkFavorite(viewHolder, currRoute.isFavorite());
-        viewHolder.bind(currRoute);
-    }
-
-    private void setStatsVisibility(ViewHolder viewHolder, int visibility) {
-        viewHolder.stepsTv.setVisibility(visibility);
-        viewHolder.distanceTv.setVisibility(visibility);
-        viewHolder.dateTv.setVisibility(visibility);
-    }
-
-    private void checkFavorite(ViewHolder viewHolder, boolean isFavorite) {
-        Log.i(TAG, "checkFavorite: toggling route is favorite");
-        if (isFavorite) {
-            viewHolder.favoriteBtn.setBackgroundResource(R.drawable.ic_star_yellow_24dp);
-        } else {
-            viewHolder.favoriteBtn.setBackgroundResource(R.drawable.ic_star_border_black_24dp);
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return mRoutes.size();
     }
 
 }

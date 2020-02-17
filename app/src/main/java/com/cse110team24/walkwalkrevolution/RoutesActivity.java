@@ -109,13 +109,8 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void setBottomNavItemSelectedListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch(menuItem.getItemId()) {
-                case R.id.action_home:
-                    launchGoToHomeActivity();
-                    break;
-
-                case R.id.action_routes_list:
-                    break;
+            if(menuItem.getItemId() == R.id.action_home) {
+                launchGoToHomeActivity();
             }
             return true;
         });

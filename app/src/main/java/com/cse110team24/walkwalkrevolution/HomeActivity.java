@@ -183,13 +183,8 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch(menuItem.getItemId()) {
-                case R.id.action_home:
-                    break;
-
-                case R.id.action_routes_list:
-                    launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
-                    break;
+            if(menuItem.getItemId() == R.id.action_routes_list) {
+                launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
             }
             return true;
         });
