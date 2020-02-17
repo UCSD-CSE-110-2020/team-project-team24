@@ -10,12 +10,12 @@ import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-// TODO: 2020-02-16 refactor add logging to this class
 public class SaveRouteActivity extends AppCompatActivity {
     private static final String TAG = "SaveRouteActivity";
 
@@ -59,6 +59,7 @@ public class SaveRouteActivity extends AppCompatActivity {
             Intent intent = new Intent()
                     .putExtra(NEW_ROUTE_KEY, route);
             setResult(Activity.RESULT_OK, intent);
+            Log.i(TAG, "onCreate: new route created: " + route);
             finish();
         });
     }
