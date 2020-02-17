@@ -1,8 +1,13 @@
 package com.cse110team24.walkwalkrevolution.models;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 public class WalkStats implements Serializable {
     private long steps;
@@ -62,5 +67,33 @@ public class WalkStats implements Serializable {
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "\ndistance: " + formattedDistance() +
+                "\ntime: " + formattedTime() +
+                "\ndate completed: " + dateCompleted.getTime();
+    }
+
+
+    public String formattedDistance() {
+        return format(distance,"mile(s)");
+    }
+
+
+    public String formattedTime() {
+        return format(timeElapsedInMinutes(), "min.");
+    }
+
+    public String formattedDate() {
+        Date date = dateCompleted.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd", Locale.US);
+        return sdf.format(date);
+    }
+
+    private String format(double val, String suffix) {
+        NumberFormat format = new DecimalFormat("#0.00");
+        return String.format("%s %s", format.format(val), suffix);
     }
 }

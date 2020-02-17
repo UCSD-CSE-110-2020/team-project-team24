@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
@@ -33,7 +34,7 @@ public class RoutesManager {
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(routes);
         oos.close();
-        Log.i(TAG, "writeList: sucessfully wrote list of routes to " + filename);
+        Log.i(TAG, "writeList: successfully wrote list of routes to " + filename);
     }
 
     /**
@@ -49,6 +50,13 @@ public class RoutesManager {
         oos.writeObject(route);
         oos.close();
         Log.i(TAG, "writeSingle: successfully wrote single Route object to " + filename);
+    }
+
+    public static void appendToList(Route route, String filename, Context context) throws IOException {
+        List<Route> storedRoutes = readList(filename, context);
+        storedRoutes.add(route);
+        writeList(storedRoutes, filename, context);
+        Log.i(TAG, "appendToList: successfully appended single Route object to" + filename +" by calling writeListg");
     }
 
     /**
@@ -109,6 +117,17 @@ public class RoutesManager {
         return latest;
     }
 
+    public static void replaceInList(Route route, int idx, String listFilename, Context context) throws IOException{
+        if (idx < 0) {
+            appendToList(route, listFilename, context);
+            return;
+        }
+        List<Route> routes = readList(listFilename, context);
+        routes.remove(idx);
+        routes.add(idx, route);
+        writeList(routes, listFilename, context);
+    }
+
     /**
      * otherwise just write the new route. if route's stats are null, does nothing
      * @param route route to be written to file
@@ -119,15 +138,12 @@ public class RoutesManager {
         if (route.getStats() == null) {
             throw new IllegalArgumentException("Can't write latest route without stats");
         }
-        deleteExistingFile(filename);
+        deleteExistingFile(filename, context);
         writeSingle(route, filename, context);
     }
 
-    private static void deleteExistingFile(String filename) {
-        File file = new File(filename);
-        if (file.exists()) {
-            file.delete();
-        }
+    private static void deleteExistingFile(String filename, Context context) {
+        context.deleteFile(filename);
     }
 
     // for convenience - gets input stream, handling exceptions
@@ -143,5 +159,21 @@ public class RoutesManager {
             ois = new ObjectInputStream(fis);
         } catch (IOException e) {}
         return ois;
+    }
+
+    public static class AsyncTaskSaveRoutes extends AsyncTask<Object, Object, Object> {
+        @Override
+        protected Object doInBackground(Object... params) {
+            List<Route> routes = (List<Route>) params[0];
+            Context context = (Context) params[1];
+            try {
+                writeList(routes, RoutesActivity.LIST_SAVE_FILE, context);
+            } catch (IOException e) {
+                Log.e(TAG, "doInBackground: Couldn't save to file", e);
+                return null;
+            }
+            Log.i(TAG, "doInBackground: saved current instance of routes to file");
+            return null;
+        }
     }
 }

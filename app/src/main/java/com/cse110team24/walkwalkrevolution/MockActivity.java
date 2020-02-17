@@ -8,6 +8,7 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -93,6 +94,7 @@ public class MockActivity extends AppCompatActivity {
                 .putExtra(SETTING_START_TIME_KEY, settingStartTime)
                 .putExtra(INPUT_TIME_KEY, inputtedTime.getText().toString());
         setResult(Activity.RESULT_OK, intent);
+        Log.i(TAG, "finishMockActivity: mocked steps: " + totalAddedSteps);
         finish();
     }
 

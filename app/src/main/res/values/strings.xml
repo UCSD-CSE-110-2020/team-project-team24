@@ -1,60 +1,90 @@
 <resources>
-    <string name="app_name">WalkWalkRevolution</string>
-    <string name="title_activity_saving_page">Save your walk</string>
+
+    <!--    In activity_height.xml -->
+    <string name="height_prompt">Please enter your height:</string>
+    <string name="num_hint">0</string>
+    <string name="feet_units">ft</string>
+    <string name="inch_units">in</string>
+
+    <!--    In activity_home.xml-->
+    <string name="daily_steps">Daily Steps</string>
+    <string name="daily_distance">Daily Distance</string>
+    <string name="daily_step_background">Background for Daily Steps</string>
+    <string name="daily_distance_background">Background for Daily Distance</string>
+    <string name="stop_walk">Stop Walk</string>
+    <string name="most_recent_walk"> Most Recent Walk</string>
+    <string name="mock_btn_text">Mock Values</string>
+    <string name="no_walk_today">You haven\'t completed a walk today!</string>
+    <string name="save_prompt">Save this route?</string>
+
+    <!--    In activity_mock.xml-->
+    <string name="total_steps">0</string>
+    <string name="added_steps">Added Steps:</string>
+    <string name="click_to_add">Click to add 500 to your step count</string>
+    <string name="increment_btn_text">+500</string>
+    <string name="time_hint">hh:mm:ss</string>
+    <string name="max_input_chars">8</string>
+    <string name="enter_start_time">Enter Desired Start Time: </string>
+
+    <!--    In activity_route_details.xml-->
+    <string name="starting_loc"><u>Starting Location</u></string>
+    <string name="unspecified">(unspecified)</string>
+    <string name="route_env"><u>Environment Details</u></string>
+    <string name="recent_walk"><u>Most Recent Walk</u></string>
+    <string name="never_walked">You have never gone on this walk</string>
+    <string name="note_details"><u>Notes</u></string>
+
+    <!--    In content_save_route.xml-->
     <string name="title">Title: (this is REQUIRED) </string>
+    <string name="name_route_hint">Name Route</string>
     <string name="starting_location">Starting Location:</string>
-    <string name="route_type">Route Type:</string>
+    <string name="location_det_hint">Location Details</string>
     <string name="loop">Loop</string>
     <string name="out_and_back">Out-and-back</string>
-    <string name="terrain_type">Terrain Type:</string>
     <string name="flat_button">Flat</string>
     <string name="hilly_button">Hilly</string>
-    <string name="surface_type">Surface Type:</string>
     <string name="even">Even</string>
     <string name="uneven">Uneven</string>
-    <string name="land_type">Land Type:</string>
     <string name="street">Street</string>
     <string name="trail">Trail</string>
-    <string name="difficulty">Difficulty:</string>
     <string name="hard">Hard</string>
     <string name="moderate">Moderate</string>
     <string name="easy">Easy</string>
     <string name="notes">Notes</string>
     <string name="notesHint">Extra information about the route</string>
     <string name="save">SAVE</string>
-    <string name = "name_route_hint">Name Route</string>
-    <string name="location_det_hint">Location Details</string>
-    <string name="title_activity_routes">Routes</string>
-    <string name="routes">Routes</string>
-    <string name="home">Home</string>
+
+    <!--    In item_route.xml-->
     <string name="fake_title">Canyon View Hiking Trail</string>
     <string name="fake_steps">22 steps</string>
     <string name="fake_distance">0.01 miles</string>
     <string name="fake_date">1/20</string>
-    <string name="height_prompt">Please enter your height:</string>
-    <string name="num_hint">0</string>
-    <string name="feet_units">ft</string>
-    <string name="inch_units">in</string>
+
+    <!--    In both activity_height.xml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
-    <string name="dailySteps">Daily Steps</string>
-    <string name="dailyDistance">Daily Distance</string>
-    <string name="dailyStepBackground">Background for Daily Steps</string>
-    <string name="dailyDistanceBackground">Background for Daily Distance</string>
-    <string name="startWalk">Start Walk</string>
-    <string name="mostRecentWalk"> Most Recent Walk</string>
-    <string name="totalSteps">Total Steps: </string>
-    <string name="totalDistance">Total Distance: </string>
-    <string name="timeElapsed">Time Elapsed: </string>
-    <string name="noWalkToday">You haven\'t completed a walk today!</string>
-    <string name="stopWalk">Stop Walk</string>
-    <string name="mock_btn_text">Mock Values</string>
-    <string name="click_to_add">Click to add 500 to your step count</string>
-    <string name="increment_btn_text">+500</string>
-    <string name="added_steps">Added Steps:</string>
-    <string name="total_steps">0</string>
-    <string name="time_hint">hh:mm:ss</string>
-    <string name="max_input_chars">8</string>
-    <string name="enter_start_time">Enter Desired Start Time: </string>
+
+    <!--    In both activity_home.xml and activity_route_details.xml-->
+    <string name="total_steps_prompt">Total Steps: </string>
+    <string name="total_distance">Total Distance: </string>
+    <string name="time_elapsed">Time Elapsed: </string>
+    <string name="start_walk">Start Walk</string>
+
+    <!--    In both activity_route_details.xml and content_save_route.xml-->
+    <string name="route_type">Route Type:</string>
+    <string name="terrain_type">Terrain Type:</string>
+    <string name="surface_type">Surface Type:</string>
+    <string name="land_type">Land Type:</string>
+    <string name="difficulty">Difficulty:</string>
+
+    <!--    In MockActivity.java-->
     <string name="enter_end_time">Enter Desired End Time: </string>
-    <string name="save_prompt">Save this route?</string>
+
+    <!--    In AndroidManifest.xml-->
+    <string name="app_name">WalkWalkRevolution</string>
+    <string name="title_activity_saving_page">Save your walk</string>
+    <string name="title_activity_routes">Routes</string>
+
+    <!--    Others-->
+    <string name="routes">Routes</string>
+    <string name="home">Home</string>
 </resources>

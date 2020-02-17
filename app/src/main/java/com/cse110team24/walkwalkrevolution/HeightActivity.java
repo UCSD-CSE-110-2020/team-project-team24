@@ -25,12 +25,12 @@ public class HeightActivity extends AppCompatActivity {
 
     private Intent homeIntent;
 
-    EditText feetEditText;
-    EditText inchesEditText;
-    Button finishBtn;
+    private EditText feetEditText;
+    private EditText inchesEditText;
+    private Button finishBtn;
 
-    int feet;
-    float inches;
+    private int feet;
+    private float inches;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +38,8 @@ public class HeightActivity extends AppCompatActivity {
         setContentView(R.layout.activity_height);
 
         final SharedPreferences preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
-
         homeIntent = new Intent(this, HomeActivity.class);
+
         getConfiguredFields();
         checkHeight(preferences);
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
@@ -84,15 +84,12 @@ public class HeightActivity extends AppCompatActivity {
     }
 
     private void launchHomeActivity() {
-        Log.d(TAG, "launchHomeActivity: fitnessServiceKey passed to home: " + fitnessServiceKey);
         Log.i(TAG, "launchHomeActivity: valid height params found; launching home.");
         homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
                     .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
                     .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
         finish();
         startActivity(homeIntent);
-   //     Intent intent = new Intent(this, HomeActivity.class);
-    //    startActivity(intent);
     }
 
     private void checkHeight(SharedPreferences preferences) {
@@ -105,7 +102,6 @@ public class HeightActivity extends AppCompatActivity {
         }
     }
 
-    // TODO - change to REGEX to avoid exception
     private boolean validateInches() {
         try {
             inches = Float.parseFloat(inchesEditText.getText().toString());
@@ -115,7 +111,6 @@ public class HeightActivity extends AppCompatActivity {
         return inches <= MAX_INCHES && inches > 0;
     }
 
-    // TODO - change to REGEX to avoid exception
     private boolean validateFeet() {
         try {
             feet = Integer.parseInt(feetEditText.getText().toString());

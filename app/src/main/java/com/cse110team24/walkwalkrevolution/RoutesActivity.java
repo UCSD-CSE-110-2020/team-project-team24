@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.cse110team24.walkwalkrevolution.models.Route;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,13 +26,14 @@ public class RoutesActivity extends AppCompatActivity {
 
     public static final String LIST_SAVE_FILE = ".WWR_route_list_data";
     public static final String SAVE_FILE_KEY = "save_file";
+    public static final int REQUEST_CODE = 11;
 
-    RouteAdapter adapter;
-    RecyclerView rvRoutes;
-    FloatingActionButton fab;
-    BottomNavigationView bottomNavigationView;
+    private RouteAdapter adapter;
+    private RecyclerView rvRoutes;
+    private FloatingActionButton fab;
+    private BottomNavigationView bottomNavigationView;
 
-    List<Route> routes = new ArrayList<>();
+    private List<Route> routes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +52,34 @@ public class RoutesActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            routes = new ArrayList<>();
-            checkForExistingSavedRoutes();
-            configureRecyclerViewAdapter();
+        if (requestCode == RouteDetailsActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            returnToHomeForWalk(data);
+        } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            handleNewRoute(data);
         }
+
+    }
+
+    private void handleNewRoute(Intent data) {
+        Route newRoute = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
+        routes.add(newRoute);
+        Collections.sort(routes);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void returnToHomeForWalk(Intent data) {
+        setResult(Activity.RESULT_OK, data);
+        transitionWithAnimation();
     }
 
     public void launchGoToHomeActivity() {
+        setResult(Activity.RESULT_CANCELED);
+        transitionWithAnimation();
+    }
+
+    private void transitionWithAnimation() {
+        RoutesManager.AsyncTaskSaveRoutes saver = new RoutesManager.AsyncTaskSaveRoutes();
+        saver.execute(routes, this);
         finish();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
@@ -88,15 +108,15 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void setBottomNavItemSelectedListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            if (menuItem.getItemId() == R.id.action_home)
+            if(menuItem.getItemId() == R.id.action_home) {
                 launchGoToHomeActivity();
+            }
             return true;
         });
     }
 
     private void checkForExistingSavedRoutes() {
-        String filename = getIntent().getStringExtra(SAVE_FILE_KEY);
-        filename = (filename == null) ? LIST_SAVE_FILE : filename;
+        String filename = getSaveFilename();
         try {
             List<Route> tempList = RoutesManager.readList(filename, this);
             routes.addAll(tempList);
@@ -104,11 +124,17 @@ public class RoutesActivity extends AppCompatActivity {
             e.printStackTrace();
             Log.e(TAG, "checkForExistingSavedRoutes: no routes found ", e);
         }
-        Collections.sort(routes);
         Log.i(TAG, "checkForExistingSavedRoutes: list of saved routes found with size " + routes.size());
     }
 
+    private String getSaveFilename() {
+        String filename = getIntent().getStringExtra(SAVE_FILE_KEY);
+        return (filename == null) ? LIST_SAVE_FILE : filename;
+    }
+
+
     private void configureRecyclerViewAdapter() {
+        Collections.sort(routes);
         adapter = new RouteAdapter(routes, this);
         rvRoutes.setAdapter(adapter);
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

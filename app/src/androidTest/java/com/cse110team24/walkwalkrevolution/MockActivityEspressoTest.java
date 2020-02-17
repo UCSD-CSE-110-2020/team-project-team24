@@ -61,7 +61,6 @@ public class MockActivityEspressoTest {
 
     }
 
-    // TODO: 2020-02-10 possibly needs to contain HeightActivity
     @Rule
     public MockActivityTestRule<HeightActivity> mActivityTestRule = new MockActivityTestRule<>(HeightActivity.class);
 

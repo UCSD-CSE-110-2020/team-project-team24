@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RouteDetailsActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_starting_loc_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/starting_loc"
+        android:textSize="@dimen/details_size"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/details_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_starting_loc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size"
+        android:layout_marginTop="@dimen/details_indent"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginEnd="@dimen/details_indent"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_starting_loc_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_route_env_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/route_env"
+        android:textStyle="bold"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/details_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_starting_loc"/>
+
+    <TextView
+        android:id="@+id/tv_rte_type_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/route_type"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_route_env_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_rte_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/details_indent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_rte_type_prompt"
+        app:layout_constraintStart_toEndOf="@id/tv_rte_type_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_terr_type_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/terrain_type"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rte_type_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_terr_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/details_indent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_terr_type_prompt"
+        app:layout_constraintStart_toEndOf="@id/tv_terr_type_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_srfce_type_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/surface_type"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_terr_type_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_srfce_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/details_indent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_srfce_type_prompt"
+        app:layout_constraintStart_toEndOf="@id/tv_srfce_type_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_lnd_type_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/land_type"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_srfce_type_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_lnd_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/details_indent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_lnd_type_prompt"
+        app:layout_constraintStart_toEndOf="@id/tv_lnd_type_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_diff_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_lnd_type_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_diff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/details_indent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_diff_prompt"
+        app:layout_constraintStart_toEndOf="@id/tv_diff_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_details_recent_walk_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recent_walk"
+        android:textSize="@dimen/details_size"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/details_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_diff_prompt" />
+
+    <TextView
+        android:id="@+id/tv_details_recent_steps_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/total_steps_prompt"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_walk_prompt" />
+
+
+    <TextView
+        android:id="@+id/tv_details_recent_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/details_indent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_details_recent_steps_prompt"
+        app:layout_constraintStart_toEndOf="@id/tv_details_recent_steps_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_details_recent_distance_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/total_distance"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_steps_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_details_recent_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/details_indent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_details_recent_distance_prompt"
+        app:layout_constraintStart_toEndOf="@id/tv_details_recent_distance_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_details_recent_time_elapsed_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_elapsed"
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_distance_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_details_recent_time_elapsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="@dimen/details_size"
+        android:layout_marginStart="@dimen/details_indent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_details_recent_time_elapsed_prompt"
+        app:layout_constraintStart_toEndOf="@id/tv_details_recent_time_elapsed_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_details_never_walked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/never_walked"
+        android:textSize="@dimen/recent_walk_info_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="invisible"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_notes"
+        app:layout_constraintTop_toTopOf="@id/btn_details_start_walk"/>
+
+    <TextView
+        android:id="@+id/tv_notes_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/note_details"
+        android:textSize="@dimen/details_size"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/details_indent"
+        android:layout_marginTop="@dimen/details_indent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_details_recent_time_elapsed_prompt"/>
+
+    <TextView
+        android:id="@+id/tv_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size"
+        android:layout_marginTop="@dimen/details_indent"
+        android:layout_marginStart="@dimen/subdetails_indent"
+        android:layout_marginEnd="@dimen/details_indent"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_notes_prompt"/>
+
+    <Button
+        android:id="@+id/btn_details_start_walk"
+        android:layout_width="@dimen/btn_start_walk_width"
+        android:layout_height="@dimen/btn_start_walk_height"
+        android:background="@drawable/my_button_bg"
+        android:text="@string/start_walk"
+        android:textSize="@dimen/start_walk_btn_txt_size"
+        android:layout_marginTop="@dimen/details_start_btn_margin"
+        android:layout_marginBottom="@dimen/details_start_btn_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_notes"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

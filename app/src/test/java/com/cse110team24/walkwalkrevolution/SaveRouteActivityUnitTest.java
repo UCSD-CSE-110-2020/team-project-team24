@@ -63,118 +63,13 @@ public class SaveRouteActivityUnitTest {
     }
 
     @Test
-    public void addRouteFromRoutes() {
-        ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
-        scenario.onActivity(activity -> {
-           getUIFields(activity);
-           editTextTitle.setText("some route");
-           doneButton.performClick();
-           Route actualRoute = null;
-
-            try {
-                actualRoute = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, activity.getApplicationContext())
-                        .get(0);
-            }
-            catch (IOException e) { e.printStackTrace(); }
-            assertEquals(expectedFabRoute, actualRoute);
-            assertEquals(expectedFabRoute.getStats(), actualRoute.getStats());
-        });
-    }
-
-    @Test
     public void testNoTitleEntered() {
         intent.putExtra(SaveRouteActivity.WALK_STATS_KEY, stats);
         ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             getUIFields(activity);
             doneButton.performClick();
-            List<Route> routes = null;
-            try {
-                routes = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, activity.getApplicationContext());
-            }
-            catch (IOException e) { e.printStackTrace(); }
-            assertTrue(routes.isEmpty());
             assertEquals(ShadowToast.getTextOfLatestToast(), "Title is required");
-        });
-    }
-
-    @Test
-    public void testJustTitleEntered() {
-        intent.putExtra(SaveRouteActivity.WALK_STATS_KEY, stats);
-        ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
-        scenario.onActivity(activity -> {
-            getUIFields(activity);
-            editTextTitle.setText("Test Title");
-            doneButton.performClick();
-            Route actualRoute = null;
-            try {
-                actualRoute = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, activity.getApplicationContext())
-                        .get(0);
-            }
-            catch (IOException e) { e.printStackTrace(); }
-            assertEquals(expectedRoute, actualRoute);
-        });
-    }
-
-    @Test
-    public void testAllFieldsEntered() {
-        intent.putExtra(SaveRouteActivity.WALK_STATS_KEY, stats);
-        ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
-        scenario.onActivity(activity -> {
-            getUIFields(activity);
-
-            editTextTitle.setText("Test Title");
-            editTextLocation.setText("Starting Location");
-            editTextNotes.setText("Some Notes");
-            routeTypeRdGroup.check(R.id.radio_btn_out_back);
-            terrainTypeRdGroup.check(R.id.rd_btn_hilly);
-            surfaceTypeRdGroup.check(R.id.rd_btn_uneven);
-            landTypeRdGroup.check(R.id.rd_btn_trail);
-            difficultyTypeRdGroup.check(R.id.rd_btn_moderate);
-
-            doneButton.performClick();
-            Route actualRoute = null;
-            try {
-                actualRoute = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, activity.getApplicationContext())
-                        .get(0);
-            }
-            catch (IOException e) { e.printStackTrace(); }
-            RouteEnvironment env = setRouteEnv(new RouteEnvironment(), RouteEnvironment.RouteType.OUT_AND_BACK,
-                    RouteEnvironment.TerrainType.HILLY, RouteEnvironment.SurfaceType.UNEVEN,
-                    RouteEnvironment.TrailType.TRAIL, RouteEnvironment.Difficulty.MODERATE);
-            expectedRoute.setStartingLocation("Starting Location")
-                    .setNotes("Some Notes")
-                    .setEnvironment(env);
-            assertEquals(expectedRoute, actualRoute);
-        });
-    }
-
-    // Save To Empty List already tested in tests above
-
-    @Test
-    public void testSaveToPopulatedList() {
-        intent.putExtra(SaveRouteActivity.WALK_STATS_KEY, stats);
-        ActivityScenario<SaveRouteActivity> scenario = ActivityScenario.launch(intent);
-        scenario.onActivity(activity -> {
-            getUIFields(activity);
-
-            List<Route> routes = new ArrayList<Route>();
-            routes.add(new Route("Before"));
-            try {
-                RoutesManager.writeList(routes, RoutesActivity.LIST_SAVE_FILE,
-                        activity.getApplicationContext());
-            }
-            catch (IOException e) { e.printStackTrace(); }
-
-            editTextTitle.setText("Test Title");
-            doneButton.performClick();
-            Route actualRoute = null;
-            try {
-                actualRoute = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, activity.getApplicationContext())
-                        .get(1);
-            }
-            catch (IOException e) { e.printStackTrace(); }
-            assertEquals(expectedRoute, actualRoute);
         });
     }
 
