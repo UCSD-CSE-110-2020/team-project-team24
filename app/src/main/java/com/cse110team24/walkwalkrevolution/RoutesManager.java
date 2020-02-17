@@ -52,6 +52,13 @@ public class RoutesManager {
         Log.i(TAG, "writeSingle: successfully wrote single Route object to " + filename);
     }
 
+    public static void appendToList(Route route, String filename, Context context) throws IOException {
+        List<Route> storedRoutes = readList(filename, context);
+        storedRoutes.add(route);
+        writeList(storedRoutes, filename, context);
+        Log.i(TAG, "appendToList: successfully appended single Route object to" + filename +" by calling writeListg");
+    }
+
     /**
      * read a list of Route objects from a file
      * @param filename file to be read from in app storage
@@ -108,12 +115,6 @@ public class RoutesManager {
         } catch (IOException e) {}
 
         return latest;
-    }
-
-    public static void appendToList(Route route, String listFilename, Context context) throws IOException {
-        List<Route> routes = readList(listFilename, context);
-        routes.add(route);
-        writeList(routes, listFilename, context);
     }
 
     public static void replaceInList(Route route, int idx, String listFilename, Context context) throws IOException{
