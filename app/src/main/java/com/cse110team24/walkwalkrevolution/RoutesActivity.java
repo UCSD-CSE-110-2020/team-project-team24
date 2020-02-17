@@ -55,7 +55,6 @@ public class RoutesActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RouteDetailsActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            data.putExtra(ROUTES_LIST_KEY, (Serializable) routes);
             returnToHomeForWalk(data);
         } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             routes = new ArrayList<>();

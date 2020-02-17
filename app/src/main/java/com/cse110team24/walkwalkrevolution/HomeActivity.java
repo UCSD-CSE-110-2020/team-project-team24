@@ -277,28 +277,38 @@ public class HomeActivity extends AppCompatActivity {
             Log.i(TAG, "checkIfRouteExisted: returning to route details view for automatic recording");
             Route existingRoute = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
             existingRoute.setStats(stats);
-            saveIntoList(existingRoute);
+            saveIntoList();
         }
     }
 
-    private void saveIntoList(Route route) {
-        List<Route> routes = replaceOldRoute(route);
-
+    private void saveIntoList() {
+        // TODO: 2020-02-16 make sure this works, it's replacing the two methods below it
+        int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, -1);
+        Route route = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
         try {
-            RoutesManager.writeList(routes, RoutesActivity.LIST_SAVE_FILE, this);
+            RoutesManager.replaceInList(route, idx, RoutesActivity.LIST_SAVE_FILE, this);
         } catch (IOException e) {
-            Log.e(TAG, "saveIntoList: could not save list into file", e);
+            Log.e(TAG, "saveIntoList: failed to replace route in list", e);
         }
-        Toast.makeText(this, "Route updated!", Toast.LENGTH_LONG).show();
     }
 
-    private List<Route> replaceOldRoute(Route route) {
-        int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
-        List<Route> routes = (List<Route>) data.getSerializableExtra(RoutesActivity.ROUTES_LIST_KEY);
-        routes.remove(idx);
-        routes.add(idx, route);
-        return routes;
-    }
+//        List<Route> routes = replaceOldRoute(route);
+//
+//        try {
+//            RoutesManager.writeList(routes, RoutesActivity.LIST_SAVE_FILE, this);
+//        } catch (IOException e) {
+//            Log.e(TAG, "saveIntoList: could not save list into file", e);
+//        }
+//        Toast.makeText(this, "Route updated!", Toast.LENGTH_LONG).show();
+//    }
+//
+//    private List<Route> replaceOldRoute(Route route) {
+//        int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
+//        List<Route> routes = (List<Route>) data.getSerializableExtra(RoutesActivity.ROUTES_LIST_KEY);
+//        routes.remove(idx);
+//        routes.add(idx, route);
+//        return routes;
+//    }
 
     private void setMockedExtras(Intent data) {
         setMockedTime(data);
