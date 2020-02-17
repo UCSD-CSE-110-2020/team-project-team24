@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-// TODO: 2020-02-16 refactor add logging to this class
+// TODO: 2020-02-16 refactor add logging to this clas
 public class SaveRouteActivity extends AppCompatActivity {
     private static final String TAG = "SaveRouteActivity";
 
