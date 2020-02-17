@@ -171,6 +171,10 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setLaunchMockActivityBtnOnClickListener() {
         launchMockActivityBtn.setOnClickListener(view -> {
+            if(!mocking && startWalkBtn.getVisibility() == View.INVISIBLE) {
+                showNoStartTimeToast();
+                return;
+            }
             launchMockActivity();
         });
     }
@@ -346,5 +350,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void showSetEndTimeToast() {
         Toast.makeText(this, "Remember to set an end time for your walk!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showNoStartTimeToast() {
+        Toast.makeText(this, "You didn't mock a start time for this walk!", Toast.LENGTH_SHORT).show();
     }
 }
