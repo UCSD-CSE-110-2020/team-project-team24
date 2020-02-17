@@ -151,7 +151,7 @@ public class SaveRouteActivity extends AppCompatActivity {
     }
 
     // TODO: 2020-02-14 again, these RoutesManager methods are used the same way in many places
-    private void saveNewRouteToStorage() {
+    /*private void saveNewRouteToStorage() {
         List<Route> storedRoutes = getStoredRoutes();
         storedRoutes.add(route);
         try {
@@ -172,6 +172,15 @@ public class SaveRouteActivity extends AppCompatActivity {
         }
 
         return storedRoutes;
+    }*/
+
+    private void saveNewRouteToStorage() {
+        try {
+            RoutesManager.appendToList(route, RoutesActivity.LIST_SAVE_FILE, this);
+        } catch (IOException e) {
+            Log.e(TAG, "saveNewRouteToStorage: could not write new route to file", e);
+        }
+        Log.i(TAG, "saveNewRouteToStorage: " + route);
     }
 
 
