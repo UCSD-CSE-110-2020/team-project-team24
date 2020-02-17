@@ -117,7 +117,10 @@ public class RoutesManager {
     }
 
     public static void replaceInList(Route route, int idx, String listFilename, Context context) throws IOException{
-        if (idx < 0) return;
+        if (idx < 0) {
+            appendToList(route, listFilename, context);
+            return;
+        }
         List<Route> routes = readList(listFilename, context);
         routes.remove(idx);
         routes.add(idx, route);

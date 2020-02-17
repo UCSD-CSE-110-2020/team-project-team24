@@ -60,7 +60,7 @@ public class RoutesActivity extends AppCompatActivity {
 
     }
 
-    // TODO: 2020-02-16 make sure this doesn;t break anything. Now save route doesn't save. Just passes back the route 
+    // TODO: 2020-02-16 make sure this doesn;t break anything. Now save route doesn't save. Just passes back the route
     private void handleNewRoute(@Nullable Intent data) {
         Route newRoute = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
         routes.add(newRoute);

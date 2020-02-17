@@ -229,7 +229,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        this.data = data;
         if (requestCode == fitnessService.getRequestCode()) {
             if (resultCode == Activity.RESULT_OK) {
                 fitnessService.updateDailyStepCount();
@@ -239,11 +239,21 @@ public class HomeActivity extends AppCompatActivity {
         } else if (requestCode == MockActivity.REQUEST_CODE && data != null) {
             setMockedExtras(data);
         } else if (requestCode == RoutesActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            this.data = data;
             startRecordingExistingRoute();
-        } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK) {
-            toggleBtn(saveRouteBtn);
+        } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK ) {
+            handleNewRouteRecorded(data);
         }
+    }
+
+    private void handleNewRouteRecorded(Intent data) {
+        toggleBtn(saveRouteBtn);
+        Route route = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
+        saveIntoList(route);
+        showRouteSavedToast();
+    }
+
+    private void showRouteSavedToast() {
+        Toast.makeText(this, "Route saved!", Toast.LENGTH_LONG).show();
     }
 
     private void startRecordingExistingRoute() {
@@ -277,17 +287,16 @@ public class HomeActivity extends AppCompatActivity {
             Log.i(TAG, "checkIfRouteExisted: returning to route details view for automatic recording");
             Route existingRoute = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
             existingRoute.setStats(stats);
-            saveIntoList();
+            saveIntoList(existingRoute);
+            showRouteUpdatedToast();
         }
     }
 
-    private void saveIntoList() {
+    private void saveIntoList(Route route) {
         // TODO: 2020-02-16 make sure this works, it's replacing the two methods below it
         int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, -1);
-        Route route = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
         try {
             RoutesManager.replaceInList(route, idx, RoutesActivity.LIST_SAVE_FILE, this);
-            showRouteUpdatedToast();
         } catch (IOException e) {
             Log.e(TAG, "saveIntoList: failed to replace route in list", e);
         }
