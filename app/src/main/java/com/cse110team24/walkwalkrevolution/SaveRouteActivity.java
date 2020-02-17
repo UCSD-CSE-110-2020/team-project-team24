@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.models.Route;
@@ -24,6 +25,7 @@ public class SaveRouteActivity extends AppCompatActivity {
     private static final String TAG = "SaveRouteActivity";
 
     public static final String WALK_STATS_KEY = "walk_stats";
+    public static final String NEW_ROUTE_KEY = "new_route";
     public static final int REQUEST_CODE = 7;
 
     private Route route;
@@ -58,8 +60,11 @@ public class SaveRouteActivity extends AppCompatActivity {
             }
             route.setEnvironment(env);
             route.setStats(stats);
-            saveNewRouteToStorage();
-            setResult(Activity.RESULT_OK);
+
+            // TODO: 2020-02-16 make sure this didn't break anything
+            Intent intent = new Intent()
+                    .putExtra(NEW_ROUTE_KEY, route);
+            setResult(Activity.RESULT_OK, intent);
             finish();
         });
     }
@@ -149,30 +154,4 @@ public class SaveRouteActivity extends AppCompatActivity {
                 env.setDifficulty(RouteEnvironment.Difficulty.EASY);
         }
     }
-
-    // TODO: 2020-02-14 again, these RoutesManager methods are used the same way in many places
-    private void saveNewRouteToStorage() {
-        List<Route> storedRoutes = getStoredRoutes();
-        storedRoutes.add(route);
-        try {
-            RoutesManager.writeList(storedRoutes, RoutesActivity.LIST_SAVE_FILE, this);
-        } catch (IOException e) {
-            Log.e(TAG, "saveNewRouteToStorage: could not write new route to file", e);
-        }
-        Log.i(TAG, "saveNewRouteToStorage: " + route);
-    }
-
-    private List<Route> getStoredRoutes() {
-        List<Route> storedRoutes;
-        try {
-            storedRoutes = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, this);
-        } catch (IOException e) {
-            Log.e(TAG, "saveNewRouteToStorage: could not load stored routes", e);
-            storedRoutes = new ArrayList<>();
-        }
-
-        return storedRoutes;
-    }
-
-
 }

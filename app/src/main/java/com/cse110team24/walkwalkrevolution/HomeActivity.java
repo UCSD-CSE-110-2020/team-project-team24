@@ -287,9 +287,14 @@ public class HomeActivity extends AppCompatActivity {
         Route route = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
         try {
             RoutesManager.replaceInList(route, idx, RoutesActivity.LIST_SAVE_FILE, this);
+            showRouteUpdatedToast();
         } catch (IOException e) {
             Log.e(TAG, "saveIntoList: failed to replace route in list", e);
         }
+    }
+
+    private void showRouteUpdatedToast() {
+        Toast.makeText(this, "Route updated!", Toast.LENGTH_LONG).show();
     }
 
 //        List<Route> routes = replaceOldRoute(route);

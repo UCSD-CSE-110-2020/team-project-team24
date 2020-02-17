@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.List;
 public class RoutesActivity extends AppCompatActivity {
     public static final String TAG = "RoutesActivity";
 
-    public static final String ROUTES_LIST_KEY = "list_or_routes";
     public static final String LIST_SAVE_FILE = ".WWR_route_list_data";
     public static final String SAVE_FILE_KEY = "save_file";
     public static final int REQUEST_CODE = 11;
@@ -57,11 +55,17 @@ public class RoutesActivity extends AppCompatActivity {
         if (requestCode == RouteDetailsActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             returnToHomeForWalk(data);
         } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            routes = new ArrayList<>();
-            checkForExistingSavedRoutes();
-            configureRecyclerViewAdapter();
+            handleNewRoute(data);
         }
 
+    }
+
+    // TODO: 2020-02-16 make sure this doesn;t break anything. Now save route doesn't save. Just passes back the route 
+    private void handleNewRoute(@Nullable Intent data) {
+        Route newRoute = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
+        routes.add(newRoute);
+        Collections.sort(routes);
+        adapter.notifyDataSetChanged();
     }
 
     private void returnToHomeForWalk(Intent data) {
@@ -118,10 +122,8 @@ public class RoutesActivity extends AppCompatActivity {
         });
     }
 
-    // TODO: 2020-02-14 this happens in a few places. probably need to refactor to a different place
     private void checkForExistingSavedRoutes() {
-        String filename = getIntent().getStringExtra(SAVE_FILE_KEY);
-        filename = (filename == null) ? LIST_SAVE_FILE : filename;
+        String filename = getSaveFilename();
         try {
             List<Route> tempList = RoutesManager.readList(filename, this);
             routes.addAll(tempList);
@@ -129,12 +131,17 @@ public class RoutesActivity extends AppCompatActivity {
             e.printStackTrace();
             Log.e(TAG, "checkForExistingSavedRoutes: no routes found ", e);
         }
-        Collections.sort(routes);
         Log.i(TAG, "checkForExistingSavedRoutes: list of saved routes found with size " + routes.size());
+    }
+
+    private String getSaveFilename() {
+        String filename = getIntent().getStringExtra(SAVE_FILE_KEY);
+        return (filename == null) ? LIST_SAVE_FILE : filename;
     }
 
 
     private void configureRecyclerViewAdapter() {
+        Collections.sort(routes);
         adapter = new RouteAdapter(routes, this);
         rvRoutes.setAdapter(adapter);
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
