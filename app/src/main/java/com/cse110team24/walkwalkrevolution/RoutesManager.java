@@ -30,7 +30,6 @@ public class RoutesManager {
      * @throws IOException if the file stream could not be created
      */
     public static void writeList(List<Route> routes, String filename, Context context) throws IOException {
-        // TODO: 2020-02-16 refactor write function to get oos and use it in these 2 methods
         FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(routes);
@@ -56,10 +55,9 @@ public class RoutesManager {
     public static void appendToList(Route route, String filename, Context context) throws IOException {
         List<Route> storedRoutes = readList(filename, context);
         storedRoutes.add(route);
-        RoutesManager.writeList(storedRoutes, filename, context);
+        writeList(storedRoutes, filename, context);
         Log.i(TAG, "appendToList: successfully appended single Route object to" + filename +" by calling writeListg");
     }
-
 
     /**
      * read a list of Route objects from a file
@@ -117,6 +115,17 @@ public class RoutesManager {
         } catch (IOException e) {}
 
         return latest;
+    }
+
+    public static void replaceInList(Route route, int idx, String listFilename, Context context) throws IOException{
+        if (idx < 0) {
+            appendToList(route, listFilename, context);
+            return;
+        }
+        List<Route> routes = readList(listFilename, context);
+        routes.remove(idx);
+        routes.add(idx, route);
+        writeList(routes, listFilename, context);
     }
 
     /**

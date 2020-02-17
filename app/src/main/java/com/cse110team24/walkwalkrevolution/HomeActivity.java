@@ -171,6 +171,10 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setLaunchMockActivityBtnOnClickListener() {
         launchMockActivityBtn.setOnClickListener(view -> {
+            if(!mocking && startWalkBtn.getVisibility() == View.INVISIBLE) {
+                showNoStartTimeToast();
+                return;
+            }
             launchMockActivity();
         });
     }
@@ -229,7 +233,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == fitnessService.getRequestCode()) {
             if (resultCode == Activity.RESULT_OK) {
                 fitnessService.updateDailyStepCount();
@@ -241,8 +244,9 @@ public class HomeActivity extends AppCompatActivity {
         } else if (requestCode == RoutesActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             this.data = data;
             startRecordingExistingRoute();
-        } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK) {
-            toggleBtn(saveRouteBtn);
+        } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK ) {
+            this.data = data;
+            handleNewRouteRecorded(data);
         }
     }
 
@@ -341,5 +345,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void showSetEndTimeToast() {
         Toast.makeText(this, "Remember to set an end time for your walk!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showNoStartTimeToast() {
+        Toast.makeText(this, "You didn't mock a start time for this walk!", Toast.LENGTH_SHORT).show();
     }
 }
