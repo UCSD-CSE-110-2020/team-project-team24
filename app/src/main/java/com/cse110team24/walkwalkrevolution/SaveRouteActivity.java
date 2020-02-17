@@ -10,15 +10,10 @@ import com.cse110team24.walkwalkrevolution.models.WalkStats;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 // TODO: 2020-02-16 refactor add logging to this class
 public class SaveRouteActivity extends AppCompatActivity {
@@ -61,7 +56,6 @@ public class SaveRouteActivity extends AppCompatActivity {
             route.setEnvironment(env);
             route.setStats(stats);
 
-            // TODO: 2020-02-16 make sure this didn't break anything
             Intent intent = new Intent()
                     .putExtra(NEW_ROUTE_KEY, route);
             setResult(Activity.RESULT_OK, intent);

@@ -293,7 +293,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void saveIntoList(Route route) {
-        // TODO: 2020-02-16 make sure this works, it's replacing the two methods below it
         int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, -1);
         try {
             RoutesManager.replaceInList(route, idx, RoutesActivity.LIST_SAVE_FILE, this);
@@ -305,24 +304,6 @@ public class HomeActivity extends AppCompatActivity {
     private void showRouteUpdatedToast() {
         Toast.makeText(this, "Route updated!", Toast.LENGTH_LONG).show();
     }
-
-//        List<Route> routes = replaceOldRoute(route);
-//
-//        try {
-//            RoutesManager.writeList(routes, RoutesActivity.LIST_SAVE_FILE, this);
-//        } catch (IOException e) {
-//            Log.e(TAG, "saveIntoList: could not save list into file", e);
-//        }
-//        Toast.makeText(this, "Route updated!", Toast.LENGTH_LONG).show();
-//    }
-//
-//    private List<Route> replaceOldRoute(Route route) {
-//        int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
-//        List<Route> routes = (List<Route>) data.getSerializableExtra(RoutesActivity.ROUTES_LIST_KEY);
-//        routes.remove(idx);
-//        routes.add(idx, route);
-//        return routes;
-//    }
 
     private void setMockedExtras(Intent data) {
         setMockedTime(data);
