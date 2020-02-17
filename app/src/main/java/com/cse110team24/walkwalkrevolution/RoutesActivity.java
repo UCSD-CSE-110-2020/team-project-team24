@@ -88,7 +88,6 @@ public class RoutesActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         rvRoutes = findViewById(R.id.recycler_view);
-
     }
 
     private void setListeners() {
