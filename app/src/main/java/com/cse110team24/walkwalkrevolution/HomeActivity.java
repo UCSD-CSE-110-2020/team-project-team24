@@ -233,6 +233,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        this.data = data;
         if (requestCode == fitnessService.getRequestCode()) {
             if (resultCode == Activity.RESULT_OK) {
                 fitnessService.updateDailyStepCount();
@@ -242,10 +243,8 @@ public class HomeActivity extends AppCompatActivity {
         } else if (requestCode == MockActivity.REQUEST_CODE && data != null) {
             setMockedExtras(data);
         } else if (requestCode == RoutesActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            this.data = data;
             startRecordingExistingRoute();
         } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK ) {
-            this.data = data;
             handleNewRouteRecorded(data);
         }
     }
