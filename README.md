@@ -7,3 +7,7 @@
   * We learned to get and display date from Java Calendar object from [this SO post](https://stackoverflow.com/questions/3574811/how-can-i-get-a-date-from-my-calendar) (accessed on February 3rd, 2020)
   
 Note: If not specified, the access date for each of the above references is between February 2, 2020 and February 16, 2020.
+
+# TODO
+1. We NEED to write more tests that do the same thing a couple of times to make sure toggling doesn't mess it up
+2. If possible, write tests that actually close and reopen the app to see what happens

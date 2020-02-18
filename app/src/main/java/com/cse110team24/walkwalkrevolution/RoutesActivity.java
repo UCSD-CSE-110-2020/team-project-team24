@@ -65,6 +65,7 @@ public class RoutesActivity extends AppCompatActivity {
         routes.add(newRoute);
         Collections.sort(routes);
         adapter.notifyDataSetChanged();
+        saveListAsync();
     }
 
     private void returnToHomeForWalk(Intent data) {
@@ -78,8 +79,7 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     private void transitionWithAnimation() {
-        RoutesManager.AsyncTaskSaveRoutes saver = new RoutesManager.AsyncTaskSaveRoutes();
-        saver.execute(routes, this);
+        saveListAsync();
         finish();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
@@ -138,5 +138,10 @@ public class RoutesActivity extends AppCompatActivity {
         adapter = new RouteAdapter(routes, this);
         rvRoutes.setAdapter(adapter);
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+    }
+
+    private void saveListAsync() {
+        RoutesManager.AsyncTaskSaveRoutes saver = new RoutesManager.AsyncTaskSaveRoutes();
+        saver.execute(routes, this);
     }
 }
