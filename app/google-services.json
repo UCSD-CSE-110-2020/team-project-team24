@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "669551235912",
+    "firebase_url": "https://walkwalkrevolution.firebaseio.com",
+    "project_id": "walkwalkrevolution",
+    "storage_bucket": "walkwalkrevolution.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669551235912:android:09a3a2e8cc5f83d0e8597d",
+        "android_client_info": {
+          "package_name": "com.cse110team24.walkwalkrevolution"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669551235912-sa415nfa33nn9oa97mojeu8pn4pajr4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cse110team24.walkwalkrevolution",
+            "certificate_hash": "ee356cc9c082ab5986f8675286713b3f21a3bd4c"
+          }
+        },
+        {
+          "client_id": "669551235912-mlhrp00du0ph2kqg08fpl53gprfv41as.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAINcU6_J0muN-8vmFI44vRmhQvpioMWbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669551235912-mlhrp00du0ph2kqg08fpl53gprfv41as.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
