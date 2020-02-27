@@ -1,7 +1,5 @@
 package com.cse110team24.walkwalkrevolution.models.route;
 
-import com.cse110team24.walkwalkrevolution.models.Builder;
-
 import java.io.Serializable;
 
 public class RouteEnvironment implements Serializable {
@@ -25,59 +23,59 @@ public class RouteEnvironment implements Serializable {
         STREETS, TRAIL;
     }
 
-    private RouteType routeType;
-    private TerrainType terrainType;
-    private SurfaceType surfaceType;
-    private TrailType trailType;
-    private Difficulty difficulty;
+    private RouteType mRouteType;
+    private TerrainType mTerrainType;
+    private SurfaceType mSurfaceType;
+    private TrailType mTrailType;
+    private Difficulty mDifficulty;
 
     public RouteType getRouteType() {
-        return routeType;
+        return mRouteType;
     }
 
     public void setRouteType(RouteType routeType) {
-        this.routeType = routeType;
+        this.mRouteType = routeType;
     }
 
     public TerrainType getTerrainType() {
-        return terrainType;
+        return mTerrainType;
     }
 
     public void setTerrainType(TerrainType terrainType) {
-        this.terrainType = terrainType;
+        this.mTerrainType = terrainType;
     }
 
     public SurfaceType getSurfaceType() {
-        return surfaceType;
+        return mSurfaceType;
     }
 
     public void setSurfaceType(SurfaceType surfaceType) {
-        this.surfaceType = surfaceType;
+        this.mSurfaceType = surfaceType;
     }
 
     public TrailType getTrailType() {
-        return trailType;
+        return mTrailType;
     }
 
     public void setTrailType(TrailType trailType) {
-        this.trailType = trailType;
+        this.mTrailType = trailType;
     }
 
     public Difficulty getDifficulty() {
-        return difficulty;
+        return mDifficulty;
     }
 
     public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
+        this.mDifficulty = difficulty;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof RouteEnvironment) {
             RouteEnvironment environment = (RouteEnvironment) o;
-            return routeType == environment.routeType && terrainType == environment.terrainType &&
-                    surfaceType == environment.surfaceType && trailType == environment.trailType &&
-                    difficulty == environment.difficulty;
+            return mRouteType == environment.mRouteType && mTerrainType == environment.mTerrainType &&
+                    mSurfaceType == environment.mSurfaceType && mTrailType == environment.mTrailType &&
+                    mDifficulty == environment.mDifficulty;
         }
 
         return false;
@@ -87,41 +85,46 @@ public class RouteEnvironment implements Serializable {
         return new RouteEnvironmentBuilder();
     }
 
-    public static class RouteEnvironmentBuilder implements Builder<RouteEnvironment> {
-        private RouteEnvironment env;
+    public static class RouteEnvironmentBuilder implements IRouteEnvironmentBuilder {
+        private RouteEnvironment mEnv;
 
         public RouteEnvironmentBuilder() {
-            env = new RouteEnvironment();
+            mEnv = new RouteEnvironment();
         }
 
+        @Override
         public RouteEnvironmentBuilder addRouteType(RouteType routeType) {
-            env.setRouteType(routeType);
+            mEnv.setRouteType(routeType);
             return this;
         }
 
+        @Override
         public RouteEnvironmentBuilder addTerrainType(TerrainType terrainType) {
-            env.setTerrainType(terrainType);
+            mEnv.setTerrainType(terrainType);
             return this;
         }
 
+        @Override
         public RouteEnvironmentBuilder addSurfaceType(SurfaceType surfaceType) {
-            env.setSurfaceType(surfaceType);
+            mEnv.setSurfaceType(surfaceType);
             return this;
         }
 
+        @Override
         public RouteEnvironmentBuilder addTrailType(TrailType trailType) {
-            env.setTrailType(trailType);
+            mEnv.setTrailType(trailType);
             return this;
         }
 
+        @Override
         public RouteEnvironmentBuilder addDifficulty(Difficulty difficulty) {
-            env.setDifficulty(difficulty);
+            mEnv.setDifficulty(difficulty);
             return this;
         }
 
         @Override
         public RouteEnvironment build() {
-            return env;
+            return mEnv;
         }
     }
 
