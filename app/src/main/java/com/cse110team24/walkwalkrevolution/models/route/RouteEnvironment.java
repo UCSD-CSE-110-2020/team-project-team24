@@ -1,4 +1,6 @@
-package com.cse110team24.walkwalkrevolution.models;
+package com.cse110team24.walkwalkrevolution.models.route;
+
+import com.cse110team24.walkwalkrevolution.models.Builder;
 
 import java.io.Serializable;
 

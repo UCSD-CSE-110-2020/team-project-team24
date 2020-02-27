@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cse110team24.walkwalkrevolution.models.Route;
-import com.cse110team24.walkwalkrevolution.models.RouteEnvironment;
-import com.cse110team24.walkwalkrevolution.models.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
+import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 
 import androidx.appcompat.app.AppCompatActivity;
 

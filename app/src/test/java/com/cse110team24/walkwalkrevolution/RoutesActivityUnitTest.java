@@ -1,7 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +12,8 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.cse110team24.walkwalkrevolution.models.Route;
-import com.cse110team24.walkwalkrevolution.models.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -23,7 +22,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.LooperMode;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;

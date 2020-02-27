@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.models;
+package com.cse110team24.walkwalkrevolution.models.route;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
