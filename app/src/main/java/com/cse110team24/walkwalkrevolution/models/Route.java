@@ -115,6 +115,11 @@ public class Route implements Serializable, Comparable<Route> {
             toBuild = new Route(title);
         }
 
+        public RouteBuilder addStartingLocation(String location) {
+            toBuild.setStartingLocation(location);
+            return this;
+        }
+
         public RouteBuilder addRouteEnvironment(RouteEnvironment env) {
             toBuild.setEnvironment(env);
             return this;
