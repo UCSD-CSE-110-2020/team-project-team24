@@ -110,33 +110,38 @@ public class Route implements Serializable, Comparable<Route> {
                 "\nstats: " + ((mStats == null) ? "none" : mStats);
     }
 
-    public static class RouteBuilder implements Builder<Route> {
+    public static class RouteBuilder implements IRouteBuilder {
         private Route mToBuild;
 
         public RouteBuilder(String title) {
             mToBuild = new Route(title);
         }
 
+        @Override
         public RouteBuilder addStartingLocation(String location) {
             mToBuild.setStartingLocation(location);
             return this;
         }
 
+        @Override
         public RouteBuilder addRouteEnvironment(RouteEnvironment env) {
             mToBuild.setEnvironment(env);
             return this;
         }
 
+        @Override
         public RouteBuilder addWalkStats(WalkStats stats) {
             mToBuild.setStats(stats);
             return this;
         }
 
+        @Override
         public RouteBuilder addNotes(String notes) {
             mToBuild.setNotes(notes);
             return this;
         }
 
+        @Override
         public RouteBuilder addFavStatus(boolean isFavorite) {
             mToBuild.setFavorite(isFavorite);
             return this;
