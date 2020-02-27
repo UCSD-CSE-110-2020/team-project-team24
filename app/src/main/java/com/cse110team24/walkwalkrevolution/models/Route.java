@@ -108,5 +108,38 @@ public class Route implements Serializable, Comparable<Route> {
                 "\nstats: " + ((stats == null) ? "none" : stats);
     }
 
+    public static class RouteBuilder implements Builder<Route> {
+        private Route toBuild;
+
+        public RouteBuilder(String title) {
+            toBuild = new Route(title);
+        }
+
+        public RouteBuilder addRouteEnvironment(RouteEnvironment env) {
+            toBuild.setEnvironment(env);
+            return this;
+        }
+
+        public RouteBuilder addWalkStats(WalkStats stats) {
+            toBuild.setStats(stats);
+            return this;
+        }
+
+        public RouteBuilder addNotes(String notes) {
+            toBuild.setNotes(notes);
+            return this;
+        }
+
+        public RouteBuilder addFavStatus(boolean isFavorite) {
+            toBuild.setFavorite(isFavorite);
+            return this;
+        }
+
+        @Override
+        public Route build() {
+            return toBuild;
+        }
+    }
+
 }
 
