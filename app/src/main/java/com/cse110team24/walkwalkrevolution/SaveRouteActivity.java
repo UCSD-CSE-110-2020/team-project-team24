@@ -53,8 +53,6 @@ public class SaveRouteActivity extends AppCompatActivity {
             if(route == null) {
                 return;
             }
-            route.setEnvironment(env);
-            route.setStats(stats);
 
             Intent intent = new Intent()
                     .putExtra(NEW_ROUTE_KEY, route);
@@ -82,10 +80,13 @@ public class SaveRouteActivity extends AppCompatActivity {
             route = null;
         }
         else {
-            route = new Route(title);
-            route.setStartingLocation(editTextLocation.getText().toString());
-            route.setNotes(editTextNotes.getText().toString());
             createRouteEnv();
+            route = new Route.RouteBuilder(title)
+                    .addStartingLocation(editTextLocation.getText().toString())
+                    .addNotes(editTextNotes.getText().toString())
+                    .addRouteEnvironment(env)
+                    .addWalkStats(stats)
+                    .build();
         }
     }
 
