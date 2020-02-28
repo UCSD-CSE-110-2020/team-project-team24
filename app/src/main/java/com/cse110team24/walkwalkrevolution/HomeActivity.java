@@ -20,11 +20,11 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 
-import com.cse110team24.walkwalkrevolution.models.Route;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import com.cse110team24.walkwalkrevolution.models.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 
 import java.io.IOException;
 import java.text.ParseException;

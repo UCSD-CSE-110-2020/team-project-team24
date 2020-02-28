@@ -4,9 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.cse110team24.walkwalkrevolution.models.Route;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

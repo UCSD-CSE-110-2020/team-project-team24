@@ -1,5 +1,5 @@
 package com.cse110team24.walkwalkrevolution.models;
 
-public interface Builder<Buildable> {
-    Buildable build();
+public interface Builder<TBuildable> {
+    TBuildable build();
 }

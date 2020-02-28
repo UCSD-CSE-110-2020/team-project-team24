@@ -10,9 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.cse110team24.walkwalkrevolution.models.Route;
-import com.cse110team24.walkwalkrevolution.models.RouteEnvironment;
-import com.cse110team24.walkwalkrevolution.models.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
+import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 
 public class RouteDetailsActivity extends AppCompatActivity {
     private static final String TAG = "RouteDetailsActivity";
