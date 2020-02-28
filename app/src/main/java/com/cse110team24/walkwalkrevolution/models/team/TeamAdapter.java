@@ -8,7 +8,7 @@ import java.util.List;
 public class TeamAdapter implements ITeam {
     private List<IUser> team;
 
-    public TeamAdapter(ArrayList<IUser> team) {
+    public TeamAdapter(List<IUser> team) {
         this.team = team;
     }
 
