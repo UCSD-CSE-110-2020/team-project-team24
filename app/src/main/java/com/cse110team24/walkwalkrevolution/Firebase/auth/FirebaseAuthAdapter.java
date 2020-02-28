@@ -30,6 +30,7 @@ public class FirebaseAuthAdapter implements AuthService {
                         mUser.setFirebaseUser(mAuth.getCurrentUser());
                     } else {
                         Log.e(TAG, "signUp: user sign-in failed", task.getException());
+                        mUser = null;
                     }
                 });
 
@@ -45,6 +46,7 @@ public class FirebaseAuthAdapter implements AuthService {
                         mUser.setFirebaseUser(mAuth.getCurrentUser());
                     } else {
                         Log.e(TAG, "signUp: user creation failed", task.getException());
+                        mUser = null;
                     }
                 });
         return mUser;
@@ -57,6 +59,6 @@ public class FirebaseAuthAdapter implements AuthService {
 
     @Override
     public boolean isUserSignedIn() {
-        return mUser.getFirebaseUser() != null;
+        return mUser == null || mUser.getFirebaseUser() != null;
     }
 }
