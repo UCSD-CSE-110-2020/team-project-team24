@@ -9,6 +9,7 @@
     <string name="enter_gmail_address">Enter gmail address</string>
     <string name="enter_gmail_password">Enter password</string>
     <string name="login">Login</string>
+    <string name="enter_name">Enter name</string>
 
     <!--    In activity_home.xml-->
     <string name="daily_steps">Daily Steps</string>

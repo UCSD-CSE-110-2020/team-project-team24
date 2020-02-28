@@ -12,8 +12,11 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.cse110team24.walkwalkrevolution.Firebase.auth.FirebaseAuthAdapter;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
+
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -27,10 +30,20 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText feetEditText;
     private EditText inchesEditText;
+    private EditText nameEditText;
+    private EditText gmailEditText;
+    private EditText passwordEditText;
     private Button finishBtn;
+    private FirebaseAuthAdapter mAuth;
 
     private int feet;
     private float inches;
+
+    private String gmailAddress;
+
+    //Hi Cheery! This was a gmail regex I found: (\W|^)[\w.\-]{0,25}@(gmail)\.com(\W|$)
+    //https://support.google.com/a/answer/1371417
+    //method is at bottom....scroll down
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +131,11 @@ public class LoginActivity extends AppCompatActivity {
             feet = (int) INVALID_VAL;
         }
         return feet <= MAX_FEET && feet > 0;
+    }
+
+    private boolean checkForGmailAddress() {
+        gmailAddress = gmailEditText.getText().toString();
+        return Pattern.matches("(\\W|^)[\\w.\\-]{0,25}@(gmail)\\.com(\\W|$)", gmailAddress);
     }
 
 }
