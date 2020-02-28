@@ -1,6 +1,6 @@
 <resources>
 
-    <!--    In activity_height.xml -->
+    <!--    In activity_loginxml -->
     <string name="height_prompt">Please enter your height:</string>
     <string name="num_hint">0</string>
     <string name="feet_units">ft</string>
@@ -68,7 +68,7 @@
     <string name="title_team_member_email">Team Member Email</string>
     <string name="btn_send_invite">Send Invitation</string>
 
-    <!--    In both activity_height.xml and activity_mock.xml-->
+    <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
 
     <!--    In both activity_home.xml and activity_route_details.xml-->

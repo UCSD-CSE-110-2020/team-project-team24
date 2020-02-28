@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--    In activity_height.xml-->
+    <!--    In activity_loginxml-->
     <dimen name="prompt_left_margin">8dp</dimen>
     <dimen name="prompt_top_margin">175dp</dimen>
 
