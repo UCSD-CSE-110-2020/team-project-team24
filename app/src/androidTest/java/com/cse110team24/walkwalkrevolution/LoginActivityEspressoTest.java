@@ -37,15 +37,15 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class HeightActivityEspressoTest {
+public class LoginActivityEspressoTest {
 
     /**
      * new activity test rule to forcibly remove app data
      * @param <T>
      * notes: see https://stackoverflow.com/questions/37597080/reset-app-state-between-instrumentationtestcase-runs
      */
-    class HeightActivityTestRule<T extends Activity> extends ActivityTestRule<T> {
-        HeightActivityTestRule(Class<T> activityClass) {
+    class LoginActivityTestRule<T extends Activity> extends ActivityTestRule<T> {
+        LoginActivityTestRule(Class<T> activityClass) {
             super(activityClass);
         }
 
@@ -65,7 +65,7 @@ public class HeightActivityEspressoTest {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     @Rule
-    public HeightActivityTestRule<HeightActivity> mActivityTestRule = new HeightActivityTestRule(HeightActivity.class);
+    public LoginActivityTestRule<LoginActivity> mActivityTestRule = new LoginActivityTestRule(LoginActivity.class);
     private long nextStepCount;
     @Before
     public void setup() {

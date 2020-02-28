@@ -15,8 +15,8 @@ import android.widget.EditText;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 
-public class HeightActivity extends AppCompatActivity {
-    private static final String TAG = "HeightActivity";
+public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = "LoginActivity";
     public static final int MAX_FEET = 8;
     public static final float MAX_INCHES = 11.99f;
     public static final float INVALID_VAL = -1.0f;

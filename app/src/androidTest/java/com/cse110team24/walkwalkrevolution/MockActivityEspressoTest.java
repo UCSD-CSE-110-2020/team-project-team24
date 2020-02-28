@@ -62,7 +62,7 @@ public class MockActivityEspressoTest {
     }
 
     @Rule
-    public MockActivityTestRule<HeightActivity> mActivityTestRule = new MockActivityTestRule<>(HeightActivity.class);
+    public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
 

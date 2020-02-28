@@ -14,16 +14,16 @@ import org.junit.runner.RunWith;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class HeightActivityUnitTest {
+public class LoginActivityUnitTest {
 
-    private HeightActivity testActivity;
+    private LoginActivity testActivity;
     private Button finishBtn;
     private EditText feetEt;
     private EditText inchesEt;
 
     @Before
     public void setup() {
-        ActivityScenario<HeightActivity> scenario = ActivityScenario.launch(HeightActivity.class);
+        ActivityScenario<LoginActivity> scenario = ActivityScenario.launch(LoginActivity.class);
         scenario.onActivity(activity -> {
             testActivity = activity;
             finishBtn = testActivity.findViewById(R.id.btn_height_finish);

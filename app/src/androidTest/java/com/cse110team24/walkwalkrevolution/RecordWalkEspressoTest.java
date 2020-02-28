@@ -63,7 +63,7 @@ public class RecordWalkEspressoTest {
     }
 
     @Rule
-    public RecordWalkTestRule<HeightActivity> mActivityTestRule = new RecordWalkTestRule(HeightActivity.class);
+    public RecordWalkTestRule<LoginActivity> mActivityTestRule = new RecordWalkTestRule(LoginActivity.class);
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     private long nextStepCount;

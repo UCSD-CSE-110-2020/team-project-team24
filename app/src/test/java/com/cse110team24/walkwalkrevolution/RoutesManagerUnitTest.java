@@ -31,9 +31,9 @@ public class RoutesManagerUnitTest {
     private static final String TEST_FILE_LATEST = ".WWR_storage_test_latest";
 
     @Rule
-    public ActivityScenarioRule<HeightActivity> scenarioRule = new ActivityScenarioRule<>(HeightActivity.class);
+    public ActivityScenarioRule<LoginActivity> scenarioRule = new ActivityScenarioRule<>(LoginActivity.class);
 
-    private ActivityScenario<HeightActivity> scenario;
+    private ActivityScenario<LoginActivity> scenario;
 
     @Before
     public void setup() {

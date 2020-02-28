@@ -68,7 +68,7 @@ public class AddFromRoutesEspressoTest {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     @Rule
-    public ActivityTestRule<HeightActivity> mActivityTestRule = new AddFromRoutesTestRule<>(HeightActivity.class);
+    public ActivityTestRule<LoginActivity> mActivityTestRule = new AddFromRoutesTestRule<>(LoginActivity.class);
     private long nextStepCount;
     @Before
     public void setup() {

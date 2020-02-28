@@ -70,7 +70,7 @@ public class SaveRouteActivityEspressoTest {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     @Rule
-    public SaveRouteActivityTestRule<HeightActivity> mActivityTestRule = new SaveRouteActivityTestRule<>(HeightActivity.class);
+    public SaveRouteActivityTestRule<LoginActivity> mActivityTestRule = new SaveRouteActivityTestRule<>(LoginActivity.class);
 
     private long nextStepCount;
 

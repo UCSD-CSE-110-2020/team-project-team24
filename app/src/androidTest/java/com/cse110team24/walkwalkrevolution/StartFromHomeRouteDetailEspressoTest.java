@@ -67,7 +67,7 @@ public class StartFromHomeRouteDetailEspressoTest {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     @Rule
-    public StartFromHomeRouteDetailTestRule<HeightActivity> mActivityTestRule = new StartFromHomeRouteDetailTestRule<>(HeightActivity.class);
+    public StartFromHomeRouteDetailTestRule<LoginActivity> mActivityTestRule = new StartFromHomeRouteDetailTestRule<>(LoginActivity.class);
 
     private long nextStepCount;
 
