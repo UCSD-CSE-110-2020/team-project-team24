@@ -11,6 +11,10 @@ public class FirebaseUserAdapter implements IUser {
     private static final String TAG = "FirebaseUserAdapter";
     private FirebaseUser mFirebaseUser;
 
+    public FirebaseUserAdapter(FirebaseUser firebaseUser) {
+        mFirebaseUser = firebaseUser;
+    }
+
     public void setFirebaseUser(FirebaseUser firebaseUser) {
         mFirebaseUser = firebaseUser;
     }
