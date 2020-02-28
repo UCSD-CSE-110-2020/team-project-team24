@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <EditText
+        android:id="@+id/enter_gmail_password"
+        android:layout_width="235dp"
+        android:layout_height="38dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="201dp"
+        android:hint="@string/enter_gmail_password" />
+
     <TextView
         android:id="@+id/tv_prompt"
         android:layout_width="wrap_content"
@@ -57,5 +66,32 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:layout_below="@id/tv_prompt" />
+
+    <Button
+        android:id="@+id/no_login_btn"
+        android:layout_width="207dp"
+        android:layout_height="61dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="315dp"
+        android:text="@string/no_login" />
+
+    <EditText
+        android:id="@+id/enter_gmail_address"
+        android:layout_width="235dp"
+        android:layout_height="38dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="267dp"
+        android:hint="@string/enter_gmail_address" />
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="105dp"
+        android:text="@string/login" />
 
 </RelativeLayout>

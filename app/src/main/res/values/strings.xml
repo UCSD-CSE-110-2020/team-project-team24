@@ -1,10 +1,14 @@
 <resources>
 
-    <!--    In activity_loginxml -->
+    <!--    In activity_login.xml -->
     <string name="height_prompt">Please enter your height:</string>
     <string name="num_hint">0</string>
     <string name="feet_units">ft</string>
     <string name="inch_units">in</string>
+    <string name="no_login">Continue without login</string>
+    <string name="enter_gmail_address">Enter gmail address</string>
+    <string name="enter_gmail_password">Enter password</string>
+    <string name="login">Login</string>
 
     <!--    In activity_home.xml-->
     <string name="daily_steps">Daily Steps</string>
