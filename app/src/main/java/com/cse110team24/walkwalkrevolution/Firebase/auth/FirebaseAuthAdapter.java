@@ -51,6 +51,11 @@ public class FirebaseAuthAdapter implements AuthService {
     }
 
     @Override
+    public IUser getUser() {
+        return mUser;
+    }
+
+    @Override
     public boolean isUserSignedIn() {
         FirebaseUser user = mAuth.getCurrentUser();
         return user != null;

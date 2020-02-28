@@ -5,5 +5,6 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 public interface AuthService {
     IUser signIn(String email, String password);
     IUser signUp(String email, String password);
+    IUser getUser();
     boolean isUserSignedIn();
 }

@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution.models.user;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class FirebaseUserAdapter implements IUser {
@@ -21,6 +22,11 @@ public class FirebaseUserAdapter implements IUser {
     @Override
     public String getEmail() {
         return mFirebaseUser.getEmail();
+    }
+
+    @Override
+    public void signOut() {
+        FirebaseAuth.getInstance().signOut();
     }
 
 }
