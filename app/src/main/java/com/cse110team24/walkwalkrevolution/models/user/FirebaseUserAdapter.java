@@ -34,6 +34,11 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
+    public String getUid() {
+        return mFirebaseUser.getUid();
+    }
+
+    @Override
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
     }
