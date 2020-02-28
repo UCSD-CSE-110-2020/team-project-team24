@@ -6,13 +6,13 @@
     tools:context=".LoginActivity">
 
     <EditText
-        android:id="@+id/enter_gmail_password"
+        android:id="@+id/enter_password"
         android:layout_width="235dp"
         android:layout_height="38dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="201dp"
-        android:hint="@string/enter_gmail_password"
+        android:hint="@string/enter_password"
         android:importantForAutofill="no"
         android:inputType="textPassword"/>
 

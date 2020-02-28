@@ -7,7 +7,7 @@
     <string name="inch_units">in</string>
     <string name="no_login">Continue without login</string>
     <string name="enter_gmail_address">Enter gmail address</string>
-    <string name="enter_gmail_password">Enter password</string>
+    <string name="enter_password">Enter unique password</string>
     <string name="login">Login</string>
     <string name="enter_name">Enter name</string>
 

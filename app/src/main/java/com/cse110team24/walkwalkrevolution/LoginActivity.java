@@ -40,10 +40,14 @@ public class LoginActivity extends AppCompatActivity {
     private float inches;
 
     private String gmailAddress;
+    private String password;
 
     //Hi Cheery! This was a gmail regex I found: (\W|^)[\w.\-]{0,25}@(gmail)\.com(\W|$)
     //https://support.google.com/a/answer/1371417
     //method is at bottom....scroll down
+
+    //Also added method to check minimum length of password
+    //https://stackoverflow.com/questions/10518979/setting-a-minimum-maximum-character-count-for-any-character-using-a-regular-expr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +140,11 @@ public class LoginActivity extends AppCompatActivity {
     private boolean checkForGmailAddress() {
         gmailAddress = gmailEditText.getText().toString();
         return Pattern.matches("(\\W|^)[\\w.\\-]{0,25}@(gmail)\\.com(\\W|$)", gmailAddress);
+    }
+
+    private boolean checkValidPassword() {
+        password = passwordEditText.getText().toString();
+        return Pattern.matches("^[:;,\\-@0-9a-zA-Zâéè'.\\s]{6,}$", password);
     }
 
 }
