@@ -60,6 +60,14 @@
     <string name="fake_distance">0.01 miles</string>
     <string name="fake_date">1/20</string>
 
+    <!-- In activity_teaminvite_member.xml-->
+    <string name="title_add_team_member">Add Team Member</string>
+    <string name="hint_enter_team_name">Enter Team Member Name</string>
+    <string name="title_team_member_name">Team Member Name</string>
+    <string name="hint_enter_team_email">Enter Team Member Email</string>
+    <string name="title_team_member_email">Team Member Email</string>
+    <string name="btn_send_invite">Send Invitation</string>
+
     <!--    In both activity_height.xml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
 
@@ -87,4 +95,5 @@
     <!--    Others-->
     <string name="routes">Routes</string>
     <string name="home">Home</string>
+    <string name="team">Team</string>
 </resources>
