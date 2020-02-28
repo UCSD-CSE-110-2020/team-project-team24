@@ -12,7 +12,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="201dp"
-        android:hint="@string/enter_gmail_password" />
+        android:hint="@string/enter_gmail_password"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"/>
 
     <TextView
         android:id="@+id/tv_prompt"
@@ -83,7 +85,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="267dp"
-        android:hint="@string/enter_gmail_address" />
+        android:hint="@string/enter_gmail_address"
+        android:importantForAutofill="no"
+        android:inputType="textEmailAddress"/>
 
     <Button
         android:id="@+id/login_btn"
