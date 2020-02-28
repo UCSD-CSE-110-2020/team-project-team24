@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -59,6 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean mocking;
     private boolean endTimeSet;
     private boolean recordingExistingRoute;
+    private boolean saved;
     private Intent data;
 
     private int heightFeet;
@@ -165,7 +165,10 @@ public class HomeActivity extends AppCompatActivity {
                 recordingExistingRoute  = false;
                 return;
             }
-            toggleBtn(saveRouteBtn);
+            if (!saved) {
+                toggleBtn(saveRouteBtn);
+                saved = true;
+            }
         });
     }
 
@@ -241,6 +244,7 @@ public class HomeActivity extends AppCompatActivity {
             startRecordingExistingRoute();
         } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK ) {
             this.data = data;
+            saved = false;
             handleNewRouteRecorded(data);
         }
     }

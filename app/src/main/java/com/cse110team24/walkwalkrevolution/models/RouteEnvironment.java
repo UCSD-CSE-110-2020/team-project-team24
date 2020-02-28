@@ -81,4 +81,46 @@ public class RouteEnvironment implements Serializable {
         return false;
     }
 
+    public RouteEnvironmentBuilder builder() {
+        return new RouteEnvironmentBuilder();
+    }
+
+    public static class RouteEnvironmentBuilder implements Builder<RouteEnvironment> {
+        private RouteEnvironment env;
+
+        public RouteEnvironmentBuilder() {
+            env = new RouteEnvironment();
+        }
+
+        public RouteEnvironmentBuilder addRouteType(RouteType routeType) {
+            env.setRouteType(routeType);
+            return this;
+        }
+
+        public RouteEnvironmentBuilder addTerrainType(TerrainType terrainType) {
+            env.setTerrainType(terrainType);
+            return this;
+        }
+
+        public RouteEnvironmentBuilder addSurfaceType(SurfaceType surfaceType) {
+            env.setSurfaceType(surfaceType);
+            return this;
+        }
+
+        public RouteEnvironmentBuilder addTrailType(TrailType trailType) {
+            env.setTrailType(trailType);
+            return this;
+        }
+
+        public RouteEnvironmentBuilder addDifficulty(Difficulty difficulty) {
+            env.setDifficulty(difficulty);
+            return this;
+        }
+
+        @Override
+        public RouteEnvironment build() {
+            return env;
+        }
+    }
+
 }
