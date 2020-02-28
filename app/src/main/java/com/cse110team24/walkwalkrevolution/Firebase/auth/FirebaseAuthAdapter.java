@@ -59,6 +59,6 @@ public class FirebaseAuthAdapter implements AuthService {
 
     @Override
     public boolean isUserSignedIn() {
-        return mUser == null || mUser.getFirebaseUser() != null;
+        return mUser != null || mUser.getFirebaseUser() != null;
     }
 }
