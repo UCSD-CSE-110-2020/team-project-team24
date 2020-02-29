@@ -9,6 +9,6 @@ public interface ITeam {
     List<IUser> getTeam();
     String getUid();
     void setUid(String uid);
-    Map<String, Object> getDBFields();
+    Map<String, Object> teamData();
     boolean addMember(IUser user);
 }
