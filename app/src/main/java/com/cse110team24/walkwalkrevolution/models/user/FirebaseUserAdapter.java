@@ -94,4 +94,6 @@ public class FirebaseUserAdapter implements IUser {
         mInvitations.add(invitation);
     }
 
+    // TODO: 2/29/20 implement FirebaseUserBuilder - don't use firebase to get the fields. Store them immediately
+
 }
