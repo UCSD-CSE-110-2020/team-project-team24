@@ -44,8 +44,9 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
 
     @Override
     public DocumentReference createUserInDatabase(IUser user) {
-        Map<String, Object> userData = user.teamData();
-        usersCollection.document(user.documentKey()).set(userData).addOnCompleteListener(task -> {
+        Map<String, Object> userData = user.userData();
+        DocumentReference userDocument= usersCollection.document(user.documentKey());
+        userDocument.set(userData).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "createUserInDatabase: successfully created document in \"users\" collection for user " + user.getDisplayName());
             } else {
@@ -78,7 +79,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
     public DocumentReference createTeamInDatabase(ITeam team) {
         DocumentReference teamDocument = teamsCollection.document();
         team.setUid(teamDocument.getId());
-        Map<String, Object> teamData = team.getDBFields();
+        Map<String, Object> teamData = team.teamData();
         teamDocument.set(teamData).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "createTeamInDatabase: successfully created team document");
@@ -91,7 +92,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
 
     @Override
     public DocumentReference updateTeamMembers(ITeam team) {
-        DocumentReference documentReference = teamsCollection.document(team.getUid());
+        DocumentReference documentReference = teamsCollection.document(team.documentKey());
         documentReference.update(MEMBERS_KEY, team.getTeam()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "updateTeamMembers: successfully updated team member list");

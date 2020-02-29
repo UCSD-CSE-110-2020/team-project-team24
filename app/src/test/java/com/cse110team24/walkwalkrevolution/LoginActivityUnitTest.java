@@ -39,9 +39,9 @@ public class LoginActivityUnitTest {
 
 //    @Test
 //    public void testFinishBtnDisabledBadText() {
-//        //feetEt.setText("5");
-//        feetEt.setText("");
+//        feetEt.setText("5");
 //        assertTrue(!finishBtn.isEnabled());
+//        feetEt.setText("");
 //        inchesEt.setText("3");
 //        assertTrue(!finishBtn.isEnabled());
 //    }
