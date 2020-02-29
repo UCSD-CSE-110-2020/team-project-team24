@@ -8,9 +8,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBERS_KEY;
+import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.INVITATIONS_UID_KEY;
 import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.TEAM_UID_KEY;
 
 /** TODO: 2/28/20 flow for a team should be
@@ -26,20 +30,25 @@ import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapte
  *          set team's new UID as teamUID for user
  *
  */
-public class FirebaseFirestoreAdapter implements DatabaseService{
+public class FirebaseFirestoreAdapter implements DatabaseService {
     private static final String TAG = "FirebaseFirestoreAdapter";
     public static final String USERS_COLLECTION_KEY = "users";
     public static final String ROUTES_COLLECTION_KEY = "routes";
+    public static final String INVITATIONS_COLLECTION_KEY = "invitations";
     public static final String TEAMS_COLLECTION_KEY = "teams";
+    public static final String INVITATIONS_DOCUMENT_SET_KEY = "invitations";
+    public static final String INVITATIONS_UID = "uid";
 
     private CollectionReference usersCollection;
     private CollectionReference teamsCollection;
+    private CollectionReference invitationsCollection;
     private FirebaseFirestore firebaseFirestore;
 
     public FirebaseFirestoreAdapter() {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersCollection = firebaseFirestore.collection(USERS_COLLECTION_KEY);
         teamsCollection = firebaseFirestore.collection(TEAMS_COLLECTION_KEY);
+        invitationsCollection = firebaseFirestore.collection(INVITATIONS_COLLECTION_KEY);
     }
 
     @Override
@@ -101,6 +110,49 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
             }
         });
         return teamsCollection.document(team.getUid());
+    }
+
+    @Override
+    public DocumentReference createUserInvitationsInDatabase(IUser user) {
+        DocumentReference documentReference = invitationsCollection.document();
+        String invitationsUid = documentReference.getId();
+        documentReference.set(createNewInvitationsData(invitationsUid)).addOnCompleteListener(task -> {
+           if (task.isSuccessful()) {
+               Log.i(TAG, "createUserInvitationsInDatabase: success creating new invitations document ");
+               setUserInvitations(user, invitationsUid);
+           } else {
+               Log.e(TAG, "createUserInvitationsInDatabase: error creating invitations document for user " + user.getDisplayName(), task.getException());
+           }
+        });
+
+        return documentReference;
+    }
+
+    @Override
+    public DocumentReference setUserInvitations(IUser user, String invitationsUid) {
+        user.updateInvitationsUid(invitationsUid);
+        DocumentReference documentReference = usersCollection.document(user.documentKey());
+        documentReference.update(INVITATIONS_UID_KEY, user.invitationsUid()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "setUserInvitations: success connecting invitations to user");
+            } else {
+                Log.e(TAG, "setUserInvitations: failed connecting invitations to user", task.getException());
+            }
+        });
+        return null;
+    }
+
+    @Override
+    public DocumentReference updateUserInvitations(IUser user, String inviteUserUid) {
+        return null;
+    }
+
+    private Map<String, Object> createNewInvitationsData(String uid) {
+        Map<String, Object> invitationsData = new HashMap<>();
+        List<String> invitations = new ArrayList<>();
+        invitationsData.put(INVITATIONS_COLLECTION_KEY, invitations);
+        invitationsData.put(INVITATIONS_UID, uid);
+        return invitationsData;
     }
 
 }
