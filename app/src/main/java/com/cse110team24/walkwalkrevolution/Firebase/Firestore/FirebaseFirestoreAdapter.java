@@ -92,7 +92,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
 
     @Override
     public DocumentReference updateTeamMembers(ITeam team) {
-        DocumentReference documentReference = teamsCollection.document(team.getUid());
+        DocumentReference documentReference = teamsCollection.document(team.documentKey());
         documentReference.update(MEMBERS_KEY, team.getTeam()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "updateTeamMembers: successfully updated team member list");
