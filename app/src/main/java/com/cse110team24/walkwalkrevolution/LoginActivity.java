@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthAdapter;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthError;
+
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -96,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                 launchHomeActivityFromGuestMode();
             } else if(btnText.equals("Sign Up")) {
                 launchHomeActivityFromSignUp();
-                signUp();
             } else {
                 launchHomeActivityFromLogIn();
             }
@@ -106,16 +107,43 @@ public class LoginActivity extends AppCompatActivity {
     private void signUp() {
         mAuth = new FirebaseAuthAdapter(LoginActivity.this);
         Log.i(TAG, "signUp: with email " + gmailAddress);
-        mUser = mAuth.signUp(gmailAddress, password);
-        if (mUser != null) {
-            Log.i(TAG, "signUp: mUser is: " + mUser);
-            mUser.updateDisplayName(username);
+        mUser = mAuth.signUpWithName(gmailAddress, password, username);
+        if (mAuth.isUserSignedIn()) {
             firebaseFirestore = new FirebaseFirestoreAdapter();
             firebaseFirestore.createUserInDatabase(mUser);
+            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+            finish();
+            startActivity(homeIntent);
+        } else {
+            Log.e(TAG, "signUp: sign up failed");
+            AuthError error = mAuth.getAuthError();
+            if(error == AuthError.USER_COLLISION) {
+                Log.e(TAG, "signUp: user collision");
+            } else if(error == AuthError.DOES_NOT_EXIST) {
+                Log.e(TAG, "signUp: user does not exist");
+            } else if(error == AuthError.INVALID_PASSWORD) {
+                Log.e(TAG, "signUp: invalid password");
+            } else if(error == AuthError.OTHER) {
+                Log.e(TAG, "signUp: other error");
+            } else if(error == null) {
+                Log.e(TAG, "signUp: error is null");
+            }
         }
-
     }
 
+
+    private void logIn() {
+        mAuth = new FirebaseAuthAdapter(LoginActivity.this);
+        Log.i(TAG, "logIn: with email: " + gmailAddress);
+        mUser = mAuth.signIn(gmailAddress, password);
+        if(!mAuth.isUserSignedIn()) {
+            Toast.makeText(this, "Log In Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+            finish();
+            startActivity(homeIntent);
+        }
+    }
 
     private boolean checkLogin() {
         if (!checkForGmailAddress()) {
@@ -231,12 +259,10 @@ public class LoginActivity extends AppCompatActivity {
     private TextWatcher getTextWatcher() {
         return new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -256,6 +282,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void launchHomeActivityFromSignUp() {
         username = nameEditText.getText().toString();
+        password = passwordEditText.getText().toString();
 
         if(!checkForGmailAddress()) {
             Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
@@ -270,7 +297,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
             return;
         }
-        //TODO: try sign up
+        signUp();
     }
 
     private void launchHomeActivityFromLogIn() {
@@ -281,7 +308,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
             return;
         }
-        //TODO: try log in
+        logIn();
     }
 
     private void checkHeight(SharedPreferences preferences) {
