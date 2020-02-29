@@ -23,6 +23,9 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+    private static final String INVALID_GMAIL_TOAST = "Please enter a valid gmail address!";
+    private static final String INVALID_PASSWORD_TOAST = "Please enter an at least 6-character long password!";
+
     public static final int MAX_FEET = 8;
     public static final float MAX_INCHES = 11.99f;
     public static final float INVALID_VAL = -1.0f;
@@ -82,9 +85,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginBtnOnClickListener() {
         loginBtn.setOnClickListener(view -> {
-            boolean validLogin = checkLogin();
-            if (validLogin) {
-                launchHomeActivity();
+            String btnText = loginBtn.getText().toString();
+            Log.i(TAG, "loginBtnOnClickListener: button text is " + btnText);
+            if(btnText.equals("Finish")) {
+                launchHomeActivityFromGuestMode();
+            } else if(btnText.equals("Sign Up")) {
+                launchHomeActivityFromSignUp();
+            } else {
+                launchHomeActivityFromLogIn();
             }
         });
     }
@@ -129,12 +137,19 @@ public class LoginActivity extends AppCompatActivity {
                 showHeight();
                 hideEmailPasswordName();
                 loginBtn.setText(R.string.finish_btn_text);
+                loginBtn.setEnabled(false);
+                feetEditText.setText("");
+                inchesEditText.setText("");
+                TextWatcher textWatcher = getTextWatcher();
+                feetEditText.addTextChangedListener(textWatcher);
+                inchesEditText.addTextChangedListener(textWatcher);
                 guestMode = true;
             } else {
                 withoutLoginBtn.setText(R.string.without_login);
                 hideHeight();
                 showEmailPassword();
                 loginBtn.setText(R.string.login);
+                loginBtn.setEnabled(true);
                 guestMode = false;
             }
         });
@@ -152,10 +167,6 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.btn_height_finish);
         nameEditText = findViewById(R.id.enter_username);
         signUpTv = findViewById(R.id.sign_up_tv);
-        loginBtn.setEnabled(false);
-        TextWatcher textWatcher = getTextWatcher();
-        feetEditText.addTextChangedListener(textWatcher);
-        inchesEditText.addTextChangedListener(textWatcher);
     }
 
     private void showEmailPassword() {
@@ -213,13 +224,41 @@ public class LoginActivity extends AppCompatActivity {
         };
     }
 
-    private void launchHomeActivity() {
-        Log.i(TAG, "launchHomeActivity: valid height params found; launching home.");
+    private void launchHomeActivityFromGuestMode() {
+        Log.i(TAG, "launchHomeActivityFromGuestMode: valid height params found; launching home.");
         homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
                     .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
                     .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
         finish();
         startActivity(homeIntent);
+    }
+
+    private void launchHomeActivityFromSignUp() {
+        if(!checkForGmailAddress()) {
+            Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
+            return;
+        } else if(!checkValidPassword()) {
+            Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
+            return;
+        } else if(nameEditText.getText().toString().equals("")) {
+            Toast.makeText(this, "Please enter your name!", Toast.LENGTH_LONG).show();
+            return;
+        } else if(!validateFeet() || !validateInches()) {
+            Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        //TODO: try sign up
+    }
+
+    private void launchHomeActivityFromLogIn() {
+        if(!checkForGmailAddress()) {
+            Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
+            return;
+        } else if(!checkValidPassword()) {
+            Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
+            return;
+        }
+        //TODO: try log in
     }
 
     private void checkHeight(SharedPreferences preferences) {
@@ -228,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
         inches = preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, INVALID_VAL);
         if (feet > 0 && inches > 0) {
             Log.i(TAG, "checkHeight: valid height in preferences already exists (feet: " + feet + ", inches: " + inches + ").");
-            launchHomeActivity();
+            launchHomeActivityFromGuestMode();
         }
     }
 
