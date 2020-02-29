@@ -27,6 +27,7 @@ public class FirebaseAuthAdapter implements AuthService {
     public FirebaseAuthAdapter(Activity activity) {
         mAuth = FirebaseAuth.getInstance();
         mActivity = activity;
+        mFirebaseUser = mAuth.getCurrentUser();
         mUserAdapterBuilder = new FirebaseUserAdapterBuilder();
     }
 
