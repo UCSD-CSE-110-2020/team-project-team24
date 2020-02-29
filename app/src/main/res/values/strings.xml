@@ -82,6 +82,8 @@
     <string name="pending_invites">Pending&#10;Invites</string>
     <string name="invite_team_member">Invite</string>
     <string name="title_teammates_in_team">Teammates: </string>
+    <string name="btn_title_proposed_walks">Proposed Walks</string>
+    <string name="btn_title_scheduled_walks">Scheduled Walks</string>
 
     <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
