@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.Firebase.auth.FirebaseAuthAdapter;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -28,16 +30,23 @@ public class LoginActivity extends AppCompatActivity {
 
     private Intent homeIntent;
 
+    private Button withoutLoginBtn;
+    private TextView promptTv;
     private EditText feetEditText;
     private EditText inchesEditText;
+    private TextView feetTextView;
+    private TextView inchesTextView;
     private EditText nameEditText;
     private EditText gmailEditText;
     private EditText passwordEditText;
-    private Button finishBtn;
+    private Button loginBtn;
+    private TextView signUpTv;
     private FirebaseAuthAdapter mAuth;
 
     private int feet;
     private float inches;
+    private boolean loginMode = true;
+    private boolean guestMode = false;
 
     private String gmailAddress;
     private String password;
@@ -58,29 +67,116 @@ public class LoginActivity extends AppCompatActivity {
         homeIntent = new Intent(this, HomeActivity.class);
 
         getConfiguredFields();
-        checkHeight(preferences);
+        // TODO: replace it with checkLogin()
+        //checkHeight(preferences);
+        hideNameAndHeight();
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
-        finishBtnOnClickListener();
+        signUpTvOnClickListener();
+        withoutLoginOnClickListener();
+        loginBtnOnClickListener();
     }
 
     public void setFitnessServiceKey(String fitnessServiceKey) {
         this.fitnessServiceKey = fitnessServiceKey;
     }
 
-    private void finishBtnOnClickListener() {
-        finishBtn.setOnClickListener(view -> {
+    private void loginBtnOnClickListener() {
+        loginBtn.setOnClickListener(view -> {
             launchHomeActivity();
         });
     }
 
+    private void signUpTvOnClickListener() {
+        signUpTv.setOnClickListener(view -> {
+            Log.i(TAG, "signUpTvOnClickListener: sign up click detected");
+            if(loginMode) {
+                signUpTv.setText(R.string.login_tv);
+                loginBtn.setText(R.string.sign_up);
+                showEmailPassword();
+                showNameAndHeight();
+                loginMode = false;
+            } else {
+                signUpTv.setText(R.string.sign_up_tv);
+                loginBtn.setText(R.string.login);
+                hideNameAndHeight();
+                showEmailPassword();
+                loginMode = true;
+            }
+        });
+    }
+
+    private void withoutLoginOnClickListener() {
+        withoutLoginBtn.setOnClickListener(view -> {
+            if(!guestMode) {
+                withoutLoginBtn.setText(R.string.with_login);
+                showHeight();
+                hideEmailPasswordName();
+                loginBtn.setText(R.string.finish_btn_text);
+                guestMode = true;
+            } else {
+                withoutLoginBtn.setText(R.string.without_login);
+                hideHeight();
+                showEmailPassword();
+                loginBtn.setText(R.string.login);
+                guestMode = false;
+            }
+        });
+    }
+
     private void getConfiguredFields() {
+        withoutLoginBtn = findViewById(R.id.no_login_btn);
+        gmailEditText = findViewById(R.id.enter_gmail_address);
+        passwordEditText = findViewById(R.id.enter_password);
+        promptTv = findViewById(R.id.tv_prompt);
         feetEditText = findViewById(R.id.et_height_feet);
         inchesEditText = findViewById(R.id.et_height_remainder_inches);
-        finishBtn = findViewById(R.id.btn_height_finish);
-        finishBtn.setEnabled(false);
+        feetTextView = findViewById(R.id.tv_feet);
+        inchesTextView = findViewById(R.id.tv_height_remainder_inches);
+        loginBtn = findViewById(R.id.btn_height_finish);
+        nameEditText = findViewById(R.id.enter_username);
+        signUpTv = findViewById(R.id.sign_up_tv);
+        loginBtn.setEnabled(false);
         TextWatcher textWatcher = getTextWatcher();
         feetEditText.addTextChangedListener(textWatcher);
         inchesEditText.addTextChangedListener(textWatcher);
+    }
+
+    private void showEmailPassword() {
+        gmailEditText.setVisibility(View.VISIBLE);
+        passwordEditText.setVisibility(View.VISIBLE);
+        nameEditText.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideEmailPasswordName() {
+        gmailEditText.setVisibility(View.INVISIBLE);
+        passwordEditText.setVisibility(View.INVISIBLE);
+        nameEditText.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideNameAndHeight() {
+        nameEditText.setVisibility(View.INVISIBLE);
+        hideHeight();
+    }
+
+    private void hideHeight() {
+        promptTv.setVisibility(View.INVISIBLE);
+        feetEditText.setVisibility(View.INVISIBLE);
+        inchesEditText.setVisibility(View.INVISIBLE);
+        feetTextView.setVisibility(View.INVISIBLE);
+        inchesTextView.setVisibility(View.INVISIBLE);
+    }
+
+    private void showNameAndHeight() {
+        nameEditText.setVisibility(View.VISIBLE);
+        showHeight();
+    }
+
+    private void showHeight() {
+        promptTv.setVisibility(View.VISIBLE);
+        feetEditText.setVisibility(View.VISIBLE);
+        inchesEditText.setVisibility(View.VISIBLE);
+        feetTextView.setVisibility(View.VISIBLE);
+        inchesTextView.setVisibility(View.VISIBLE);
     }
 
     private TextWatcher getTextWatcher() {
@@ -95,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                finishBtn.setEnabled(validateFeet() && validateInches());
+                loginBtn.setEnabled(validateFeet() && validateInches());
             }
         };
     }
