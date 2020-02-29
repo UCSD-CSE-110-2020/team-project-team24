@@ -1,21 +1,21 @@
 package com.cse110team24.walkwalkrevolution.models.user;
 
 public class Invitation {
-    private String mFromUid;
-    private String mToUid;
+    private IUser mFrom;
+    private IUser mTo;
     private String mUid;
 
-    public Invitation(String fromUid, String toUid) {
-        mFromUid = fromUid;
-        mToUid = toUid;
+    public Invitation(IUser from, IUser to) {
+        mFrom = from;
+        mTo = to;
     }
-    public String getFromUid() {
-        return mFromUid;
+    public String getFromUser() {
+        return getUserIdentifier(mFrom);
     }
 
 
-    public String getToUid() {
-        return mToUid;
+    public String getToUser() {
+        return getUserIdentifier(mTo);
     }
 
     public String getUid() {
@@ -24,5 +24,9 @@ public class Invitation {
 
     public void setUid(String uid) {
         mUid = uid;
+    }
+
+    private String getUserIdentifier(IUser user) {
+        return user.getUid();
     }
 }
