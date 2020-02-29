@@ -16,6 +16,7 @@ public class FirebaseUserAdapter implements IUser {
     public static final String EMAIL_KEY = "email";
     public static final String UID_KEY = "uid";
     public static final String TEAM_UID_KEY = "teamUid";
+    public static final String INVITATIONS_UID_KEY "invitationsUid";
 
     private FirebaseUser mFirebaseUser;
     private String mTeamUid;
@@ -86,6 +87,7 @@ public class FirebaseUserAdapter implements IUser {
         userData.put(EMAIL_KEY, getEmail());
         userData.put(UID_KEY, getUid());
         userData.put(TEAM_UID_KEY, teamUid());
+        userData.put(INVITATIONS_UID_KEY, invitationsUid());
         return userData;
     }
 
