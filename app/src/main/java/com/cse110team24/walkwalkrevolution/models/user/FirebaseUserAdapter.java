@@ -74,7 +74,7 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
-    public Map<String, Object> teamData() {
+    public Map<String, Object> userData() {
         Map<String, Object> userData = new HashMap<>();
         userData.put(NAME_KEY, getDisplayName());
         userData.put(EMAIL_KEY, getEmail());

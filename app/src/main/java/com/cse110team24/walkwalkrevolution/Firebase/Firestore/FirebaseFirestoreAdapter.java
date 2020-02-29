@@ -44,7 +44,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
 
     @Override
     public DocumentReference createUserInDatabase(IUser user) {
-        Map<String, Object> userData = user.teamData();
+        Map<String, Object> userData = user.userData();
         usersCollection.document(user.documentKey()).set(userData).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "createUserInDatabase: successfully created document in \"users\" collection for user " + user.getDisplayName());

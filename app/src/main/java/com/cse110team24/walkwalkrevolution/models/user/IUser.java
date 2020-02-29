@@ -9,7 +9,7 @@ public interface IUser {
     String teamUid();
     String documentKey();
     void setTeamUid(String teamUid);
-    Map<String, Object> teamData();
+    Map<String, Object> userData();
     void updateDisplayName(String displayName);
     void signOut();
 }
