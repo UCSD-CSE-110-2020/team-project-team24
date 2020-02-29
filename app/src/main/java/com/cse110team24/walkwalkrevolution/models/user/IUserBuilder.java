@@ -8,6 +8,6 @@ public interface IUserBuilder extends Builder<IUser> {
 
     IUserBuilder addEmail(String email);
     IUserBuilder addInvitationsList(List<Invitation> invitations);
-    IUserBuilder addDisplayName(String email);
+    IUserBuilder addDisplayName(String displayName);
     IUserBuilder addUid(String uid);
 }
