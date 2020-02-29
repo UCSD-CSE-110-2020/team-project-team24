@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signUp() {
         mAuth = new FirebaseAuthAdapter(LoginActivity.this);
-        Log.i(TAG, "signUp: with email " + gmailAddress + " password: " + password);
+        Log.i(TAG, "signUp: with email " + gmailAddress);
         mUser = mAuth.signUp(gmailAddress, password);
         if (mUser != null) {
             Log.i(TAG, "signUp: mUser is: " + mUser);
