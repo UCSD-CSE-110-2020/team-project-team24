@@ -9,5 +9,6 @@ public interface DatabaseService {
     DocumentReference createUserInDatabase(IUser user);
     DocumentReference updateUserTeam(IUser user, String teamUid);
     DocumentReference createTeamInDatabase(ITeam team);
+    DocumentReference updateTeamMembers(ITeam team);
     ITeam getUserTeam(IUser user);
 }

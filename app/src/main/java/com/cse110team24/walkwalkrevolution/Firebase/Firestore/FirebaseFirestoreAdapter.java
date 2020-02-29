@@ -8,8 +8,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Document;
+
 import java.util.Map;
 
+import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBERS_KEY;
 import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.TEAM_UID_KEY;
 
 public class FirebaseFirestoreAdapter implements DatabaseService{
@@ -71,6 +74,19 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
             }
         });
         return teamDocument;
+    }
+
+    @Override
+    public DocumentReference updateTeamMembers(ITeam team) {
+        DocumentReference documentReference = teamsCollection.document(team.getUid());
+        documentReference.update(MEMBERS_KEY, team.getTeam()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "updateTeamMembers: successfully updated team member list");
+            } else {
+                Log.e(TAG, "updateTeamMembers: error updating team member list", task.getException());
+            }
+        });
+        return teamsCollection.document(team.getUid());
     }
 
 }
