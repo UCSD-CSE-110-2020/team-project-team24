@@ -42,7 +42,7 @@ public class FirebaseAuthAdapter implements AuthService {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(mActivity, task -> {
                     if (task.isSuccessful()) {
-                        Log.i(TAG, "onComplete: user creation successful");
+                        Log.i(TAG, "signUp: user creation successful");
                         mUser.setFirebaseUser(mAuth.getCurrentUser());
                     } else {
                         Log.e(TAG, "signUp: user creation failed", task.getException());
@@ -53,22 +53,12 @@ public class FirebaseAuthAdapter implements AuthService {
     }
 
     @Override
-    public IUser signUp(String displayName, String email, String password) {
-        signUp(email, password);
-        if (isUserSignedIn()) {
-            mUser.updateDisplayName(displayName);
-        }
-        
-        return mUser;
-    }
-
-    @Override
     public IUser getUser() {
         return mUser;
     }
 
     @Override
     public boolean isUserSignedIn() {
-        return mUser != null || mUser.getFirebaseUser() != null;
+        return mUser != null && mUser.getFirebaseUser() != null;
     }
 }
