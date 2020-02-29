@@ -16,7 +16,7 @@ import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBER
 import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.TEAM_UID_KEY;
 
 /** TODO: 2/28/20 flow for a team should be
- * get the user's account.
+ * get the user's account (sign in or up if necessary)
  * Check if they have a team.
  * check if user has team
  *      if yes, update UI
@@ -40,12 +40,14 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
 
     public FirebaseFirestoreAdapter() {
         firebaseFirestore = FirebaseFirestore.getInstance();
+        usersCollection = firebaseFirestore.collection(USERS_COLLECTION_KEY);
+        teamsCollection = firebaseFirestore.collection(TEAMS_COLLECTION_KEY);
     }
 
     @Override
     public DocumentReference createUserInDatabase(IUser user) {
         Map<String, Object> userData = user.getDBFields();
-        firebaseFirestore.collection(USERS_COLLECTION_KEY).document(user.getDocumentKey()).set(userData).addOnCompleteListener(task -> {
+        usersCollection.document(user.getDocumentKey()).set(userData).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "createUserInDatabase: successfully created document in \"users\" collection for user " + user.getDisplayName());
             } else {
