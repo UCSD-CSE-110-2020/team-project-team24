@@ -6,10 +6,10 @@ public interface IUser {
     String getDisplayName();
     String getEmail();
     String getUid();
-    String getTeamUid();
-    String getDocumentKey();
+    String teamUid();
+    String documentKey();
     void setTeamUid(String teamUid);
-    Map<String, Object> getDBFields();
+    Map<String, Object> teamData();
     void updateDisplayName(String name);
     void signOut();
 }

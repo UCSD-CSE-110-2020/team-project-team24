@@ -28,7 +28,7 @@ public class FirebaseUserAdapter implements IUser {
         mFirebaseUser = firebaseUser;
     }
 
-    public FirebaseUser getFirebaseUser() {
+    public FirebaseUser firebaseUser() {
         return mFirebaseUser;
     }
 
@@ -48,12 +48,12 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
-    public String getDocumentKey() {
+    public String documentKey() {
         return getDisplayName();
     }
 
     @Override
-    public String getTeamUid() {
+    public String teamUid() {
         return mTeamUid;
     }
 
@@ -88,12 +88,12 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
-    public Map<String, Object> getDBFields() {
+    public Map<String, Object> teamData() {
         Map<String, Object> userData = new HashMap<>();
         userData.put(NAME_KEY, getDisplayName());
         userData.put(EMAIL_KEY, getEmail());
         userData.put(UID_KEY, getUid());
-        userData.put(TEAM_UID_KEY, getTeamUid());
+        userData.put(TEAM_UID_KEY, teamUid());
         return userData;
     }
 

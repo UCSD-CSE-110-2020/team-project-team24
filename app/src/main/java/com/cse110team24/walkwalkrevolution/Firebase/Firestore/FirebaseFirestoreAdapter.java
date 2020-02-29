@@ -8,8 +8,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Document;
-
 import java.util.Map;
 
 import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBERS_KEY;
@@ -46,20 +44,20 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
 
     @Override
     public DocumentReference createUserInDatabase(IUser user) {
-        Map<String, Object> userData = user.getDBFields();
-        usersCollection.document(user.getDocumentKey()).set(userData).addOnCompleteListener(task -> {
+        Map<String, Object> userData = user.teamData();
+        usersCollection.document(user.documentKey()).set(userData).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "createUserInDatabase: successfully created document in \"users\" collection for user " + user.getDisplayName());
             } else {
                 Log.e(TAG, "createUserInDatabase: failed to create document", task.getException());
             }
         });
-        return usersCollection.document(user.getDocumentKey());
+        return usersCollection.document(user.documentKey());
     }
 
     @Override
     public DocumentReference updateUserTeam(IUser user, String teamUid) {
-        DocumentReference documentReference = usersCollection.document(user.getDocumentKey());
+        DocumentReference documentReference = usersCollection.document(user.documentKey());
         documentReference.update(TEAM_UID_KEY, teamUid).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "updateUserTeam: successfully updated user's team uid");

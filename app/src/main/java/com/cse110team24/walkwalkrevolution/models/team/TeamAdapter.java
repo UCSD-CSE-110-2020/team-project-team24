@@ -50,8 +50,9 @@ public class TeamAdapter implements ITeam {
         Map<String, Object> teamData = new HashMap<>();
         teamData.put(UID_KEY, uid);
         ArrayList<String> members = new ArrayList<>(team.size());
-        team.forEach(member -> members.add(member.getDisplayName() + member.getUid()));
-        teamData.put(MEMBERS_KEY, members);
+//        team.forEach(member -> members.add(member.getDisplayName() + member.getUid()));
+//        teamData.put(MEMBERS_KEY, members);
+        teamData.put(MEMBERS_KEY, team);
         return teamData;
     }
 }

@@ -6,7 +6,6 @@ import android.util.Log;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class FirebaseAuthAdapter implements AuthService {
     private static String TAG = "FirebaseAuthAdapter";
@@ -59,6 +58,6 @@ public class FirebaseAuthAdapter implements AuthService {
 
     @Override
     public boolean isUserSignedIn() {
-        return mUser != null && mUser.getFirebaseUser() != null;
+        return mUser != null && mUser.firebaseUser() != null;
     }
 }
