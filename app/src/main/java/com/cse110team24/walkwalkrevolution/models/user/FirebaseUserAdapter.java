@@ -6,7 +6,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseUserAdapter implements IUser {
@@ -20,11 +22,12 @@ public class FirebaseUserAdapter implements IUser {
 
     private FirebaseUser mFirebaseUser;
     private String mTeamUid;
-    private String mInvitationsUid;
     private String mDisplayName;
+    private List<Invitation> mInvitations;
 
-    public FirebaseUserAdapter(FirebaseUser firebaseUser) {
+    public FirebaseUserAdapter(FirebaseUser firebaseUser, List<Invitation> invitations) {
         mFirebaseUser = firebaseUser;
+        mInvitations = invitations;
     }
 
     public void setFirebaseUser(FirebaseUser firebaseUser) {
@@ -66,16 +69,6 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
-    public String invitationsUid() {
-        return mInvitationsUid;
-    }
-
-    @Override
-    public void updateInvitationsUid(String invitationsUid) {
-        mInvitationsUid = invitationsUid;
-    }
-
-    @Override
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
     }
@@ -92,8 +85,18 @@ public class FirebaseUserAdapter implements IUser {
         userData.put(EMAIL_KEY, getEmail());
         userData.put(UID_KEY, getUid());
         userData.put(TEAM_UID_KEY, teamUid());
-        userData.put(INVITATIONS_UID_KEY, invitationsUid());
+        userData.put(INVITATIONS_UID_KEY, mInvitations);
         return userData;
+    }
+
+    @Override
+    public List<Invitation> getInvitations() {
+        return mInvitations;
+    }
+
+    @Override
+    public void addInvitation(Invitation invitation) {
+        mInvitations.add(invitation);
     }
 
 }
