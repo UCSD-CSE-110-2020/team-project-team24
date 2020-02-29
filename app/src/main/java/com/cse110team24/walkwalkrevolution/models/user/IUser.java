@@ -7,6 +7,7 @@ public interface IUser {
     String getEmail();
     String getUid();
     String teamUid();
+    String invitationsUid();
     String documentKey();
     void setTeamUid(String teamUid);
     Map<String, Object> userData();

@@ -19,6 +19,7 @@ public class FirebaseUserAdapter implements IUser {
 
     private FirebaseUser mFirebaseUser;
     private String mTeamUid;
+    private String mInvitationsUid;
     private String mDisplayName;
 
     public FirebaseUserAdapter(FirebaseUser firebaseUser) {
@@ -56,6 +57,11 @@ public class FirebaseUserAdapter implements IUser {
     @Override
     public String teamUid() {
         return mTeamUid;
+    }
+
+    @Override
+    public String invitationsUid() {
+        return mInvitationsUid;
     }
 
     @Override
