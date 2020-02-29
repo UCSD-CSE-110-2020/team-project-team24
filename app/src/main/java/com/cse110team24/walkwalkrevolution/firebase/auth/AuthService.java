@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.Firebase.auth;
+package com.cse110team24.walkwalkrevolution.firebase.auth;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 

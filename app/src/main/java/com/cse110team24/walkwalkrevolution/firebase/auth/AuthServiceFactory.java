@@ -1,8 +1,4 @@
-package com.cse110team24.walkwalkrevolution.Firebase.auth;
-
-import android.app.Activity;
-
-import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+package com.cse110team24.walkwalkrevolution.firebase.auth;
 
 import java.util.HashMap;
 import java.util.Map;

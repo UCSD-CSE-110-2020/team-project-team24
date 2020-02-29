@@ -15,11 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cse110team24.walkwalkrevolution.Firebase.Firestore.FirebaseFirestoreAdapter;
-import com.cse110team24.walkwalkrevolution.Firebase.auth.FirebaseAuthAdapter;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.FirebaseFirestoreAdapter;
+import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthAdapter;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
-import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import java.util.regex.Pattern;

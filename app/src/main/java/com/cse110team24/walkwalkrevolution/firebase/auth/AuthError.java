@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.Firebase.auth;
+package com.cse110team24.walkwalkrevolution.firebase.auth;
 
 public enum AuthError {
     USER_COLLISION,

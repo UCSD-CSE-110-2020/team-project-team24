@@ -1,12 +1,10 @@
-package com.cse110team24.walkwalkrevolution.Firebase.auth;
+package com.cse110team24.walkwalkrevolution.firebase.auth;
 
 import android.app.Activity;
 import android.util.Log;
 
-import com.cse110team24.walkwalkrevolution.Firebase.Firestore.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;

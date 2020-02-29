@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.Firebase.Firestore;
+package com.cse110team24.walkwalkrevolution.firebase.firestore;
 
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
