@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.models.user.Invitation;
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -12,7 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Map;
 
 import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBERS_KEY;
-import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.INVITATIONS_LIST_KEY;
 import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.TEAM_UID_KEY;
 
 /** TODO: 2/28/20 flow for a team should be

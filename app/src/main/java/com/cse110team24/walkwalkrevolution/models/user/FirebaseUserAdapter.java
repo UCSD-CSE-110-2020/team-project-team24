@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution.models.user;
 
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

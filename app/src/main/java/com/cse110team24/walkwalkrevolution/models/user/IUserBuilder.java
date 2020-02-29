@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution.models.user;
 
 import com.cse110team24.walkwalkrevolution.models.Builder;
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 
 import java.util.List;
 

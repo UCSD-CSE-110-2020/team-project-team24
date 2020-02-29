@@ -1,4 +1,6 @@
-package com.cse110team24.walkwalkrevolution.models.user;
+package com.cse110team24.walkwalkrevolution.models.invitation;
+
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 public class Invitation {
     private IUser mFrom;
