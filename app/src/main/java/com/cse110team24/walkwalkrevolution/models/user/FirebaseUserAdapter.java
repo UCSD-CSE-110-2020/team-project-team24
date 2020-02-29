@@ -16,9 +16,11 @@ public class FirebaseUserAdapter implements IUser {
     public static final String EMAIL_KEY = "email";
     public static final String UID_KEY = "uid";
     public static final String TEAM_UID_KEY = "teamUid";
+    public static final String INVITATIONS_UID_KEY = "invitationsUid";
 
     private FirebaseUser mFirebaseUser;
     private String mTeamUid;
+    private String mInvitationsUid;
     private String mDisplayName;
 
     public FirebaseUserAdapter(FirebaseUser firebaseUser) {
@@ -59,8 +61,18 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
-    public void setTeamUid(String teamUid) {
+    public void updateTeamUid(String teamUid) {
         mTeamUid = teamUid;
+    }
+
+    @Override
+    public String invitationsUid() {
+        return mInvitationsUid;
+    }
+
+    @Override
+    public void updateInvitationsUid(String invitationsUid) {
+        mInvitationsUid = invitationsUid;
     }
 
     @Override
@@ -80,6 +92,7 @@ public class FirebaseUserAdapter implements IUser {
         userData.put(EMAIL_KEY, getEmail());
         userData.put(UID_KEY, getUid());
         userData.put(TEAM_UID_KEY, teamUid());
+        userData.put(INVITATIONS_UID_KEY, invitationsUid());
         return userData;
     }
 
