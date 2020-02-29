@@ -15,7 +15,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
     private CollectionReference usersCollection;
     private FirebaseFirestore firebaseFirestore;
 
-    FirebaseFirestoreAdapter() {
+    public FirebaseFirestoreAdapter() {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersCollection = firebaseFirestore.collection(USERS_COLLECTION_KEY);
     }
