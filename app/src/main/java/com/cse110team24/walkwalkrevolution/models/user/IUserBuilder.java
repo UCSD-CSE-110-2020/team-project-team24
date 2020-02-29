@@ -10,4 +10,5 @@ public interface IUserBuilder extends Builder<IUser> {
     IUserBuilder addInvitationsList(List<Invitation> invitations);
     IUserBuilder addDisplayName(String displayName);
     IUserBuilder addUid(String uid);
+    IUserBuilder addTeamUid(String teamUid);
 }

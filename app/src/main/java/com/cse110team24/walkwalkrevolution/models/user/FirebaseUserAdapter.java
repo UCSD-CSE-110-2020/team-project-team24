@@ -19,7 +19,11 @@ public class FirebaseUserAdapter implements IUser {
     private FirebaseUser mFirebaseUser;
     private String mTeamUid;
     private String mDisplayName;
+    private String mEmail;
+    private String mUid;
     private List<Invitation> mInvitations;
+
+    public FirebaseUserAdapter() {}
 
     public FirebaseUserAdapter(FirebaseUser firebaseUser, List<Invitation> invitations) {
         mFirebaseUser = firebaseUser;
@@ -41,12 +45,12 @@ public class FirebaseUserAdapter implements IUser {
 
     @Override
     public String getEmail() {
-        return mFirebaseUser.getEmail();
+        return mEmail;
     }
 
     @Override
     public String getUid() {
-        return mFirebaseUser.getUid();
+        return mUid;
     }
 
     @Override
@@ -89,6 +93,10 @@ public class FirebaseUserAdapter implements IUser {
         return mInvitations;
     }
 
+    public IFirebaseUserAdapterBuilder builder() {
+        return new FirebaseUserAdapterBuilder();
+    }
+
     @Override
     public void addInvitation(Invitation invitation) {
         mInvitations.add(invitation);
@@ -99,34 +107,48 @@ public class FirebaseUserAdapter implements IUser {
     public static class FirebaseUserAdapterBuilder implements IFirebaseUserAdapterBuilder {
         FirebaseUserAdapter mUser;
 
+        public FirebaseUserAdapterBuilder() {
+            mUser = new FirebaseUserAdapter();
+        }
         @Override
         public IUserBuilder addFirebaseUser(FirebaseUser firebaseUser) {
-            return null;
+            mUser.setFirebaseUser(firebaseUser);
+            return this;
         }
 
         @Override
         public IUserBuilder addEmail(String email) {
-            return null;
+            mUser.mEmail = email;
+            return this;
         }
 
         @Override
         public IUserBuilder addInvitationsList(List<Invitation> invitations) {
-            return null;
+            mUser.mInvitations = invitations;
+            return this;
         }
 
         @Override
-        public IUserBuilder addDisplayName(String email) {
-            return null;
+        public IUserBuilder addDisplayName(String displayName) {
+            mUser.updateDisplayName(displayName);
+            return this;
         }
 
         @Override
         public IUserBuilder addUid(String uid) {
-            return null;
+            mUser.mUid = uid;
+            return this;
+        }
+
+        @Override
+        public IUserBuilder addTeamUid(String teamUid) {
+            mUser.updateTeamUid(teamUid);
+            return this;
         }
 
         @Override
         public IUser build() {
-            return null;
+            return mUser;
         }
     }
 
