@@ -53,6 +53,16 @@ public class FirebaseAuthAdapter implements AuthService {
     }
 
     @Override
+    public IUser signUp(String displayName, String email, String password) {
+        signUp(email, password);
+        if (isUserSignedIn()) {
+            mUser.updateDisplayName(displayName);
+        }
+        
+        return mUser;
+    }
+
+    @Override
     public IUser getUser() {
         return mUser;
     }

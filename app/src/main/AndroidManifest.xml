@@ -11,10 +11,10 @@
 
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
-        <activity android:name=".RouteDetailsActivity"></activity>
+        <activity android:name=".RouteDetailsActivity" />
         <activity
             android:name=".SaveRouteActivity"
-            android:label="@string/title_activity_saving_page"></activity>
+            android:label="@string/title_activity_saving_page" />
         <activity
             android:name=".RoutesActivity"
             android:label="@string/title_activity_routes"
