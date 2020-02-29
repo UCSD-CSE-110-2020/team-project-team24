@@ -10,6 +10,6 @@ public interface IUser {
     String documentKey();
     void setTeamUid(String teamUid);
     Map<String, Object> teamData();
-    void updateDisplayName(String name);
+    void updateDisplayName(String displayName);
     void signOut();
 }
