@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution.models.user;
 import android.net.Uri;
 import android.util.Log;
 
+import com.cse110team24.walkwalkrevolution.Firebase.auth.FirebaseAuthAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -45,10 +46,14 @@ public class FirebaseUserAdapter implements IUser {
 
     @Override
     public void updateDisplayName(String name) {
+        if (mFirebaseUser == null) {
+            Log.i(TAG, "updateDisplayName: error. User is not signed in");
+            return;
+        }
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
-
+        
         mFirebaseUser.updateProfile(profileUpdates)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
