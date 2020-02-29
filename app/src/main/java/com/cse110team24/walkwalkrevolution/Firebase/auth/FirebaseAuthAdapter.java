@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution.Firebase.auth;
 import android.app.Activity;
 import android.util.Log;
 
+import com.cse110team24.walkwalkrevolution.Firebase.Firestore.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.auth.FirebaseAuth;

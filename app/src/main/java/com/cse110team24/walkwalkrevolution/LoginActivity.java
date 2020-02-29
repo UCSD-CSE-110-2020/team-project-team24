@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.Firebase.Firestore.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.Firebase.auth.FirebaseAuthAdapter;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
@@ -49,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView signUpTv;
     private FirebaseAuthAdapter mAuth;
     private IUser mUser;
+    private FirebaseFirestoreAdapter firebaseFirestore;
 
     private int feet;
     private float inches;
@@ -57,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String gmailAddress;
     private String password;
+    private String username;
 
     // This was a gmail regex I found: (\W|^)[\w.\-]{0,25}@(gmail)\.com(\W|$)
     //https://support.google.com/a/answer/1371417
@@ -94,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                 launchHomeActivityFromGuestMode();
             } else if(btnText.equals("Sign Up")) {
                 launchHomeActivityFromSignUp();
+                signUp();
             } else {
                 launchHomeActivityFromLogIn();
             }
@@ -102,7 +106,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signUp() {
         mAuth = new FirebaseAuthAdapter(LoginActivity.this);
+        Log.i(TAG, "signUp: with email " + gmailAddress + " password: " + password);
         mUser = mAuth.signUp(gmailAddress, password);
+        if (mUser != null) {
+            Log.i(TAG, "signUp: mUser is: " + mUser);
+            mUser.updateDisplayName(username);
+            firebaseFirestore = new FirebaseFirestoreAdapter();
+            firebaseFirestore.createUserInDatabase(mUser);
+        }
+
     }
 
 
@@ -244,13 +256,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void launchHomeActivityFromSignUp() {
+        username = nameEditText.getText().toString();
+
         if(!checkForGmailAddress()) {
             Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
             return;
         } else if(!checkValidPassword()) {
             Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
             return;
-        } else if(nameEditText.getText().toString().equals("")) {
+        } else if(username.equals("")) {
             Toast.makeText(this, "Please enter your name!", Toast.LENGTH_LONG).show();
             return;
         } else if(!validateFeet() || !validateInches()) {
@@ -301,11 +315,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean checkForGmailAddress() {
         gmailAddress = gmailEditText.getText().toString();
+        Log.i(TAG, "checkForGmailAddress: " + gmailAddress);
         return Pattern.matches("(\\W|^)[\\w.\\-]{0,25}@(gmail)\\.com(\\W|$)", gmailAddress);
     }
 
     private boolean checkValidPassword() {
         password = passwordEditText.getText().toString();
+        Log.i(TAG, "checkValidPassword: " + password);
         return Pattern.matches("^[:;,\\-@0-9a-zA-Zâéè'.\\s]{6,}$", password);
     }
 
