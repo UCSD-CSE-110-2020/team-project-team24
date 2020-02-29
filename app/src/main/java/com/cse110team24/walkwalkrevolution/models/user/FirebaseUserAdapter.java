@@ -19,6 +19,7 @@ public class FirebaseUserAdapter implements IUser {
 
     private FirebaseUser mFirebaseUser;
     private String mTeamUid;
+    private String mDisplayName;
 
     public FirebaseUserAdapter(FirebaseUser firebaseUser) {
         mFirebaseUser = firebaseUser;
@@ -34,7 +35,7 @@ public class FirebaseUserAdapter implements IUser {
 
     @Override
     public String getDisplayName() {
-        return mFirebaseUser.getDisplayName();
+        return mDisplayName;
     }
 
     @Override
@@ -68,27 +69,12 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
-    public void updateDisplayName(String name) {
-        if (mFirebaseUser == null) {
-            Log.i(TAG, "updateDisplayName: error. User is not signed in");
-            return;
-        }
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(name)
-                .build();
-
-        mFirebaseUser.updateProfile(profileUpdates)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.i(TAG, "updateDisplayName: display name update successful");
-                    } else {
-                        Log.e(TAG, "updateDisplayName: could not update display name", task.getException());
-                    }
-                });
+    public void updateDisplayName(String displayName) {
+        mDisplayName = displayName;
     }
 
     @Override
-    public Map<String, Object> teamData() {
+    public Map<String, Object> userData() {
         Map<String, Object> userData = new HashMap<>();
         userData.put(NAME_KEY, getDisplayName());
         userData.put(EMAIL_KEY, getEmail());
