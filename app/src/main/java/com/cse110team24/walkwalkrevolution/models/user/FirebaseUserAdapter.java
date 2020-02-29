@@ -1,12 +1,8 @@
 package com.cse110team24.walkwalkrevolution.models.user;
 
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +14,7 @@ public class FirebaseUserAdapter implements IUser {
     public static final String EMAIL_KEY = "email";
     public static final String UID_KEY = "uid";
     public static final String TEAM_UID_KEY = "teamUid";
-    public static final String INVITATIONS_UID_KEY = "invitationsUid";
+    public static final String INVITATIONS_LIST_KEY = "invitationsUid";
 
     private FirebaseUser mFirebaseUser;
     private String mTeamUid;
@@ -85,12 +81,11 @@ public class FirebaseUserAdapter implements IUser {
         userData.put(EMAIL_KEY, getEmail());
         userData.put(UID_KEY, getUid());
         userData.put(TEAM_UID_KEY, teamUid());
-        userData.put(INVITATIONS_UID_KEY, mInvitations);
         return userData;
     }
 
     @Override
-    public List<Invitation> getInvitations() {
+    public List<Invitation> invitations() {
         return mInvitations;
     }
 

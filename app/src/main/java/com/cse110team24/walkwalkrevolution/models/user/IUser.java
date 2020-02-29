@@ -15,5 +15,5 @@ public interface IUser {
     void signOut();
 
     void addInvitation(Invitation invitation);
-    List<Invitation> getInvitations();
+    List<Invitation> invitations();
 }

@@ -22,6 +22,14 @@ public class Invitation {
         return mUid;
     }
 
+    public IUser fromUser() {
+        return mFrom;
+    }
+
+    public IUser toUser() {
+        return mTo;
+    }
+
     public void setUid(String uid) {
         mUid = uid;
     }
