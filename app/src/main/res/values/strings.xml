@@ -86,6 +86,14 @@
     <string name="btn_title_scheduled_walks">Scheduled Walks</string>
     <string name="text_no_teammates_in_team">You Have No Teammates :\'(</string>
 
+    <!-- In activity_received_invitation.xml-->
+    <string name="title_received_notification">Received Invitations</string>
+    <string name="title_not_received_notification">Pending Invitation</string>
+    <string name="btn_accept_team_invitation">Accept</string>
+    <string name="btn_reject_team_invitation">Reject</string>
+    <string name="text_invitation_exists">The following users have sent you a team invitation: </string>
+    <string name="text_invitation_not_exist">You haven\'t received any team invitation.</string>
+
     <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
 
