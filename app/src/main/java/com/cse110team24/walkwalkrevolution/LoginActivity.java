@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.Firebase.auth.FirebaseAuthAdapter;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -51,9 +52,8 @@ public class LoginActivity extends AppCompatActivity {
     private String gmailAddress;
     private String password;
 
-    //Hi Cheery! This was a gmail regex I found: (\W|^)[\w.\-]{0,25}@(gmail)\.com(\W|$)
+    // This was a gmail regex I found: (\W|^)[\w.\-]{0,25}@(gmail)\.com(\W|$)
     //https://support.google.com/a/answer/1371417
-    //method is at bottom....scroll down
 
     //Also added method to check minimum length of password
     //https://stackoverflow.com/questions/10518979/setting-a-minimum-maximum-character-count-for-any-character-using-a-regular-expr
@@ -82,8 +82,25 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginBtnOnClickListener() {
         loginBtn.setOnClickListener(view -> {
-            launchHomeActivity();
+            boolean validLogin = checkLogin();
+            if (validLogin) {
+                launchHomeActivity();
+            }
         });
+    }
+
+    private boolean checkLogin() {
+        if (!checkForGmailAddress()) {
+            Toast.makeText(LoginActivity.this, "Please enter a valid gmail address", Toast.LENGTH_SHORT).show();
+            gmailEditText.setText("");
+            return false;
+        }
+        else if (!checkValidPassword()) {
+            Toast.makeText(LoginActivity.this, "Please enter a password at least 6 characters long", Toast.LENGTH_SHORT).show();
+            passwordEditText.setText("");
+        }
+
+        return true;
     }
 
     private void signUpTvOnClickListener() {
