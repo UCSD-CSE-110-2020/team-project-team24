@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/title_add_team_member"
         android:layout_width="match_parent"
-        android:layout_height="125sp"
+        android:layout_height="wrap_content"
         android:text="@string/title_add_team_member"
         android:typeface="monospace"
         android:background="@color/colorPrimary"
