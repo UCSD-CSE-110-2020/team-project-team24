@@ -16,7 +16,7 @@ public class FirebaseUserAdapter implements IUser {
     public static final String EMAIL_KEY = "email";
     public static final String UID_KEY = "uid";
     public static final String TEAM_UID_KEY = "teamUid";
-    public static final String INVITATIONS_UID_KEY "invitationsUid";
+    public static final String INVITATIONS_UID_KEY = "invitationsUid";
 
     private FirebaseUser mFirebaseUser;
     private String mTeamUid;
@@ -61,13 +61,18 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
+    public void updateTeamUid(String teamUid) {
+        mTeamUid = teamUid;
+    }
+
+    @Override
     public String invitationsUid() {
         return mInvitationsUid;
     }
 
     @Override
-    public void setTeamUid(String teamUid) {
-        mTeamUid = teamUid;
+    public void updateInvitationsUid(String invitationsUid) {
+        mInvitationsUid = invitationsUid;
     }
 
     @Override
