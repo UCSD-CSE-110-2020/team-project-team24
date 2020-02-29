@@ -49,7 +49,9 @@ public class TeamAdapter implements ITeam {
     public Map<String, Object> getDBFields() {
         Map<String, Object> teamData = new HashMap<>();
         teamData.put(UID_KEY, uid);
-        teamData.put(MEMBERS_KEY, team);
+        ArrayList<String> members = new ArrayList<>(team.size());
+        team.forEach(member -> members.add(member.getDisplayName() + member.getUid()));
+        teamData.put(MEMBERS_KEY, members);
         return teamData;
     }
 }
