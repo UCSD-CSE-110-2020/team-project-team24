@@ -18,13 +18,15 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.Firebase.auth.FirebaseAuthAdapter;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final String INVALID_GMAIL_TOAST = "Please enter a valid gmail address!";
-    private static final String INVALID_PASSWORD_TOAST = "Please enter an at least 6-character long password!";
+    private static final String INVALID_PASSWORD_TOAST = "Please enter a password at least 6 characters long!";
 
     public static final int MAX_FEET = 8;
     public static final float MAX_INCHES = 11.99f;
@@ -46,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
     private TextView signUpTv;
     private FirebaseAuthAdapter mAuth;
+    private IUser mUser;
 
     private int feet;
     private float inches;
@@ -97,6 +100,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void signUp() {
+        mAuth = new FirebaseAuthAdapter(LoginActivity.this);
+        mUser = mAuth.signUp(gmailAddress, password);
+    }
+
+
     private boolean checkLogin() {
         if (!checkForGmailAddress()) {
             Toast.makeText(LoginActivity.this, "Please enter a valid gmail address", Toast.LENGTH_SHORT).show();
@@ -106,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
         else if (!checkValidPassword()) {
             Toast.makeText(LoginActivity.this, "Please enter a password at least 6 characters long", Toast.LENGTH_SHORT).show();
             passwordEditText.setText("");
+            return false;
         }
 
         return true;
