@@ -7,5 +7,6 @@ public interface AuthService {
     IUser signUp(String email, String password);
     IUser signUpWithName(String email, String password, String displayName);
     IUser getUser();
+    AuthError getAuthError();
     boolean isUserSignedIn();
 }
