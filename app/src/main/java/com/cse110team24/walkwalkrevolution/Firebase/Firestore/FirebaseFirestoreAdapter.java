@@ -15,6 +15,19 @@ import java.util.Map;
 import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBERS_KEY;
 import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.TEAM_UID_KEY;
 
+/** TODO: 2/28/20 flow for a team should be
+ * get the user's account.
+ * Check if they have a team.
+ * check if user has team
+ *      if yes, update UI
+ *
+ *      if not, when user sends invite,
+ *          instantiate team,
+ *          add user as member of team,
+ *          create team in database
+ *          set team's new UID as teamUID for user
+ *
+ */
 public class FirebaseFirestoreAdapter implements DatabaseService{
     private static final String TAG = "FirebaseFirestoreAdapter";
     public static final String USERS_COLLECTION_KEY = "users";
@@ -55,9 +68,9 @@ public class FirebaseFirestoreAdapter implements DatabaseService{
         return usersCollection.document(user.getDisplayName());
     }
 
+    // TODO: 2/28/20 need to determine if this will be real time
     @Override
     public ITeam getUserTeam(IUser user) {
-
         return null;
     }
 
