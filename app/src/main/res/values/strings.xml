@@ -77,6 +77,12 @@
     <string name="title_team_member_email">Team Member Email</string>
     <string name="btn_send_invite">Send Invitation</string>
 
+    <!-- In activity_team_page.xml-->
+    <string name="title_team_page">Your Walking Team</string>
+    <string name="pending_invites">Pending&#10;Invites</string>
+    <string name="invite_team_member">Invite</string>
+    <string name="title_teammates_in_team">Teammates: </string>
+
     <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
 
