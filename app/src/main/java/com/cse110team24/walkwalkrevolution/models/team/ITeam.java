@@ -8,6 +8,7 @@ import java.util.Map;
 public interface ITeam {
     List<IUser> getTeam();
     String getUid();
+    String documentKey();
     void setUid(String uid);
     Map<String, Object> teamData();
     boolean addMember(IUser user);
