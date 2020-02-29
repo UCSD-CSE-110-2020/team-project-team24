@@ -1,112 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
-
-    <EditText
-        android:id="@+id/enter_password"
-        android:layout_width="235dp"
-        android:layout_height="38dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="201dp"
-        android:hint="@string/enter_password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"/>
 
     <TextView
         android:id="@+id/tv_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/height_prompt"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="@dimen/prompt_top_margin"
-        android:layout_marginStart="@dimen/prompt_left_margin"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_height_finish"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/et_height_feet"/>
 
     <EditText
         android:id="@+id/et_height_feet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/tv_prompt"
-        android:layout_alignBottom="@id/tv_prompt"
         android:inputType="number"
         android:hint="@string/num_hint"
-        android:importantForAutofill="no"/>
+        android:importantForAutofill="no"
+        app:layout_constraintLeft_toRightOf="@id/tv_prompt"
+        app:layout_constraintRight_toLeftOf="@+id/tv_feet"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_height_finish"/>
+
 
     <TextView
         android:id="@+id/tv_feet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/feet_units"
-        android:layout_marginTop="@dimen/prompt_top_margin"
-        android:layout_toEndOf="@id/et_height_feet"
-        android:layout_alignBaseline="@id/et_height_feet" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_height_finish"
+        app:layout_constraintLeft_toRightOf="@+id/et_height_feet"
+        app:layout_constraintRight_toLeftOf="@+id/et_height_remainder_inches"/>
 
     <EditText
         android:id="@+id/et_height_remainder_inches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/tv_feet"
-        android:layout_alignBottom="@id/tv_prompt"
         android:inputType="numberDecimal"
         android:hint="@string/num_hint"
-        android:importantForAutofill="no"/>
+        android:importantForAutofill="no"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_height_finish"
+        app:layout_constraintLeft_toRightOf="@+id/tv_feet"
+        app:layout_constraintRight_toLeftOf="@+id/tv_height_remainder_inches"/>
 
     <TextView
+        android:id="@+id/tv_height_remainder_inches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/inch_units"
-        android:layout_toEndOf="@id/et_height_remainder_inches"
-        android:layout_alignBaseline="@id/et_height_remainder_inches" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_height_finish"
+        app:layout_constraintLeft_toRightOf="@id/et_height_remainder_inches"/>
+
     <Button
         android:id="@+id/btn_height_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/finish_btn_text"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:layout_below="@id/tv_prompt" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_prompt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <Button
         android:id="@+id/no_login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="273dp"
-        android:text="@string/no_login" />
+        android:text="@string/no_login"
+        app:layout_constraintTop_toBottomOf="@+id/btn_height_finish"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <EditText
         android:id="@+id/enter_gmail_address"
         android:layout_width="235dp"
         android:layout_height="38dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="267dp"
         android:hint="@string/enter_gmail_address"
         android:importantForAutofill="no"
-        android:inputType="textEmailAddress"/>
+        android:inputType="textEmailAddress"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_login_btn"
+        app:layout_constraintBottom_toTopOf="@+id/enter_username"/>
 
     <EditText
         android:id="@+id/enter_username"
         android:layout_width="235dp"
         android:layout_height="38dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="333dp"
         android:hint="@string/enter_name"
         android:importantForAutofill="no"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_gmail_address"
+        app:layout_constraintBottom_toTopOf="@+id/enter_password"/>
+
+    <EditText
+        android:id="@+id/enter_password"
+        android:layout_width="235dp"
+        android:layout_height="38dp"
+        android:hint="@string/enter_password"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_username"
+        app:layout_constraintBottom_toTopOf="@+id/login_btn"/>
 
     <Button
         android:id="@+id/login_btn"
         android:layout_width="115dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="105dp"
-        android:text="@string/login" />
+        android:text="@string/login"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_password"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
