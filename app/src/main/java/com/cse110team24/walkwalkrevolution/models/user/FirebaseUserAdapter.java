@@ -56,7 +56,7 @@ public class FirebaseUserAdapter implements IUser {
 
     @Override
     public String documentKey() {
-        return getUid();
+        return getEmail();
     }
 
     @Override
