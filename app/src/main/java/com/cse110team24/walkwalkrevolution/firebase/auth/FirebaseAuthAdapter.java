@@ -2,6 +2,7 @@ package com.cse110team24.walkwalkrevolution.firebase.auth;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -36,6 +37,8 @@ public class FirebaseAuthAdapter implements AuthService {
                         mUser.setFirebaseUser(mAuth.getCurrentUser());
                     } else {
                         Log.e(TAG, "signUp: user sign-in failed", task.getException());
+                        Toast.makeText(mActivity, task.getException().toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(mActivity, "User is not logged in and data will not be saved", Toast.LENGTH_SHORT).show();
                         handleError(task);
                         mUser = null;
                     }
