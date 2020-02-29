@@ -96,4 +96,38 @@ public class FirebaseUserAdapter implements IUser {
 
     // TODO: 2/29/20 implement FirebaseUserBuilder - don't use firebase to get the fields. Store them immediately
 
+    public static class FirebaseUserAdapterBuilder implements IFirebaseUserAdapterBuilder {
+        FirebaseUserAdapter mUser;
+
+        @Override
+        public IUserBuilder addFirebaseUser(FirebaseUser firebaseUser) {
+            return null;
+        }
+
+        @Override
+        public IUserBuilder addEmail(String email) {
+            return null;
+        }
+
+        @Override
+        public IUserBuilder addInvitationsList(List<Invitation> invitations) {
+            return null;
+        }
+
+        @Override
+        public IUserBuilder addDisplayName(String email) {
+            return null;
+        }
+
+        @Override
+        public IUserBuilder addUid(String uid) {
+            return null;
+        }
+
+        @Override
+        public IUser build() {
+            return null;
+        }
+    }
+
 }
