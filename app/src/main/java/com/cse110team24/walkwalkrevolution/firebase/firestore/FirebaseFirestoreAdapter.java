@@ -66,7 +66,8 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public DocumentReference updateUserTeam(IUser user, String teamUid) {
+    public DocumentReference setUserTeam(IUser user, String teamUid) {
+        user.updateTeamUid(teamUid);
         DocumentReference documentReference = usersCollection.document(user.documentKey());
         documentReference.update(TEAM_UID_KEY, teamUid).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -75,7 +76,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                 Log.e(TAG, "updateUserTeam: error updating team uid", task.getException());
             }
         });
-        return usersCollection.document(user.getDisplayName());
+        return usersCollection.document(user.documentKey());
     }
 
     // TODO: 2/28/20 need to determine if this will be real time

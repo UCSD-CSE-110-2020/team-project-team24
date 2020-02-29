@@ -7,7 +7,14 @@ import com.google.firebase.firestore.DocumentReference;
 public interface DatabaseService {
 
     DocumentReference createUserInDatabase(IUser user);
-    DocumentReference updateUserTeam(IUser user, String teamUid);
+
+    /**
+     * updates user's teamUid field locally and in database
+     * @param user
+     * @param teamUid
+     * @return
+     */
+    DocumentReference setUserTeam(IUser user, String teamUid);
     DocumentReference createTeamInDatabase(ITeam team);
     DocumentReference updateTeamMembers(ITeam team);
 

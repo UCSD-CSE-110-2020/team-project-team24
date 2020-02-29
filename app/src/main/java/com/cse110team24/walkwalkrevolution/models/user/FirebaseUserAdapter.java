@@ -52,7 +52,7 @@ public class FirebaseUserAdapter implements IUser {
 
     @Override
     public String documentKey() {
-        return getDisplayName();
+        return getUid();
     }
 
     @Override
