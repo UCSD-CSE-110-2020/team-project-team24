@@ -24,7 +24,6 @@ public class FirebaseAuthAdapter implements AuthService {
     private Activity mActivity;
     private AuthError mError;
 
-    // TODO: 2/29/20 user builder to create user
     public FirebaseAuthAdapter(Activity activity) {
         mAuth = FirebaseAuth.getInstance();
         mActivity = activity;

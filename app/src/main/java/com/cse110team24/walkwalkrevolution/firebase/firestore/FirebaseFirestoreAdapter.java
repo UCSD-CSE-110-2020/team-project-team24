@@ -114,13 +114,13 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public DocumentReference addInvitationForReceivingUser(Invitation invitation) {
         IUser receiver = invitation.toUser();
         DocumentReference receiverDoc = usersCollection.document(receiver.documentKey());
-        CollectionReference receiverInvitations = receiverDoc.collection(USER_INVITATIONS_SUB_COLLECTION_KEY);
-        DocumentReference subInvitationDoc = receiverInvitations.document(invitation.getUid());
-        subInvitationDoc.set(invitation).addOnCompleteListener(task -> {
+        CollectionReference receiverInvitationsCollection = receiverDoc.collection(USER_INVITATIONS_SUB_COLLECTION_KEY);
+        DocumentReference subInvitationDoc = receiverInvitationsCollection.document(invitation.uid());
+        subInvitationDoc.set(invitation.invitationData()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "addInvitationForReceivingUser: success connecting invitation to receiver");
             } else {
-                Log.e(TAG, "addInvitationForReceivingUser: failed connecting invitation to recevier", task.getException());
+                Log.e(TAG, "addInvitationForReceivingUser: failed connecting invitation to receiver", task.getException());
             }
         });
         return subInvitationDoc;
@@ -131,7 +131,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         DocumentReference rootInvitationDoc = invitationsRootCollection.document();
         invitation.setUid(rootInvitationDoc.getId());
 
-        rootInvitationDoc.set(invitation).addOnCompleteListener(task -> {
+        rootInvitationDoc.set(invitation.invitationData()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "createRootInvitationDocument: success creating new invitation document");
             } else {
