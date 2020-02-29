@@ -1,16 +1,24 @@
 package com.cse110team24.walkwalkrevolution.models.user;
 
-import android.net.Uri;
 import android.util.Log;
 
-import com.cse110team24.walkwalkrevolution.Firebase.auth.FirebaseAuthAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FirebaseUserAdapter implements IUser {
     private static final String TAG = "FirebaseUserAdapter";
+
+    public static final String NAME_KEY = "displayName";
+    public static final String EMAIL_KEY = "email";
+    public static final String UID_KEY = "uid";
+    public static final String TEAM_UID_KEY = "teamUid";
+
     private FirebaseUser mFirebaseUser;
+    private String mTeamUid;
 
     public FirebaseUserAdapter(FirebaseUser firebaseUser) {
         mFirebaseUser = firebaseUser;
@@ -40,6 +48,21 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
+    public String getDocumentKey() {
+        return getDisplayName();
+    }
+
+    @Override
+    public String getTeamUid() {
+        return mTeamUid;
+    }
+
+    @Override
+    public void setTeamUid(String teamUid) {
+        mTeamUid = teamUid;
+    }
+
+    @Override
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
     }
@@ -53,7 +76,7 @@ public class FirebaseUserAdapter implements IUser {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
-        
+
         mFirebaseUser.updateProfile(profileUpdates)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -62,6 +85,16 @@ public class FirebaseUserAdapter implements IUser {
                         Log.e(TAG, "updateDisplayName: could not update display name", task.getException());
                     }
                 });
+    }
+
+    @Override
+    public Map<String, Object> getDBFields() {
+        Map<String, Object> userData = new HashMap<>();
+        userData.put(NAME_KEY, getDisplayName());
+        userData.put(EMAIL_KEY, getEmail());
+        userData.put(UID_KEY, getUid());
+        userData.put(TEAM_UID_KEY, getTeamUid());
+        return userData;
     }
 
 }

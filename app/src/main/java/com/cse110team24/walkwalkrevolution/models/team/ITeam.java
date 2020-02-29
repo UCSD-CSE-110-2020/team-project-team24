@@ -8,6 +8,7 @@ import java.util.Map;
 public interface ITeam {
     List<IUser> getTeam();
     String getUid();
+    void setUid(String uid);
     Map<String, Object> getDBFields();
     boolean addMember(IUser user);
 }

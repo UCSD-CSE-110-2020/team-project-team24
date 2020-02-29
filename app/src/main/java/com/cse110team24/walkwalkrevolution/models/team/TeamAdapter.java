@@ -41,6 +41,11 @@ public class TeamAdapter implements ITeam {
     }
 
     @Override
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    @Override
     public Map<String, Object> getDBFields() {
         Map<String, Object> teamData = new HashMap<>();
         teamData.put(UID_KEY, uid);
