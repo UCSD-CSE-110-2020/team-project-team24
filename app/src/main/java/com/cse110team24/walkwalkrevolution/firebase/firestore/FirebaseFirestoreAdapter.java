@@ -144,7 +144,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         List<DocumentSnapshot> invitationDocuments = task.getResult().getDocuments();
         List<Invitation> invitations = new ArrayList<>(invitationDocuments.size());
         invitationDocuments.forEach(document -> {
-            // TODO: 2/29/20 add document as invitation object to list 
+            // TODO: 2/29/20 add document as invitation object to list
         });
         return invitations;
     }

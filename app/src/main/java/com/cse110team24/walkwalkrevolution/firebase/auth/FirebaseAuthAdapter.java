@@ -30,6 +30,8 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     private Activity mActivity;
     private AuthError mAuthError;
 
+    private boolean signUp;
+
     private List<AuthServiceObserver> observers;
 
     public FirebaseAuthAdapter(Activity activity) {
@@ -50,8 +52,6 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                         buildUserEssentials(email);
                     } else {
                         Log.e(TAG, "signUp: user sign-in failed", task.getException());
-//                        Toast.makeText(mActivity, task.getException().toString(), Toast.LENGTH_LONG).show();
-//                        Toast.makeText(mActivity, "User is not logged in and data will not be saved", Toast.LENGTH_SHORT).show();
                         detectErrorType(task);
                         notifyObserversSignInError();
                     }
@@ -64,6 +64,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
 
     @Override
     public IUser signUp(String email, String password) {
+        signUp = true;
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(mActivity, task -> {
                     if (task.isSuccessful()) {
@@ -141,14 +142,25 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         if (isUserSignedIn()) {
             buildUserEssentials(mFirebaseUser.getEmail());
         }
-        notifyObservers();
+
+        if (signUp) {
+            notifyObserversSignedUp();
+        } else {
+            notifyObserversSignedIn();
+        }
     }
 
 
-    private void notifyObservers() {
+    private void notifyObserversSignedIn() {
         Log.i(TAG, "notifyObservers: " + mUserAdapterBuilder.build());
         observers.forEach(observer -> {
-            observer.onAuthStateChange(mUserAdapterBuilder.build());
+            observer.onUserSignedIn(mUserAdapterBuilder.build());
+        });
+    }
+
+    private void notifyObserversSignedUp() {
+        observers.forEach(observer -> {
+            observer.onUserSignedUp(mUserAdapterBuilder.build());
         });
     }
 
