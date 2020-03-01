@@ -2,7 +2,6 @@ package com.cse110team24.walkwalkrevolution.firebase.auth;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -44,7 +43,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     }
 
     @Override
-    public IUser signIn(String email, String password) {
+    public void signIn(String email, String password) {
         signUp = false;
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(mActivity, task -> {
@@ -57,14 +56,10 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                         notifyObserversSignInError();
                     }
                 });
-
-        return mUserAdapterBuilder.build();
     }
-
-
-
+    
     @Override
-    public IUser signUp(String email, String password) {
+    public void signUp(String email, String password) {
         signUp = true;
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(mActivity, task -> {
@@ -77,16 +72,6 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                         notifyObserversSignUpError();
                     }
                 });
-        return mUserAdapterBuilder.build();
-    }
-
-    @Override
-    public IUser signUpWithName(String email, String password, String displayName) {
-        signUp(email, password);
-        if (isUserSignedIn()) {
-            mUserAdapterBuilder.addDisplayName(displayName);
-        }
-        return mUserAdapterBuilder.build();
     }
 
     @Override

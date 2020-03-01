@@ -4,9 +4,8 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.observer.Subject;
 
 public interface AuthService extends Subject<AuthServiceObserver> {
-    IUser signIn(String email, String password);
-    IUser signUp(String email, String password);
-    IUser signUpWithName(String email, String password, String displayName);
+    void signIn(String email, String password);
+    void signUp(String email, String password);
     IUser getUser();
     AuthError getAuthError();
     boolean isUserSignedIn();
