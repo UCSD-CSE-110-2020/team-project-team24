@@ -51,6 +51,11 @@ public class Invitation implements IInvitation {
     }
 
     @Override
+    public InvitationStatus status() {
+        return mStatus;
+    }
+
+    @Override
     public String uid() {
         return mUid;
     }
@@ -59,8 +64,8 @@ public class Invitation implements IInvitation {
     public Map<String, Object> invitationData() {
         Map<String, Object> data = new HashMap<>();
         data.put(INVITATION_UID_SET_KEY, mUid);
-        data.put(INVITATION_FROM_SET_KEY, fromName() + " " + fromEmail());
-        data.put(INVITATION_TO_SET_KEY, toName() + " " + toEmail());
+        data.put(INVITATION_FROM_SET_KEY, fromName() + " @ " + fromEmail());
+        data.put(INVITATION_TO_SET_KEY, toName() + " @ " + toEmail());
         return data;
     }
 
