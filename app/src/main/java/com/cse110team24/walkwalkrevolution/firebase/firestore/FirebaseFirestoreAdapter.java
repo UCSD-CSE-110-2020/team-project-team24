@@ -5,10 +5,17 @@ import android.util.Log;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBERS_KEY;
@@ -76,12 +83,6 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         return usersCollection.document(user.documentKey());
     }
 
-    // TODO: 2/28/20 need to determine if this will be real time
-    @Override
-    public ITeam getUserTeam(IUser user) {
-        return null;
-    }
-
     @Override
     public DocumentReference createTeamInDatabase(ITeam team) {
         DocumentReference teamDocument = teamsCollection.document();
@@ -131,7 +132,26 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                 Log.e(TAG, "createRootInvitationDocument: failed creating invitation doc", task.getException());
             }
         });
-
         return rootInvitationDoc;
+    }
+
+    @Override
+    public List<Invitation> getUserInvitations(IUser user) {
+        Task<QuerySnapshot> task  = usersCollection
+                .document(user.documentKey())
+                .collection(USER_INVITATIONS_SUB_COLLECTION_KEY)
+                .get();
+        List<DocumentSnapshot> invitationDocuments = task.getResult().getDocuments();
+        List<Invitation> invitations = new ArrayList<>(invitationDocuments.size());
+        invitationDocuments.forEach(document -> {
+            // TODO: 2/29/20 add document as invitation object to list 
+        });
+        return invitations;
+    }
+
+    // TODO: 2/28/20 need to determine if this will be real time
+    @Override
+    public ITeam getUserTeam(IUser user) {
+        return null;
     }
 }
