@@ -1,7 +1,6 @@
 const functions = require('firebase-functions');
 
 exports.sendInviteNotification = functions.firestore
-    //.document('invitations/{inviteId}')
     .document('users/{user}/invitations/{inviteId}')
     .onCreate((snap, context) => {
         const document = snap.exists ? snap.data() : null;
@@ -9,8 +8,9 @@ exports.sendInviteNotification = functions.firestore
         if (document) {
             var message = {
                 notification: {
-                    title: document.from + ' sent you an invite!',
-                }
+                    title: document.from + ' has invited you to join a team!',
+                    body: 'Click to accept or decline this invitation'
+                },
                 topic: context.params.inviteId
             };
 

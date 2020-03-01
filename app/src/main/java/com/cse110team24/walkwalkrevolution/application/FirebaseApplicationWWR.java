@@ -3,6 +3,8 @@ package com.cse110team24.walkwalkrevolution.application;
 import android.app.Application;
 
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +12,14 @@ import java.util.List;
 public class FirebaseApplicationWWR extends Application implements ApplicationSubject {
 
     private static AuthServiceFactory authServiceFactory;
+    private static DatabaseServiceFactory databaseServiceFactory;
     List<ApplicationObserver> observers = new ArrayList<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
         authServiceFactory = new AuthServiceFactory();
+        databaseServiceFactory = new DatabaseServiceFactory();
     }
 
     public static AuthServiceFactory getAuthServiceFactory() {
@@ -24,6 +28,14 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
 
     public static AuthServiceFactory setAuthServiceFactory(AuthServiceFactory asf) {
         return authServiceFactory = asf;
+    }
+
+    public static DatabaseServiceFactory getDatabaseServiceFactory() {
+        return databaseServiceFactory;
+    }
+
+    public static DatabaseServiceFactory setDatabaseServiceFactory(DatabaseServiceFactory dsf) {
+        return databaseServiceFactory = dsf;
     }
 
     @Override

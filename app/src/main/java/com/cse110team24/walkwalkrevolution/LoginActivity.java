@@ -16,10 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.FirebaseFirestoreAdapter;
-import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthAdapter;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
@@ -51,10 +51,14 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     private EditText passwordEditText;
     private Button loginBtn;
     private TextView signUpTv;
-    private FirebaseAuthAdapter mAuth;
+
+    SharedPreferences preferences;
+
+    // firebase dependencies
+    private AuthService mAuth;
     private IUser mUser;
-    private FirebaseFirestoreAdapter firebaseFirestore;
-    ProgressBar progressBar;
+    private DatabaseService mDb;
+    private ProgressBar progressBar;
 
     private int feet;
     private float inches;
@@ -76,12 +80,16 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final SharedPreferences preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
+        preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
         homeIntent = new Intent(this, HomeActivity.class);
+
+        mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        mAuth.register(this);
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
 
         getConfiguredFields();
         // TODO: replace it with checkLogin()
-        //checkHeight(preferences);
+        checkLogin(preferences);
         hideNameAndHeight();
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
         signUpTvOnClickListener();
@@ -95,22 +103,31 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     private void loginBtnOnClickListener() {
         loginBtn.setOnClickListener(view -> {
+            username = nameEditText.getText().toString();
+            password = passwordEditText.getText().toString();
+            gmailAddress = gmailEditText.getText().toString();
             String btnText = loginBtn.getText().toString();
             Log.i(TAG, "loginBtnOnClickListener: button text is " + btnText);
             if(btnText.equals("Finish")) {
                 launchHomeActivityFromGuestMode();
             } else if(btnText.equals("Sign Up")) {
-                launchHomeActivityFromSignUp();
+                signUp();
             } else {
-                launchHomeActivityFromLogIn();
+                logIn();
             }
         });
     }
 
+    private void launchHomeActivityFromGuestMode() {
+        Log.i(TAG, "launchHomeActivityFromGuestMode: valid height params found; launching home.");
+        if (validateFeet() && validateInches()) {
+            launchHome();
+        }
+    }
+
     private void signUp() {
         progressBar.setVisibility(View.VISIBLE);
-        mAuth = new FirebaseAuthAdapter();
-        mAuth.register(LoginActivity.this);
+        if (!validateSignUpInfo()) return;
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mAuth.signUp(gmailAddress, password);
     }
@@ -118,11 +135,35 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     private void logIn() {
         progressBar.setVisibility(View.VISIBLE);
-        mAuth = new FirebaseAuthAdapter();
-        mAuth.register(LoginActivity.this);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mAuth.signIn(gmailAddress, password);
     }
+
+    private boolean validateSignUpInfo() {
+        if(!checkForGmailAddress()) {
+            Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
+            return false;
+        } else if(!checkValidPassword()) {
+            Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
+            return false;
+        } else if(username.equals("")) {
+            Toast.makeText(this, "Please enter your name!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if(!validateFeet() || !validateInches()) {
+            Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void launchHome() {
+        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
+                .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
+                .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
+        finish();
+        startActivity(homeIntent);
+    }
+
 
     private void signUpTvOnClickListener() {
         signUpTv.setOnClickListener(view -> {
@@ -236,53 +277,17 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         };
     }
 
-    private void launchHomeActivityFromGuestMode() {
-        Log.i(TAG, "launchHomeActivityFromGuestMode: valid height params found; launching home.");
-        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
-                    .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
-                    .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
-        finish();
-        startActivity(homeIntent);
-    }
-
-    private void launchHomeActivityFromSignUp() {
-        username = nameEditText.getText().toString();
-        password = passwordEditText.getText().toString();
-
-        if(!checkForGmailAddress()) {
-            Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
-            return;
-        } else if(!checkValidPassword()) {
-            Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
-            return;
-        } else if(username.equals("")) {
-            Toast.makeText(this, "Please enter your name!", Toast.LENGTH_LONG).show();
-            return;
-        } else if(!validateFeet() || !validateInches()) {
-            Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
-            return;
-        }
-        signUp();
-    }
-
-    private void launchHomeActivityFromLogIn() {
-        if(!checkForGmailAddress()) {
-            Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
-            return;
-        } else if(!checkValidPassword()) {
-            Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
-            return;
-        }
-        logIn();
-    }
-
-    private void checkHeight(SharedPreferences preferences) {
+    private boolean checkHeight(SharedPreferences preferences) {
         Log.i(TAG, "checkHeight: checking preferences if height already exists");
         feet = preferences.getInt(HomeActivity.HEIGHT_FT_KEY, (int) INVALID_VAL);
         inches = preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, INVALID_VAL);
-        if (feet > 0 && inches > 0) {
+        return feet > 0 && inches > 0;
+    }
+
+    private void checkLogin(SharedPreferences preferences) {
+        if (checkHeight(preferences) && mAuth.isUserSignedIn()) {
             Log.i(TAG, "checkHeight: valid height in preferences already exists (feet: " + feet + ", inches: " + inches + ").");
-            launchHomeActivityFromGuestMode();
+            launchHome();
         }
     }
 
@@ -305,15 +310,11 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private boolean checkForGmailAddress() {
-        gmailAddress = gmailEditText.getText().toString();
-        Log.i(TAG, "checkForGmailAddress: " + gmailAddress);
         return Pattern.matches("(\\W|^)[\\w.\\-]{0,25}@(gmail)\\.com(\\W|$)", gmailAddress);
     }
 
     private boolean checkValidPassword() {
-        password = passwordEditText.getText().toString();
-        Log.i(TAG, "checkValidPassword: " + password);
-        return Pattern.matches("^[:;,\\-@0-9a-zA-Zâéè'.\\s]{6,}$", password);
+        return password.length() >= 6;
     }
 
     @Override
@@ -340,21 +341,16 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     @Override
     public void onUserSignedUp(IUser user) {
         if(mAuth.isUserSignedIn()) {
-            firebaseFirestore = new FirebaseFirestoreAdapter();
             user.updateDisplayName(username);
-            firebaseFirestore.createUserInDatabase(user);
-            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
-            finish();
-            startActivity(homeIntent);
+            mDb.createUserInDatabase(user);
+            launchHome();
         }
     }
 
     @Override
     public void onUserSignedIn(IUser user) {
         if(mAuth.isUserSignedIn()) {
-            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
-            finish();
-            startActivity(homeIntent);
+            launchHome();
         }
     }
 

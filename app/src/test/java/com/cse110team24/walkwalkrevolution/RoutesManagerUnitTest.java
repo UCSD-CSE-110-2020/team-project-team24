@@ -1,11 +1,14 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
@@ -25,19 +28,17 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
-public class RoutesManagerUnitTest {
+public class RoutesManagerUnitTest extends TestInjection {
     private static final String TEST_FILE_LIST = ".WWR_storage_test_list";
     private static final String TEST_FILE_SINGLE = ".WWR_storage_test_single";
     private static final String TEST_FILE_LATEST = ".WWR_storage_test_latest";
-
-    @Rule
-    public ActivityScenarioRule<LoginActivity> scenarioRule = new ActivityScenarioRule<>(LoginActivity.class);
 
     private ActivityScenario<LoginActivity> scenario;
 
     @Before
     public void setup() {
-        scenario = scenarioRule.getScenario();
+        super.setup();
+        scenario = ActivityScenario.launch(new Intent(ApplicationProvider.getApplicationContext(), LoginActivity.class));
     }
 
     @Test
