@@ -28,6 +28,12 @@ public class FirebaseApplicationWWR extends Application implements Subject<Appli
         return authServiceFactory = asf;
     }
 
+    public void onNewToken(String token) {
+        observers.forEach(observer -> {
+            observer.onNewToken(token);
+        });
+    }
+
     @Override
     public void register(ApplicationObserver observer) {
         observers.add(observer);
