@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class TeamPage extends Activity {
+public class TeamActivity extends Activity {
 
     private Button sendInviteBtn;
     private BottomNavigationView bottomNavigationView;
@@ -16,7 +15,7 @@ public class TeamPage extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_page);
+        setContentView(R.layout.activity_team);
 
         getUIFields();
         setButtonClickListeners();
@@ -49,7 +48,7 @@ public class TeamPage extends Activity {
         });
     }
     private void launchInviteRouteActivity() {
-        Intent intent = new Intent(this, InviteTeamMember.class);
+        Intent intent = new Intent(this, InviteTeamMemberActivity.class);
         startActivity(intent);
     }
 

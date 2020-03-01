@@ -80,7 +80,7 @@
     <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
 
-    <!--    In activity_team_page.xml-->
+    <!--    In activity_team -->
     <string name="title_team_page">Your Walking Team</string>
     <string name="invite_team_member">Invite&#10;Teammate</string>
 

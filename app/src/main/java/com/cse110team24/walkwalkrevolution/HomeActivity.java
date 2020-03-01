@@ -190,7 +190,7 @@ public class HomeActivity extends AppCompatActivity {
                 launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
             }
             if(menuItem.getItemId() == R.id.action_team) {
-                launchGoToRoutesActivity(new Intent(this, TeamPage.class));
+                launchGoToRoutesActivity(new Intent(this, TeamActivity.class));
             }
             return true;
         });

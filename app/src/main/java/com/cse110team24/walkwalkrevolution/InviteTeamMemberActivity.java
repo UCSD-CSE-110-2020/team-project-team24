@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class InviteTeamMember extends Activity {
+public class InviteTeamMemberActivity extends Activity {
 
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;
