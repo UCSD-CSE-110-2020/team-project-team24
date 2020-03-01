@@ -16,7 +16,7 @@ public interface DatabaseService {
     DocumentReference updateTeamMembers(ITeam team);
     CollectionReference addInvitationForReceivingUser(Invitation invitation);
     DocumentReference createRootInvitationDocument(Invitation invitation);
-    List<Invitation> getUserInvitations(IUser user);
+    List<Invitation> getUserPendingInvitations(IUser user);
     ITeam getUserTeam(IUser user);
 
 }

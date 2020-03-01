@@ -2,6 +2,7 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore;
 
 import android.util.Log;
 
+import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -137,10 +138,11 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public List<Invitation> getUserInvitations(IUser user) {
+    public List<Invitation> getUserPendingInvitations(IUser user) {
         Task<QuerySnapshot> task  = usersCollection
                 .document(user.documentKey())
                 .collection(USER_INVITATIONS_SUB_COLLECTION_KEY)
+                .whereEqualTo(Invitation.INVITATION_STATUS_SET_KEY, InvitationStatus.PENDING.toString().toLowerCase())
                 .get();
         List<DocumentSnapshot> invitationDocuments = task.getResult().getDocuments();
         List<Invitation> invitations = new ArrayList<>(invitationDocuments.size());
@@ -161,10 +163,10 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     private IUser buildUserFromInvitation(DocumentSnapshot invitationDocument, String documentKey) {
-        String[] fromUserInfo = invitationDocument.getString(documentKey).split("\\s");
+        String[] fromUserInfo = invitationDocument.getString(documentKey).split("@");
         return FirebaseUserAdapter.builder()
-                    .addDisplayName(fromUserInfo[0])
-                    .addEmail(fromUserInfo[1])
+                    .addDisplayName(fromUserInfo[0].trim())
+                    .addEmail(fromUserInfo[1].trim())
                     .build();
     }
 
