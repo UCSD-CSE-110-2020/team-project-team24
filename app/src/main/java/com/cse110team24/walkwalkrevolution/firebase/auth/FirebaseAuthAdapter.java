@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.FirebaseUserAdapterBuilder;
 import com.google.android.gms.tasks.Task;
@@ -17,7 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirebaseAuthAdapter implements AuthService {
+public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateListener {
     private static String TAG = "FirebaseAuthAdapter";
     private static String USER_COLLISION = "ERROR: a user with this email already exists";
 
@@ -34,6 +36,7 @@ public class FirebaseAuthAdapter implements AuthService {
         mActivity = activity;
         mFirebaseUser = mAuth.getCurrentUser();
         mUserAdapterBuilder = new FirebaseUserAdapterBuilder();
+        mAuth.addAuthStateListener(this);
         observers = new ArrayList<>();
     }
 
@@ -122,5 +125,19 @@ public class FirebaseAuthAdapter implements AuthService {
     @Override
     public void deregister(AuthServiceObserver authServiceObserver) {
         observers.remove(authServiceObserver);
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        mUserAdapterBuilder.addFirebaseUser(firebaseAuth.getCurrentUser());
+        mFirebaseUser = firebaseAuth.getCurrentUser();
+        notifiyObservers();
+    }
+
+
+    private void notifiyObservers() {
+        observers.forEach(observer -> {
+            observer.onAuthStateChange(mUserAdapterBuilder.build());
+        });
     }
 }
