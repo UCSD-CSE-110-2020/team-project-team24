@@ -14,6 +14,8 @@ public class Invitation implements IInvitation {
     private IUser mTo;
     private String mUid;
 
+    private Invitation() {}
+
     public Invitation(IUser from, IUser to) {
         mFrom = from;
         mTo = to;
@@ -43,6 +45,41 @@ public class Invitation implements IInvitation {
 
     public void setUid(String uid) {
         mUid = uid;
+    }
+
+    public static InvitationBuilderInterface builder() {
+        return new InvitationBuilder();
+    }
+
+    public static class InvitationBuilder implements InvitationBuilderInterface {
+        private Invitation mInvitation;
+
+        public InvitationBuilder() {
+            mInvitation = new Invitation();
+        }
+
+        @Override
+        public InvitationBuilderInterface addFromUser(IUser user) {
+            mInvitation.mFrom = user;
+            return this;
+        }
+
+        @Override
+        public InvitationBuilderInterface addToUser(IUser user) {
+            mInvitation.mTo = user;
+            return this;
+        }
+
+        @Override
+        public InvitationBuilderInterface addUid(String uid) {
+            mInvitation.mUid = uid;
+            return this;
+        }
+
+        @Override
+        public Invitation build() {
+            return mInvitation;
+        }
     }
 
 }
