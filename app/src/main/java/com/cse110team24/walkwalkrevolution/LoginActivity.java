@@ -343,9 +343,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     @Override
     public void onUserSignedIn(IUser user) {
-        if(mAuth.isUserSignedIn()) {
-            launchHome();
-        }
+        checkLogin(preferences);
     }
 
     @Override
