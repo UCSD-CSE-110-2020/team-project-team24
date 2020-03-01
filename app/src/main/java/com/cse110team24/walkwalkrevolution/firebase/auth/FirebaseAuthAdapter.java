@@ -21,7 +21,6 @@ import java.util.List;
 
 public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateListener {
     private static String TAG = "FirebaseAuthAdapter";
-    private static String USER_COLLISION = "ERROR: a user with this email already exists";
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
@@ -140,7 +139,6 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
 
 
     private void notifyObserversSignedIn() {
-        Log.i(TAG, "notifyObservers: " + mUserAdapterBuilder.build());
         observers.forEach(observer -> {
             observer.onUserSignedIn(mUserAdapterBuilder.build());
         });
@@ -153,14 +151,12 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     }
 
     private void notifyObserversSignInError() {
-        Log.i(TAG, "notifyObserversSignInError: " + mAuthError);
         observers.forEach(observer -> {
             observer.onAuthSignInError(mAuthError);
         });
     }
 
     private void notifyObserversSignUpError() {
-        Log.i(TAG, "notifyObserversSignUpError: " + mAuthError);
         observers.forEach(observer -> {
             observer.onAuthSignUpError(mAuthError);
         });
