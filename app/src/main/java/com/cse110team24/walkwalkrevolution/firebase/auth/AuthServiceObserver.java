@@ -6,6 +6,6 @@ public interface AuthServiceObserver {
 
     void onUserSignedIn(IUser user);
     void onUserSignedUp(IUser user);
-    void onAuthSignInError(AuthError error);
-    void onAuthSignUpError(AuthError error);
+    void onAuthSignInError(AuthService.AuthError error);
+    void onAuthSignUpError(AuthService.AuthError error);
 }

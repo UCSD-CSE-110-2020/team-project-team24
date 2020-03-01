@@ -8,4 +8,12 @@ public interface AuthService extends AuthServiceSubject {
     IUser getUser();
     AuthError getAuthError();
     boolean isUserSignedIn();
+
+    public enum AuthError {
+        USER_COLLISION,
+        DOES_NOT_EXIST,
+        INVALID_PASSWORD,
+        NETWORK_ERROR,
+        OTHER
+    }
 }

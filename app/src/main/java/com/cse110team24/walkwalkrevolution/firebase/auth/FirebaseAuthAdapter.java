@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution.firebase.auth;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
