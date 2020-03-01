@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthError;
@@ -25,7 +26,7 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import java.util.regex.Pattern;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements AuthServiceObserver {
     private static final String TAG = "LoginActivity";
     private static final String INVALID_GMAIL_TOAST = "Please enter a valid gmail address!";
     private static final String INVALID_PASSWORD_TOAST = "Please enter a password at least 6 characters long!";
@@ -57,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     private float inches;
     private boolean loginMode = true;
     private boolean guestMode = false;
+    private boolean signup = false;
 
     private String gmailAddress;
     private String password;
@@ -106,58 +108,47 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signUp() {
         mAuth = new FirebaseAuthAdapter(LoginActivity.this);
+        mAuth.register(LoginActivity.this);
         Log.i(TAG, "signUp: with email " + gmailAddress);
-        mUser = mAuth.signUpWithName(gmailAddress, password, username);
-        if (mAuth.isUserSignedIn()) {
-            firebaseFirestore = new FirebaseFirestoreAdapter();
-            firebaseFirestore.createUserInDatabase(mUser);
-            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
-            finish();
-            startActivity(homeIntent);
-        } else {
-            Log.e(TAG, "signUp: sign up failed");
-            AuthError error = mAuth.getAuthError();
-            if(error == AuthError.USER_COLLISION) {
-                Log.e(TAG, "signUp: user collision");
-            } else if(error == AuthError.DOES_NOT_EXIST) {
-                Log.e(TAG, "signUp: user does not exist");
-            } else if(error == AuthError.INVALID_PASSWORD) {
-                Log.e(TAG, "signUp: invalid password");
-            } else if(error == AuthError.OTHER) {
-                Log.e(TAG, "signUp: other error");
-            } else if(error == null) {
-                Log.e(TAG, "signUp: error is null");
-            }
-        }
+        mUser = mAuth.signUp(gmailAddress, password);
+//        mUser = mAuth.signUpWithName(gmailAddress, password, username);
+        signup = true;
+//        if (mAuth.isUserSignedIn()) {
+//            firebaseFirestore = new FirebaseFirestoreAdapter();
+//            firebaseFirestore.createUserInDatabase(mUser);
+//            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+//            finish();
+//            startActivity(homeIntent);
+//        } else {
+//            Log.e(TAG, "signUp: sign up failed");
+//            AuthError error = mAuth.getAuthError();
+//            if(error == AuthError.USER_COLLISION) {
+//                Log.e(TAG, "signUp: user collision");
+//            } else if(error == AuthError.DOES_NOT_EXIST) {
+//                Log.e(TAG, "signUp: user does not exist");
+//            } else if(error == AuthError.INVALID_PASSWORD) {
+//                Log.e(TAG, "signUp: invalid password");
+//            } else if(error == AuthError.OTHER) {
+//                Log.e(TAG, "signUp: other error");
+//            } else if(error == null) {
+//                Log.e(TAG, "signUp: error is null");
+//            }
+//       }
     }
 
 
     private void logIn() {
         mAuth = new FirebaseAuthAdapter(LoginActivity.this);
+        mAuth.register(LoginActivity.this);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mUser = mAuth.signIn(gmailAddress, password);
-        if(!mAuth.isUserSignedIn()) {
-            Toast.makeText(this, "Log In Failed", Toast.LENGTH_SHORT).show();
-        } else {
-            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
-            finish();
-            startActivity(homeIntent);
-        }
-    }
-
-    private boolean checkLogin() {
-        if (!checkForGmailAddress()) {
-            Toast.makeText(LoginActivity.this, "Please enter a valid gmail address", Toast.LENGTH_SHORT).show();
-            gmailEditText.setText("");
-            return false;
-        }
-        else if (!checkValidPassword()) {
-            Toast.makeText(LoginActivity.this, "Please enter a password at least 6 characters long", Toast.LENGTH_SHORT).show();
-            passwordEditText.setText("");
-            return false;
-        }
-
-        return true;
+//        if(!mAuth.isUserSignedIn()) {
+//            Toast.makeText(this, "Log In Failed", Toast.LENGTH_SHORT).show();
+//        } else {
+//            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+//            finish();
+//            startActivity(homeIntent);
+//        }
     }
 
     private void signUpTvOnClickListener() {
@@ -351,4 +342,24 @@ public class LoginActivity extends AppCompatActivity {
         return Pattern.matches("^[:;,\\-@0-9a-zA-Zâéè'.\\s]{6,}$", password);
     }
 
+    @Override
+    public void onAuthSignInError(AuthError error) {
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onAuthStateChange(IUser user) {
+        if (signup) {
+            firebaseFirestore = new FirebaseFirestoreAdapter();
+            firebaseFirestore.createUserInDatabase(user);
+        }
+        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+        finish();
+        startActivity(homeIntent);
+    }
+
+    @Override
+    public void onAuthSignUpError(AuthError error) {
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+    }
 }

@@ -50,8 +50,8 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                         buildUserEssentials(email);
                     } else {
                         Log.e(TAG, "signUp: user sign-in failed", task.getException());
-                        Toast.makeText(mActivity, task.getException().toString(), Toast.LENGTH_LONG).show();
-                        Toast.makeText(mActivity, "User is not logged in and data will not be saved", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(mActivity, task.getException().toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(mActivity, "User is not logged in and data will not be saved", Toast.LENGTH_SHORT).show();
                         detectErrorType(task);
                         notifyObserversSignInError();
                     }
@@ -146,18 +146,21 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
 
 
     private void notifyObservers() {
+        Log.i(TAG, "notifyObservers: " + mUserAdapterBuilder.build());
         observers.forEach(observer -> {
             observer.onAuthStateChange(mUserAdapterBuilder.build());
         });
     }
 
     private void notifyObserversSignInError() {
+        Log.i(TAG, "notifyObserversSignInError: " + mAuthError);
         observers.forEach(observer -> {
             observer.onAuthSignInError(mAuthError);
         });
     }
 
     private void notifyObserversSignUpError() {
+        Log.i(TAG, "notifyObserversSignUpError: " + mAuthError);
         observers.forEach(observer -> {
             observer.onAuthSignUpError(mAuthError);
         });
