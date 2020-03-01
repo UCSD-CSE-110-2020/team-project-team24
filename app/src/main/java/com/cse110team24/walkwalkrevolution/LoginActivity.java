@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         homeIntent = new Intent(this, HomeActivity.class);
 
         mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        mAuth.register(this);
         mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
 
         getConfiguredFields();
@@ -113,16 +114,12 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void signUp() {
-        mAuth = new FirebaseAuthAdapter();
-        mAuth.register(LoginActivity.this);
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mAuth.signUp(gmailAddress, password);
     }
 
 
     private void logIn() {
-        mAuth = new FirebaseAuthAdapter();
-        mAuth.register(LoginActivity.this);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mAuth.signIn(gmailAddress, password);
     }
@@ -268,13 +265,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void launchHomeActivityFromLogIn() {
-        if(!checkForGmailAddress()) {
-            Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
-            return;
-        } else if(!checkValidPassword()) {
-            Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
-            return;
-        }
         logIn();
     }
 
@@ -308,14 +298,12 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     private boolean checkForGmailAddress() {
         gmailAddress = gmailEditText.getText().toString();
-        Log.i(TAG, "checkForGmailAddress: " + gmailAddress);
         return Pattern.matches("(\\W|^)[\\w.\\-]{0,25}@(gmail)\\.com(\\W|$)", gmailAddress);
     }
 
     private boolean checkValidPassword() {
         password = passwordEditText.getText().toString();
-        Log.i(TAG, "checkValidPassword: " + password);
-        return Pattern.matches("^[:;,\\-@0-9a-zA-Zâéè'.\\s]{6,}$", password);
+        return password.length() >= 6;
     }
 
     @Override
@@ -341,9 +329,8 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     @Override
     public void onUserSignedUp(IUser user) {
         if(mAuth.isUserSignedIn()) {
-            firebaseFirestore = new FirebaseFirestoreAdapter();
             user.updateDisplayName(username);
-            firebaseFirestore.createUserInDatabase(user);
+            mDb.createUserInDatabase(user);
             homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
             finish();
             startActivity(homeIntent);
