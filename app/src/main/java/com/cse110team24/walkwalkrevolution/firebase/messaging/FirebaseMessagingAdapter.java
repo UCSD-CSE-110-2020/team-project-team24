@@ -5,8 +5,12 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirebaseMessagingAdapter implements MessagingService {
     private static final String TAG = "FirebaseMessagingAdapter";
@@ -16,6 +20,7 @@ public class FirebaseMessagingAdapter implements MessagingService {
     private Activity mActivity;
 
     private DatabaseService db;
+    private List<MessagingObserver> observers = new ArrayList<>();
 
     public FirebaseMessagingAdapter(Activity activity, DatabaseService databaseService) {
         mActivity = activity;
@@ -43,8 +48,33 @@ public class FirebaseMessagingAdapter implements MessagingService {
         db.addInvitationForReceivingUser(invitation).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "sendInvitation: invitation sent successfully");
+                notifyObserversInvitationSent(invitation);
+            } else {
+                Log.e(TAG, "sendInvitation: failed to send invitation", task.getException());
+                notifyObserversInvitationFailed(task);
             }
-            Log.e(TAG, "sendInvitation: failed to send invitation", task.getException());
         });
+    }
+
+    private void notifyObserversInvitationSent(Invitation invitation) {
+        observers.forEach(observer -> {
+            observer.onInvitationSent(invitation);
+        });
+    }
+
+    private void notifyObserversInvitationFailed(Task<?> task) {
+        observers.forEach(observer -> {
+            observer.onFailedInvitationSent(task);
+        });
+    }
+
+    @Override
+    public void register(MessagingObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void deregister(MessagingObserver observer) {
+        observers.remove(observer);
     }
 }
