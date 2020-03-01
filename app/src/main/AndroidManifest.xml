@@ -21,6 +21,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MockActivity" />
         <activity android:name=".HomeActivity" />
+        <activity android:name=".TeamPage" />
+        <activity android:name=".InviteTeamMember" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
