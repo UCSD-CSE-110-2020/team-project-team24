@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     private float inches;
     private boolean loginMode = true;
     private boolean guestMode = false;
-    private boolean signup = false;
 
     private String gmailAddress;
     private String password;
@@ -111,7 +110,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mUser = mAuth.signUp(gmailAddress, password);
-        signup = true;
     }
 
 
@@ -315,13 +313,29 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     @Override
     public void onAuthSignInError(AuthError error) {
-        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+        String errorString = "";
+        switch (error) {
+            case DOES_NOT_EXIST:
+                errorString = "user does not exist!";
+                break;
+            case INVALID_PASSWORD:
+                errorString = "password is incorrect";
+                break;
+            case NETWORK_ERROR:
+                errorString = "network error occurred";
+                break;
+            case OTHER:
+                errorString = "unknown error occurred";
+                break;
+        }
+        Toast.makeText(this, errorString, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onAuthStateChange(IUser user) {
-        if (signup) {
+    public void onUserSignedUp(IUser user) {
+        if(mAuth.isUserSignedIn()) {
             firebaseFirestore = new FirebaseFirestoreAdapter();
+            user.updateDisplayName(username);
             firebaseFirestore.createUserInDatabase(user);
         }
         homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
@@ -330,7 +344,24 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     @Override
+    public void onUserSignedIn(IUser user) {
+
+    }
+
+    @Override
     public void onAuthSignUpError(AuthError error) {
-        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+        String errorString = "";
+        switch (error) {
+            case USER_COLLISION:
+                errorString = "user already exists!";
+                break;
+            case NETWORK_ERROR:
+                errorString = "network error occurred";
+                break;
+            case OTHER:
+                errorString = "unknown error occurred";
+                break;
+        }
+        Toast.makeText(this, errorString, Toast.LENGTH_LONG).show();
     }
 }

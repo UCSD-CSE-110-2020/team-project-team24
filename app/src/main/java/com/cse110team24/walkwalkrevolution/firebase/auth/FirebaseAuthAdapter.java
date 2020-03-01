@@ -45,6 +45,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
 
     @Override
     public IUser signIn(String email, String password) {
+        signUp = false;
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(mActivity, task -> {
                     if (task.isSuccessful()) {
