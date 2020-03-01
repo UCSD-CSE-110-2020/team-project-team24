@@ -115,6 +115,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         IUser receiver = invitation.toUser();
         DocumentReference receiverDoc = usersCollection.document(receiver.documentKey());
         CollectionReference receiverInvitationsCollection = receiverDoc.collection(USER_INVITATIONS_SUB_COLLECTION_KEY);
+        receiverInvitationsCollection.add(invitation.invitationData());
         return receiverInvitationsCollection;
     }
 
