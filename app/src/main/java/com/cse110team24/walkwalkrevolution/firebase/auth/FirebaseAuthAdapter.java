@@ -107,4 +107,12 @@ public class FirebaseAuthAdapter implements AuthService {
         mFirebaseUser = mAuth.getCurrentUser();
         mUserAdapterBuilder.addFirebaseUser(mFirebaseUser);
     }
+
+    @Override
+    public void register(AuthServiceObserver authServiceObserver) {
+    }
+
+    @Override
+    public void deregister(AuthServiceObserver authServiceObserver) {
+    }
 }
