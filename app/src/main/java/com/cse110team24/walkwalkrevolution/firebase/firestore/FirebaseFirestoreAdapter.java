@@ -2,6 +2,8 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
@@ -9,9 +11,12 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -138,6 +143,12 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         return rootInvitationDoc;
     }
 
+    // TODO: 2/28/20 need to determine if this will be real time
+    @Override
+    public ITeam getUserTeam(IUser user) {
+        return null;
+    }
+
     @Override
     public List<Invitation> getUserPendingInvitations(IUser user) {
         Task<QuerySnapshot> task  = usersCollection
@@ -153,6 +164,27 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
             invitations.add(buildInvitation(document, user));
         });
         return invitations;
+    }
+
+    @Override
+    public void addInvitationsSnapshotListener(IUser user) {
+        usersCollection
+                .document(user.documentKey())
+                .collection(USER_INVITATIONS_SUB_COLLECTION_KEY)
+                .addSnapshotListener((queryDocumentSnapshots, error) -> {
+                    if (error != null) {
+                        Log.e(TAG, "addInvitationsSnapshotListener: error adding snapshot", error);
+                        return;
+                    }
+
+                    if (queryDocumentSnapshots != null) {
+                        List<DocumentChange> documentChanges = queryDocumentSnapshots.getDocumentChanges();
+                        documentChanges.forEach(documentChange -> {
+                            Invitation invitation = buildInvitation(documentChange.getDocument(), user);
+                            user.addInvitation(invitation);
+                        });
+                    }
+                });
     }
 
     private Invitation buildInvitation(DocumentSnapshot invitationDocument, IUser user) {
@@ -173,9 +205,4 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                     .build();
     }
 
-    // TODO: 2/28/20 need to determine if this will be real time
-    @Override
-    public ITeam getUserTeam(IUser user) {
-        return null;
-    }
 }

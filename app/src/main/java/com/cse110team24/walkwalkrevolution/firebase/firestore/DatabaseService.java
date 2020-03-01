@@ -18,5 +18,6 @@ public interface DatabaseService {
     DocumentReference createRootInvitationDocument(Invitation invitation);
     List<Invitation> getUserPendingInvitations(IUser user);
     ITeam getUserTeam(IUser user);
+    void addInvitationsSnapshotListener(IUser user);
 
 }
