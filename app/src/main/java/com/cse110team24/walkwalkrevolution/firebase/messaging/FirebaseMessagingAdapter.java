@@ -51,18 +51,20 @@ public class FirebaseMessagingAdapter implements MessagingService {
                 notifyObserversInvitationSent(invitation);
             } else {
                 Log.e(TAG, "sendInvitation: failed to send invitation", task.getException());
-                notifyObserversInvitationFailed(task);
+                notifyObserversFailedInvitationSent(task);
             }
         });
     }
 
-    private void notifyObserversInvitationSent(Invitation invitation) {
+    @Override
+    public void notifyObserversInvitationSent(Invitation invitation) {
         observers.forEach(observer -> {
             observer.onInvitationSent(invitation);
         });
     }
 
-    private void notifyObserversInvitationFailed(Task<?> task) {
+    @Override
+    public void notifyObserversFailedInvitationSent(Task<?> task) {
         observers.forEach(observer -> {
             observer.onFailedInvitationSent(task);
         });

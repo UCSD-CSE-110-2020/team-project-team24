@@ -13,6 +13,6 @@ public class FirebaseMessagingServiceWWR extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         FirebaseApplicationWWR applicationWWR = (FirebaseApplicationWWR) getApplication();
-        applicationWWR.onNewToken(token);
+        applicationWWR.notifyObserversNewToken(token);
     }
 }

@@ -1,6 +1,6 @@
 package com.cse110team24.walkwalkrevolution.models.invitation;
 
-import com.cse110team24.walkwalkrevolution.models.Builder;
+import com.cse110team24.walkwalkrevolution.utils.Builder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 public interface InvitationBuilder extends Builder<Invitation> {

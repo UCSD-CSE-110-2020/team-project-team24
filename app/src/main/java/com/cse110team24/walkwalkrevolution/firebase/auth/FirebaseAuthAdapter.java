@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution.firebase.auth;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -26,16 +25,14 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
     private Builder mUserAdapterBuilder;
-    private Activity mActivity;
     private AuthError mAuthError;
 
     private boolean signUp;
 
     private List<AuthServiceObserver> observers;
 
-    public FirebaseAuthAdapter(Activity activity) {
+    public FirebaseAuthAdapter() {
         mAuth = FirebaseAuth.getInstance();
-        mActivity = activity;
         mFirebaseUser = mAuth.getCurrentUser();
         mUserAdapterBuilder = new Builder();
         mAuth.addAuthStateListener(this);
@@ -47,15 +44,14 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         Log.i(TAG, "signIn: beginning sign in process");
         signUp = false;
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(mActivity, task -> {
-                    Log.i(TAG, "signIn: " + task);
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.i(TAG, "onComplete: user sign-in successful");
                         buildUserEssentials(email);
                     } else {
                         Log.e(TAG, "signIn: user sign-in failed", task.getException());
                         detectErrorType(task);
-                        notifyObserversSignInError();
+                        notifyObserversSignInError(mAuthError);
                     }
                 });
     }
@@ -65,14 +61,14 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         Log.i(TAG, "signUp: beginning sign up process");
         signUp = true;
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(mActivity, task -> {
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.i(TAG, "signUp: user creation successful");
                         buildUserEssentials(email);
                     } else {
                         Log.e(TAG, "signUp: user creation failed", task.getException());
                         detectErrorType(task);
-                        notifyObserversSignUpError();
+                        notifyObserversSignUpError(mAuthError);
                     }
                 });
     }
@@ -133,35 +129,38 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         }
 
         if (signUp) {
-            notifyObserversSignedUp();
+            notifyObserversSignedUp(mUserAdapterBuilder.build());
         } else {
-            notifyObserversSignedIn();
+            notifyObserversSignedIn(mUserAdapterBuilder.build());
         }
     }
 
 
-    private void notifyObserversSignedIn() {
+    @Override
+    public void notifyObserversSignedIn(IUser user) {
         observers.forEach(observer -> {
-            observer.onUserSignedIn(mUserAdapterBuilder.build());
+            observer.onUserSignedIn(user);
         });
     }
 
-    private void notifyObserversSignedUp() {
+    @Override
+    public void notifyObserversSignedUp(IUser user) {
         observers.forEach(observer -> {
-            observer.onUserSignedUp(mUserAdapterBuilder.build());
+            observer.onUserSignedUp(user);
         });
     }
 
-    private void notifyObserversSignInError() {
+    @Override
+    public void notifyObserversSignInError(AuthError error) {
         observers.forEach(observer -> {
-            Log.i(TAG, "notifyObserversSignInError: " + mAuthError);
-            observer.onAuthSignInError(mAuthError);
+            observer.onAuthSignInError(error);
         });
     }
 
-    private void notifyObserversSignUpError() {
+    @Override
+    public void notifyObserversSignUpError(AuthError error) {
         observers.forEach(observer -> {
-            observer.onAuthSignUpError(mAuthError);
+            observer.onAuthSignUpError(error);
         });
     }
 }

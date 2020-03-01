@@ -17,9 +17,12 @@ public class Invitation implements IInvitation {
     private String mUid;
     private InvitationStatus mStatus;
 
-    private Invitation() {}
+    private Invitation() {
+        mStatus = InvitationStatus.PENDING;
+    }
 
     public Invitation(IUser from, IUser to) {
+        this();
         mFrom = from;
         mTo = to;
     }

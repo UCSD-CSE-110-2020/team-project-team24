@@ -15,10 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthAdapter;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthError;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void signUp() {
-        mAuth = new FirebaseAuthAdapter(LoginActivity.this);
+        mAuth = new FirebaseAuthAdapter();
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mAuth.signUp(gmailAddress, password);
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
 
     private void logIn() {
-        mAuth = new FirebaseAuthAdapter(LoginActivity.this);
+        mAuth = new FirebaseAuthAdapter();
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mAuth.signIn(gmailAddress, password);
@@ -312,7 +312,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     @Override
-    public void onAuthSignInError(AuthError error) {
+    public void onAuthSignInError(AuthService.AuthError error) {
         String errorString = "";
         switch (error) {
             case DOES_NOT_EXIST:
@@ -354,7 +354,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     @Override
-    public void onAuthSignUpError(AuthError error) {
+    public void onAuthSignUpError(AuthService.AuthError error) {
         String errorString = "";
         switch (error) {
             case USER_COLLISION:

@@ -6,17 +6,9 @@ import java.util.Map;
 public class AuthServiceFactory {
     private static final String TAG = "[AuthServiceFactory]";
 
-    private static Map<String, BluePrint> blueprints = new HashMap<>();
-
-    public static void put(String key, BluePrint bluePrint) {
-        blueprints.put(key, bluePrint);
-    }
-
-    public AuthService createAuthService(String key) {
-        return blueprints.get(key).create();
-    }
-
-    public interface BluePrint {
-        AuthService create();
+    // TODO: 3/1/20 because login activity is instantiated first, we will have to use mockito
+    //  to mock AuthServiceFactor and return a different AuthService instead
+    public AuthService createAuthService() {
+        return new FirebaseAuthAdapter();
     }
 }
