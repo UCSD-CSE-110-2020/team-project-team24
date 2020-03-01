@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -49,6 +50,8 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public static final String INVITATIONS_ROOT_COLLECTION_KEY = "invitations";
     public static final String USER_INVITATIONS_SUB_COLLECTION_KEY = "invitations";
     public static final String TEAMS_COLLECTION_KEY = "teams";
+    public static final String USER_REGISTRATION_TOKENS_COLLECTION_KEY = "tokens";
+    public static final String TOKEN_SET_KEY = "token";
 
     private CollectionReference usersCollection;
     private CollectionReference teamsCollection;
@@ -209,6 +212,23 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                     .addDisplayName(fromUserInfo[0].trim())
                     .addEmail(fromUserInfo[1].trim())
                     .build();
+    }
+
+    @Override
+    public DocumentReference addUserMessagingRegistrationToken(IUser user, String token) {
+        DocumentReference userDoc = usersCollection.document(user.documentKey());
+        Map<String, Object> tokenData = new HashMap<>();
+        tokenData.put(TOKEN_SET_KEY, token);
+        userDoc.collection(USER_REGISTRATION_TOKENS_COLLECTION_KEY)
+                .add(tokenData)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.i(TAG, "addUserMessagingRegistrationToken: success adding user registration token");
+                    } else {
+                        Log.e(TAG, "addUserMessagingRegistrationToken: error adding user registration token", task.getException());
+                    }
+                });
+        return userDoc;
     }
 
 }

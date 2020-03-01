@@ -19,5 +19,5 @@ public interface DatabaseService {
     List<Invitation> getUserPendingInvitations(IUser user);
     ITeam getUserTeam(IUser user);
     void addInvitationsSnapshotListener(IUser user);
-
+    DocumentReference addUserMessagingRegistrationToken(IUser user, String token);
 }
