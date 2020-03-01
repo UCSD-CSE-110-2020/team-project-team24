@@ -19,8 +19,6 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.FirebaseFirestoreAdapter;
-import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthAdapter;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
@@ -53,6 +51,8 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     private Button loginBtn;
     private TextView signUpTv;
 
+    final SharedPreferences preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
+
     // firebase dependencies
     private AuthService mAuth;
     private IUser mUser;
@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final SharedPreferences preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
+
         homeIntent = new Intent(this, HomeActivity.class);
 
         mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
         getConfiguredFields();
         // TODO: replace it with checkLogin()
-        //checkHeight(preferences);
+        checkLogin(preferences);
         hideNameAndHeight();
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
         signUpTvOnClickListener();
@@ -237,11 +237,9 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     private void launchHomeActivityFromGuestMode() {
         Log.i(TAG, "launchHomeActivityFromGuestMode: valid height params found; launching home.");
-        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
-                    .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
-                    .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
-        finish();
-        startActivity(homeIntent);
+        if (checkHeight(preferences)) {
+            launchHome();
+        }
     }
 
     private void launchHomeActivityFromSignUp() {
@@ -268,13 +266,25 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         logIn();
     }
 
-    private void checkHeight(SharedPreferences preferences) {
+    private void launchHome() {
+        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
+                .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
+                .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
+        finish();
+        startActivity(homeIntent);
+    }
+
+    private boolean checkHeight(SharedPreferences preferences) {
         Log.i(TAG, "checkHeight: checking preferences if height already exists");
         feet = preferences.getInt(HomeActivity.HEIGHT_FT_KEY, (int) INVALID_VAL);
         inches = preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, INVALID_VAL);
-        if (feet > 0 && inches > 0) {
+        return feet > 0 && inches > 0;
+    }
+
+    private void checkLogin(SharedPreferences preferences) {
+        if (checkHeight(preferences) && mAuth.isUserSignedIn()) {
             Log.i(TAG, "checkHeight: valid height in preferences already exists (feet: " + feet + ", inches: " + inches + ").");
-            launchHomeActivityFromGuestMode();
+            launchHome();
         }
     }
 
@@ -331,18 +341,14 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         if(mAuth.isUserSignedIn()) {
             user.updateDisplayName(username);
             mDb.createUserInDatabase(user);
-            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
-            finish();
-            startActivity(homeIntent);
+            launchHome();
         }
     }
 
     @Override
     public void onUserSignedIn(IUser user) {
         if(mAuth.isUserSignedIn()) {
-            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
-            finish();
-            startActivity(homeIntent);
+            launchHome();
         }
     }
 
