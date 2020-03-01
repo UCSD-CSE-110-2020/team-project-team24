@@ -9,7 +9,7 @@ import com.cse110team24.walkwalkrevolution.observer.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuthServiceApplication extends Application implements Subject<ApplicationObserver> {
+public class FirebaseApplicationWWR extends Application implements Subject<ApplicationObserver> {
 
     private static AuthServiceFactory authServiceFactory;
     List<ApplicationObserver> observers = new ArrayList<>();
