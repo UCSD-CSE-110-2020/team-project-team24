@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
@@ -21,6 +22,9 @@ public class TestInjection {
 
         Mockito.when(asf.createAuthService()).thenReturn(mAuth);
         Mockito.when(dsf.createDatabaseService()).thenReturn(mDb);
+
+        FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
+        FirebaseApplicationWWR.setAuthServiceFactory(asf);
 
     }
 }
