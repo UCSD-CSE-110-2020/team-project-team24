@@ -9,6 +9,7 @@ public class Invitation implements IInvitation {
     public static final String INVITATION_UID_SET_KEY = "invitationUid";
     public static final String INVITATION_FROM_SET_KEY = "from";
     public static final String INVITATION_TO_SET_KEY = "to";
+    public static final String INVITATION_STATUS_SET_KEY = "status";
 
     private IUser mFrom;
     private IUser mTo;
@@ -66,6 +67,7 @@ public class Invitation implements IInvitation {
         data.put(INVITATION_UID_SET_KEY, mUid);
         data.put(INVITATION_FROM_SET_KEY, fromName() + " @ " + fromEmail());
         data.put(INVITATION_TO_SET_KEY, toName() + " @ " + toEmail());
+        data.put(INVITATION_STATUS_SET_KEY, status().toString().toLowerCase());
         return data;
     }
 
