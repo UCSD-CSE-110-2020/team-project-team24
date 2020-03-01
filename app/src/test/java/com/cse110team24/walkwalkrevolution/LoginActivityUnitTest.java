@@ -6,6 +6,8 @@ import android.widget.EditText;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +16,7 @@ import org.junit.runner.RunWith;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class LoginActivityUnitTest {
+public class LoginActivityUnitTest extends TestInjection {
 
     private LoginActivity testActivity;
     private Button finishBtn;
@@ -23,6 +25,11 @@ public class LoginActivityUnitTest {
 
     @Before
     public void setup() {
+        super.setup();
+
+        FirebaseApplicationWWR.setAuthServiceFactory(asf);
+        FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
+
         ActivityScenario<LoginActivity> scenario = ActivityScenario.launch(LoginActivity.class);
         scenario.onActivity(activity -> {
             testActivity = activity;
