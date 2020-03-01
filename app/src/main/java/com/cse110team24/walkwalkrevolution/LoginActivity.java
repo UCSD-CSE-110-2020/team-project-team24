@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         mAuth = new FirebaseAuthAdapter(LoginActivity.this);
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "signUp: with email " + gmailAddress);
-        mUser = mAuth.signUp(gmailAddress, password);
+        mAuth.signUp(gmailAddress, password);
     }
 
 
@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         mAuth = new FirebaseAuthAdapter(LoginActivity.this);
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
-        mUser = mAuth.signIn(gmailAddress, password);
+        mAuth.signIn(gmailAddress, password);
     }
 
     private void signUpTvOnClickListener() {
@@ -337,10 +337,10 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
             firebaseFirestore = new FirebaseFirestoreAdapter();
             user.updateDisplayName(username);
             firebaseFirestore.createUserInDatabase(user);
+            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+            finish();
+            startActivity(homeIntent);
         }
-        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
-        finish();
-        startActivity(homeIntent);
     }
 
     @Override
