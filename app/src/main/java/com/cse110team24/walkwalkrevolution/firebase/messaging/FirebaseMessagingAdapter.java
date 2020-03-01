@@ -3,6 +3,8 @@ package com.cse110team24.walkwalkrevolution.firebase.messaging;
 import android.app.Activity;
 import android.util.Log;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -13,7 +15,9 @@ public class FirebaseMessagingAdapter implements MessagingService {
     private FirebaseMessaging mFirebaseMessaging;
     private Activity mActivity;
 
-    public FirebaseMessagingAdapter(Activity activity) {
+    private DatabaseService db;
+
+    public FirebaseMessagingAdapter(Activity activity, DatabaseService databaseService) {
         mActivity = activity;
         FirebaseApp.initializeApp(activity);
         mFirebaseMessaging = FirebaseMessaging.getInstance();
@@ -32,5 +36,15 @@ public class FirebaseMessagingAdapter implements MessagingService {
                         Log.e(TAG, "subscribeToNotificationsTopic: error subscribing to topic " + topic, task.getException());
                     }
                 });
+    }
+
+    @Override
+    public void sendInvitation(Invitation invitation) {
+        db.addInvitationForReceivingUser(invitation).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "sendInvitation: invitation sent successfully");
+            }
+            Log.e(TAG, "sendInvitation: failed to send invitation", task.getException());
+        });
     }
 }
