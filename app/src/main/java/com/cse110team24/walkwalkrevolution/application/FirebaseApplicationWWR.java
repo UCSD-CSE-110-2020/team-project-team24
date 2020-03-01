@@ -3,7 +3,6 @@ package com.cse110team24.walkwalkrevolution.application;
 import android.app.Application;
 
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
-import com.cse110team24.walkwalkrevolution.observer.ApplicationObserver;
 import com.cse110team24.walkwalkrevolution.observer.Subject;
 
 import java.util.ArrayList;

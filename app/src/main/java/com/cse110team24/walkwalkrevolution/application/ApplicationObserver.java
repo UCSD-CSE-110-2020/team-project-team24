@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.observer;
+package com.cse110team24.walkwalkrevolution.application;
 
 public interface ApplicationObserver {
 

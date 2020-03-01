@@ -1,31 +1,36 @@
 package com.cse110team24.walkwalkrevolution.firebase.messaging;
 
-import android.content.Context;
+import android.app.Activity;
+import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class FirebaseMessagingAdapter implements MessagingService {
-    private static String databaseUrl = "https://walkwalkrevolution.firebaseio.com";
+    private static final String TAG = "FirebaseMessagingAdapter";
+    private static final String databaseUrl = "https://walkwalkrevolution.firebaseio.com";
 
-    private FirebaseMessaging firebaseMessaging;
+    private FirebaseMessaging mFirebaseMessaging;
+    private Activity mActivity;
 
-    public FirebaseMessagingAdapter() {
-        firebaseMessaging = FirebaseMessaging.getInstance();
+    public FirebaseMessagingAdapter(Activity activity) {
+        mActivity = activity;
+        FirebaseApp.initializeApp(activity);
+        mFirebaseMessaging = FirebaseMessaging.getInstance();
     }
 
     private void provideCredentials() {
-//        FirebaseOptions options = new FirebaseOptions.Builder()
-//                .setDatabaseUrl("https://walkwalkrevolution.firebaseio.com")
-//                .build();
-//
-//        FirebaseApp.initializeApp(options);
-
     }
 
     @Override
-    public void subscribeToNotificationsTopic(String documentKey) {
-
+    public void subscribeToNotificationsTopic(String topic) {
+        mFirebaseMessaging.subscribeToTopic(topic)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.i(TAG, "subscribeToNotificationsTopic: subscribed to " + topic);
+                    } else {
+                        Log.e(TAG, "subscribeToNotificationsTopic: error subscribing to topic " + topic, task.getException());
+                    }
+                });
     }
 }
