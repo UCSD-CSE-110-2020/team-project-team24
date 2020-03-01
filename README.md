@@ -11,3 +11,16 @@ Note: If not specified, the access date for each of the above references is betw
 # TODO
 1. We NEED to write more tests that do the same thing a couple of times to make sure toggling doesn't mess it up
 2. If possible, write tests that actually close and reopen the app to see what happens
+
+# Design Patterns in Practice
+1. **Adapter**
+ - This pattern is the most used. Every GoogleFit or Firebase api is masked through an Adapter which implements an interface
+ - examples include `GoogleFitAdapter implements FitnessService` which adapts Google's Fit API and `FirebaseAuthAdapter implements AuthService` which adapts Google's FirebaseAuth. 
+ 
+2. **Builder**
+ - Many of our data models have multiple optional member variables. The `interface Builder` and interfaces that extend this interface help facilitate this. 
+ - Examples include `RouteBuilder implements IRouteBuilder` and `RouteEnvironmentBuilder implements IRouteEnvironmentBuilder` 
+ 
+3. **Observer**
+ - Though not used as extensively, this helps solve a lot of the issues that occur with Google APIs' async network calls. By implementing `Subject` and observers, classes that adapt these kinds of methods can notify our application when calls are complete.
+ - An example of this is `interface AuthService extends Subject<AuthServiceObserver>`
