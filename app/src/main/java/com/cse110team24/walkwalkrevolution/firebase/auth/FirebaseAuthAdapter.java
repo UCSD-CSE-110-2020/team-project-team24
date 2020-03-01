@@ -14,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FirebaseAuthAdapter implements AuthService {
     private static String TAG = "FirebaseAuthAdapter";
     private static String USER_COLLISION = "ERROR: a user with this email already exists";
@@ -24,11 +27,14 @@ public class FirebaseAuthAdapter implements AuthService {
     private Activity mActivity;
     private AuthError mError;
 
+    private List<AuthServiceObserver> observers;
+
     public FirebaseAuthAdapter(Activity activity) {
         mAuth = FirebaseAuth.getInstance();
         mActivity = activity;
         mFirebaseUser = mAuth.getCurrentUser();
         mUserAdapterBuilder = new FirebaseUserAdapterBuilder();
+        observers = new ArrayList<>();
     }
 
     @Override
@@ -110,9 +116,11 @@ public class FirebaseAuthAdapter implements AuthService {
 
     @Override
     public void register(AuthServiceObserver authServiceObserver) {
+        observers.add(authServiceObserver);
     }
 
     @Override
     public void deregister(AuthServiceObserver authServiceObserver) {
+        observers.remove(authServiceObserver);
     }
 }
