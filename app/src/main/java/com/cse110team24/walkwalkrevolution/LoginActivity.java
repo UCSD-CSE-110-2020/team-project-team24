@@ -109,9 +109,9 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
             if(btnText.equals("Finish")) {
                 launchHomeActivityFromGuestMode();
             } else if(btnText.equals("Sign Up")) {
-                launchHomeActivityFromSignUp();
+                signUp();
             } else {
-                launchHomeActivityFromLogIn();
+                logIn();
             }
         });
     }
@@ -124,6 +124,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void signUp() {
+        if (!validateSignUpInfo()) return;
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mAuth.signUp(gmailAddress, password);
     }
@@ -134,25 +135,21 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         mAuth.signIn(gmailAddress, password);
     }
 
-    private void launchHomeActivityFromSignUp() {
+    private boolean validateSignUpInfo() {
         if(!checkForGmailAddress()) {
             Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
-            return;
+            return false;
         } else if(!checkValidPassword()) {
             Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
-            return;
+            return false;
         } else if(username.equals("")) {
             Toast.makeText(this, "Please enter your name!", Toast.LENGTH_LONG).show();
-            return;
+            return false;
         } else if(!validateFeet() || !validateInches()) {
             Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
-            return;
+            return false;
         }
-        signUp();
-    }
-
-    private void launchHomeActivityFromLogIn() {
-        logIn();
+        return true;
     }
 
     private void launchHome() {
