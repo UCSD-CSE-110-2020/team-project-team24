@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.observer;
+package com.cse110team24.walkwalkrevolution.utils;
 
 public interface Subject<TObserver> {
     void register(TObserver observer);

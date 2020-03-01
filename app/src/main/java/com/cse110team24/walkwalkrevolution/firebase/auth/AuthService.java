@@ -1,7 +1,6 @@
 package com.cse110team24.walkwalkrevolution.firebase.auth;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.observer.Subject;
 
 public interface AuthService extends AuthServiceSubject {
     void signIn(String email, String password);

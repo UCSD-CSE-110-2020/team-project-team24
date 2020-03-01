@@ -1,6 +1,6 @@
 package com.cse110team24.walkwalkrevolution.models.route;
 
-import com.cse110team24.walkwalkrevolution.models.Builder;
+import com.cse110team24.walkwalkrevolution.utils.Builder;
 
 public interface RouteEnvironmentBuilder extends Builder<RouteEnvironment> {
     RouteEnvironmentBuilder addRouteType(RouteEnvironment.RouteType routeType);
