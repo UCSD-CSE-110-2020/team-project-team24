@@ -4,5 +4,6 @@ public enum AuthError {
     USER_COLLISION,
     DOES_NOT_EXIST,
     INVALID_PASSWORD,
+    NETWORK_ERROR,
     OTHER
 }

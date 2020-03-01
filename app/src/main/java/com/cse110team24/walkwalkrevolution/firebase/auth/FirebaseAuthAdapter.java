@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.FirebaseUserAdapterBuilder;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -102,13 +103,17 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     }
 
     private void detectErrorType(Task<AuthResult> task) {
-        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+        Exception exception = task.getException();
+        if (exception instanceof FirebaseAuthUserCollisionException) {
             mAuthError = AuthError.USER_COLLISION;
-        } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+        } else if (exception instanceof FirebaseAuthInvalidUserException) {
             mAuthError = AuthError.DOES_NOT_EXIST;
-        } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+        } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
             mAuthError = AuthError.INVALID_PASSWORD;
-        } else {
+        } else if (exception instanceof FirebaseNetworkException){
+            mAuthError = AuthError.NETWORK_ERROR;
+        }
+        else {
             mAuthError = AuthError.OTHER;
         }
     }
