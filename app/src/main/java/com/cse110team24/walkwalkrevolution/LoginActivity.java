@@ -345,7 +345,11 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     @Override
     public void onUserSignedIn(IUser user) {
-
+        if(mAuth.isUserSignedIn()) {
+            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+            finish();
+            startActivity(homeIntent);
+        }
     }
 
     @Override
