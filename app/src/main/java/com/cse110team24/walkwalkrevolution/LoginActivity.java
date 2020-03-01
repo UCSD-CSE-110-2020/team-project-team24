@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     private FirebaseAuthAdapter mAuth;
     private IUser mUser;
     private FirebaseFirestoreAdapter firebaseFirestore;
+    ProgressBar progressBar;
 
     private int feet;
     private float inches;
@@ -106,6 +108,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void signUp() {
+        progressBar.setVisibility(View.VISIBLE);
         mAuth = new FirebaseAuthAdapter();
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "signUp: with email " + gmailAddress);
@@ -114,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
 
     private void logIn() {
+        progressBar.setVisibility(View.VISIBLE);
         mAuth = new FirebaseAuthAdapter();
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
@@ -176,6 +180,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         loginBtn = findViewById(R.id.btn_height_finish);
         nameEditText = findViewById(R.id.enter_username);
         signUpTv = findViewById(R.id.sign_up_tv);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     private void showEmailPassword() {
