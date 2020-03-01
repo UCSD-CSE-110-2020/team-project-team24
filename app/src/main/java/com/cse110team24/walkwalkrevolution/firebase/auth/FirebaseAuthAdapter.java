@@ -122,6 +122,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         mUserAdapterBuilder.addEmail(email);
         mFirebaseUser = mAuth.getCurrentUser();
         mUserAdapterBuilder.addFirebaseUser(mFirebaseUser);
+        mUserAdapterBuilder.addUid(mFirebaseUser.getUid());
     }
 
     @Override
@@ -136,8 +137,10 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
 
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        mUserAdapterBuilder.addFirebaseUser(firebaseAuth.getCurrentUser());
         mFirebaseUser = firebaseAuth.getCurrentUser();
+        if (isUserSignedIn()) {
+            buildUserEssentials(mFirebaseUser.getEmail());
+        }
         notifyObservers();
     }
 
