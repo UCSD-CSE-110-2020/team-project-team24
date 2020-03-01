@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.Builder;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
@@ -47,11 +48,12 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         signUp = false;
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(mActivity, task -> {
+                    Log.i(TAG, "signIn: " + task);
                     if (task.isSuccessful()) {
                         Log.i(TAG, "onComplete: user sign-in successful");
                         buildUserEssentials(email);
                     } else {
-                        Log.e(TAG, "signUp: user sign-in failed", task.getException());
+                        Log.e(TAG, "signIn: user sign-in failed", task.getException());
                         detectErrorType(task);
                         notifyObserversSignInError();
                     }
@@ -152,6 +154,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
 
     private void notifyObserversSignInError() {
         observers.forEach(observer -> {
+            Log.i(TAG, "notifyObserversSignInError: " + mAuthError);
             observer.onAuthSignInError(mAuthError);
         });
     }

@@ -328,6 +328,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
                 errorString = "unknown error occurred";
                 break;
         }
+        Log.i(TAG, "onAuthSignInError: " + error.toString());
         Toast.makeText(this, errorString, Toast.LENGTH_LONG).show();
     }
 
@@ -366,6 +367,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
                 errorString = "unknown error occurred";
                 break;
         }
+        Log.i(TAG, "onAuthSignUpError: " + errorString);
         Toast.makeText(this, errorString, Toast.LENGTH_LONG).show();
     }
 }
