@@ -4,18 +4,17 @@ import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FirebaseUserAdapter implements IUser {
-    private static final String TAG = "FirebaseUserAdapter";
 
     public static final String NAME_KEY = "displayName";
     public static final String EMAIL_KEY = "email";
     public static final String UID_KEY = "uid";
     public static final String TEAM_UID_KEY = "teamUid";
-    public static final String INVITATIONS_LIST_KEY = "invitationsUid";
 
     private FirebaseUser mFirebaseUser;
     private String mTeamUid;
@@ -24,11 +23,8 @@ public class FirebaseUserAdapter implements IUser {
     private String mUid;
     private List<Invitation> mInvitations;
 
-    public FirebaseUserAdapter() {}
-
-    public FirebaseUserAdapter(FirebaseUser firebaseUser, List<Invitation> invitations) {
-        mFirebaseUser = firebaseUser;
-        mInvitations = invitations;
+    public FirebaseUserAdapter() {
+        mInvitations = new ArrayList<>();
     }
 
     public void setFirebaseUser(FirebaseUser firebaseUser) {
@@ -102,8 +98,6 @@ public class FirebaseUserAdapter implements IUser {
     public void addInvitation(Invitation invitation) {
         mInvitations.add(invitation);
     }
-
-    // TODO: 2/29/20 implement FirebaseUserBuilder - don't use firebase to get the fields. Store them immediately
 
     public static class FirebaseUserAdapterBuilder implements IFirebaseUserAdapterBuilder {
         FirebaseUserAdapter mUser;
