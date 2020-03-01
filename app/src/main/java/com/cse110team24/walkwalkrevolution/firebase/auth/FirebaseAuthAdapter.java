@@ -51,7 +51,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                     } else {
                         Log.e(TAG, "signUp: user sign-in failed", task.getException());
                         detectErrorType(task);
-                        notifyObserversSignInError();
+                        notifyObserversSignInError(mAuthError);
                     }
                 });
     }
@@ -68,7 +68,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                     } else {
                         Log.e(TAG, "signUp: user creation failed", task.getException());
                         detectErrorType(task);
-                        notifyObserversSignUpError();
+                        notifyObserversSignUpError(mAuthError);
                     }
                 });
     }
@@ -129,34 +129,38 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         }
 
         if (signUp) {
-            notifyObserversSignedUp();
+            notifyObserversSignedUp(mUserAdapterBuilder.build());
         } else {
-            notifyObserversSignedIn();
+            notifyObserversSignedIn(mUserAdapterBuilder.build());
         }
     }
 
 
-    private void notifyObserversSignedIn() {
+    @Override
+    public void notifyObserversSignedIn(IUser user) {
         observers.forEach(observer -> {
-            observer.onUserSignedIn(mUserAdapterBuilder.build());
+            observer.onUserSignedIn(user);
         });
     }
 
-    private void notifyObserversSignedUp() {
+    @Override
+    public void notifyObserversSignedUp(IUser user) {
         observers.forEach(observer -> {
-            observer.onUserSignedUp(mUserAdapterBuilder.build());
+            observer.onUserSignedUp(user);
         });
     }
 
-    private void notifyObserversSignInError() {
+    @Override
+    public void notifyObserversSignInError(AuthError error) {
         observers.forEach(observer -> {
-            observer.onAuthSignInError(mAuthError);
+            observer.onAuthSignInError(error);
         });
     }
 
-    private void notifyObserversSignUpError() {
+    @Override
+    public void notifyObserversSignUpError(AuthError error) {
         observers.forEach(observer -> {
-            observer.onAuthSignUpError(mAuthError);
+            observer.onAuthSignUpError(error);
         });
     }
 }
