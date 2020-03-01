@@ -100,6 +100,9 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void loginBtnOnClickListener() {
+        username = nameEditText.getText().toString();
+        password = passwordEditText.getText().toString();
+        gmailAddress = gmailEditText.getText().toString();
         loginBtn.setOnClickListener(view -> {
             String btnText = loginBtn.getText().toString();
             Log.i(TAG, "loginBtnOnClickListener: button text is " + btnText);
@@ -113,6 +116,13 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         });
     }
 
+    private void launchHomeActivityFromGuestMode() {
+        Log.i(TAG, "launchHomeActivityFromGuestMode: valid height params found; launching home.");
+        if (validateFeet() && validateInches()) {
+            launchHome();
+        }
+    }
+
     private void signUp() {
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mAuth.signUp(gmailAddress, password);
@@ -123,6 +133,36 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mAuth.signIn(gmailAddress, password);
     }
+
+    private void launchHomeActivityFromSignUp() {
+        if(!checkForGmailAddress()) {
+            Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
+            return;
+        } else if(!checkValidPassword()) {
+            Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
+            return;
+        } else if(username.equals("")) {
+            Toast.makeText(this, "Please enter your name!", Toast.LENGTH_LONG).show();
+            return;
+        } else if(!validateFeet() || !validateInches()) {
+            Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        signUp();
+    }
+    
+    private void launchHomeActivityFromLogIn() {
+        logIn();
+    }
+
+    private void launchHome() {
+        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
+                .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
+                .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
+        finish();
+        startActivity(homeIntent);
+    }
+
 
     private void signUpTvOnClickListener() {
         signUpTv.setOnClickListener(view -> {
@@ -235,45 +275,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         };
     }
 
-    private void launchHomeActivityFromGuestMode() {
-        Log.i(TAG, "launchHomeActivityFromGuestMode: valid height params found; launching home.");
-        if (checkHeight(preferences)) {
-            launchHome();
-        }
-    }
-
-    private void launchHomeActivityFromSignUp() {
-        username = nameEditText.getText().toString();
-        password = passwordEditText.getText().toString();
-
-        if(!checkForGmailAddress()) {
-            Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
-            return;
-        } else if(!checkValidPassword()) {
-            Toast.makeText(this, INVALID_PASSWORD_TOAST, Toast.LENGTH_LONG).show();
-            return;
-        } else if(username.equals("")) {
-            Toast.makeText(this, "Please enter your name!", Toast.LENGTH_LONG).show();
-            return;
-        } else if(!validateFeet() || !validateInches()) {
-            Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
-            return;
-        }
-        signUp();
-    }
-
-    private void launchHomeActivityFromLogIn() {
-        logIn();
-    }
-
-    private void launchHome() {
-        homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey)
-                .putExtra(HomeActivity.HEIGHT_FT_KEY, feet)
-                .putExtra(HomeActivity.HEIGHT_IN_KEY, inches);
-        finish();
-        startActivity(homeIntent);
-    }
-
     private boolean checkHeight(SharedPreferences preferences) {
         Log.i(TAG, "checkHeight: checking preferences if height already exists");
         feet = preferences.getInt(HomeActivity.HEIGHT_FT_KEY, (int) INVALID_VAL);
@@ -307,12 +308,10 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private boolean checkForGmailAddress() {
-        gmailAddress = gmailEditText.getText().toString();
         return Pattern.matches("(\\W|^)[\\w.\\-]{0,25}@(gmail)\\.com(\\W|$)", gmailAddress);
     }
 
     private boolean checkValidPassword() {
-        password = passwordEditText.getText().toString();
         return password.length() >= 6;
     }
 
