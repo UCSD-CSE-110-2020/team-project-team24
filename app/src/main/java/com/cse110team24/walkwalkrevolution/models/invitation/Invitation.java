@@ -30,6 +30,26 @@ public class Invitation implements IInvitation {
     }
 
     @Override
+    public String fromEmail() {
+        return mFrom.getEmail();
+    }
+
+    @Override
+    public String toEmail() {
+        return mTo.getEmail();
+    }
+
+    @Override
+    public String fromName() {
+        return mFrom.getDisplayName();
+    }
+
+    @Override
+    public String toName() {
+        return mTo.getDisplayName();
+    }
+
+    @Override
     public String uid() {
         return mUid;
     }
@@ -38,8 +58,8 @@ public class Invitation implements IInvitation {
     public Map<String, Object> invitationData() {
         Map<String, Object> data = new HashMap<>();
         data.put(INVITATION_UID_SET_KEY, mUid);
-        data.put(INVITATION_FROM_SET_KEY, mFrom.getEmail());
-        data.put(INVITATION_TO_SET_KEY, toUser().getEmail());
+        data.put(INVITATION_FROM_SET_KEY, fromName() + " " + fromEmail());
+        data.put(INVITATION_TO_SET_KEY, toName() + " " + toEmail());
         return data;
     }
 

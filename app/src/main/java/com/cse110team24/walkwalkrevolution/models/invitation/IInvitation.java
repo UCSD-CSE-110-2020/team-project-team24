@@ -7,6 +7,10 @@ import java.util.Map;
 public interface IInvitation {
     public IUser fromUser();
     public IUser toUser();
+    public String fromEmail();
+    public String toEmail();
+    public String fromName();
+    public String toName();
     public String uid();
     public void setUid(String uid);
     public Map<String, Object> invitationData();
