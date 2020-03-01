@@ -27,7 +27,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     private FirebaseUser mFirebaseUser;
     private FirebaseUserAdapterBuilder mUserAdapterBuilder;
     private Activity mActivity;
-    private AuthError mError;
+    private AuthError mAuthError;
 
     private List<AuthServiceObserver> observers;
 
@@ -51,7 +51,8 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                         Log.e(TAG, "signUp: user sign-in failed", task.getException());
                         Toast.makeText(mActivity, task.getException().toString(), Toast.LENGTH_LONG).show();
                         Toast.makeText(mActivity, "User is not logged in and data will not be saved", Toast.LENGTH_SHORT).show();
-                        handleError(task);
+                        detectErrorType(task);
+                        notifyObserversSignInError();
                     }
                 });
 
@@ -69,7 +70,8 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                         buildUserEssentials(email);
                     } else {
                         Log.e(TAG, "signUp: user creation failed", task.getException());
-                        handleError(task);
+                        detectErrorType(task);
+                        notifyObserversSignUpError();
                     }
                 });
         return mUserAdapterBuilder.build();
@@ -96,18 +98,18 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
 
     @Override
     public AuthError getAuthError() {
-        return mError;
+        return mAuthError;
     }
 
-    private void handleError(Task<AuthResult> task) {
+    private void detectErrorType(Task<AuthResult> task) {
         if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-            mError = AuthError.USER_COLLISION;
+            mAuthError = AuthError.USER_COLLISION;
         } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
-            mError = AuthError.DOES_NOT_EXIST;
+            mAuthError = AuthError.DOES_NOT_EXIST;
         } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-            mError = AuthError.INVALID_PASSWORD;
+            mAuthError = AuthError.INVALID_PASSWORD;
         } else {
-            mError = AuthError.OTHER;
+            mAuthError = AuthError.OTHER;
         }
     }
 
@@ -131,13 +133,25 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         mUserAdapterBuilder.addFirebaseUser(firebaseAuth.getCurrentUser());
         mFirebaseUser = firebaseAuth.getCurrentUser();
-        notifiyObservers();
+        notifyObservers();
     }
 
 
-    private void notifiyObservers() {
+    private void notifyObservers() {
         observers.forEach(observer -> {
             observer.onAuthStateChange(mUserAdapterBuilder.build());
+        });
+    }
+
+    private void notifyObserversSignInError() {
+        observers.forEach(observer -> {
+            observer.onAuthSignInError(mAuthError);
+        });
+    }
+
+    private void notifyObserversSignUpError() {
+        observers.forEach(observer -> {
+            observer.onAuthSignUpError(mAuthError);
         });
     }
 }
