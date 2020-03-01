@@ -8,7 +8,7 @@ import com.cse110team24.walkwalkrevolution.observer.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirebaseApplicationWWR extends Application implements Subject<ApplicationObserver> {
+public class FirebaseApplicationWWR extends Application implements ApplicationSubject {
 
     private static AuthServiceFactory authServiceFactory;
     List<ApplicationObserver> observers = new ArrayList<>();
@@ -27,7 +27,8 @@ public class FirebaseApplicationWWR extends Application implements Subject<Appli
         return authServiceFactory = asf;
     }
 
-    public void onNewToken(String token) {
+    @Override
+    public void notifyObserversNewToken(String token) {
         observers.forEach(observer -> {
             observer.onNewToken(token);
         });
