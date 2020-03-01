@@ -25,16 +25,14 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
     private Builder mUserAdapterBuilder;
-    private Activity mActivity;
     private AuthError mAuthError;
 
     private boolean signUp;
 
     private List<AuthServiceObserver> observers;
 
-    public FirebaseAuthAdapter(Activity activity) {
+    public FirebaseAuthAdapter() {
         mAuth = FirebaseAuth.getInstance();
-        mActivity = activity;
         mFirebaseUser = mAuth.getCurrentUser();
         mUserAdapterBuilder = new Builder();
         mAuth.addAuthStateListener(this);
@@ -46,7 +44,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         Log.i(TAG, "signIn: beginning sign in process");
         signUp = false;
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(mActivity, task -> {
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.i(TAG, "onComplete: user sign-in successful");
                         buildUserEssentials(email);
@@ -63,7 +61,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         Log.i(TAG, "signUp: beginning sign up process");
         signUp = true;
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(mActivity, task -> {
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.i(TAG, "signUp: user creation successful");
                         buildUserEssentials(email);

@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void signUp() {
-        mAuth = new FirebaseAuthAdapter(LoginActivity.this);
+        mAuth = new FirebaseAuthAdapter();
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mAuth.signUp(gmailAddress, password);
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
 
     private void logIn() {
-        mAuth = new FirebaseAuthAdapter(LoginActivity.this);
+        mAuth = new FirebaseAuthAdapter();
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mAuth.signIn(gmailAddress, password);
