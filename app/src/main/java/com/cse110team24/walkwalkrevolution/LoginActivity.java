@@ -15,8 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthAdapter;
 
@@ -50,9 +52,11 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     private EditText passwordEditText;
     private Button loginBtn;
     private TextView signUpTv;
-    private FirebaseAuthAdapter mAuth;
+
+    // firebase dependencies
+    private AuthService mAuth;
     private IUser mUser;
-    private FirebaseFirestoreAdapter firebaseFirestore;
+    private DatabaseService mDb;
 
     private int feet;
     private float inches;
@@ -76,6 +80,9 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
         final SharedPreferences preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
         homeIntent = new Intent(this, HomeActivity.class);
+
+        mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
 
         getConfiguredFields();
         // TODO: replace it with checkLogin()

@@ -35,7 +35,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static DatabaseServiceFactory setDatabaseServiceFactory(DatabaseServiceFactory dsf) {
-        databaseServiceFactory = dsf;
+        return databaseServiceFactory = dsf;
     }
 
     @Override
