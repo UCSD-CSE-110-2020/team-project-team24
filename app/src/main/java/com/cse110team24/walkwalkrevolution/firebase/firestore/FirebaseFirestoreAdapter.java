@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBERS_KEY;
@@ -142,7 +143,9 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         Task<QuerySnapshot> task  = usersCollection
                 .document(user.documentKey())
                 .collection(USER_INVITATIONS_SUB_COLLECTION_KEY)
-                .whereEqualTo(Invitation.INVITATION_STATUS_SET_KEY, InvitationStatus.PENDING.toString().toLowerCase())
+                .whereEqualTo(Invitation.INVITATION_STATUS_SET_KEY, InvitationStatus.PENDING
+                                .toString()
+                                .toLowerCase(Locale.getDefault()))
                 .get();
         List<DocumentSnapshot> invitationDocuments = task.getResult().getDocuments();
         List<Invitation> invitations = new ArrayList<>(invitationDocuments.size());

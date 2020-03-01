@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution.models.invitation;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Invitation implements IInvitation {
@@ -67,7 +68,7 @@ public class Invitation implements IInvitation {
         data.put(INVITATION_UID_SET_KEY, mUid);
         data.put(INVITATION_FROM_SET_KEY, fromName() + " @ " + fromEmail());
         data.put(INVITATION_TO_SET_KEY, toName() + " @ " + toEmail());
-        data.put(INVITATION_STATUS_SET_KEY, status().toString().toLowerCase());
+        data.put(INVITATION_STATUS_SET_KEY, status().toString().toLowerCase(Locale.getDefault()));
         return data;
     }
 
