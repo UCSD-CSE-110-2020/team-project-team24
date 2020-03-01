@@ -94,7 +94,7 @@ public class FirebaseUserAdapter implements IUser {
         return mInvitations;
     }
 
-    public IFirebaseUserAdapterBuilder builder() {
+    public static IFirebaseUserAdapterBuilder builder() {
         return new FirebaseUserAdapterBuilder();
     }
 
