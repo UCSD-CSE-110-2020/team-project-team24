@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore;
 import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.google.android.gms.tasks.Task;
@@ -144,9 +145,27 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         List<DocumentSnapshot> invitationDocuments = task.getResult().getDocuments();
         List<Invitation> invitations = new ArrayList<>(invitationDocuments.size());
         invitationDocuments.forEach(document -> {
-            // TODO: 2/29/20 add document as invitation object to list
+            invitations.add(buildInvitation(document, user));
         });
         return invitations;
+    }
+
+    private Invitation buildInvitation(DocumentSnapshot invitationDocument, IUser user) {
+        IUser from = buildUserFromInvitation(invitationDocument, Invitation.INVITATION_FROM_SET_KEY);
+        String uid = invitationDocument.getString(Invitation.INVITATION_UID_SET_KEY);
+        return Invitation.builder()
+                .addFromUser(from)
+                .addToUser(user)
+                .addUid(uid)
+                .build();
+    }
+
+    private IUser buildUserFromInvitation(DocumentSnapshot invitationDocument, String documentKey) {
+        String[] fromUserInfo = invitationDocument.getString(documentKey).split("\\s");
+        return FirebaseUserAdapter.builder()
+                    .addDisplayName(fromUserInfo[0])
+                    .addEmail(fromUserInfo[1])
+                    .build();
     }
 
     // TODO: 2/28/20 need to determine if this will be real time
