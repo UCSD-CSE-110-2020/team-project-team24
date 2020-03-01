@@ -121,10 +121,16 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
 
     @Override
     public CollectionReference addInvitationForReceivingUser(Invitation invitation) {
-        IUser receiver = invitation.toUser();
-        DocumentReference receiverDoc = usersCollection.document(receiver.documentKey());
+        IUser invitedUser = invitation.toUser();
+        DocumentReference receiverDoc = usersCollection.document(invitedUser.documentKey());
         CollectionReference receiverInvitationsCollection = receiverDoc.collection(USER_INVITATIONS_SUB_COLLECTION_KEY);
-        receiverInvitationsCollection.add(invitation.invitationData());
+        receiverInvitationsCollection.add(invitation.invitationData()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "addInvitationForReceivingUser: added invitation to user's invitations collection");
+            } else {
+                Log.e(TAG, "addInvitationForReceivingUser: error adding invitation to user's invitations collection", task.getException());
+            }
+        });
         return receiverInvitationsCollection;
     }
 
