@@ -111,29 +111,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mUser = mAuth.signUp(gmailAddress, password);
-//        mUser = mAuth.signUpWithName(gmailAddress, password, username);
         signup = true;
-//        if (mAuth.isUserSignedIn()) {
-//            firebaseFirestore = new FirebaseFirestoreAdapter();
-//            firebaseFirestore.createUserInDatabase(mUser);
-//            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
-//            finish();
-//            startActivity(homeIntent);
-//        } else {
-//            Log.e(TAG, "signUp: sign up failed");
-//            AuthError error = mAuth.getAuthError();
-//            if(error == AuthError.USER_COLLISION) {
-//                Log.e(TAG, "signUp: user collision");
-//            } else if(error == AuthError.DOES_NOT_EXIST) {
-//                Log.e(TAG, "signUp: user does not exist");
-//            } else if(error == AuthError.INVALID_PASSWORD) {
-//                Log.e(TAG, "signUp: invalid password");
-//            } else if(error == AuthError.OTHER) {
-//                Log.e(TAG, "signUp: other error");
-//            } else if(error == null) {
-//                Log.e(TAG, "signUp: error is null");
-//            }
-//       }
     }
 
 
@@ -142,13 +120,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         mAuth.register(LoginActivity.this);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mUser = mAuth.signIn(gmailAddress, password);
-//        if(!mAuth.isUserSignedIn()) {
-//            Toast.makeText(this, "Log In Failed", Toast.LENGTH_SHORT).show();
-//        } else {
-//            homeIntent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
-//            finish();
-//            startActivity(homeIntent);
-//        }
     }
 
     private void signUpTvOnClickListener() {
