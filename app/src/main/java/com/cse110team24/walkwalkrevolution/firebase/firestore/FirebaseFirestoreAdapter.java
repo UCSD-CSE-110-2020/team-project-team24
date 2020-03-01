@@ -123,18 +123,12 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public CollectionReference addInvitationForReceivingUser(Invitation invitation) {
+    public Task<DocumentReference> addInvitationForReceivingUser(Invitation invitation) {
         IUser invitedUser = invitation.toUser();
         DocumentReference receiverDoc = usersCollection.document(invitedUser.documentKey());
         CollectionReference receiverInvitationsCollection = receiverDoc.collection(USER_INVITATIONS_SUB_COLLECTION_KEY);
-        receiverInvitationsCollection.add(invitation.invitationData()).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.i(TAG, "addInvitationForReceivingUser: added invitation to user's invitations collection");
-            } else {
-                Log.e(TAG, "addInvitationForReceivingUser: error adding invitation to user's invitations collection", task.getException());
-            }
-        });
-        return receiverInvitationsCollection;
+        Task<DocumentReference> result = receiverInvitationsCollection.add(invitation.invitationData());
+        return result;
     }
 
     @Override
