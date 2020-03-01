@@ -1,7 +1,5 @@
 package com.cse110team24.walkwalkrevolution.models.route;
 
-import com.cse110team24.walkwalkrevolution.models.Builder;
-
 import java.io.Serializable;
 import java.lang.Comparable;
 import java.util.Objects;
@@ -110,39 +108,39 @@ public class Route implements Serializable, Comparable<Route> {
                 "\nstats: " + ((mStats == null) ? "none" : mStats);
     }
 
-    public static class RouteBuilder implements IRouteBuilder {
+    public static class Builder implements RouteBuilder {
         private Route mToBuild;
 
-        public RouteBuilder(String title) {
+        public Builder(String title) {
             mToBuild = new Route(title);
         }
 
         @Override
-        public RouteBuilder addStartingLocation(String location) {
+        public Builder addStartingLocation(String location) {
             mToBuild.setStartingLocation(location);
             return this;
         }
 
         @Override
-        public RouteBuilder addRouteEnvironment(RouteEnvironment env) {
+        public Builder addRouteEnvironment(RouteEnvironment env) {
             mToBuild.setEnvironment(env);
             return this;
         }
 
         @Override
-        public RouteBuilder addWalkStats(WalkStats stats) {
+        public Builder addWalkStats(WalkStats stats) {
             mToBuild.setStats(stats);
             return this;
         }
 
         @Override
-        public RouteBuilder addNotes(String notes) {
+        public Builder addNotes(String notes) {
             mToBuild.setNotes(notes);
             return this;
         }
 
         @Override
-        public RouteBuilder addFavStatus(boolean isFavorite) {
+        public Builder addFavStatus(boolean isFavorite) {
             mToBuild.setFavorite(isFavorite);
             return this;
         }

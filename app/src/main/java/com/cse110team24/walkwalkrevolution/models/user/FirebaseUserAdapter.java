@@ -90,53 +90,53 @@ public class FirebaseUserAdapter implements IUser {
         return mInvitations;
     }
 
-    public static IFirebaseUserAdapterBuilder builder() {
-        return new FirebaseUserAdapterBuilder();
-    }
-
     @Override
     public void addInvitation(Invitation invitation) {
         mInvitations.add(invitation);
     }
 
-    public static class FirebaseUserAdapterBuilder implements IFirebaseUserAdapterBuilder {
+    public static FirebaseUserAdapterBuilder builder() {
+        return new Builder();
+    }
+
+    public static class Builder implements FirebaseUserAdapterBuilder {
         FirebaseUserAdapter mUser;
 
-        public FirebaseUserAdapterBuilder() {
+        public Builder() {
             mUser = new FirebaseUserAdapter();
         }
         @Override
-        public IUserBuilder addFirebaseUser(FirebaseUser firebaseUser) {
+        public UserBuilder addFirebaseUser(FirebaseUser firebaseUser) {
             mUser.setFirebaseUser(firebaseUser);
             return this;
         }
 
         @Override
-        public IUserBuilder addEmail(String email) {
+        public UserBuilder addEmail(String email) {
             mUser.mEmail = email;
             return this;
         }
 
         @Override
-        public IUserBuilder addInvitationsList(List<Invitation> invitations) {
+        public UserBuilder addInvitationsList(List<Invitation> invitations) {
             mUser.mInvitations = invitations;
             return this;
         }
 
         @Override
-        public IUserBuilder addDisplayName(String displayName) {
+        public UserBuilder addDisplayName(String displayName) {
             mUser.updateDisplayName(displayName);
             return this;
         }
 
         @Override
-        public IUserBuilder addUid(String uid) {
+        public UserBuilder addUid(String uid) {
             mUser.mUid = uid;
             return this;
         }
 
         @Override
-        public IUserBuilder addTeamUid(String teamUid) {
+        public UserBuilder addTeamUid(String teamUid) {
             mUser.updateTeamUid(teamUid);
             return this;
         }

@@ -47,31 +47,31 @@ public class Invitation implements IInvitation {
         mUid = uid;
     }
 
-    public static InvitationBuilderInterface builder() {
-        return new InvitationBuilder();
+    public static InvitationBuilder builder() {
+        return new Builder();
     }
 
-    public static class InvitationBuilder implements InvitationBuilderInterface {
+    public static class Builder implements InvitationBuilder {
         private Invitation mInvitation;
 
-        public InvitationBuilder() {
+        public Builder() {
             mInvitation = new Invitation();
         }
 
         @Override
-        public InvitationBuilderInterface addFromUser(IUser user) {
+        public InvitationBuilder addFromUser(IUser user) {
             mInvitation.mFrom = user;
             return this;
         }
 
         @Override
-        public InvitationBuilderInterface addToUser(IUser user) {
+        public InvitationBuilder addToUser(IUser user) {
             mInvitation.mTo = user;
             return this;
         }
 
         @Override
-        public InvitationBuilderInterface addUid(String uid) {
+        public InvitationBuilder addUid(String uid) {
             mInvitation.mUid = uid;
             return this;
         }
