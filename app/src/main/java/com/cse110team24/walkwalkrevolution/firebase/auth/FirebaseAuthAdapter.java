@@ -44,6 +44,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
 
     @Override
     public void signIn(String email, String password) {
+        Log.i(TAG, "signIn: beginning sign in process");
         signUp = false;
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(mActivity, task -> {
@@ -57,9 +58,10 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                     }
                 });
     }
-    
+
     @Override
     public void signUp(String email, String password) {
+        Log.i(TAG, "signUp: beginning sign up process");
         signUp = true;
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(mActivity, task -> {
