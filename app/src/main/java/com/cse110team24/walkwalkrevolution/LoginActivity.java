@@ -100,10 +100,10 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void loginBtnOnClickListener() {
-        username = nameEditText.getText().toString();
-        password = passwordEditText.getText().toString();
-        gmailAddress = gmailEditText.getText().toString();
         loginBtn.setOnClickListener(view -> {
+            username = nameEditText.getText().toString();
+            password = passwordEditText.getText().toString();
+            gmailAddress = gmailEditText.getText().toString();
             String btnText = loginBtn.getText().toString();
             Log.i(TAG, "loginBtnOnClickListener: button text is " + btnText);
             if(btnText.equals("Finish")) {
@@ -150,7 +150,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         }
         signUp();
     }
-    
+
     private void launchHomeActivityFromLogIn() {
         logIn();
     }
