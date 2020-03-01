@@ -11,6 +11,7 @@ public interface IInvitation {
     public String toEmail();
     public String fromName();
     public String toName();
+    public InvitationStatus status();
     public String uid();
     public void setUid(String uid);
     public Map<String, Object> invitationData();

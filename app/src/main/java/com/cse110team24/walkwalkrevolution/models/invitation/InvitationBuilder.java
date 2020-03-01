@@ -7,4 +7,5 @@ public interface InvitationBuilder extends Builder<Invitation> {
     InvitationBuilder addFromUser(IUser user);
     InvitationBuilder addToUser(IUser user);
     InvitationBuilder addUid(String uid);
+    InvitationBuilder addStatus(InvitationStatus status);
 }

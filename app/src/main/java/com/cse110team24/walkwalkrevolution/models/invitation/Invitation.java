@@ -13,6 +13,7 @@ public class Invitation implements IInvitation {
     private IUser mFrom;
     private IUser mTo;
     private String mUid;
+    private InvitationStatus mStatus;
 
     private Invitation() {}
 
@@ -93,6 +94,12 @@ public class Invitation implements IInvitation {
         @Override
         public InvitationBuilder addUid(String uid) {
             mInvitation.mUid = uid;
+            return this;
+        }
+
+        @Override
+        public InvitationBuilder addStatus(InvitationStatus status) {
+            mInvitation.mStatus = status;
             return this;
         }
 
