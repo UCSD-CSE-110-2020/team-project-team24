@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
@@ -29,8 +30,8 @@ public class InviteTeamMemberActivity extends Activity implements MessagingObser
     private DatabaseService mDb;
     private MessagingService messagingService;
 
-    private IUser from;
-    private IUser to;
+    private IUser mFrom;
+    private Invitation mInvitation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +49,29 @@ public class InviteTeamMemberActivity extends Activity implements MessagingObser
     }
 
     private void sendInvite(View view) {
+        createFromUser();
+        createInvitation();
+        messagingService.sendInvitation(mInvitation);
     }
 
     private void createFromUser() {
         String displayName = preferences.getString(LoginActivity.USER_NAME_KEY, null);
         String email = preferences.getString(LoginActivity.EMAIL_KEY, null);
         if (displayName != null && email != null) {
-            from = authService.getUser();
-            from.setDisplayName(displayName);
-            from.setEmail(email);
+            mFrom = authService.getUser();
+            mFrom.setDisplayName(displayName);
+            mFrom.setEmail(email);
         }
     }
 
-    private void createToUser() {
-
+    private void createInvitation() {
+        String toEmail = editTeammateGmailInvite.getText().toString();
+        String toDisplayName = editTeammateNameInvite.getText().toString();
+        mInvitation = Invitation.builder()
+                .addFromUser(mFrom)
+                .addToDisplayName(toEmail)
+                .addToEmail(toDisplayName)
+                .build();
     }
 
     private void getUIFields() {
@@ -72,7 +82,7 @@ public class InviteTeamMemberActivity extends Activity implements MessagingObser
 
     @Override
     public void onInvitationSent(Invitation invitation) {
-
+        Toast.makeText(this, "Invitation sent", Toast.LENGTH_LONG).show();
     }
 
     @Override
