@@ -4,7 +4,9 @@ import android.app.Activity;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 
-public class FirebaseMessagingServiceFactory {
+public class FirebaseMessagingServiceFactory implements MessagingServiceFactory{
+
+    @Override
     public MessagingService createMessagingService(Activity activity, DatabaseService databaseService) {
         return new FirebaseMessagingAdapter(activity, databaseService);
     }
