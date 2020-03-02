@@ -39,12 +39,6 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
 
     MockActivityTestRule(Class<T> activityClass) {
         super(activityClass);
-        asf = Mockito.mock(AuthServiceFactory.class);
-        dsf = Mockito.mock(DatabaseServiceFactory.class);
-        msf = Mockito.mock(MessagingServiceFactory.class);
-        mAuth = new TestAuthService();
-        mDb = Mockito.mock(DatabaseService.class);
-        mMsg = Mockito.mock(MessagingService.class);
     }
 
     @Override
@@ -56,12 +50,6 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
     @Override
     protected void beforeActivityLaunched() {
         super.beforeActivityLaunched();
-        Mockito.when(asf.createAuthService()).thenReturn(mAuth);
-        Mockito.when(dsf.createDatabaseService()).thenReturn(mDb);
-        Mockito.when(msf.createMessagingService(getActivity(), mDb)).thenReturn(mMsg);
-        FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
-        FirebaseApplicationWWR.setAuthServiceFactory(asf);
-        FirebaseApplicationWWR.setMessagingServiceFactory(msf);
 
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getTargetContext()
                 .getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE)
@@ -73,8 +61,8 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
 
     public class TestAuthService implements AuthService {
         IUser signedInUser = new FirebaseUserAdapter.Builder()
-                .addDisplayName("Test Name")
-                .addEmail("test@gmail.com")
+                .addDisplayName("test")
+                .addEmail("tester@gmail.com")
                 .addUid("1")
                 .build();
 
