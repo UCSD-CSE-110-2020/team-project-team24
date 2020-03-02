@@ -14,7 +14,7 @@ exports.sendInviteNotification = functions.firestore
                     title: document.from + ' has invited you to join a team!',
                     body: 'Click to accept or decline this invitation'
                 },
-                topic: context.params.inviteId
+                topic: context.params.userInvite
             };
 
             return admin.messaging().send(message)
