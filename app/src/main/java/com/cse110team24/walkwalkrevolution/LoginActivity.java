@@ -25,6 +25,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 import java.util.regex.Pattern;
 
@@ -142,18 +143,18 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
 
     private void logIn() {
-        progressBar.setVisibility(View.VISIBLE);
         if (!validateSignInInfo()) {
             progressBar.setVisibility(View.INVISIBLE);
             Log.i(TAG, "Invalid sign in info entered");
             return;
         }
+        progressBar.setVisibility(View.VISIBLE);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mAuth.signIn(gmailAddress, password);
     }
 
     private boolean validateSignUpInfo() {
-        if(!checkForGmailAddress()) {
+        if(!Utils.isValidGmail(gmailAddress)) {
             Toast.makeText(this, INVALID_GMAIL_TOAST, Toast.LENGTH_LONG).show();
             return false;
         } else if(!checkValidPassword()) {
@@ -170,11 +171,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private boolean validateSignInInfo() {
-        if(!checkForGmailAddress() || !checkValidPassword()) {
-            Toast.makeText(this, INVALID_SIGN_IN, Toast.LENGTH_LONG).show();
-            return false;
-        }
-        else if(!validateFeet() || !validateInches()) {
+        if(!validateFeet() || !validateInches()) {
             Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
             return false;
         }
@@ -330,10 +327,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
             feet = (int) INVALID_VAL;
         }
         return feet <= MAX_FEET && feet > 0;
-    }
-
-    private boolean checkForGmailAddress() {
-        return Pattern.matches("(\\W|^)[\\w.\\-]{0,25}@(gmail)\\.com(\\W|$)", gmailAddress);
     }
 
     private boolean checkValidPassword() {

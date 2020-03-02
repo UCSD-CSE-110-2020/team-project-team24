@@ -16,6 +16,7 @@ import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.gms.tasks.Task;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,8 +53,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     private void sendInvite(View view) {
         createFromUser();
-        createInvitation();
-        if (mFrom != null) {
+        mInvitation = createInvitation();
+        if (mFrom != null && mInvitation != null) {
             Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
             messagingService.sendInvitation(mInvitation);
         }
@@ -69,10 +70,14 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         }
     }
 
-    private void createInvitation() {
+    private Invitation createInvitation() {
         String toEmail = editTeammateGmailInvite.getText().toString();
+        if(!Utils.isValidGmail(toEmail)) {
+            Toast.makeText(this, "Please enter a valid gmail address", Toast.LENGTH_SHORT).show();
+            return null;
+        }
         String toDisplayName = editTeammateNameInvite.getText().toString();
-        mInvitation = Invitation.builder()
+        return Invitation.builder()
                 .addFromUser(mFrom)
                 .addToDisplayName(toDisplayName)
                 .addToEmail(toEmail)
