@@ -131,12 +131,11 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void signUp() {
-        progressBar.setVisibility(View.VISIBLE);
         if (!validateSignUpInfo()) {
-            progressBar.setVisibility(View.INVISIBLE);
             Log.i(TAG, "Invalid sign up info entered");
             return;
         }
+        progressBar.setVisibility(View.VISIBLE);
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mAuth.signUp(gmailAddress, password, username);
     }
@@ -144,7 +143,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     private void logIn() {
         if (!validateSignInInfo()) {
-            progressBar.setVisibility(View.INVISIBLE);
             Log.i(TAG, "Invalid sign in info entered");
             return;
         }
@@ -171,7 +169,13 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private boolean validateSignInInfo() {
-        if(!validateFeet() || !validateInches()) {
+        if(gmailAddress.isEmpty()) {
+            Toast.makeText(this, "Please enter an email!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if(password.isEmpty()) {
+            Toast.makeText(this, "Please enter your password!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if(!validateFeet() || !validateInches()) {
             Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
             return false;
         }
@@ -185,7 +189,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         finish();
         startActivity(homeIntent);
     }
-
 
     private void signUpTvOnClickListener() {
         signUpTv.setOnClickListener(view -> {
