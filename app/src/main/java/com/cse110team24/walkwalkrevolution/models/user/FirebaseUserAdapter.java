@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution.models.user;
 
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.auth.User;
@@ -68,7 +69,7 @@ public class FirebaseUserAdapter implements IUser {
 
     @Override
     public String documentKey() {
-        return getEmail().replaceAll("@|\\.", "");
+        return Utils.cleanEmail(getEmail());
     }
 
     @Override

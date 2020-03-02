@@ -97,6 +97,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     @Override
     public void onInvitationSent(Invitation invitation) {
         handleInvitationResult("Invitation sent");
+        editTeammateGmailInvite.setText("");
+        editTeammateNameInvite.setText("");
     }
 
     @Override
@@ -107,7 +109,5 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private void handleInvitationResult(String message) {
         progressBar.setVisibility(View.INVISIBLE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        editTeammateGmailInvite.setText("");
-        editTeammateNameInvite.setText("");
     }
 }

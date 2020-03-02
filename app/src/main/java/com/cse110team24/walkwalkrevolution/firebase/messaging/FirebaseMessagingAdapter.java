@@ -53,6 +53,7 @@ public class FirebaseMessagingAdapter implements MessagingService {
                 mDb.createRootInvitationDocument(invitation);
                 notifyObserversInvitationSent(invitation);
             } else {
+                Log.e(TAG, "sendInvitation: error sending invitation", task.getException());
                 notifyObserversFailedInvitationSent(task);
             }
         });
