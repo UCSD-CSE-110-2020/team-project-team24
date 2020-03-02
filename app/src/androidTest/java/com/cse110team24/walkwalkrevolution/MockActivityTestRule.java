@@ -43,7 +43,7 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
 
     @Override
     protected Intent getActivityIntent() {
-        
+
         return super.getActivityIntent();
     }
 
