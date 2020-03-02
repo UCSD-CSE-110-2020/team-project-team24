@@ -50,7 +50,7 @@ public class FirebaseMessagingAdapter implements MessagingService {
         mDb.addInvitationForReceivingUser(invitation).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "sendInvitation: invitation sent successfully");
-                mDb.createRootInvitationDocument(invitation);
+                // TODO: 3/1/20 add invitation to sender as well? 
                 notifyObserversInvitationSent(invitation);
             } else {
                 Log.e(TAG, "sendInvitation: error sending invitation", task.getException());

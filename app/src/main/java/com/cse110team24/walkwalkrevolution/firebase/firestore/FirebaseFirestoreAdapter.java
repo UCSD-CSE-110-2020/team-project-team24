@@ -48,7 +48,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public static final String USERS_COLLECTION_KEY = "users";
     public static final String ROUTES_COLLECTION_KEY = "routes";
     public static final String INVITATIONS_ROOT_COLLECTION_KEY = "invitations";
-    public static final String USER_INVITATIONS_SUB_COLLECTION_KEY = "invitations";
+    public static final String USER_INVITATIONS_SUB_COLLECTION_KEY = "userInvitations";
     public static final String TEAMS_COLLECTION_KEY = "teams";
     public static final String USER_REGISTRATION_TOKENS_COLLECTION_KEY = "tokens";
     public static final String TOKEN_SET_KEY = "token";
@@ -124,11 +124,11 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
 
     @Override
     public Task<DocumentReference> addInvitationForReceivingUser(Invitation invitation) {
-        DocumentReference receiverDoc = usersCollection.document(invitation.toDocumentKey());
-        CollectionReference receiverInvitationsCollection = receiverDoc.collection(USER_INVITATIONS_SUB_COLLECTION_KEY);
-        DocumentReference invitationDoc = receiverInvitationsCollection.document();
+        DocumentReference userSpecificInvitationsDoc = invitationsRootCollection.document(invitation.toDocumentKey() + "invitations");
+        CollectionReference receivedInvitations = userSpecificInvitationsDoc.collection(USER_INVITATIONS_SUB_COLLECTION_KEY);
+        DocumentReference invitationDoc = receivedInvitations.document();
         invitation.setUid(invitationDoc.getId());
-        Task<DocumentReference> result = receiverInvitationsCollection.add(invitation.invitationData());
+        Task<DocumentReference> result = receivedInvitations.add(invitation.invitationData());
         return result;
     }
 
