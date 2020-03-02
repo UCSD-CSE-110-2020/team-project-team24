@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
             return;
         }
         Log.i(TAG, "signUp: with email " + gmailAddress);
-        mAuth.signUp(gmailAddress, password);
+        mAuth.signUp(gmailAddress, password, username);
     }
 
 
@@ -375,6 +375,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     @Override
     public void onUserSignedIn(IUser user) {
         if (validateFeet() && validateInches() && mAuth.isUserSignedIn()) {
+            saveUserInfo(user);
             launchHome();
         }
     }

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                     if (task.isSuccessful()) {
                         Log.i(TAG, "onComplete: user sign-in successful");
                         buildUserEssentials(email);
+                        mUserAdapterBuilder.addDisplayName(mFirebaseUser.getDisplayName());
                         notifyObserversSignedIn(mUserAdapterBuilder.build());
                     } else {
                         Log.e(TAG, "signIn: user sign-in failed", task.getException());
@@ -61,7 +63,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     }
 
     @Override
-    public void signUp(String email, String password) {
+    public void signUp(String email, String password, String displayName) {
         Log.i(TAG, "signUp: beginning sign up process");
         signUp = true;
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -69,11 +71,26 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                     if (task.isSuccessful()) {
                         Log.i(TAG, "signUp: user creation successful");
                         buildUserEssentials(email);
+                        setFirebaseUserDisplayName(displayName);
+                        mUserAdapterBuilder.addDisplayName(displayName);
                         notifyObserversSignedUp(mUserAdapterBuilder.build());
                     } else {
                         Log.e(TAG, "signUp: user creation failed", task.getException());
                         detectErrorType(task);
                         notifyObserversSignUpError(mAuthError);
+                    }
+                });
+    }
+
+    private void setFirebaseUserDisplayName(String displayName) {
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(displayName)
+                .build();
+
+        mFirebaseUser.updateProfile(profileUpdates)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "User profile updated.");
                     }
                 });
     }

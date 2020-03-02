@@ -4,12 +4,12 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 public interface AuthService extends AuthServiceSubject {
     void signIn(String email, String password);
-    void signUp(String email, String password);
+    void signUp(String email, String password, String displayName);
     IUser getUser();
     AuthError getAuthError();
     boolean isUserSignedIn();
 
-    public enum AuthError {
+    enum AuthError {
         USER_COLLISION,
         DOES_NOT_EXIST,
         INVALID_PASSWORD,
