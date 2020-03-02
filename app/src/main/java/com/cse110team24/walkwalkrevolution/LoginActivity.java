@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -351,7 +352,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     @Override
     public void onUserSignedIn(IUser user) {
         if (validateFeet() && validateInches() && mAuth.isUserSignedIn()) {
-            saveUserInfo(user);
             launchHome();
         }
     }
