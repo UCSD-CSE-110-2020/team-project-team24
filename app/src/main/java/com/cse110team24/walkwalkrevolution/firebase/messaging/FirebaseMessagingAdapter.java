@@ -19,13 +19,14 @@ public class FirebaseMessagingAdapter implements MessagingService {
     private FirebaseMessaging mFirebaseMessaging;
     private Activity mActivity;
 
-    private DatabaseService db;
+    private DatabaseService mDb;
     private List<MessagingObserver> observers = new ArrayList<>();
 
     public FirebaseMessagingAdapter(Activity activity, DatabaseService databaseService) {
         mActivity = activity;
         FirebaseApp.initializeApp(activity);
         mFirebaseMessaging = FirebaseMessaging.getInstance();
+        mDb = databaseService;
     }
 
     private void provideCredentials() {
@@ -45,8 +46,8 @@ public class FirebaseMessagingAdapter implements MessagingService {
 
     @Override
     public void sendInvitation(Invitation invitation) {
-        db.createRootInvitationDocument(invitation);
-        db.addInvitationForReceivingUser(invitation).addOnCompleteListener(task -> {
+        mDb.createRootInvitationDocument(invitation);
+        mDb.addInvitationForReceivingUser(invitation).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "sendInvitation: invitation sent successfully");
                 notifyObserversInvitationSent(invitation);
