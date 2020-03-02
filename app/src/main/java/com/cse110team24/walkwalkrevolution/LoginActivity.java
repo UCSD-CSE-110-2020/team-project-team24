@@ -91,7 +91,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
 
         getConfiguredFields();
-        // TODO: replace it with checkLogin()
         checkLogin(preferences);
         hideName();
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));

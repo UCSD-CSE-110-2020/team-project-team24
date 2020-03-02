@@ -22,7 +22,9 @@
         <activity android:name=".MockActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".TeamActivity" />
-        <activity android:name=".InviteTeamMemberActivity" />
+        <activity
+            android:name=".InviteTeamMemberActivity"
+            android:label="@string/title_add_team_member" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

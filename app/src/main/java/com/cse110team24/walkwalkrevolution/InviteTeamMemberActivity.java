@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,8 +16,9 @@ import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class InviteTeamMemberActivity extends Activity implements MessagingObserver {
+public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver{
 
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;
