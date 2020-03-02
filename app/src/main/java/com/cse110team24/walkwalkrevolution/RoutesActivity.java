@@ -73,10 +73,12 @@ public class RoutesActivity extends AppCompatActivity {
         transitionWithAnimation();
     }
 
-    public void launchGoToHomeActivity() {
+/*    public void launchGoToHomeActivity() {
         setResult(Activity.RESULT_CANCELED);
         transitionWithAnimation();
     }
+
+ */
 
     private void transitionWithAnimation() {
         saveListAsync();
@@ -109,8 +111,16 @@ public class RoutesActivity extends AppCompatActivity {
     private void setBottomNavItemSelectedListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             if(menuItem.getItemId() == R.id.action_home) {
-                launchGoToHomeActivity();
+                Intent myIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(myIntent);
             }
+            if(menuItem.getItemId() == R.id.action_team) {
+                Intent myIntent = new Intent(getApplicationContext(), TeamActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(myIntent);
+            }
+
             return true;
         });
     }

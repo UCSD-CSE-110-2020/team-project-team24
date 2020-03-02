@@ -27,7 +27,8 @@ public class TeamActivity extends Activity {
     }
     private void setButtonClickListeners() {
         setInviteButtonOnClick();
-        setBottomNavigationOnClick();
+       // setBottomNavigationOnClick();
+        setBottomNavItemSelectedListener();
     }
 
     private void setInviteButtonOnClick() {
@@ -36,14 +37,19 @@ public class TeamActivity extends Activity {
         });
     }
 
-    private void setBottomNavigationOnClick() {
+    private void setBottomNavItemSelectedListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             if(menuItem.getItemId() == R.id.action_home) {
-                launchGotoHomeActivity();
+                Intent myIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(myIntent);
             }
             if(menuItem.getItemId() == R.id.action_routes_list) {
-                launchGoToRoutesActivity();
+                Intent myIntent = new Intent(getApplicationContext(), RoutesActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(myIntent);
             }
+
             return true;
         });
     }
@@ -52,7 +58,7 @@ public class TeamActivity extends Activity {
         startActivity(intent);
     }
 
-    public void launchGotoHomeActivity() {
+  /*  public void launchGotoHomeActivity() {
         setResult(Activity.RESULT_CANCELED);
         transitionWithAnimation();
     }
@@ -65,6 +71,7 @@ public class TeamActivity extends Activity {
         finish();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
+    */
 
 
 }

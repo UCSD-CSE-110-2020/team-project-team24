@@ -60,6 +60,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean recordingExistingRoute;
     private boolean saved;
     private Intent data;
+    private Intent myIntent = null;
 
     private int heightFeet;
     private float heightRemainderInches;
@@ -187,10 +188,14 @@ public class HomeActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             if(menuItem.getItemId() == R.id.action_routes_list) {
-                launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
+                myIntent = new Intent(getApplicationContext(), RoutesActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(myIntent);
             }
             if(menuItem.getItemId() == R.id.action_team) {
-                launchGoToRoutesActivity(new Intent(this, TeamActivity.class));
+                myIntent = new Intent(getApplicationContext(), TeamActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(myIntent);
             }
             return true;
         });
@@ -219,10 +224,16 @@ public class HomeActivity extends AppCompatActivity {
         startActivityForResult(intent, MockActivity.REQUEST_CODE);
     }
 
-    public void launchGoToRoutesActivity(Intent intent) {
+ /*   public void launchGoToRoutesActivity(Intent intent) {
         startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
+    public void launchGoToTeamActivity(Intent intent) {
+
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
+  */
 
     private void launchSaveRouteActivity() {
         Log.i(TAG, "launchSaveRouteActivity: route stopped, going to save");
