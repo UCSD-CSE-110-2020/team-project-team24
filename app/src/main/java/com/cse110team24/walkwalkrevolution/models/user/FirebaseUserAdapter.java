@@ -68,7 +68,7 @@ public class FirebaseUserAdapter implements IUser {
 
     @Override
     public String documentKey() {
-        return getEmail().replace("@", "");
+        return getEmail().replaceAll("@|\\.", "");
     }
 
     @Override
