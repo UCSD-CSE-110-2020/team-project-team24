@@ -124,8 +124,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
 
     @Override
     public Task<DocumentReference> addInvitationForReceivingUser(Invitation invitation) {
-        IUser invitedUser = invitation.toUser();
-        DocumentReference receiverDoc = usersCollection.document(invitedUser.documentKey());
+        DocumentReference receiverDoc = usersCollection.document(invitation.toDocumentKey());
         CollectionReference receiverInvitationsCollection = receiverDoc.collection(USER_INVITATIONS_SUB_COLLECTION_KEY);
         Task<DocumentReference> result = receiverInvitationsCollection.add(invitation.invitationData());
         return result;
@@ -195,7 +194,8 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         String uid = invitationDocument.getString(Invitation.INVITATION_UID_SET_KEY);
         return Invitation.builder()
                 .addFromUser(from)
-                .addToUser(user)
+                .addToEmail(user.getEmail())
+                .addToDisplayName(user.getDisplayName())
                 .addUid(uid)
                 .build();
     }

@@ -13,26 +13,22 @@ public class Invitation implements IInvitation {
     public static final String INVITATION_STATUS_SET_KEY = "status";
 
     private IUser mFrom;
-    private IUser mTo;
     private String mUid;
+    private String mToEmail;
+    private String mToDisplayName;
     private InvitationStatus mStatus;
 
     private Invitation() {
         mStatus = InvitationStatus.PENDING;
     }
 
-    public Invitation(IUser from, IUser to) {
+    public Invitation(IUser from) {
         this();
         mFrom = from;
-        mTo = to;
     }
 
     public IUser fromUser() {
         return mFrom;
-    }
-
-    public IUser toUser() {
-        return mTo;
     }
 
     @Override
@@ -42,7 +38,7 @@ public class Invitation implements IInvitation {
 
     @Override
     public String toEmail() {
-        return mTo.getEmail();
+        return mToEmail;
     }
 
     @Override
@@ -52,7 +48,12 @@ public class Invitation implements IInvitation {
 
     @Override
     public String toName() {
-        return mTo.getDisplayName();
+        return mToDisplayName;
+    }
+
+    @Override
+    public String toDocumentKey() {
+        return toEmail();
     }
 
     @Override
@@ -97,8 +98,14 @@ public class Invitation implements IInvitation {
         }
 
         @Override
-        public InvitationBuilder addToUser(IUser user) {
-            mInvitation.mTo = user;
+        public InvitationBuilder addToEmail(String email) {
+            mInvitation.mToEmail = email;
+            return this;
+        }
+
+        @Override
+        public InvitationBuilder addToDisplayName(String displayName) {
+            mInvitation.mToDisplayName = displayName;
             return this;
         }
 
