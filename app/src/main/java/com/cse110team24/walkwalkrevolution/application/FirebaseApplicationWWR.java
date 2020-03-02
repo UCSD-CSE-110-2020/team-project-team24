@@ -31,7 +31,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
         return authServiceFactory;
     }
 
-    public static AuthServiceFactory setAuthServiceFactory(FirebaseAuthServiceFactory asf) {
+    public static AuthServiceFactory setAuthServiceFactory(AuthServiceFactory asf) {
         return authServiceFactory = asf;
     }
 
@@ -39,7 +39,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
         return databaseServiceFactory;
     }
 
-    public static DatabaseServiceFactory setDatabaseServiceFactory(FirestoreDatabaseServiceFactory dsf) {
+    public static DatabaseServiceFactory setDatabaseServiceFactory(DatabaseServiceFactory dsf) {
         return databaseServiceFactory = dsf;
     }
 
@@ -47,7 +47,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
         return messagingServiceFactory;
     }
 
-    public static MessagingServiceFactory setMessagingServiceFactory(FirebaseMessagingServiceFactory msf) {
+    public static MessagingServiceFactory setMessagingServiceFactory(MessagingServiceFactory msf) {
         return messagingServiceFactory = msf;
     }
 

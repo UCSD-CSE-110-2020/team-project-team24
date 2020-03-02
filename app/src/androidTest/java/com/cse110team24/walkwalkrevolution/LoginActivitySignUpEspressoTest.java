@@ -37,29 +37,32 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class LoginActivitySignUpEspressoTest {
+public class LoginActivitySignUpEspressoTest extends TestInjection{
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
 
     @Before
     public void setup() {
-        mActivityTestRule.nextSignIn = true;
-        mActivityTestRule.nextSuccessStatus = true;
-        mActivityTestRule.asf = Mockito.mock(FirebaseAuthServiceFactory.class);
-        mActivityTestRule.dsf = Mockito.mock(FirestoreDatabaseServiceFactory.class);
-        mActivityTestRule.msf = Mockito.mock(FirebaseMessagingServiceFactory.class);
-        mActivityTestRule.mDb = Mockito.mock(DatabaseService.class);
-        mActivityTestRule.mMsg = Mockito.mock(MessagingService.class);
-
-        // TODO: 3/2/20 tell Mockito what to return when these methods get called. Should return custom, test implementations of the service interfaces
-        Mockito.when(mActivityTestRule.asf.createAuthService()).thenReturn(mActivityTestRule.mAuth);
-        Mockito.when(mActivityTestRule.dsf.createDatabaseService()).thenReturn(mActivityTestRule.mDb);
-        Mockito.when(mActivityTestRule.msf.createMessagingService(mActivityTestRule.getActivity(), mActivityTestRule.mDb)).thenReturn(mActivityTestRule.mMsg);
-
-        FirebaseApplicationWWR.setDatabaseServiceFactory(mActivityTestRule.dsf);
-        FirebaseApplicationWWR.setAuthServiceFactory(mActivityTestRule.asf);
-        FirebaseApplicationWWR.setMessagingServiceFactory(mActivityTestRule.msf);
+        super.setup();
+        nextSignIn = true;
+        nextSuccessStatus = true;
+//        mActivityTestRule.nextSignIn = true;
+//        mActivityTestRule.nextSuccessStatus = true;
+//        mActivityTestRule.asf = Mockito.mock(FirebaseAuthServiceFactory.class);
+//        mActivityTestRule.dsf = Mockito.mock(FirestoreDatabaseServiceFactory.class);
+//        mActivityTestRule.msf = Mockito.mock(FirebaseMessagingServiceFactory.class);
+//        mActivityTestRule.mDb = Mockito.mock(DatabaseService.class);
+//        mActivityTestRule.mMsg = Mockito.mock(MessagingService.class);
+//
+//        // TODO: 3/2/20 tell Mockito what to return when these methods get called. Should return custom, test implementations of the service interfaces
+//        Mockito.when(mActivityTestRule.asf.createAuthService()).thenReturn(mActivityTestRule.mAuth);
+//        Mockito.when(mActivityTestRule.dsf.createDatabaseService()).thenReturn(mActivityTestRule.mDb);
+//        Mockito.when(mActivityTestRule.msf.createMessagingService(mActivityTestRule.getActivity(), mActivityTestRule.mDb)).thenReturn(mActivityTestRule.mMsg);
+//
+//        FirebaseApplicationWWR.setDatabaseServiceFactory(mActivityTestRule.dsf);
+//        FirebaseApplicationWWR.setAuthServiceFactory(mActivityTestRule.asf);
+//        FirebaseApplicationWWR.setMessagingServiceFactory(mActivityTestRule.msf);
     }
 
     @Test
