@@ -17,18 +17,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestInjection {
+    private static final String TAG = "[TestInjection]";
+    protected static AuthService.AuthError nextError = AuthService.AuthError.OTHER;
+    protected static boolean nextSignIn = false;
+    protected static boolean nextSuccessStatus = false;
+    protected static AuthServiceFactory asf = new TestAuthServiceFactory();
+    protected static DatabaseServiceFactory dsf = new TestDatabaseServiceFactory();
 
-    protected AuthService.AuthError nextError = AuthService.AuthError.OTHER;
-    protected boolean nextSignIn = false;
-    protected boolean nextSuccessStatus = false;
-    protected AuthServiceFactory asf = new TestAuthServiceFactory();
-    protected DatabaseServiceFactory dsf = new TestDatabaseServiceFactory();
-
-    protected IUser signedInUser = new FirebaseUserAdapter.Builder()
+    protected static IUser signedInUser = new FirebaseUserAdapter.Builder()
             .addDisplayName("test")
             .addEmail("tester@gmail.com")
             .addUid("1")
             .build();
+
+    public TestInjection() {
+        System.out.println(TAG + ": test injection created");
+    }
 
     protected void setup() {
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
@@ -37,22 +41,26 @@ public class TestInjection {
     }
 
 
-    public class TestAuthServiceFactory implements AuthServiceFactory {
-
+    public static class TestAuthServiceFactory implements AuthServiceFactory {
+        private static final String TAG = "[TestAuthServiceFactory]";
         @Override
         public AuthService createAuthService() {
+            System.out.println(TAG + ": creating test auth service");
             return new TestAuthService();
         }
     }
 
-    public class TestDatabaseServiceFactory implements DatabaseServiceFactory {
+    public static class TestDatabaseServiceFactory implements DatabaseServiceFactory {
+        private static final String TAG = "[TestDatabaseServiceFactory]";
+
         @Override
         public DatabaseService createDatabaseService() {
+            System.out.println(TAG + ": creating test database service");
             return new TestDatabaseService();
         }
     }
 
-    public class TestDatabaseService implements DatabaseService {
+    public static class TestDatabaseService implements DatabaseService {
 
         @Override
         public DocumentReference createUserInDatabase(IUser user) {
@@ -115,10 +123,13 @@ public class TestInjection {
         }
     }
 
-    public class TestAuthService implements AuthService {
-
+    public static class TestAuthService implements AuthService {
+        private static final String TAG = "[TestAuthService]";
 
         List<AuthServiceObserver> authServiceObservers = new ArrayList<>();
+        public TestAuthService() {
+            System.out.println(TAG + ": created");
+        }
 
         @Override
         public void signIn(String email, String password) {

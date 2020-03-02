@@ -37,16 +37,21 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class LoginActivitySignUpEspressoTest extends TestInjection{
+public class LoginActivitySignUpEspressoTest {
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
 
+    private TestInjection testInjection;
+
     @Before
     public void setup() {
-        super.setup();
-        nextSignIn = true;
-        nextSuccessStatus = true;
+        testInjection = mActivityTestRule.testInjection;
+        testInjection.nextSignIn = true;
+        testInjection.nextSuccessStatus = true;
+        testInjection.setup();
+        FirebaseApplicationWWR.setAuthServiceFactory(testInjection.asf);
+        FirebaseApplicationWWR.setDatabaseServiceFactory(testInjection.dsf);
 //        mActivityTestRule.nextSignIn = true;
 //        mActivityTestRule.nextSuccessStatus = true;
 //        mActivityTestRule.asf = Mockito.mock(FirebaseAuthServiceFactory.class);
@@ -67,6 +72,7 @@ public class LoginActivitySignUpEspressoTest extends TestInjection{
 
     @Test
     public void loginActivitySignUpEspressoTest() {
+        setup();
         ViewInteraction button = onView(
                 allOf(withId(R.id.no_login_btn), isDisplayed()));
         button.check(matches(isDisplayed()));
