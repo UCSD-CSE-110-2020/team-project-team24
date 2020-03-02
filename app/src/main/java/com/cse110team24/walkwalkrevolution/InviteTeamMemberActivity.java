@@ -92,8 +92,11 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     private boolean invalidName(String toName) {
-        Toast.makeText(this, "please enter a name", Toast.LENGTH_SHORT).show();
-        return toName.isEmpty();
+        if (toName.isEmpty()) {
+            Toast.makeText(this, "please enter a name", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
     }
 
     private void getUIFields() {
@@ -112,7 +115,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     @Override
     public void onFailedInvitationSent(Task<?> task) {
-        handleInvitationResult("Error sending invitation");
+        handleInvitationResult("Error sending invitation. User may not exist");
     }
 
     private void handleInvitationResult(String message) {
