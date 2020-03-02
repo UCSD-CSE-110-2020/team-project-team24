@@ -1,4 +1,6 @@
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
 
 exports.sendInviteNotification = functions.firestore
     .document('users/{user}/invitations/{inviteId}')
