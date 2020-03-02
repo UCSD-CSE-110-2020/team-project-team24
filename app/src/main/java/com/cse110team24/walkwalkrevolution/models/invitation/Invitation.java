@@ -13,6 +13,8 @@ public class Invitation implements IInvitation {
     public static final String INVITATION_UID_SET_KEY = "invitationUid";
     public static final String INVITATION_FROM_SET_KEY = "from";
     public static final String INVITATION_TO_SET_KEY = "to";
+    public static final String USER_DATA_NAME = "name";
+    public static final String USER_DATA_EMAIL = "identifier";
     public static final String INVITATION_STATUS_SET_KEY = "status";
 
     private IUser mFrom;
@@ -78,9 +80,24 @@ public class Invitation implements IInvitation {
     public Map<String, Object> invitationData() {
         Map<String, Object> data = new HashMap<>();
         data.put(INVITATION_UID_SET_KEY, mUid);
-        data.put(INVITATION_FROM_SET_KEY, fromName());
-        data.put(INVITATION_TO_SET_KEY, toName());
+        data.put(INVITATION_FROM_SET_KEY, fromData());
+        data.put(INVITATION_TO_SET_KEY, toData());
         data.put(INVITATION_STATUS_SET_KEY, status().toString().toLowerCase(Locale.getDefault()));
+        return data;
+    }
+
+    private Map<String, Object> fromData() {
+        return userData(fromName(), fromEmail());
+    }
+
+    private Map<String, Object> toData() {
+        return userData(toName(), toEmail());
+    }
+
+    private Map<String, Object> userData(String displayName, String email) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(USER_DATA_NAME, displayName);
+        data.put(USER_DATA_EMAIL, Utils.cleanEmail(email));
         return data;
     }
 
