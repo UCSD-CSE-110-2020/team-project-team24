@@ -3,7 +3,7 @@ package com.cse110team24.walkwalkrevolution;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class InviteTeamMember extends Activity {
+public class InviteTeamMemberActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

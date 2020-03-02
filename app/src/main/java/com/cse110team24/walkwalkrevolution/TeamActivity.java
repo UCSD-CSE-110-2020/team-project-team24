@@ -1,13 +1,14 @@
 package com.cse110team24.walkwalkrevolution;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class TeamPage extends Activity {
+public class TeamActivity extends AppCompatActivity {
 
     private Button sendInviteBtn;
     private BottomNavigationView bottomNavigationView;
@@ -16,7 +17,7 @@ public class TeamPage extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_page);
+        setContentView(R.layout.activity_team);
 
 
         getUIFields();
@@ -55,7 +56,7 @@ public class TeamPage extends Activity {
         });
     }
     private void launchInviteRouteActivity() {
-        Intent intent = new Intent(this, InviteTeamMember.class);
+        Intent intent = new Intent(this, InviteTeamMemberActivity.class);
         startActivity(intent);
     }
 }
