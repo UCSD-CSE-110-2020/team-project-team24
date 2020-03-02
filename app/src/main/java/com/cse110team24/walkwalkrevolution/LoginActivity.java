@@ -35,6 +35,9 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     public static final int MAX_FEET = 8;
     public static final float MAX_INCHES = 11.99f;
     public static final float INVALID_VAL = -1.0f;
+    public static final String USER_NAME_KEY = "name";
+    public static final String EMAIL_KEY = "email";
+    public static final String UID_KEY = "uid";
 
     private String fitnessServiceKey = "GOOGLE_FIT";
 
@@ -340,6 +343,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     public void onUserSignedUp(IUser user) {
         if(mAuth.isUserSignedIn()) {
             user.updateDisplayName(username);
+            saveUserInfo(user);
             mDb.createUserInDatabase(user);
             mAuth.deregister(this);
             launchHome();
@@ -349,9 +353,18 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     @Override
     public void onUserSignedIn(IUser user) {
         if (validateFeet() && validateInches() && mAuth.isUserSignedIn()) {
+            saveUserInfo(user);
             mAuth.deregister(this);
             launchHome();
         }
+    }
+
+    private void saveUserInfo(IUser user) {
+        preferences.edit()
+                .putString(USER_NAME_KEY, user.getDisplayName())
+                .putString(EMAIL_KEY, user.getEmail())
+                .putString(UID_KEY, user.getUid())
+                .apply();
     }
 
     @Override
