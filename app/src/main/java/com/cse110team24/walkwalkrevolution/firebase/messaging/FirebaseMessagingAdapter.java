@@ -45,6 +45,7 @@ public class FirebaseMessagingAdapter implements MessagingService {
 
     @Override
     public void sendInvitation(Invitation invitation) {
+        db.createRootInvitationDocument(invitation);
         db.addInvitationForReceivingUser(invitation).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "sendInvitation: invitation sent successfully");

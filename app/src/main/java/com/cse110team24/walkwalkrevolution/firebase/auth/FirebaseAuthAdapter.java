@@ -4,8 +4,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapterBuilder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.Builder;
+import com.cse110team24.walkwalkrevolution.models.user.UserBuilder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
@@ -35,6 +37,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mUserAdapterBuilder = new Builder();
+        mUserAdapterBuilder.addFirebaseUser(mFirebaseUser);
         mAuth.addAuthStateListener(this);
         observers = new ArrayList<>();
     }

@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution.models.user;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,13 +42,28 @@ public class FirebaseUserAdapter implements IUser {
     }
 
     @Override
+    public void setDisplayName(String displayName) {
+        mDisplayName = displayName;
+    }
+
+    @Override
     public String getEmail() {
         return mEmail;
     }
 
     @Override
+    public void setEmail(String email) {
+        mEmail = email;
+    }
+
+    @Override
     public String getUid() {
         return mUid;
+    }
+
+    @Override
+    public void setUid(String uid) {
+        mUid = uid;
     }
 
     @Override
