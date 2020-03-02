@@ -48,6 +48,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                     if (task.isSuccessful()) {
                         Log.i(TAG, "onComplete: user sign-in successful");
                         buildUserEssentials(email);
+                        notifyObserversSignedIn(mUserAdapterBuilder.build());
                     } else {
                         Log.e(TAG, "signIn: user sign-in failed", task.getException());
                         detectErrorType(task);
@@ -65,6 +66,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
                     if (task.isSuccessful()) {
                         Log.i(TAG, "signUp: user creation successful");
                         buildUserEssentials(email);
+                        notifyObserversSignedUp(mUserAdapterBuilder.build());
                     } else {
                         Log.e(TAG, "signUp: user creation failed", task.getException());
                         detectErrorType(task);

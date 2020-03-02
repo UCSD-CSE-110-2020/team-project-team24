@@ -282,7 +282,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         return feet > 0 && inches > 0;
     }
 
-    private void checkLogin(SharedPreferences preferences) {
+    private void checkLogin(SharedPreferences preferences) { ;
         if (checkHeight(preferences) && mAuth.isUserSignedIn()) {
             Log.i(TAG, "checkHeight: valid height in preferences already exists (feet: " + feet + ", inches: " + inches + ").");
             launchHome();
@@ -341,13 +341,17 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         if(mAuth.isUserSignedIn()) {
             user.updateDisplayName(username);
             mDb.createUserInDatabase(user);
+            mAuth.deregister(this);
             launchHome();
         }
     }
 
     @Override
     public void onUserSignedIn(IUser user) {
-        checkLogin(preferences);
+        if (validateFeet() && validateInches() && mAuth.isUserSignedIn()) {
+            mAuth.deregister(this);
+            launchHome();
+        }
     }
 
     @Override
