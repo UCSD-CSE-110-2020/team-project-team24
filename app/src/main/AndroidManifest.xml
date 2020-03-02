@@ -19,6 +19,9 @@
             android:name=".RoutesActivity"
             android:label="@string/title_activity_routes"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ReceivedNotification"
+            android:label="@string/title_pending_invitations_page"/>
         <activity android:name=".MockActivity" />
         <activity android:name=".HomeActivity" />
         <activity

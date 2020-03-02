@@ -87,8 +87,7 @@
     <string name="text_no_teammates_in_team">You Have No Teammates :\'(</string>
 
     <!-- In activity_received_invitation.xml-->
-    <string name="title_received_notification">Received Invitations</string>
-    <string name="title_not_received_notification">Pending Invitation</string>
+    <string name="title_pending_invitations_page">Pending Invitations</string>
     <string name="btn_accept_team_invitation">Accept</string>
     <string name="btn_reject_team_invitation">Reject</string>
     <string name="text_invitation_exists">The following users have sent you a team invitation: </string>
