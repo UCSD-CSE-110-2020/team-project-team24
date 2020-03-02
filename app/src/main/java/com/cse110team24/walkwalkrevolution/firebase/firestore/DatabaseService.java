@@ -21,6 +21,7 @@ public interface DatabaseService {
     DocumentReference createRootInvitationDocument(Invitation invitation);
     List<Invitation> getUserPendingInvitations(IUser user);
     ITeam getUserTeam(IUser user);
+    Object getField(String path, String fieldKey);
     void addInvitationsSnapshotListener(IUser user);
     DocumentReference addUserMessagingRegistrationToken(IUser user, String token);
 }
