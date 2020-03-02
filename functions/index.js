@@ -4,7 +4,7 @@ admin.initializeApp();
 
 exports.sendInviteNotification = functions.firestore
     //.document('users/{user}/invitations/{inviteId}')
-    .document('invitations/{userInvite}/userInvitations/{inviteId}')
+    .document('invitations/{userInvite}/received/{inviteId}')
     .onCreate((snap, context) => {
         const document = snap.exists ? snap.data() : null;
 

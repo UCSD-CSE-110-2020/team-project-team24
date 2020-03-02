@@ -18,6 +18,7 @@ public interface DatabaseService {
     DocumentReference createTeamInDatabase(ITeam team);
     DocumentReference updateTeamMembers(ITeam team);
     Task<DocumentReference> addInvitationForReceivingUser(Invitation invitation);
+    Task<DocumentReference> addInvitationForSendingUser(Invitation invitation);
     DocumentReference createRootInvitationDocument(Invitation invitation);
     List<Invitation> getUserPendingInvitations(IUser user);
     ITeam getUserTeam(IUser user);

@@ -2,8 +2,6 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
@@ -14,11 +12,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -48,7 +42,8 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public static final String USERS_COLLECTION_KEY = "users";
     public static final String ROUTES_COLLECTION_KEY = "routes";
     public static final String INVITATIONS_ROOT_COLLECTION_KEY = "invitations";
-    public static final String USER_INVITATIONS_SUB_COLLECTION_KEY = "userInvitations";
+    public static final String USER_RECEIVED_INVITATIONS_COLLECTION = "received";
+    public static final String USER_SENT_INVITATIONS_COLLECTION = "sent";
     public static final String TEAMS_COLLECTION_KEY = "teams";
     public static final String USER_REGISTRATION_TOKENS_COLLECTION_KEY = "tokens";
     public static final String TOKEN_SET_KEY = "token";
@@ -125,10 +120,19 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     @Override
     public Task<DocumentReference> addInvitationForReceivingUser(Invitation invitation) {
         DocumentReference userSpecificInvitationsDoc = invitationsRootCollection.document(invitation.toDocumentKey() + "invitations");
-        CollectionReference receivedInvitations = userSpecificInvitationsDoc.collection(USER_INVITATIONS_SUB_COLLECTION_KEY);
+        CollectionReference receivedInvitations = userSpecificInvitationsDoc.collection(USER_RECEIVED_INVITATIONS_COLLECTION);
         DocumentReference invitationDoc = receivedInvitations.document();
         invitation.setUid(invitationDoc.getId());
         Task<DocumentReference> result = receivedInvitations.add(invitation.invitationData());
+        return result;
+    }
+
+    @Override
+    public Task<DocumentReference> addInvitationForSendingUser(Invitation invitation) {
+        DocumentReference userSpecificInvitationsDoc = invitationsRootCollection.document(invitation.fromDocumentKey() + "invitations");
+        CollectionReference sentInvitations = userSpecificInvitationsDoc.collection(USER_SENT_INVITATIONS_COLLECTION);
+        DocumentReference invitationDoc = sentInvitations.document(invitation.uid());
+        Task<DocumentReference> result = sentInvitations.add(invitation.invitationData());
         return result;
     }
 
@@ -167,7 +171,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public List<Invitation> getUserPendingInvitations(IUser user) {
         Task<QuerySnapshot> task  = usersCollection
                 .document(user.documentKey())
-                .collection(USER_INVITATIONS_SUB_COLLECTION_KEY)
+                .collection(USER_RECEIVED_INVITATIONS_COLLECTION)
                 .whereEqualTo(Invitation.INVITATION_STATUS_SET_KEY, InvitationStatus.PENDING
                                 .toString()
                                 .toLowerCase(Locale.getDefault()))
@@ -184,7 +188,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public void addInvitationsSnapshotListener(IUser user) {
         usersCollection
                 .document(user.documentKey())
-                .collection(USER_INVITATIONS_SUB_COLLECTION_KEY)
+                .collection(USER_RECEIVED_INVITATIONS_COLLECTION)
                 .addSnapshotListener((queryDocumentSnapshots, error) -> {
                     if (error != null) {
                         Log.e(TAG, "addInvitationsSnapshotListener: error adding snapshot", error);

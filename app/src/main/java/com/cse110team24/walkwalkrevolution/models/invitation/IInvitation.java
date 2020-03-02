@@ -11,6 +11,7 @@ public interface IInvitation {
     public String fromName();
     public String toName();
     public String toDocumentKey();
+    public String fromDocumentKey();
     public InvitationStatus status();
     public String uid();
     public void setUid(String uid);

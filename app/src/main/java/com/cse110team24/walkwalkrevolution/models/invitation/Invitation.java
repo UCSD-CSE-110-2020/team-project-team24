@@ -60,6 +60,11 @@ public class Invitation implements IInvitation {
     }
 
     @Override
+    public String fromDocumentKey() {
+        return mFrom.documentKey();
+    }
+
+    @Override
     public InvitationStatus status() {
         return mStatus;
     }
