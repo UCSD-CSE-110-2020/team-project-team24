@@ -7,11 +7,15 @@ import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
@@ -23,6 +27,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -44,14 +50,20 @@ public class LoginActivitySignUpEspressoTest {
 
     private TestInjection testInjection;
 
+    @Mock
+    AuthServiceFactory asf;
+
+    @InjectMocks
+    FirebaseApplicationWWR applicationWWR = InstrumentationRegistry.getInstrumentation().callApplicationOnCreate();
+
+    DatabaseServiceFactory dsf;
+
     @Before
     public void setup() {
         testInjection = mActivityTestRule.testInjection;
         testInjection.nextSignIn = true;
         testInjection.nextSuccessStatus = true;
-        testInjection.setup();
-        FirebaseApplicationWWR.setAuthServiceFactory(testInjection.asf);
-        FirebaseApplicationWWR.setDatabaseServiceFactory(testInjection.dsf);
+        Mockito.when(asf.createAuthService()).thenReturn(new TestInjection.TestAuthService());
 //        mActivityTestRule.nextSignIn = true;
 //        mActivityTestRule.nextSuccessStatus = true;
 //        mActivityTestRule.asf = Mockito.mock(FirebaseAuthServiceFactory.class);
@@ -73,6 +85,8 @@ public class LoginActivitySignUpEspressoTest {
     @Test
     public void loginActivitySignUpEspressoTest() {
         setup();
+        FirebaseApplicationWWR.setAuthServiceFactory(asf);
+        FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
         ViewInteraction button = onView(
                 allOf(withId(R.id.no_login_btn), isDisplayed()));
         button.check(matches(isDisplayed()));
