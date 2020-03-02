@@ -17,11 +17,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingAdapter;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
@@ -43,6 +49,12 @@ public class HomeActivity extends AppCompatActivity {
     public static final String HEIGHT_PREF = "height_preferences";
 
     private FitnessService fitnessService;
+
+    private AuthService authService;
+    private DatabaseService mDb;
+    private MessagingService messagingService;
+
+    private IUser mUser;
 
     private Handler handler = new Handler();
     private Runnable runUpdateSteps = new Runnable() {
@@ -84,9 +96,10 @@ public class HomeActivity extends AppCompatActivity {
         getUIFields();
         saveHeight();
         setFitnessService();
+        firebaseUserSetup();
+        subscribeToReceiveInvitations();
 
         setButtonOnClickListeners();
-
 
         handler.post(runUpdateSteps);
         Log.i(TAG, "onCreate: handler posted");
@@ -126,6 +139,23 @@ public class HomeActivity extends AppCompatActivity {
 
     private String getServiceKey() {
         return getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+    }
+
+    private void firebaseUserSetup() {
+        authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
+
+        SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
+        String email = preferences.getString(LoginActivity.EMAIL_KEY, null);
+        if (email != null) {
+            mUser = authService.getUser();
+            mUser.setEmail(email);
+        }
+    }
+
+    private void subscribeToReceiveInvitations() {
+        messagingService.subscribeToNotificationsTopic(mUser.documentKey() + "invitations");
     }
 
     private void setButtonOnClickListeners() {
