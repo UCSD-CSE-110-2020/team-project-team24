@@ -155,7 +155,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void subscribeToReceiveInvitations() {
-        messagingService.subscribeToNotificationsTopic(mUser.documentKey() + "invitations");
+        if (mUser != null) {
+            messagingService.subscribeToNotificationsTopic(mUser.documentKey() + "invitations");
+        }
     }
 
     private void setButtonOnClickListeners() {
