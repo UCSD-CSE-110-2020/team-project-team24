@@ -10,7 +10,7 @@ exports.sendInviteNotification = functions.firestore
         if (document) {
             var message = {
                 notification: {
-                    title: document.from + ' has invited you to join a team!',
+                    title: document.from.name + ' has invited you to join a team!',
                     body: 'Click to accept or decline this invitation'
                 },
                 topic: context.params.userInvite
