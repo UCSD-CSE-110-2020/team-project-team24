@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         getConfiguredFields();
         // TODO: replace it with checkLogin()
         checkLogin(preferences);
-        hideNameAndHeight();
+        hideName();
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
         signUpTvOnClickListener();
         withoutLoginOnClickListener();
@@ -177,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
             } else {
                 signUpTv.setText(R.string.sign_up_tv);
                 loginBtn.setText(R.string.login);
-                hideNameAndHeight();
+                hideName();
                 showEmailPassword();
                 loginMode = true;
             }
@@ -236,9 +236,8 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         nameEditText.setVisibility(View.INVISIBLE);
     }
 
-    private void hideNameAndHeight() {
+    private void hideName() {
         nameEditText.setVisibility(View.INVISIBLE);
-        hideHeight();
     }
 
     private void hideHeight() {
