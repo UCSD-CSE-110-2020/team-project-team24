@@ -344,7 +344,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
             user.updateDisplayName(username);
             saveUserInfo(user);
             mDb.createUserInDatabase(user);
-            mAuth.deregister(this);
             launchHome();
         }
     }
@@ -353,7 +352,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     public void onUserSignedIn(IUser user) {
         if (validateFeet() && validateInches() && mAuth.isUserSignedIn()) {
             saveUserInfo(user);
-            mAuth.deregister(this);
             launchHome();
         }
     }

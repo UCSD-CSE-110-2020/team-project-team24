@@ -132,12 +132,6 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
         if (isUserSignedIn()) {
             buildUserEssentials(mFirebaseUser.getEmail());
         }
-
-        if (signUp) {
-            notifyObserversSignedUp(mUserAdapterBuilder.build());
-        } else {
-            notifyObserversSignedIn(mUserAdapterBuilder.build());
-        }
     }
 
 
