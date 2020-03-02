@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     private static final String TAG = "LoginActivity";
     private static final String INVALID_GMAIL_TOAST = "Please enter a valid gmail address!";
     private static final String INVALID_PASSWORD_TOAST = "Please enter a password at least 6 characters long!";
+    private static final String INVALID_SIGN_IN = "Incorrect email or password";
 
     public static final int MAX_FEET = 8;
     public static final float MAX_INCHES = 11.99f;
@@ -138,6 +139,10 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     private void logIn() {
         progressBar.setVisibility(View.VISIBLE);
+        if (!validateSignInInfo()) {
+            progressBar.setVisibility(View.INVISIBLE);
+            return;
+        }
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mAuth.signIn(gmailAddress, password);
     }
@@ -153,6 +158,18 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
             Toast.makeText(this, "Please enter your name!", Toast.LENGTH_LONG).show();
             return false;
         } else if(!validateFeet() || !validateInches()) {
+            Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateSignInInfo() {
+        if(!checkForGmailAddress() || !checkValidPassword()) {
+            Toast.makeText(this, INVALID_SIGN_IN, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else if(!validateFeet() || !validateInches()) {
             Toast.makeText(this, "Please enter a valid height!", Toast.LENGTH_LONG).show();
             return false;
         }
