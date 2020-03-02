@@ -2,6 +2,7 @@ package com.cse110team24.walkwalkrevolution;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -26,6 +27,9 @@ import java.util.List;
 public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T> {
 
     protected AuthService.AuthError nextError = AuthService.AuthError.OTHER;
+    protected boolean nextSignIn = false;
+    protected boolean nextSuccessStatus = false;
+
     protected AuthService mAuth;
     protected DatabaseService mDb;
     protected MessagingService mMsg;
@@ -41,8 +45,6 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
         mAuth = new TestAuthService();
         mDb = Mockito.mock(DatabaseService.class);
         mMsg = Mockito.mock(MessagingService.class);
-
-
     }
 
     @Override
@@ -53,13 +55,20 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
 
     @Override
     protected void beforeActivityLaunched() {
+        super.beforeActivityLaunched();
         Mockito.when(asf.createAuthService()).thenReturn(mAuth);
         Mockito.when(dsf.createDatabaseService()).thenReturn(mDb);
         Mockito.when(msf.createMessagingService(getActivity(), mDb)).thenReturn(mMsg);
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
         FirebaseApplicationWWR.setAuthServiceFactory(asf);
         FirebaseApplicationWWR.setMessagingServiceFactory(msf);
-        super.beforeActivityLaunched();
+
+        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getTargetContext()
+                .getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE)
+                .edit()
+                .remove(HomeActivity.HEIGHT_FT_KEY)
+                .remove(HomeActivity.HEIGHT_IN_KEY)
+                .apply();
     }
 
     public class TestAuthService implements AuthService {
@@ -73,12 +82,21 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
 
         @Override
         public void signIn(String email, String password) {
-            notifyObserversSignedIn(signedInUser);
+
+            if (nextSuccessStatus) {
+                notifyObserversSignedIn(signedInUser);
+            } else {
+                notifyObserversSignInError(nextError);
+            }
         }
 
         @Override
         public void signUp(String email, String password, String displayName) {
-
+            if (nextSuccessStatus) {
+                notifyObserversSignedUp(signedInUser);
+            } else {
+                notifyObserversSignUpError(nextError);
+            }
         }
 
         @Override
@@ -93,7 +111,7 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
 
         @Override
         public boolean isUserSignedIn() {
-            return true;
+            return nextSignIn;
         }
 
         @Override
