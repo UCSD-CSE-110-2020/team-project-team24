@@ -2,18 +2,21 @@ package com.cse110team24.walkwalkrevolution.application;
 
 import android.app.Application;
 
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingServiceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseApplicationWWR extends Application implements ApplicationSubject {
 
-    private static FirebaseAuthServiceFactory authServiceFactory;
-    private static FirestoreDatabaseServiceFactory databaseServiceFactory;
-    private static FirebaseMessagingServiceFactory messagingServiceFactory;
+    private static AuthServiceFactory authServiceFactory;
+    private static DatabaseServiceFactory databaseServiceFactory;
+    private static MessagingServiceFactory messagingServiceFactory;
     List<ApplicationObserver> observers = new ArrayList<>();
 
     @Override
@@ -24,27 +27,27 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
         messagingServiceFactory = new FirebaseMessagingServiceFactory();
     }
 
-    public static FirebaseAuthServiceFactory getAuthServiceFactory() {
+    public static AuthServiceFactory getAuthServiceFactory() {
         return authServiceFactory;
     }
 
-    public static FirebaseAuthServiceFactory setAuthServiceFactory(FirebaseAuthServiceFactory asf) {
+    public static AuthServiceFactory setAuthServiceFactory(FirebaseAuthServiceFactory asf) {
         return authServiceFactory = asf;
     }
 
-    public static FirestoreDatabaseServiceFactory getDatabaseServiceFactory() {
+    public static DatabaseServiceFactory getDatabaseServiceFactory() {
         return databaseServiceFactory;
     }
 
-    public static FirestoreDatabaseServiceFactory setDatabaseServiceFactory(FirestoreDatabaseServiceFactory dsf) {
+    public static DatabaseServiceFactory setDatabaseServiceFactory(FirestoreDatabaseServiceFactory dsf) {
         return databaseServiceFactory = dsf;
     }
 
-    public static FirebaseMessagingServiceFactory getMessagingServiceFactory() {
+    public static MessagingServiceFactory getMessagingServiceFactory() {
         return messagingServiceFactory;
     }
 
-    public static FirebaseMessagingServiceFactory setMessagingServiceFactory(FirebaseMessagingServiceFactory msf) {
+    public static MessagingServiceFactory setMessagingServiceFactory(FirebaseMessagingServiceFactory msf) {
         return messagingServiceFactory = msf;
     }
 
