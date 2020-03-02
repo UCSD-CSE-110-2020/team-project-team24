@@ -7,6 +7,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -46,13 +47,12 @@ public class FirebaseMessagingAdapter implements MessagingService {
 
     @Override
     public void sendInvitation(Invitation invitation) {
-        mDb.createRootInvitationDocument(invitation);
         mDb.addInvitationForReceivingUser(invitation).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "sendInvitation: invitation sent successfully");
+                mDb.createRootInvitationDocument(invitation);
                 notifyObserversInvitationSent(invitation);
             } else {
-                Log.e(TAG, "sendInvitation: failed to send invitation", task.getException());
                 notifyObserversFailedInvitationSent(task);
             }
         });

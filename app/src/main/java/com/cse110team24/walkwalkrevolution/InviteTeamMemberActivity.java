@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +20,7 @@ import com.google.android.gms.tasks.Task;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver{
-
+    private static final String TAG = "InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;
     private Button btnSendInvite;
@@ -41,6 +42,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
         mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
+        messagingService.register(this);
         getUIFields();
         createFromUser();
         btnSendInvite.setOnClickListener(view -> {
@@ -51,7 +53,10 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private void sendInvite(View view) {
         createFromUser();
         createInvitation();
-        messagingService.sendInvitation(mInvitation);
+        if (mFrom != null) {
+            Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
+            messagingService.sendInvitation(mInvitation);
+        }
     }
 
     private void createFromUser() {
@@ -69,8 +74,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         String toDisplayName = editTeammateNameInvite.getText().toString();
         mInvitation = Invitation.builder()
                 .addFromUser(mFrom)
-                .addToDisplayName(toEmail)
-                .addToEmail(toDisplayName)
+                .addToDisplayName(toDisplayName)
+                .addToEmail(toEmail)
                 .build();
     }
 
