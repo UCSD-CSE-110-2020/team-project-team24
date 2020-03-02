@@ -200,7 +200,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
                 guestMode = true;
             } else {
                 withoutLoginBtn.setText(R.string.without_login);
-                hideHeight();
                 showEmailPassword();
                 loginBtn.setText(R.string.login);
                 loginBtn.setEnabled(true);
