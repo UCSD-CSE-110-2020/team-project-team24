@@ -5,6 +5,7 @@ import android.app.Application;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingServiceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
 
     private static AuthServiceFactory authServiceFactory;
     private static DatabaseServiceFactory databaseServiceFactory;
+    private static MessagingServiceFactory messagingServiceFactory;
     List<ApplicationObserver> observers = new ArrayList<>();
 
     @Override
@@ -20,6 +22,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
         super.onCreate();
         authServiceFactory = new AuthServiceFactory();
         databaseServiceFactory = new DatabaseServiceFactory();
+        messagingServiceFactory = new MessagingServiceFactory();
     }
 
     public static AuthServiceFactory getAuthServiceFactory() {
@@ -36,6 +39,14 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
 
     public static DatabaseServiceFactory setDatabaseServiceFactory(DatabaseServiceFactory dsf) {
         return databaseServiceFactory = dsf;
+    }
+
+    public static MessagingServiceFactory getMessagingServiceFactory() {
+        return messagingServiceFactory;
+    }
+
+    public static MessagingServiceFactory setMessagingServiceFactory(MessagingServiceFactory msf) {
+        return messagingServiceFactory = msf;
     }
 
     @Override
