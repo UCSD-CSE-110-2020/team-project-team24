@@ -131,7 +131,11 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     private void signUp() {
         progressBar.setVisibility(View.VISIBLE);
-        if (!validateSignUpInfo()) return;
+        if (!validateSignUpInfo()) {
+            progressBar.setVisibility(View.INVISIBLE);
+            Log.i(TAG, "Invalid sign up info entered");
+            return;
+        }
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mAuth.signUp(gmailAddress, password);
     }
@@ -141,6 +145,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         progressBar.setVisibility(View.VISIBLE);
         if (!validateSignInInfo()) {
             progressBar.setVisibility(View.INVISIBLE);
+            Log.i(TAG, "Invalid sign in info entered");
             return;
         }
         Log.i(TAG, "logIn: with email: " + gmailAddress);
