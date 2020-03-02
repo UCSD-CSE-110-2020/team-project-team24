@@ -20,7 +20,7 @@
     <EditText
         android:id="@+id/enter_gmail_address"
         android:layout_width="235dp"
-        android:layout_height="38dp"
+        android:layout_height="wrap_content"
         android:hint="@string/enter_gmail_address"
         android:importantForAutofill="no"
         android:inputType="textEmailAddress"
@@ -32,7 +32,7 @@
     <EditText
         android:id="@+id/enter_password"
         android:layout_width="235dp"
-        android:layout_height="38dp"
+        android:layout_height="wrap_content"
         android:hint="@string/enter_password"
         android:importantForAutofill="no"
         android:inputType="textPassword"
@@ -44,7 +44,7 @@
     <EditText
         android:id="@+id/enter_username"
         android:layout_width="235dp"
-        android:layout_height="38dp"
+        android:layout_height="wrap_content"
         android:hint="@string/enter_name"
         android:importantForAutofill="no"
         android:inputType="textPersonName"

@@ -1,13 +1,14 @@
 package com.cse110team24.walkwalkrevolution;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class TeamActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class TeamActivity extends AppCompatActivity {
 
     private Button sendInviteBtn;
     private BottomNavigationView bottomNavigationView;
