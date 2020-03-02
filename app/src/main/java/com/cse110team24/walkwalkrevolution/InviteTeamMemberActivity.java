@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
@@ -25,6 +26,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;
     private Button btnSendInvite;
+    private ProgressBar progressBar;
 
     private SharedPreferences preferences;
 
@@ -55,6 +57,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         createFromUser();
         mInvitation = createInvitation();
         if (mFrom != null && mInvitation != null) {
+            progressBar.setVisibility(View.VISIBLE);
             Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
             messagingService.sendInvitation(mInvitation);
         }
@@ -88,15 +91,23 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         editTeammateGmailInvite = findViewById(R.id.field_enter_member_email);
         editTeammateNameInvite = findViewById(R.id.field_enter_member_name);
         btnSendInvite = findViewById(R.id.btn_send_invite);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     @Override
     public void onInvitationSent(Invitation invitation) {
-        Toast.makeText(this, "Invitation sent", Toast.LENGTH_LONG).show();
+        handleInvitationResult("Invitation sent");
     }
 
     @Override
     public void onFailedInvitationSent(Task<?> task) {
+        handleInvitationResult("Error sending invitation");
+    }
 
+    private void handleInvitationResult(String message) {
+        progressBar.setVisibility(View.INVISIBLE);
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        editTeammateGmailInvite.setText("");
+        editTeammateNameInvite.setText("");
     }
 }
