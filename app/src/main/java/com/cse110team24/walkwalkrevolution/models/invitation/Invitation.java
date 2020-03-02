@@ -78,8 +78,8 @@ public class Invitation implements IInvitation {
     public Map<String, Object> invitationData() {
         Map<String, Object> data = new HashMap<>();
         data.put(INVITATION_UID_SET_KEY, mUid);
-        data.put(INVITATION_FROM_SET_KEY, Utils.cleanEmail(fromEmail()));
-        data.put(INVITATION_TO_SET_KEY, Utils.cleanEmail(toEmail()));
+        data.put(INVITATION_FROM_SET_KEY, fromName());
+        data.put(INVITATION_TO_SET_KEY, toName());
         data.put(INVITATION_STATUS_SET_KEY, status().toString().toLowerCase(Locale.getDefault()));
         return data;
     }

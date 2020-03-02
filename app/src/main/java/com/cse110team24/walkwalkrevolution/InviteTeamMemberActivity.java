@@ -54,7 +54,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     private void sendInvite(View view) {
-        createFromUser();
         mInvitation = createInvitation();
         if (mFrom != null && mInvitation != null) {
             progressBar.setVisibility(View.VISIBLE);
@@ -75,16 +74,26 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     private Invitation createInvitation() {
         String toEmail = editTeammateGmailInvite.getText().toString();
-        if(!Utils.isValidGmail(toEmail)) {
-            Toast.makeText(this, "Please enter a valid gmail address", Toast.LENGTH_SHORT).show();
-            return null;
-        }
         String toDisplayName = editTeammateNameInvite.getText().toString();
+        if (invalidEmail(toEmail) || invalidName(toDisplayName)) return null;
         return Invitation.builder()
                 .addFromUser(mFrom)
                 .addToDisplayName(toDisplayName)
                 .addToEmail(toEmail)
                 .build();
+    }
+
+    private boolean invalidEmail(String toEmail) {
+        if(!Utils.isValidGmail(toEmail)) {
+            Toast.makeText(this, "Please enter a valid gmail address", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean invalidName(String toName) {
+        Toast.makeText(this, "please enter a name", Toast.LENGTH_SHORT).show();
+        return toName.isEmpty();
     }
 
     private void getUIFields() {
