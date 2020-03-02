@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     private AuthService mAuth;
     private IUser mUser;
     private DatabaseService mDb;
+    private ProgressBar progressBar;
 
     private int feet;
     private float inches;
@@ -88,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         getConfiguredFields();
         // TODO: replace it with checkLogin()
         checkLogin(preferences);
-        hideNameAndHeight();
+        hideName();
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
         signUpTvOnClickListener();
         withoutLoginOnClickListener();
@@ -124,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     private void signUp() {
+        progressBar.setVisibility(View.VISIBLE);
         if (!validateSignUpInfo()) return;
         Log.i(TAG, "signUp: with email " + gmailAddress);
         mAuth.signUp(gmailAddress, password);
@@ -131,6 +134,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
 
     private void logIn() {
+        progressBar.setVisibility(View.VISIBLE);
         Log.i(TAG, "logIn: with email: " + gmailAddress);
         mAuth.signIn(gmailAddress, password);
     }
@@ -173,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
             } else {
                 signUpTv.setText(R.string.sign_up_tv);
                 loginBtn.setText(R.string.login);
-                hideNameAndHeight();
+                hideName();
                 showEmailPassword();
                 loginMode = true;
             }
@@ -196,7 +200,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
                 guestMode = true;
             } else {
                 withoutLoginBtn.setText(R.string.without_login);
-                hideHeight();
                 showEmailPassword();
                 loginBtn.setText(R.string.login);
                 loginBtn.setEnabled(true);
@@ -217,6 +220,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         loginBtn = findViewById(R.id.btn_height_finish);
         nameEditText = findViewById(R.id.enter_username);
         signUpTv = findViewById(R.id.sign_up_tv);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     private void showEmailPassword() {
@@ -231,9 +235,8 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         nameEditText.setVisibility(View.INVISIBLE);
     }
 
-    private void hideNameAndHeight() {
+    private void hideName() {
         nameEditText.setVisibility(View.INVISIBLE);
-        hideHeight();
     }
 
     private void hideHeight() {
@@ -279,7 +282,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         return feet > 0 && inches > 0;
     }
 
-    private void checkLogin(SharedPreferences preferences) {
+    private void checkLogin(SharedPreferences preferences) { ;
         if (checkHeight(preferences) && mAuth.isUserSignedIn()) {
             Log.i(TAG, "checkHeight: valid height in preferences already exists (feet: " + feet + ", inches: " + inches + ").");
             launchHome();
@@ -329,6 +332,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
                 errorString = "unknown error occurred";
                 break;
         }
+        Log.i(TAG, "onAuthSignInError: " + error.toString());
         Toast.makeText(this, errorString, Toast.LENGTH_LONG).show();
     }
 
@@ -337,13 +341,15 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         if(mAuth.isUserSignedIn()) {
             user.updateDisplayName(username);
             mDb.createUserInDatabase(user);
+            mAuth.deregister(this);
             launchHome();
         }
     }
 
     @Override
     public void onUserSignedIn(IUser user) {
-        if(mAuth.isUserSignedIn()) {
+        if (validateFeet() && validateInches() && mAuth.isUserSignedIn()) {
+            mAuth.deregister(this);
             launchHome();
         }
     }
@@ -362,6 +368,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
                 errorString = "unknown error occurred";
                 break;
         }
+        Log.i(TAG, "onAuthSignUpError: " + errorString);
         Toast.makeText(this, errorString, Toast.LENGTH_LONG).show();
     }
 }
