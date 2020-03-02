@@ -189,6 +189,9 @@ public class HomeActivity extends AppCompatActivity {
             if(menuItem.getItemId() == R.id.action_routes_list) {
                 launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
             }
+            if(menuItem.getItemId() == R.id.action_team) {
+                launchGoToTeamActivity( new Intent(this, TeamPage.class));
+            }
             return true;
         });
     }
@@ -217,6 +220,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void launchGoToRoutesActivity(Intent intent) {
+        startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+    public void launchGoToTeamActivity(Intent intent) {
         startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
