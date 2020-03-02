@@ -3,7 +3,8 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 exports.sendInviteNotification = functions.firestore
-    .document('users/{user}/invitations/{inviteId}')
+    //.document('users/{user}/invitations/{inviteId}')
+    .document('invitations/{userInvite}/userInvitations/{inviteId}')
     .onCreate((snap, context) => {
         const document = snap.exists ? snap.data() : null;
 
@@ -18,7 +19,7 @@ exports.sendInviteNotification = functions.firestore
 
             return admin.messaging().send(message)
                 .then((response) => {
-                    console.log('Successfully sent invite:', response);
+                    console.log('Successfully sent invite:', document);
                     return response;
                 })
                 .catch((error) => {
