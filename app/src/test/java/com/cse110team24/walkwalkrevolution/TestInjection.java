@@ -4,27 +4,27 @@ import android.app.Activity;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
 
 import org.mockito.Mockito;
 
 public class TestInjection {
-    protected AuthServiceFactory asf;
-    protected DatabaseServiceFactory dsf;
-    protected MessagingServiceFactory msf;
+    protected FirebaseAuthServiceFactory asf;
+    protected FirestoreDatabaseServiceFactory dsf;
+    protected FirebaseMessagingServiceFactory msf;
     protected AuthService mAuth;
     protected DatabaseService mDb;
     protected MessagingService mMsg;
     protected Activity activity;
 
     void setup() {
-        asf = Mockito.mock(AuthServiceFactory.class);
-        dsf = Mockito.mock(DatabaseServiceFactory.class);
-        msf = Mockito.mock(MessagingServiceFactory.class);
+        asf = Mockito.mock(FirebaseAuthServiceFactory.class);
+        dsf = Mockito.mock(FirestoreDatabaseServiceFactory.class);
+        msf = Mockito.mock(FirebaseMessagingServiceFactory.class);
         mAuth = Mockito.mock(AuthService.class);
         mDb = Mockito.mock(DatabaseService.class);
         mMsg = Mockito.mock(MessagingService.class);

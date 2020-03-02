@@ -7,15 +7,14 @@ import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -47,9 +46,9 @@ public class LoginActivitySignUpEspressoTest {
     public void setup() {
         mActivityTestRule.nextSignIn = true;
         mActivityTestRule.nextSuccessStatus = true;
-        mActivityTestRule.asf = Mockito.mock(AuthServiceFactory.class);
-        mActivityTestRule.dsf = Mockito.mock(DatabaseServiceFactory.class);
-        mActivityTestRule.msf = Mockito.mock(MessagingServiceFactory.class);
+        mActivityTestRule.asf = Mockito.mock(FirebaseAuthServiceFactory.class);
+        mActivityTestRule.dsf = Mockito.mock(FirestoreDatabaseServiceFactory.class);
+        mActivityTestRule.msf = Mockito.mock(FirebaseMessagingServiceFactory.class);
         mActivityTestRule.mDb = Mockito.mock(DatabaseService.class);
         mActivityTestRule.mMsg = Mockito.mock(MessagingService.class);
 

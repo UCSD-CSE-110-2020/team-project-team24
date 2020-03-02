@@ -1,25 +1,20 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +28,9 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
     protected AuthService mAuth;
     protected DatabaseService mDb;
     protected MessagingService mMsg;
-    protected DatabaseServiceFactory dsf;
-    protected MessagingServiceFactory msf;
-    protected AuthServiceFactory asf;
+    protected FirestoreDatabaseServiceFactory dsf;
+    protected FirebaseMessagingServiceFactory msf;
+    protected FirebaseAuthServiceFactory asf;
 
     MockActivityTestRule(Class<T> activityClass) {
         super(activityClass);
