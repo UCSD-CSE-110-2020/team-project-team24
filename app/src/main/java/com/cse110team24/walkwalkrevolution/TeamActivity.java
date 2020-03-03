@@ -56,13 +56,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         getUIFields();
         setButtonClickListeners();
         seeInvitationsBtn.setOnClickListener(view -> {
-            launchInvitationsActivity(view);
         });
-    }
-
-    private void launchInvitationsActivity(View view) {
-        Intent intent = new Intent(this, InvitationsActivity.class);
-        startActivity(intent);
     }
 
     private void getTeamUid() {
@@ -120,17 +114,6 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     // TODO: 3/2/20 update UI now that team is retrieved
     @Override
     public void onTeamRetrieved(ITeam team) {
-        mTeam = team;
-        List<IUser> users = mTeam.getTeam();
-        TextView noTeamMessage = findViewById(R.id.text_no_teammates);
-        if(users.size() == 1) {
-            noTeamMessage.setVisibility(View.VISIBLE);
-        }else {
-            noTeamMessage.setVisibility(View.GONE);
-        }
-        ListView teammatesList = findViewById(R.id.list_members_in_team);
-        ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
-        teammatesList.setAdapter(listviewAdapter);
     }
 
     /*private void fakeTesting() {
