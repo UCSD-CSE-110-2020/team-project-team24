@@ -33,6 +33,7 @@ import java.util.Map;
 public class TeamActivity extends AppCompatActivity implements DatabaseServiceObserver {
     private static final String TAG = "TeamActivity";
     private Button sendInviteBtn;
+    private Button seeInvitationsBtn;
     private BottomNavigationView bottomNavigationView;
     // TODO: 3/3/20 change to TeamsDatabaseService
     private DatabaseService mDb;
@@ -53,7 +54,14 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
         getTeamUid();
         getUIFields();
         setButtonClickListeners();
-        //fakeTesting();
+        seeInvitationsBtn.setOnClickListener(view -> {
+            launchInvitationsActivity(view);
+        });
+    }
+
+    private void launchInvitationsActivity(View view) {
+        Intent intent = new Intent(this, InvitationsActivity.class);
+        startActivity(intent);
     }
 
     private void getTeamUid() {
@@ -74,7 +82,7 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     private void getUIFields() {
         sendInviteBtn = findViewById(R.id.btn_invite_team_members);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
+        seeInvitationsBtn = findViewById(R.id.btn_pending_invites);
     }
     private void setButtonClickListeners() {
         setInviteButtonOnClick();
