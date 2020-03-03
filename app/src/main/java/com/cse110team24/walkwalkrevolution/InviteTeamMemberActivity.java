@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
@@ -29,8 +30,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver {
+public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, DatabaseServiceObserver {
     private static final String TAG = "InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;
@@ -45,6 +47,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     private IUser mFrom;
     private Invitation mInvitation;
+    private String mTeamUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +55,15 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         setContentView(R.layout.activity_team_invite_member);
         preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+
         mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb.register(this);
+
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
         messagingService.register(this);
         getUIFields();
         createFromUser();
+        mDb.getUserData(mFrom);
         btnSendInvite.setOnClickListener(view -> {
             sendInvite(view);
         });
@@ -73,7 +80,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     private void createTeamIfNull() {
-        if (mFrom.teamUid() == null) {
+        if (mTeamUid == null) {
             ITeam team = new TeamAdapter(new ArrayList<>());
             team.addMember(mFrom);
             DocumentReference teamRef = mDb.createTeamInDatabase(team);
@@ -140,5 +147,23 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private void handleInvitationResult(String message) {
         progressBar.setVisibility(View.INVISIBLE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onTeamRetrieved(List<IUser> team) {
+
+    }
+
+    @Override
+    public void onFieldRetrieved(Object field) {
+
+    }
+
+    @Override
+    public void onUserData(Map<String, Object> userDataMap) {
+        if (userDataMap != null) {
+            mTeamUid = (String) userDataMap.get("teamUid");
+            createTeamIfNull();
+        }
     }
 }
