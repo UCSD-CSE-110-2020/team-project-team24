@@ -29,10 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// TODO: 3/3/20 change to implement TeamsDatabaseServiceObserver
 public class TeamActivity extends AppCompatActivity implements DatabaseServiceObserver {
     private static final String TAG = "TeamActivity";
     private Button sendInviteBtn;
     private BottomNavigationView bottomNavigationView;
+    // TODO: 3/3/20 change to TeamsDatabaseService
     private DatabaseService mDb;
 
     SharedPreferences mPreferences;

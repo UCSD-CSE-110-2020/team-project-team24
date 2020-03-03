@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 
 import java.util.List;
 
+// TODO: 3/3/20 split this interface into the three specialized interface services 
 public interface DatabaseService extends DatabaseServiceSubject {
 
     void createUserInDatabase(IUser user);

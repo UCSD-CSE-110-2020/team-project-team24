@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// TODO: 3/3/20 change to implement TeamsDatabaseServiceObserver and UsersDatabaseServiceObserver
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, DatabaseServiceObserver {
     private static final String TAG = "InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
@@ -39,6 +40,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private SharedPreferences preferences;
 
     private AuthService authService;
+
+    // TODO: 3/3/20 change to TeamsDatabaseService and UsersDatabaseService
     private DatabaseService mDb;
     private MessagingService messagingService;
 

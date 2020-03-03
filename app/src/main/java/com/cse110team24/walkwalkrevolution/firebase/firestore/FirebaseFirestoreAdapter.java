@@ -42,6 +42,7 @@ import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapte
  *          set team's new UID as teamUID for user
  *
  */
+// TODO: 3/3/20 split this adapter into three specialized service adapters
 public class FirebaseFirestoreAdapter implements DatabaseService {
     private static final String TAG = "FirebaseFirestoreAdapter";
     public static final String USERS_COLLECTION_KEY = "users";
