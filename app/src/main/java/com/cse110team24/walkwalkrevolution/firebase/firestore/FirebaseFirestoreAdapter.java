@@ -2,6 +2,9 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore;
 
 import android.util.Log;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
@@ -186,20 +189,34 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public List<Invitation> getUserPendingInvitations(IUser user) {
-        Task<QuerySnapshot> task  = usersCollection
-                .document(user.documentKey())
+    public void getUserPendingInvitations(IUser user) {
+        invitationsRootCollection
+                .document(user.documentKey() + "invitations")
                 .collection(USER_RECEIVED_INVITATIONS_COLLECTION)
                 .whereEqualTo(Invitation.INVITATION_STATUS_SET_KEY, InvitationStatus.PENDING
                                 .toString()
                                 .toLowerCase(Locale.getDefault()))
-                .get();
-        List<DocumentSnapshot> invitationDocuments = task.getResult().getDocuments();
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Log.i(TAG, "getUserPendingInvitations: success retrieving invitations");
+                        List<Invitation> invitations = createInvitationsListFromDoc(user, task.getResult().getDocuments());
+                        notifyObserversPendingInvitations(invitations);
+                    } else {
+                        Log.e(TAG, "getUserPendingInvitations: error getting pending invitations", task.getException());
+                    }
+                });
+    }
+
+    private List<Invitation> createInvitationsListFromDoc(IUser user, List<DocumentSnapshot> invitationDocuments) {
         List<Invitation> invitations = new ArrayList<>(invitationDocuments.size());
-        invitationDocuments.forEach(document -> {
-            invitations.add(buildInvitation(document, user));
-        });
+        invitationDocuments.forEach(document -> invitations.add(buildInvitation(document, user)));
         return invitations;
+    }
+
+    @Override
+    public void notifyObserversPendingInvitations(List<Invitation> invitations) {
+        observers.forEach(observer -> observer.onUserPendingInvitations(invitations));
     }
 
     @Override
@@ -224,7 +241,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     private Invitation buildInvitation(DocumentSnapshot invitationDocument, IUser user) {
-        IUser from = buildUserFromInvitation(invitationDocument, Invitation.INVITATION_FROM_SET_KEY);
+        IUser from = buildUserFromInvitation(invitationDocument);
         String uid = invitationDocument.getString(Invitation.INVITATION_UID_SET_KEY);
         return Invitation.builder()
                 .addFromUser(from)
@@ -234,11 +251,11 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                 .build();
     }
 
-    private IUser buildUserFromInvitation(DocumentSnapshot invitationDocument, String documentKey) {
-        String[] fromUserInfo = invitationDocument.getString(documentKey).split("@");
+    private IUser buildUserFromInvitation(DocumentSnapshot invitationDocument) {
+        Map<String, Object> fromData =(Map<String, Object>) invitationDocument.get(Invitation.INVITATION_FROM_SET_KEY);
         return FirebaseUserAdapter.builder()
-                    .addDisplayName(fromUserInfo[0].trim())
-                    .addEmail(fromUserInfo[1].trim())
+                    .addDisplayName((String) fromData.get("name"))
+                    .addEmail((String) fromData.get("identifier"))
                     .build();
     }
 

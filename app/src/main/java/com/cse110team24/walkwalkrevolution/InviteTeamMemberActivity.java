@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, DatabaseServiceObserver {
@@ -171,5 +172,10 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             mTeamUid = (String) userDataMap.get("teamUid");
             createTeamIfNull();
         }
+    }
+
+    @Override
+    public void onUserPendingInvitations(List<Invitation> invitations) {
+
     }
 }
