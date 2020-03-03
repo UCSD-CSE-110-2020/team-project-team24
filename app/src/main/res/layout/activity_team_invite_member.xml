@@ -4,21 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <!-- tools:context=".InviteTeamMemberActivity"> -->
-
-    <TextView
-        android:id="@+id/title_add_team_member"
-        android:layout_width="match_parent"
-        android:layout_height="125sp"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:text="@string/title_add_team_member"
-        android:textSize="45sp"
-        android:typeface="monospace"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:orientation="vertical"
+    tools:context=".InviteTeamMemberActivity">
 
     <EditText
         android:id="@+id/field_enter_member_name"
@@ -31,7 +18,7 @@
         app:layout_constraintBottom_toTopOf="@id/title_add_team_name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_add_team_member" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title_add_team_name"
@@ -87,5 +74,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/title_add_team_email" />
 </androidx.constraintlayout.widget.ConstraintLayout>
