@@ -10,23 +10,17 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
-import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Shadows;
-
 import org.robolectric.shadows.ShadowToast;
-
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
-public class LoginActivityUnitTest extends TestInjection implements AuthServiceObserver {
+public class LoginActivityUnitTest extends TestInjection {
     private LoginActivity testActivity;
     private Button finishBtn;
     private Button signInAsGuestBtn;
@@ -36,22 +30,19 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     private EditText gmail;
     private EditText username;
     private EditText password;
-    private boolean userCollisionFlag = false;
 
     private static final String TOAST_MSG_NO_EMAIL = "Please enter an email!";
     private static final String TOAST_MSG_NO_PASSWORD = "Please enter your password!";
     private static final String TOAST_MSG_NOT_GMAIL = "Please enter a valid gmail address!";
     private static final String TOAST_MSG_NO_USERNAME = "Please enter your name!";
-    private static final String TOAST_MSG_USER_COLLISION = "user already exists!";
+    private static final String TOAST_MSG_NO_HEIGHT = "Please enter a valid height!";
 
     @Before
     public void setup() {
         super.setup();
-        mAuth.register(this);
 
         FirebaseApplicationWWR.setAuthServiceFactory(asf);
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
-        mAuth.register(this);
 
         ActivityScenario<LoginActivity> scenario = ActivityScenario.launch(LoginActivity.class);
         scenario.onActivity(activity -> {
@@ -68,10 +59,11 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     }
 
     @Test
-    public void testFinishBtnEnabled() {
-        feetEt.setText("5");
-        inchesEt.setText("3");
-        assertTrue(finishBtn.isEnabled());
+    public void loginWithoutHeight() {
+        gmail.setText("amber@gmail.com");
+        password.setText("testpw");
+        finishBtn.performClick();
+        assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_NO_HEIGHT);
     }
 
     @Test
@@ -89,6 +81,17 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         gmail.setText("amber@gmail.com");
         finishBtn.performClick();
         assertEquals(ShadowToast.getTextOfLatestToast(),TOAST_MSG_NO_PASSWORD);
+    }
+
+    @Test
+    public void loginWithoutGmailAddress() {
+        feetEt.setText("5");
+        inchesEt.setText("3");
+        gmail.setText("amber@yahoo.com");
+        password.setText("testpw");
+        finishBtn.performClick();
+        when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.DOES_NOT_EXIST);
+        when(mAuth.isUserSignedIn()).thenReturn(false);
     }
 
     @Test
@@ -117,7 +120,6 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     @Test
     public void userCollision() {
         mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
-        userCollisionFlag = true;
         signUpTV.performClick();
         feetEt.setText("5");
         inchesEt.setText("3");
@@ -126,6 +128,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         username.setText("Cheery");
         finishBtn.performClick();
         when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.USER_COLLISION);
+        when(mAuth.isUserSignedIn()).thenReturn(false);
     }
 
     @Test
@@ -138,47 +141,38 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         assertEquals(HomeActivity.class.getCanonicalName(), intent.getComponent().getClassName());
     }
 
-//    @Test
-//    public void errorHandling(AuthService.AuthError error) {
-//        if (userCollisionFlag) {
-//            assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_USER_COLLISION);
-//            userCollisionFlag = false;
-//        }
-//    }
-
-//    @Test
-//    public void userNotExists() {
-//        feetEt.setText("5");
-//        inchesEt.setText("3");
-//        gmail.setText("amber@gmail.com");
-//        password.setText("testpw");
-//        username.setText("Cheery");
-//        finishBtn.performClick();
-//    }
-
-    @Override
-    public void onUserSignedIn(IUser user) {
-
+    @Test
+    public void invalidPassword() {
+        mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
+        feetEt.setText("5");
+        inchesEt.setText("3");
+        gmail.setText("amber@gmail.com");
+        password.setText("password");
+        finishBtn.performClick();
+        when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.INVALID_PASSWORD);
+        when(mAuth.isUserSignedIn()).thenReturn(false);
     }
 
-    @Override
-    public void onUserSignedUp(IUser user) {
-        if(mAuth.isUserSignedIn()) {
-            user.updateDisplayName(username.getText().toString());
-            mDb.createUserInDatabase(user);
-        }
+    @Test
+    public void loginSuccess() {
+        mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
+        feetEt.setText("5");
+        inchesEt.setText("3");
+        gmail.setText("amber@gmail.com");
+        password.setText("testpw");
+        finishBtn.performClick();
+        when(mAuth.isUserSignedIn()).thenReturn(true);
     }
 
-    @Override
-    public void onAuthSignInError(AuthService.AuthError error) {
-
-    }
-
-    @Override
-    public void onAuthSignUpError(AuthService.AuthError error) {
-        if (userCollisionFlag) {
-            assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_USER_COLLISION);
-            userCollisionFlag = false;
-        }
+    @Test
+    public void signUpSuccess() {
+        signUpTV.performClick();
+        feetEt.setText("5");
+        inchesEt.setText("3");
+        gmail.setText("amber@gmail.com");
+        password.setText("testpw");
+        username.setText("Cheery");
+        finishBtn.performClick();
+        when(mAuth.isUserSignedIn()).thenReturn(true);
     }
 }
