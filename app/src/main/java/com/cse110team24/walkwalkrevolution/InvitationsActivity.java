@@ -73,9 +73,6 @@ public class InvitationsActivity extends AppCompatActivity implements DatabaseSe
     public void onFieldRetrieved(Object field) {
     }
 
-    @Override
-    public void onUserData(Map<String, Object> userDataMap) {
-    }
     /* ---------------------- will be removed when changed to specialized service interfaces ------------------------ */
 
     // TODO: 3/3/20 display invitations and allow each one to be clickable

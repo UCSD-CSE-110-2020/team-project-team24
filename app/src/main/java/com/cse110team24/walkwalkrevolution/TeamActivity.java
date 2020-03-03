@@ -153,10 +153,6 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     }
 
     @Override
-    public void onUserData(Map<String, Object> userDataMap) {
-    }
-
-    @Override
     public void onUserPendingInvitations(List<Invitation> invitations) {
     }
 

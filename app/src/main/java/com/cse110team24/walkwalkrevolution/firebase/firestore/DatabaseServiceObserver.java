@@ -11,6 +11,5 @@ import java.util.Observer;
 public interface DatabaseServiceObserver {
     void onTeamRetrieved(ITeam team);
     void onFieldRetrieved(Object field);
-    void onUserData(Map<String, Object> userDataMap);
     void onUserPendingInvitations(List<Invitation> invitations);
 }

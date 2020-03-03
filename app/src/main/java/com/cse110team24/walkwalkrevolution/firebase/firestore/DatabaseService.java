@@ -13,11 +13,7 @@ import java.util.List;
 
 // TODO: 3/3/20 split this interface into the three specialized interface services 
 public interface DatabaseService extends DatabaseServiceSubject {
-
-    void createUserInDatabase(IUser user);
-    void setUserTeam(IUser user, String teamUid);
     String createTeamInDatabase(IUser user);
-
     DocumentReference updateTeamMembers(ITeam team);
 
     Task<?> addInvitationForReceivingUser(Invitation invitation);
@@ -26,9 +22,6 @@ public interface DatabaseService extends DatabaseServiceSubject {
 
     void getUserTeam(String teamUid);
     void addInvitationsSnapshotListener(IUser user);
-    DocumentReference addUserMessagingRegistrationToken(IUser user, String token);
-
-    void getUserData(IUser user);
 
     enum Service {
         USERS,
