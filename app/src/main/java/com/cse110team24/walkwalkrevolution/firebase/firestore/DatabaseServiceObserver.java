@@ -10,5 +10,4 @@ import java.util.Observer;
 
 public interface DatabaseServiceObserver {
     void onFieldRetrieved(Object field);
-    void onUserPendingInvitations(List<Invitation> invitations);
 }

@@ -12,13 +12,7 @@ import org.w3c.dom.Document;
 import java.util.List;
 
 // TODO: 3/3/20 split this interface into the three specialized interface services 
-public interface DatabaseService extends DatabaseServiceSubject {
-
-    Task<?> addInvitationForReceivingUser(Invitation invitation);
-    Task<?> addInvitationForSendingUser(Invitation invitation);
-    void getUserPendingInvitations(IUser user);
-
-    void addInvitationsSnapshotListener(IUser user);
+public interface DatabaseService{
 
     enum Service {
         USERS,
