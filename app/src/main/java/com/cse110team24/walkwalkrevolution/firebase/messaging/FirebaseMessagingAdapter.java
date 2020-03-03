@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.google.android.gms.tasks.Task;
@@ -48,10 +49,11 @@ public class FirebaseMessagingAdapter implements MessagingService {
 
     @Override
     public void sendInvitation(Invitation invitation) {
-        mDb.addInvitationForReceivingUser(invitation).addOnCompleteListener(task -> {
+        InvitationsDatabaseService db = (InvitationsDatabaseService) mDb;
+        db.addInvitationForReceivingUser(invitation).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "sendInvitation: invitation sent successfully");
-                mDb.addInvitationForSendingUser(invitation);
+                db.addInvitationForSendingUser(invitation);
                 notifyObserversInvitationSent(invitation);
             } else {
                 Log.e(TAG, "sendInvitation: error sending invitation", task.getException());
