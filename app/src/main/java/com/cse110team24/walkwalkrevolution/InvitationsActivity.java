@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -48,6 +49,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private ListView mInvitationsListView;
     private TextView mNoInvitationsTextView;
 
+    private Invitation mCurrentSelectedInvitation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,14 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         mAdapter = new InvitationsListViewAdapter(this, mInvitations);
         mInvitationsListView.setAdapter(mAdapter);
         mNoInvitationsTextView = findViewById(R.id.tv_no_invitations_prompt);
+        mInvitationsListView.setOnItemClickListener((parent, view, position, id) -> {
+            selectInvitation(parent, view, position, id);
+        });
+    }
+
+    private void selectInvitation(AdapterView<?> parent, View view, int position, long id) {
+        mCurrentSelectedInvitation = (Invitation) mAdapter.getItem(position);
+        Log.d(TAG, "selectInvitation: item selected: " + mCurrentSelectedInvitation.fromName());
     }
 
     private void setUpServices() {
