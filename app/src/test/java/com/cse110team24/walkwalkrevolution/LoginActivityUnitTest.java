@@ -1,11 +1,13 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
@@ -16,17 +18,19 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowToast;
 
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static net.bytebuddy.matcher.ElementMatchers.is;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityUnitTest extends TestInjection implements AuthServiceObserver {
-    private static final String TAG = "LoginActivityUnitTest";
     private LoginActivity testActivity;
     private Button finishBtn;
+    private Button signInAsGuestBtn;
     private TextView signUpTV;
     private EditText feetEt;
     private EditText inchesEt;
@@ -57,6 +61,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
             password = testActivity.findViewById(R.id.enter_password);
             signUpTV = testActivity.findViewById(R.id.sign_up_tv);
             username = testActivity.findViewById(R.id.enter_username);
+            signInAsGuestBtn = testActivity.findViewById(R.id.no_login_btn);
         });
     }
 
@@ -119,7 +124,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     }
 
     @Test
-    public void userCollision() {
+    public void userCollision() throws InterruptedException {
         mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
         userCollisionFlag = true;
         signUpTV.performClick();
@@ -129,6 +134,18 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         password.setText("testpw");
         username.setText("Cheery");
         finishBtn.performClick();
+
+        //assertTrue(userCollisionFlag == false);
+    }
+
+    @Test
+    public void signInAsGuest() {
+        signInAsGuestBtn.performClick();
+        feetEt.setText("5");
+        inchesEt.setText("3");
+        finishBtn.performClick();
+        Intent intent = Shadows.shadowOf(testActivity).peekNextStartedActivity();
+        assertEquals(HomeActivity.class.getCanonicalName(), intent.getComponent().getClassName());
     }
 
 
