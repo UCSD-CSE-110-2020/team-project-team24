@@ -26,6 +26,7 @@ import org.robolectric.shadows.ShadowToast;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -100,12 +101,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         gmail.setText("amber@yahoo.com");
         password.setText("testpw");
         finishBtn.performClick();
-//        Intent intent = Shadows.shadowOf(testActivity).peekNextStartedActivity();
-//        assertEquals(HomeActivity.class.getCanonicalName(), intent.getComponent().getClassName());
-//
-        //TODO !!
-
-
+        when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.DOES_NOT_EXIST);
     }
 
     @Test
