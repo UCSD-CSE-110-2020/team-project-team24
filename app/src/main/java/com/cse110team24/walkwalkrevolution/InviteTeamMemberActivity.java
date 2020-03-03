@@ -16,6 +16,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseSeviceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
@@ -34,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 // TODO: 3/3/20 change to implement TeamsDatabaseServiceObserver and UsersDatabaseServiceObserver
-public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, TeamsDatabaseServiceObserver, UsersDatabaseSeviceObserver {
+public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseSeviceObserver {
     private static final String TAG = "InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;
@@ -47,11 +48,13 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     // TODO: 3/3/20 change to TeamsDatabaseService and UsersDatabaseService
     private UsersDatabaseService mUsersDB;
+    private InvitationsDatabaseService mInvitationsDB;
     private TeamDatabaseService mTeamsDB;
     private MessagingService messagingService;
 
     private IUser mFrom;
     private Invitation mInvitation;
+
     private String mTeamUid;
 
     @Override
@@ -61,10 +64,9 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
 
-
-
         getUIFields();
         createFromUser();
+        setUpServices();
         btnSendInvite.setOnClickListener(view -> {
             sendInvite(view);
         });
@@ -74,10 +76,10 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         mUsersDB = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         mUsersDB.register(this);
 
+        mInvitationsDB = (InvitationsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
         mTeamsDB = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
-        mTeamsDB.register(this);
 
-        messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mUsersDB);
+        messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mInvitationsDB);
         messagingService.register(this);
     }
 
@@ -170,11 +172,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private void handleInvitationResult(String message) {
         progressBar.setVisibility(View.INVISIBLE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onTeamRetrieved(ITeam team) {
-
     }
 
     @Override
