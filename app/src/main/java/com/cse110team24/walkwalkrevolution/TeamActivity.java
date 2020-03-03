@@ -87,4 +87,9 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     public void onTeamRetrieved(List<IUser> team) {
 
     }
+
+    @Override
+    public void onFieldRetrieved(Object object) {
+        
+    }
 }

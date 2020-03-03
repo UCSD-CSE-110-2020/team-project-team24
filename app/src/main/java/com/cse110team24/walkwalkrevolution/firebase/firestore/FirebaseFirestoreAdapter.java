@@ -158,15 +158,13 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public Object getField(String path, String fieldKey) {
+    public Task<?> getField(String path, String fieldKey) {
         DocumentReference documentReference = firebaseFirestore.document(path);
         Task<DocumentSnapshot> task = documentReference.get();
-        DocumentSnapshot result = task.getResult();
-        if (task.isSuccessful() && result != null) {
-            return result.getData().get(fieldKey);
-        } else {
-            return null;
+        if (task.isSuccessful() && task.getResult() != null && task.getResult().getData() != null) {
+            notifyObserversFieldRetrieved(task.getResult().getData().get(fieldKey));
         }
+        return task;
     }
 
     @Override
@@ -257,6 +255,13 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public void notifyObserversTeamRetrieved(List<IUser> team) {
         observers.forEach(observer -> {
             observer.onTeamRetrieved(team);
+        });
+    }
+
+    @Override
+    public void notifyObserversFieldRetrieved(Object field) {
+        observers.forEach(observer -> {
+            observer.onFieldRetrieved(field);
         });
     }
 

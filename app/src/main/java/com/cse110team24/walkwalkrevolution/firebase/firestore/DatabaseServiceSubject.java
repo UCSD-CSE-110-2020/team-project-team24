@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DatabaseServiceSubject extends Subject<DatabaseServiceObserver> {
     void notifyObserversTeamRetrieved(List<IUser> team);
+    void notifyObserversFieldRetrieved(Object field);
 }

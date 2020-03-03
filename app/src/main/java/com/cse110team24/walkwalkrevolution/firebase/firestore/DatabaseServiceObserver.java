@@ -7,4 +7,5 @@ import java.util.Observer;
 
 public interface DatabaseServiceObserver {
     void onTeamRetrieved(List<IUser> team);
+    void onFieldRetrieved(Object field);
 }
