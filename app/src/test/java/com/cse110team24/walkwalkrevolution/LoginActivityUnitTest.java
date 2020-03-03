@@ -170,6 +170,17 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.INVALID_PASSWORD);
     }
 
+    @Test
+    public void loginSuccess() {
+        mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
+        feetEt.setText("5");
+        inchesEt.setText("3");
+        gmail.setText("amber@gmail.com");
+        password.setText("testpw");
+        finishBtn.performClick();
+        when(mAuth.isUserSignedIn()).thenReturn(true);
+    }
+
 
     @Override
     public void onUserSignedIn(IUser user) {
