@@ -60,7 +60,7 @@ public class FirebaseMessagingAdapter implements MessagingService {
         });
     }
 
-    // TODO: 3/3/20 change status 
+    // TODO: 3/3/20 change status
     @Override
     public void updateInvitationStatus(Invitation invitation, InvitationStatus status) {
 
