@@ -148,7 +148,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         ListView teammatesList = (ListView) findViewById(R.id.list_members_in_team);
         teammatesList.setAdapter(listviewAdapter);
     }*/
-    
+
     private void showNoTeamToast() {
         Toast.makeText(this, "You don't have a team -^-. Try sending an invitation!", Toast.LENGTH_LONG).show();
     }

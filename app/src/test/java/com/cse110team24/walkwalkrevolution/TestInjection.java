@@ -30,7 +30,7 @@ public class TestInjection {
         mMsg = Mockito.mock(MessagingService.class);
 
         Mockito.when(asf.createAuthService()).thenReturn(mAuth);
-        Mockito.when(dsf.createDatabaseService()).thenReturn(mDb);
+        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.LEGACY)).thenReturn(mDb);
         Mockito.when(msf.createMessagingService(activity, mDb)).thenReturn(mMsg);
 
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);

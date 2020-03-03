@@ -158,7 +158,6 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     public void onUserSignedUp(IUser user) {
         if(mAuth.isUserSignedIn()) {
             user.updateDisplayName(username.getText().toString());
-            mDb.createUserInDatabase(user);
         }
     }
 

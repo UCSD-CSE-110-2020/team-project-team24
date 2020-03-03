@@ -17,6 +17,7 @@ public interface DatabaseService{
     enum Service {
         USERS,
         TEAMS,
-        INVITATIONS
+        INVITATIONS,
+        LEGACY
     }
 }
