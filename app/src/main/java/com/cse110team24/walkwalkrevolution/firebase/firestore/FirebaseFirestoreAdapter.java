@@ -137,19 +137,6 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         return result;
     }
 
-    @Override
-    public DocumentReference createRootInvitationDocument(Invitation invitation) {
-        DocumentReference rootInvitationDoc = invitationsRootCollection.document(invitation.uid());
-        rootInvitationDoc.set(invitation.invitationData()).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.i(TAG, "createRootInvitationDocument: success creating new invitation document");
-            } else {
-                Log.e(TAG, "createRootInvitationDocument: failed creating invitation doc", task.getException());
-            }
-        });
-        return rootInvitationDoc;
-    }
-
     // TODO: 2/28/20 need to determine if this will be real time
     @Override
     public ITeam getUserTeam(IUser user) {
@@ -251,7 +238,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public void notifyObserversTeamRetrieved(List<IUser> team) {
+    public void notifyObserversTeamRetrieved(ITeam team) {
         observers.forEach(observer -> {
             observer.onTeamRetrieved(team);
         });
