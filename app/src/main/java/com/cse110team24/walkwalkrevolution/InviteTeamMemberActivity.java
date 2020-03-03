@@ -63,7 +63,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         messagingService.register(this);
         getUIFields();
         createFromUser();
-        mDb.getUserData(mFrom);
         btnSendInvite.setOnClickListener(view -> {
             sendInvite(view);
         });
@@ -74,13 +73,14 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         if (mFrom != null && mInvitation != null) {
             progressBar.setVisibility(View.VISIBLE);
             Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
-            createTeamIfNull();
+            mDb.getUserData(mFrom);
             messagingService.sendInvitation(mInvitation);
         }
     }
 
     private void createTeamIfNull() {
         if (mTeamUid == null) {
+            Log.i(TAG, "createTeamIfNull: user has no team. It has been created");
             ITeam team = new TeamAdapter(new ArrayList<>());
             team.addMember(mFrom);
             String teamUid = mDb.createTeamInDatabase(team);
