@@ -12,6 +12,8 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatab
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -28,6 +30,13 @@ public class TestInjection {
     protected UsersDatabaseService usersDatabaseService;
     protected TeamDatabaseService teamDatabaseService;
     protected InvitationsDatabaseService invitationsDatabaseService;
+
+    IUser testUser = FirebaseUserAdapter.builder()
+            .addDisplayName("tester")
+            .addEmail("test@gmail.com")
+            .addTeamUid("666")
+            .addUid("0")
+            .build();
 
     void setup() {
         asf = Mockito.mock(FirebaseAuthServiceFactory.class);
@@ -48,5 +57,7 @@ public class TestInjection {
         usersDatabaseService = Mockito.mock(UsersDatabaseService.class);
         teamDatabaseService = Mockito.mock(TeamDatabaseService.class);
         invitationsDatabaseService = Mockito.mock(InvitationsDatabaseService.class);
+
+        Mockito.when(mAuth.getUser()).thenReturn(testUser);
     }
 }
