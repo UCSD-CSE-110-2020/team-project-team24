@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -148,10 +149,12 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     @Override
     public void getUserTeam(String teamUid) {
         DocumentReference documentReference = teamsCollection.document(teamUid);
-        documentReference.get().addOnCompleteListener(task -> {
+        CollectionReference teammatesCollection = documentReference.collection(TEAMMATES_SUB_COLLECTION);
+        teammatesCollection.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 Log.i(TAG, "getUserTeam: team successfully retrieved");
-                ITeam team = getTeamList(task);
+                List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                ITeam team = getTeamList(documents);
                 notifyObserversTeamRetrieved(team);
             } else {
                 Log.e(TAG, "getUserTeam: error getting user team", task.getException());
@@ -159,11 +162,9 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         });
     }
 
-    private ITeam getTeamList(Task<DocumentSnapshot> task) {
-        Map<String, Object> map = (Map<String, Object>) task.getResult().getData();
-        ArrayList<Map<String, Object>> members = (ArrayList<Map<String, Object>>) map.get("teamMembers");
+    private ITeam getTeamList(List<DocumentSnapshot> documents) {
         ITeam team = new TeamAdapter(new ArrayList<>());
-        for (Map<String, Object> member : members) {
+        for (DocumentSnapshot member : documents) {
             String displayName = (String) member.get("displayName");
             IUser user = FirebaseUserAdapter.builder()
                     .addDisplayName(displayName)
