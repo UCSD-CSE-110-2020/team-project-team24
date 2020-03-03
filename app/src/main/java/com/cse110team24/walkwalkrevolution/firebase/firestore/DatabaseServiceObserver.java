@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Observer;
 
 public interface DatabaseServiceObserver {
-    void onTeamRetrieved(ITeam team);
     void onFieldRetrieved(Object field);
     void onUserPendingInvitations(List<Invitation> invitations);
 }

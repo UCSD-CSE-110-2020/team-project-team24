@@ -49,34 +49,17 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public static final String INVITATIONS_ROOT_COLLECTION_KEY = "invitations";
     public static final String USER_RECEIVED_INVITATIONS_COLLECTION = "received";
     public static final String USER_SENT_INVITATIONS_COLLECTION = "sent";
-    public static final String TEAMS_COLLECTION_KEY = "teams";
-    public static final String TEAMMATES_SUB_COLLECTION = "teammates";
     public static final String TEAM_ID_KEY = "teamUid";
 
     List<DatabaseServiceObserver> observers = new ArrayList<>();
 
-    private CollectionReference teamsCollection;
     private CollectionReference invitationsRootCollection;
 
     private FirebaseFirestore firebaseFirestore;
 
     public FirebaseFirestoreAdapter() {
         firebaseFirestore = FirebaseFirestore.getInstance();
-        teamsCollection = firebaseFirestore.collection(TEAMS_COLLECTION_KEY);
         invitationsRootCollection = firebaseFirestore.collection(INVITATIONS_ROOT_COLLECTION_KEY);
-    }
-
-    @Override
-    public DocumentReference updateTeamMembers(ITeam team) {
-        DocumentReference documentReference = teamsCollection.document(team.documentKey());
-        documentReference.update(MEMBERS_KEY, team.getTeam()).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.i(TAG, "updateTeamMembers: successfully updated team member list");
-            } else {
-                Log.e(TAG, "updateTeamMembers: error updating team member list", task.getException());
-            }
-        });
-        return teamsCollection.document(team.getUid());
     }
 
     @Override
@@ -96,35 +79,6 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         DocumentReference invitationDoc = sentInvitations.document(invitation.uid());
         Task<?> result = invitationDoc.set(invitation.invitationData());
         return result;
-    }
-
-    // TODO: 2/28/20 need to determine if this will be real time
-    @Override
-    public void getUserTeam(String teamUid) {
-        DocumentReference documentReference = teamsCollection.document(teamUid);
-        CollectionReference teammatesCollection = documentReference.collection(TEAMMATES_SUB_COLLECTION);
-        teammatesCollection.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                Log.i(TAG, "getUserTeam: team successfully retrieved");
-                List<DocumentSnapshot> documents = task.getResult().getDocuments();
-                ITeam team = getTeamList(documents);
-                notifyObserversTeamRetrieved(team);
-            } else {
-                Log.e(TAG, "getUserTeam: error getting user team", task.getException());
-            }
-        });
-    }
-
-    private ITeam getTeamList(List<DocumentSnapshot> documents) {
-        ITeam team = new TeamAdapter(new ArrayList<>());
-        for (DocumentSnapshot member : documents) {
-            String displayName = (String) member.get("displayName");
-            IUser user = FirebaseUserAdapter.builder()
-                    .addDisplayName(displayName)
-                    .build();
-            team.addMember(user);
-        }
-        return team;
     }
 
     @Override
@@ -200,28 +154,6 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public String createTeamInDatabase(IUser user) {
-        Log.d(TAG, "createTeamInDatabase: creating team");
-        // create new team document and update user's teamUid
-        DocumentReference teamDocument = teamsCollection.document();
-        String teamUid = teamDocument.getId();
-        user.updateTeamUid(teamUid);
-
-        // create the teammates collection and the individual member document
-        CollectionReference teamSubCollection = teamDocument.collection(TEAMMATES_SUB_COLLECTION);
-        DocumentReference memberDocument = teamSubCollection.document(user.documentKey());
-        memberDocument.set(user.userData()).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.i(TAG, "createTeamInDatabase: successfully created team document");
-            } else {
-                Log.e(TAG, "createTeamInDatabase: error creating team document", task.getException());
-            }
-        });
-
-        return teamUid;
-    }
-
-    @Override
     public void register(DatabaseServiceObserver observer) {
         observers.add(observer);
     }
@@ -229,13 +161,6 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     @Override
     public void deregister(DatabaseServiceObserver observer) {
         observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObserversTeamRetrieved(ITeam team) {
-        observers.forEach(observer -> {
-            observer.onTeamRetrieved(team);
-        });
     }
 
     @Override

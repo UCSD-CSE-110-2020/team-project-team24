@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface DatabaseServiceSubject extends Subject<DatabaseServiceObserver> {
-    void notifyObserversTeamRetrieved(ITeam team);
     void notifyObserversFieldRetrieved(Object field);
     void notifyObserversPendingInvitations(List<Invitation> invitations);
 }
