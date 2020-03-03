@@ -145,7 +145,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         DocumentReference documentReference = teamsCollection.document(teamUid);
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
-                Log.i(TAG, "getUserTeam: task successfully retrieved");
+                Log.i(TAG, "getUserTeam: team successfully retrieved");
                 ITeam team = getTeamList(task);
                 notifyObserversTeamRetrieved(team);
             }

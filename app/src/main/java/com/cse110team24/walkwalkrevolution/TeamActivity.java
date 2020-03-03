@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,7 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Map;
@@ -22,20 +24,34 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     private BottomNavigationView bottomNavigationView;
     private DatabaseService mDb;
 
-    SharedPreferences preferences;
+    SharedPreferences mPreferences;
 
     private ITeam mTeam;
-    private String teamUid;
+    private String mTeamUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
-        preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
-        mDb.register(this);
+        getTeamUid();
+        setUpServices();
         getUIFields();
         setButtonClickListeners();
+    }
+
+    private void getTeamUid() {
+        mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
+        mTeamUid = mPreferences.getString(IUser.TEAM_UID_KEY, null);
+        if (mTeamUid == null) {
+            showNoTeamToast();
+        } else {
+            mDb.getUserTeam(mTeamUid);
+        }
+    }
+
+    private void setUpServices() {
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb.register(this);
     }
     private void getUIFields() {
         sendInviteBtn = findViewById(R.id.btn_invite_team_members);
@@ -44,7 +60,6 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     }
     private void setButtonClickListeners() {
         setInviteButtonOnClick();
-        // setBottomNavigationOnClick();
         setBottomNavItemSelectedListener();
     }
 
@@ -75,21 +90,6 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
         startActivity(intent);
     }
 
-  /*  public void launchGotoHomeActivity() {
-        setResult(Activity.RESULT_CANCELED);
-        transitionWithAnimation();
-    }
-    public void launchGoToRoutesActivity() {
-        setResult(Activity.RESULT_CANCELED);
-        transitionWithAnimation();
-    }
-
-    private void transitionWithAnimation() {
-        finish();
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-    }
-    */
-
     // TODO: 3/2/20 update UI now that team is retrieved
     @Override
     public void onTeamRetrieved(ITeam team) {
@@ -104,5 +104,10 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
 
     @Override
     public void onUserData(Map<String, Object> userDataMap) {
+    }
+
+
+    private void showNoTeamToast() {
+        Toast.makeText(this, "You don't have a team -^-. Try sending an invitation!", Toast.LENGTH_LONG).show();
     }
 }
