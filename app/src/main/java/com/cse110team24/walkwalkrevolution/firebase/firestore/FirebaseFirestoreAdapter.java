@@ -157,13 +157,9 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         return null;
     }
 
-    @Override
-    public Task<?> getField(String path, String fieldKey) {
-        DocumentReference documentReference = firebaseFirestore.document(path);
+    private Task<?> getUserDocument(IUser user) {
+        DocumentReference documentReference = usersCollection.document(user.documentKey());
         Task<DocumentSnapshot> task = documentReference.get();
-        if (task.isSuccessful() && task.getResult() != null && task.getResult().getData() != null) {
-            notifyObserversFieldRetrieved(task.getResult().getData().get(fieldKey));
-        }
         return task;
     }
 
