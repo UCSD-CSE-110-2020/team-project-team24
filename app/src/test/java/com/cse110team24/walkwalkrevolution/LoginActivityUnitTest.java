@@ -130,7 +130,6 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     @Test
     public void userCollision() throws InterruptedException {
         mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
-        userCollisionFlag = true;
         signUpTV.performClick();
         feetEt.setText("5");
         inchesEt.setText("3");
@@ -149,6 +148,17 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         finishBtn.performClick();
         Intent intent = Shadows.shadowOf(testActivity).peekNextStartedActivity();
         assertEquals(HomeActivity.class.getCanonicalName(), intent.getComponent().getClassName());
+    }
+
+    @Test
+    public void invalidPassword() {
+        mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
+        feetEt.setText("5");
+        inchesEt.setText("3");
+        gmail.setText("amber@gmail.com");
+        password.setText("password");
+        finishBtn.performClick();
+        when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.INVALID_PASSWORD);
     }
 
 
