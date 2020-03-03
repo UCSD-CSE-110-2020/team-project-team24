@@ -8,9 +8,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class TeamActivity extends AppCompatActivity {
+import java.util.List;
+
+public class TeamActivity extends AppCompatActivity implements DatabaseServiceObserver {
 
     private Button sendInviteBtn;
     private BottomNavigationView bottomNavigationView;
@@ -21,6 +25,7 @@ public class TeamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
         mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb.register(this);
         getUIFields();
         setButtonClickListeners();
     }
@@ -76,4 +81,10 @@ public class TeamActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
     */
+
+    // TODO: 3/2/20 update UI now that team is retrieved
+    @Override
+    public void onTeamRetrieved(List<IUser> team) {
+
+    }
 }
