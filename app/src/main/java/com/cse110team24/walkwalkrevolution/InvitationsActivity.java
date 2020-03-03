@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +46,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private List<Invitation> mInvitations = new ArrayList<>();
     private InvitationsListViewAdapter mAdapter;
     private ListView mInvitationsListView;
+    private TextView mNoInvitationsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         mInvitationsListView = findViewById(R.id.invitationList);
         mAdapter = new InvitationsListViewAdapter(this, mInvitations);
         mInvitationsListView.setAdapter(mAdapter);
+        mNoInvitationsTextView = findViewById(R.id.tv_no_invitations_prompt);
     }
 
     private void setUpServices() {
@@ -91,5 +94,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         Toast.makeText(this, "retrieved your invitations successfully!", Toast.LENGTH_LONG).show();
         mInvitations.addAll(invitations);
         mAdapter.notifyDataSetChanged();
+        if (!invitations.isEmpty()) {
+            mNoInvitationsTextView.setVisibility(View.GONE);
+        }
     }
 }
