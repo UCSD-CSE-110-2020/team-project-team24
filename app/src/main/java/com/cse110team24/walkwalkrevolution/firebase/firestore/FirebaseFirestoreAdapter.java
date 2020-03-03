@@ -48,6 +48,8 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public static final String USER_REGISTRATION_TOKENS_COLLECTION_KEY = "tokens";
     public static final String TOKEN_SET_KEY = "token";
 
+    List<DatabaseServiceObserver> observers = new ArrayList<>();
+
     private CollectionReference usersCollection;
     private CollectionReference teamsCollection;
     private CollectionReference invitationsRootCollection;
@@ -239,6 +241,23 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                     }
                 });
         return userDoc;
+    }
+
+    @Override
+    public void register(DatabaseServiceObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void deregister(DatabaseServiceObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObserversTeamRetrieved(List<IUser> team) {
+        observers.forEach(observer -> {
+            observer.onTeamRetrieved(team);
+        });
     }
 
 }

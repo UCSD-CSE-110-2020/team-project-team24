@@ -6,18 +6,21 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TeamActivity extends AppCompatActivity {
 
     private Button sendInviteBtn;
     private BottomNavigationView bottomNavigationView;
+    private DatabaseService mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
-
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
         getUIFields();
         setButtonClickListeners();
     }

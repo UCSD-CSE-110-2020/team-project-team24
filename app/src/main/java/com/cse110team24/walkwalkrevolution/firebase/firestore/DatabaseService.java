@@ -11,7 +11,7 @@ import org.w3c.dom.Document;
 
 import java.util.List;
 
-public interface DatabaseService {
+public interface DatabaseService extends DatabaseServiceSubject {
 
     DocumentReference createUserInDatabase(IUser user);
     DocumentReference setUserTeam(IUser user, String teamUid);
