@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface DatabaseService extends DatabaseServiceSubject {
 
-    DocumentReference createUserInDatabase(IUser user);
-    DocumentReference setUserTeam(IUser user, String teamUid);
-    DocumentReference createTeamInDatabase(ITeam team);
+    void createUserInDatabase(IUser user);
+    void setUserTeam(IUser user, String teamUid);
+    String createTeamInDatabase(ITeam team);
     DocumentReference updateTeamMembers(ITeam team);
     Task<?> addInvitationForReceivingUser(Invitation invitation);
     Task<?> addInvitationForSendingUser(Invitation invitation);

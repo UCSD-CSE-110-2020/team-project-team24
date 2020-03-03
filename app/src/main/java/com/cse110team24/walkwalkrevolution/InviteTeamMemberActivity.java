@@ -83,8 +83,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         if (mTeamUid == null) {
             ITeam team = new TeamAdapter(new ArrayList<>());
             team.addMember(mFrom);
-            DocumentReference teamRef = mDb.createTeamInDatabase(team);
-            mDb.setUserTeam(mFrom, teamRef.getId());
+            String teamUid = mDb.createTeamInDatabase(team);
+            mDb.setUserTeam(mFrom, teamUid);
         }
     }
 

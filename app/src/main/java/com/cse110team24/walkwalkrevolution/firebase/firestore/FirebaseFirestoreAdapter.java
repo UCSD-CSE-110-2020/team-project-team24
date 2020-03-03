@@ -64,7 +64,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public DocumentReference createUserInDatabase(IUser user) {
+    public void createUserInDatabase(IUser user) {
         Map<String, Object> userData = user.userData();
         DocumentReference userDocument= usersCollection.document(user.documentKey());
         userDocument.set(userData).addOnCompleteListener(task -> {
@@ -74,11 +74,10 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                 Log.e(TAG, "createUserInDatabase: failed to create document", task.getException());
             }
         });
-        return usersCollection.document(user.documentKey());
     }
 
     @Override
-    public DocumentReference setUserTeam(IUser user, String teamUid) {
+    public void setUserTeam(IUser user, String teamUid) {
         user.updateTeamUid(teamUid);
         DocumentReference documentReference = usersCollection.document(user.documentKey());
         documentReference.update(TEAM_UID_KEY, teamUid).addOnCompleteListener(task -> {
@@ -88,13 +87,13 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                 Log.e(TAG, "updateUserTeam: error updating team uid", task.getException());
             }
         });
-        return usersCollection.document(user.documentKey());
     }
 
     @Override
-    public DocumentReference createTeamInDatabase(ITeam team) {
+    public String createTeamInDatabase(ITeam team) {
         DocumentReference teamDocument = teamsCollection.document();
-        team.setUid(teamDocument.getId());
+        String teamUid = teamDocument.getId();
+        team.setUid(teamUid);
         Map<String, Object> teamData = team.teamData();
         teamDocument.set(teamData).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -103,7 +102,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                 Log.e(TAG, "createTeamInDatabase: error creating team document", task.getException());
             }
         });
-        return teamDocument;
+        return teamUid;
     }
 
     @Override
