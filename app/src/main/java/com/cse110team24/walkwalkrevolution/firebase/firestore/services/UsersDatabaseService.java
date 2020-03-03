@@ -1,4 +1,6 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 
-public interface UsersDatabaseService {
+import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.UsersDatabaseServiceSubject;
+
+public interface UsersDatabaseService extends UsersDatabaseServiceSubject {
 }

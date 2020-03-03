@@ -1,4 +1,6 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 
-public interface InvitationsDatabaseService {
+import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.InvitationsDatabaseServiceSubject;
+
+public interface InvitationsDatabaseService extends InvitationsDatabaseServiceSubject {
 }
