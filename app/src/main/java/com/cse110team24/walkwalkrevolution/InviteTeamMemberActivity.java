@@ -150,7 +150,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     @Override
-    public void onTeamRetrieved(List<IUser> team) {
+    public void onTeamRetrieved(ITeam team) {
 
     }
 

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
@@ -47,6 +48,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public static final String TEAMS_COLLECTION_KEY = "teams";
     public static final String USER_REGISTRATION_TOKENS_COLLECTION_KEY = "tokens";
     public static final String TOKEN_SET_KEY = "token";
+    public static final String TEAM_ID_KEY = "teamUid";
 
     List<DatabaseServiceObserver> observers = new ArrayList<>();
 
@@ -152,8 +154,29 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
 
     // TODO: 2/28/20 need to determine if this will be real time
     @Override
-    public ITeam getUserTeam(IUser user) {
-        return null;
+    public void getUserTeam(String teamUid) {
+        DocumentReference documentReference = teamsCollection.document(teamUid);
+        documentReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                Log.i(TAG, "getUserTeam: task successfully retrieved");
+                ITeam team = getTeamList(task);
+                notifyObserversTeamRetrieved(team);
+            }
+        });
+    }
+
+    private ITeam getTeamList(Task<DocumentSnapshot> task) {
+        Map<String, Object> map = (Map<String, Object>) task.getResult().getData();
+        ArrayList<Map<String, Object>> members = (ArrayList<Map<String, Object>>) map.get("teamMembers");
+        ITeam team = new TeamAdapter(new ArrayList<>());
+        for (Map<String, Object> member : members) {
+            String displayName = (String) member.get("displayName");
+            IUser user = FirebaseUserAdapter.builder()
+                    .addDisplayName(displayName)
+                    .build();
+            team.addMember(user);
+        }
+        return team;
     }
 
     @Override
@@ -251,7 +274,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public void notifyObserversTeamRetrieved(List<IUser> team) {
+    public void notifyObserversTeamRetrieved(ITeam team) {
         observers.forEach(observer -> {
             observer.onTeamRetrieved(team);
         });
