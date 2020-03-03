@@ -1,27 +1,36 @@
 package com.cse110team24.walkwalkrevolution;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
+import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 public class InvitationsActivity extends AppCompatActivity implements InvitationsDatabaseServiceObserver {
     private static final String TAG = "InvitationsActivity";
 

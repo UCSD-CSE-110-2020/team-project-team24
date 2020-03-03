@@ -86,7 +86,7 @@
     <string name="btn_title_scheduled_walks">Scheduled Walks</string>
     <string name="text_no_teammates_in_team">You Have No Teammates :\'(</string>
 
-    <!-- In activity_received_invitation.xml-->
+    <!-- In activity_invitations -->
     <string name="title_pending_invitations_page">Pending Invitations</string>
     <string name="btn_accept_team_invitation">Accept</string>
     <string name="btn_reject_team_invitation">Reject</string>
