@@ -43,7 +43,7 @@ public class InvitationsActivity extends AppCompatActivity implements DatabaseSe
 
     private void setUpServices() {
         mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
         mDb.register(this);
         mMessagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
     }

@@ -142,7 +142,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void firebaseUserSetup() {
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
 
         SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);

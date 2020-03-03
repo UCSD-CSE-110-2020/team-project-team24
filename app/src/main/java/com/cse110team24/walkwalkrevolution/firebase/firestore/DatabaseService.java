@@ -29,4 +29,10 @@ public interface DatabaseService extends DatabaseServiceSubject {
     DocumentReference addUserMessagingRegistrationToken(IUser user, String token);
 
     void getUserData(IUser user);
+
+    enum Service {
+        USERS,
+        TEAMS,
+        INVITATIONS
+    }
 }

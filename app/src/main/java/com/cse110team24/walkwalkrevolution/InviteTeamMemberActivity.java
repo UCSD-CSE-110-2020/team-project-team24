@@ -56,7 +56,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
 
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         mDb.register(this);
 
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);

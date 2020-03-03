@@ -76,7 +76,7 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     }
 
     private void setUpServices() {
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
         mDb.register(this);
     }
     private void getUIFields() {

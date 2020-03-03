@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
         mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
         mAuth.register(this);
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
 
         getConfiguredFields();
         checkLogin(preferences);
