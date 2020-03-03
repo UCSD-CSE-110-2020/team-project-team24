@@ -18,6 +18,7 @@ import androidx.core.widget.ListViewAutoScrollHelper;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -139,11 +140,14 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
 
     @Override
     public void onFieldRetrieved(Object object) {
-
     }
 
     @Override
     public void onUserData(Map<String, Object> userDataMap) {
+    }
+
+    @Override
+    public void onUserPendingInvitations(List<Invitation> invitations) {
     }
 
 
