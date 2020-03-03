@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 
 import org.junit.Before;
@@ -40,9 +39,6 @@ public class LoginActivityUnitTest extends TestInjection {
     @Before
     public void setup() {
         super.setup();
-
-        FirebaseApplicationWWR.setAuthServiceFactory(asf);
-        FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
 
         ActivityScenario<LoginActivity> scenario = ActivityScenario.launch(LoginActivity.class);
         scenario.onActivity(activity -> {
