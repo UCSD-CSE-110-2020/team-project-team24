@@ -79,8 +79,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             Log.i(TAG, "createTeamIfNull: user has no team. It has been created");
             ITeam team = new TeamAdapter(new ArrayList<>());
             team.addMember(mFrom);
-            mDb.createTeamInDatabase(mFrom);
-            mTeamUid = mFrom.teamUid();
+            mTeamUid = mDb.createTeamInDatabase(mFrom);
+            mFrom.updateTeamUid(mTeamUid);
             mDb.setUserTeam(mFrom, mTeamUid);
         }
 

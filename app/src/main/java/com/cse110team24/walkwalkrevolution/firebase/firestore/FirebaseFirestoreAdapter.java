@@ -81,7 +81,6 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
 
     @Override
     public void setUserTeam(IUser user, String teamUid) {
-        user.updateTeamUid(teamUid);
         DocumentReference documentReference = usersCollection.document(user.documentKey());
         documentReference.update(TEAM_UID_KEY, teamUid).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -93,11 +92,10 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public void createTeamInDatabase(IUser user) {
+    public String createTeamInDatabase(IUser user) {
         // create new team document and update user's teamUid
         DocumentReference teamDocument = teamsCollection.document();
         String teamUid = teamDocument.getId();
-        user.updateTeamUid(teamUid);
 
         // create the teammates collection and the individual member document
         CollectionReference teamSubCollection = teamDocument.collection(TEAMMATES_SUB_COLLECTION);
@@ -110,6 +108,8 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                 Log.e(TAG, "createTeamInDatabase: error creating team document", task.getException());
             }
         });
+
+        return teamUid;
     }
 
     @Override
