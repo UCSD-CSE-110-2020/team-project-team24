@@ -18,9 +18,11 @@ public interface DatabaseService extends DatabaseServiceSubject {
     String createTeamInDatabase(IUser user);
 
     DocumentReference updateTeamMembers(ITeam team);
+
     Task<?> addInvitationForReceivingUser(Invitation invitation);
     Task<?> addInvitationForSendingUser(Invitation invitation);
-    List<Invitation> getUserPendingInvitations(IUser user);
+    void getUserPendingInvitations(IUser user);
+
     void getUserTeam(String teamUid);
     void addInvitationsSnapshotListener(IUser user);
     DocumentReference addUserMessagingRegistrationToken(IUser user, String token);

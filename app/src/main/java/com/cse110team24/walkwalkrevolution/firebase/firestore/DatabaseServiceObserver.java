@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore;
 
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
@@ -11,4 +12,5 @@ public interface DatabaseServiceObserver {
     void onTeamRetrieved(ITeam team);
     void onFieldRetrieved(Object field);
     void onUserData(Map<String, Object> userDataMap);
+    void onUserPendingInvitations(List<Invitation> invitations);
 }
