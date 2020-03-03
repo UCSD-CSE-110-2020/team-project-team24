@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final String HEIGHT_FT_KEY = "Height Feet";
     public static final String HEIGHT_IN_KEY = "Height Remainder Inches";
-    public static final String HEIGHT_PREF = "height_preferences";
+    public static final String APP_PREF = "height_preferences";
 
     private FitnessService fitnessService;
 
@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void saveHeight() {
-        SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         heightFeet = getIntent().getIntExtra(HEIGHT_FT_KEY, -1);
         heightRemainderInches =  getIntent().getFloatExtra(HEIGHT_IN_KEY, -1);
@@ -145,7 +145,7 @@ public class HomeActivity extends AppCompatActivity {
         mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
 
-        SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         String email = preferences.getString(IUser.EMAIL_KEY, null);
         if (email != null) {
             mUser = authService.getUser();

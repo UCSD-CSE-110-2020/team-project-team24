@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
+        preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         homeIntent = new Intent(this, HomeActivity.class);
 
         mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();

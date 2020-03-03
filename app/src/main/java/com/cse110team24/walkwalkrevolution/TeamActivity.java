@@ -1,6 +1,8 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -10,10 +12,8 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
-import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.List;
 import java.util.Map;
 
 public class TeamActivity extends AppCompatActivity implements DatabaseServiceObserver {
@@ -22,12 +22,16 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     private BottomNavigationView bottomNavigationView;
     private DatabaseService mDb;
 
+    SharedPreferences preferences;
+
     private ITeam mTeam;
+    private String teamUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
+        preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
         mDb.register(this);
         getUIFields();

@@ -49,7 +49,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_invite_member);
-        preferences = getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
+        preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
 
         mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
@@ -87,7 +87,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     private void saveTeamUid() {
-        getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE)
+        getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE)
                 .edit()
                 .putString(IUser.TEAM_UID_KEY, mTeamUid)
                 .apply();

@@ -52,7 +52,7 @@ public class LoginActivityGuestEspressoTest {
         protected void beforeActivityLaunched() {
             super.beforeActivityLaunched();
             androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getTargetContext()
-                    .getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE)
+                    .getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE)
                     .edit()
                     .remove(HomeActivity.HEIGHT_FT_KEY)
                     .remove(HomeActivity.HEIGHT_IN_KEY)
@@ -70,7 +70,7 @@ public class LoginActivityGuestEspressoTest {
     @Before
     public void setup() {
         FitnessServiceFactory.put(TEST_SERVICE, activity -> new TestFitnessService(activity));
-        SharedPreferences.Editor edit = mActivityTestRule.getActivity().getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor edit = mActivityTestRule.getActivity().getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).edit();
         edit.putFloat(HomeActivity.HEIGHT_IN_KEY, -1f);
         edit.putInt(HomeActivity.HEIGHT_FT_KEY, -1);
         edit.commit();
