@@ -18,6 +18,8 @@ import androidx.core.widget.ListViewAutoScrollHelper;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
@@ -29,14 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// TODO: 3/3/20 change to implement TeamsDatabaseServiceObserver
-public class TeamActivity extends AppCompatActivity implements DatabaseServiceObserver {
+public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
     private static final String TAG = "TeamActivity";
     private Button sendInviteBtn;
     private Button seeInvitationsBtn;
     private BottomNavigationView bottomNavigationView;
     // TODO: 3/3/20 change to TeamsDatabaseService
-    private DatabaseService mDb;
+    private TeamDatabaseService mDb;
 
     SharedPreferences mPreferences;
 
@@ -76,7 +77,7 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     }
 
     private void setUpServices() {
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mDb = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
         mDb.register(this);
     }
     private void getUIFields() {
@@ -147,16 +148,7 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
         ListView teammatesList = (ListView) findViewById(R.id.list_members_in_team);
         teammatesList.setAdapter(listviewAdapter);
     }*/
-
-    @Override
-    public void onFieldRetrieved(Object object) {
-    }
-
-    @Override
-    public void onUserPendingInvitations(List<Invitation> invitations) {
-    }
-
-
+    
     private void showNoTeamToast() {
         Toast.makeText(this, "You don't have a team -^-. Try sending an invitation!", Toast.LENGTH_LONG).show();
     }
