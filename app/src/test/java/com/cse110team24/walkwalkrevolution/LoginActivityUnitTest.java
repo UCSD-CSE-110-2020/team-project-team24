@@ -111,6 +111,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         password.setText("testpw");
         finishBtn.performClick();
         when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.DOES_NOT_EXIST);
+        when(mAuth.isUserSignedIn()).thenReturn(false);
     }
 
     @Test
