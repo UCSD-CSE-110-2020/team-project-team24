@@ -21,6 +21,7 @@ import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -58,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     private AuthService mAuth;
     private IUser mUser;
     // TODO: 3/3/20 change to UsersDatabaseService
-    private DatabaseService mDb;
+    private UsersDatabaseService mDb;
     private ProgressBar progressBar;
 
     private int feet;
@@ -86,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
         mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
         mAuth.register(this);
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
 
         getConfiguredFields();
         checkLogin(preferences);
