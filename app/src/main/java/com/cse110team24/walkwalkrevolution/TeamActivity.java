@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -20,6 +21,8 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     private Button sendInviteBtn;
     private BottomNavigationView bottomNavigationView;
     private DatabaseService mDb;
+
+    private ITeam mTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +88,9 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
 
     // TODO: 3/2/20 update UI now that team is retrieved
     @Override
-    public void onTeamRetrieved(List<IUser> team) {
-
+    public void onTeamRetrieved(ITeam team) {
+        mTeam = team;
+        // start updating UI
     }
 
     @Override
