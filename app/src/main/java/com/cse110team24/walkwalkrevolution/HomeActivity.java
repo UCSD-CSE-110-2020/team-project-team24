@@ -229,9 +229,6 @@ public class HomeActivity extends AppCompatActivity {
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(myIntent);
             }
-            if(menuItem.getItemId() == R.id.action_team) {
-                launchGoToTeamActivity( new Intent(this, TeamActivity.class));
-            }
             return true;
         });
     }
@@ -259,6 +256,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivityForResult(intent, MockActivity.REQUEST_CODE);
     }
 
+    /*
     public void launchGoToRoutesActivity(Intent intent) {
         startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
@@ -267,6 +265,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
+    */
 
     private void launchSaveRouteActivity() {
         Log.i(TAG, "launchSaveRouteActivity: route stopped, going to save");
