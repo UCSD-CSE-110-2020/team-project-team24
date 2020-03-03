@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 // TODO: 3/3/20 change to  InvitationsDatabaseServiceObserver
 public class InvitationsActivity extends AppCompatActivity implements DatabaseServiceObserver {
+    private static final String TAG = "InvitationsActivity";
 
     // TODO: 3/3/20 change to InvitationsDatabaseService
     private DatabaseService mDb;
@@ -42,6 +44,7 @@ public class InvitationsActivity extends AppCompatActivity implements DatabaseSe
     private void setUpServices() {
         mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
         mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb.register(this);
         mMessagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
     }
 
@@ -75,6 +78,7 @@ public class InvitationsActivity extends AppCompatActivity implements DatabaseSe
     }
     /* ---------------------- will be removed when changed to specialized service interfaces ------------------------ */
 
+    // TODO: 3/3/20 display invitations and allow each one to be clickable
     @Override
     public void onUserPendingInvitations(List<Invitation> invitations) {
         Toast.makeText(this, "retrieved your invitations successfully!", Toast.LENGTH_LONG).show();
