@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import java.util.List;
@@ -15,23 +16,23 @@ import java.util.Random;
 
 public class InvitationsListViewAdapter extends BaseAdapter {
     Context context;
-    List<IUser> users;
+    List<Invitation> invitations;
     LayoutInflater inflater;
 
-    public InvitationsListViewAdapter(Context context, List<IUser> users) {
+    public InvitationsListViewAdapter(Context context, List<Invitation> invitations) {
         this.context = context;
-        this.users = users;
+        this.invitations = invitations;
         inflater = (LayoutInflater.from(context));
     }
 
     @Override
     public int getCount() {
-        return users.size();
+        return invitations.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return users.get(i);
+        return invitations.get(i);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class InvitationsListViewAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.item_inviter, null);
         TextView nameView = view.findViewById(R.id.inviterNameView);
-        nameView.setText(users.get(i).getDisplayName());
+        nameView.setText(invitations.get(i).fromName());
         return view;
     }
 
