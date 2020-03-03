@@ -62,13 +62,21 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.google.firebase:firebase-firestore:21.4.1'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.1'
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:4.3.1'
     testImplementation 'androidx.test.ext:junit:1.1.1'
     testImplementation 'androidx.test.ext:truth:1.2.0'
     testImplementation 'androidx.test:rules:1.2.0'
+    testImplementation 'org.mockito:mockito-core:2.24.5'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0@aar'
+    androidTestImplementation 'org.mockito:mockito-core:2.24.5'
+    androidTestImplementation 'org.mockito:mockito-inline:2.13.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
+
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0@aar'
 }

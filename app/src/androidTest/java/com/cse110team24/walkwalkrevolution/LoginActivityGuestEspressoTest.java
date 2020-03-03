@@ -8,11 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
@@ -24,6 +19,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -37,15 +37,14 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class LoginActivityEspressoTest {
-
+public class LoginActivityGuestEspressoTest {
     /**
      * new activity test rule to forcibly remove app data
      * @param <T>
      * notes: see https://stackoverflow.com/questions/37597080/reset-app-state-between-instrumentationtestcase-runs
      */
-    class LoginActivityTestRule<T extends Activity> extends ActivityTestRule<T> {
-        LoginActivityTestRule(Class<T> activityClass) {
+    class LoginActivityGuestTestRule<T extends Activity> extends ActivityTestRule<T> {
+        LoginActivityGuestTestRule(Class<T> activityClass) {
             super(activityClass);
         }
 
@@ -62,19 +61,15 @@ public class LoginActivityEspressoTest {
 
     }
 
+    @Rule
+    public LoginActivityGuestTestRule<LoginActivity> mActivityTestRule = new LoginActivityGuestTestRule<>(LoginActivity.class);
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
-    @Rule
-    public LoginActivityTestRule<LoginActivity> mActivityTestRule = new LoginActivityTestRule(LoginActivity.class);
     private long nextStepCount;
+
     @Before
     public void setup() {
-        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(HomeActivity activity) {
-                return new TestFitnessService(activity);
-            }
-        });
+        FitnessServiceFactory.put(TEST_SERVICE, activity -> new TestFitnessService(activity));
         SharedPreferences.Editor edit = mActivityTestRule.getActivity().getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE).edit();
         edit.putFloat(HomeActivity.HEIGHT_IN_KEY, -1f);
         edit.putInt(HomeActivity.HEIGHT_FT_KEY, -1);
@@ -84,46 +79,46 @@ public class LoginActivityEspressoTest {
     }
 
     @Test
-    public void heightActivityEspressoTest() {
-        setup();
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.et_height_feet),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.et_height_remainder_inches),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        appCompatEditText4.perform(replaceText("3"), closeSoftKeyboard());
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.tv_prompt), withText("Please enter your height:"), isDisplayed()));
-        textView.check(matches(withText("Please enter your height:")));
-
-        ViewInteraction button = onView(
-                allOf(withId(R.id.btn_height_finish), isDisplayed()));
-        button.check(matches(isDisplayed()));
-
+    public void loginActivityGuestEspressoTest() {
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.btn_height_finish), withText("Finish"),
+                allOf(withId(R.id.no_login_btn), withText("Continue without login"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.et_height_feet),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 5),
                         isDisplayed()));
-        appCompatButton.perform(click());
+        appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.et_height_remainder_inches),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                7),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("3"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.btn_height_finish), withText("Finish"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                9),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -161,9 +156,15 @@ public class LoginActivityEspressoTest {
             }
         };
     }
+
     private class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
         private HomeActivity activity;
+        private long startTime;
+        private long endTime;
+        private long toAdd;
+        private long startingSteps;
+
         public TestFitnessService(HomeActivity activity) {
             this.activity = activity;
         }
@@ -183,12 +184,14 @@ public class LoginActivityEspressoTest {
 
         @Override
         public void startRecording() {
-
+            startingSteps = nextStepCount;
         }
 
         @Override
         public void stopRecording() {
-
+            long timeElapsed = 3_600_000;
+            long endSteps = 500;
+            activity.setLatestWalkStats(endSteps, timeElapsed);
         }
 
         @Override
@@ -198,17 +201,16 @@ public class LoginActivityEspressoTest {
 
         @Override
         public void setStartRecordingTime(long startTime) {
-
+            this.startTime = 0;
         }
 
         @Override
-        public void setEndRecordingTime(long startTime) {
-
+        public void setEndRecordingTime(long endTime) {
         }
 
         @Override
         public void setStepsToAdd(long stepsToAdd) {
-
+            toAdd += stepsToAdd;
         }
     }
 }

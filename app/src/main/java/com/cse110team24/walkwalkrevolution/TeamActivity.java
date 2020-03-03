@@ -13,12 +13,10 @@ public class TeamActivity extends AppCompatActivity {
     private Button sendInviteBtn;
     private BottomNavigationView bottomNavigationView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
-
 
         getUIFields();
         setButtonClickListeners();
@@ -39,6 +37,7 @@ public class TeamActivity extends AppCompatActivity {
             launchInviteRouteActivity();
         });
     }
+
     private void setBottomNavItemSelectedListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             if(menuItem.getItemId() == R.id.action_home) {
@@ -59,4 +58,19 @@ public class TeamActivity extends AppCompatActivity {
         Intent intent = new Intent(this, InviteTeamMemberActivity.class);
         startActivity(intent);
     }
+
+  /*  public void launchGotoHomeActivity() {
+        setResult(Activity.RESULT_CANCELED);
+        transitionWithAnimation();
+    }
+    public void launchGoToRoutesActivity() {
+        setResult(Activity.RESULT_CANCELED);
+        transitionWithAnimation();
+    }
+
+    private void transitionWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+    */
 }

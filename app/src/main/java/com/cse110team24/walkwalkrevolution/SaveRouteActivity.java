@@ -81,7 +81,7 @@ public class SaveRouteActivity extends AppCompatActivity {
         }
         else {
             createRouteEnv();
-            route = new Route.RouteBuilder(title)
+            route = new Route.Builder(title)
                     .addStartingLocation(editTextLocation.getText().toString())
                     .addNotes(editTextNotes.getText().toString())
                     .addRouteEnvironment(env)

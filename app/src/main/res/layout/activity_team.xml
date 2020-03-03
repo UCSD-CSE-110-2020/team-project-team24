@@ -100,5 +100,4 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintLeft_toLeftOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

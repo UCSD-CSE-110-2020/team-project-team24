@@ -96,6 +96,10 @@
     <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
 
+    <!--    In activity_team -->
+    <string name="title_team_page">Your Walking Team</string>
+    <string name="invite_team_member">Invite&#10;Teammate</string>
+
     <!--    In both activity_home.xml and activity_route_details.xml-->
     <string name="total_steps_prompt">Total Steps: </string>
     <string name="total_distance">Total Distance: </string>
