@@ -47,6 +47,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     private static final String TOAST_MSG_NOT_GMAIL = "Please enter a valid gmail address!";
     private static final String TOAST_MSG_NO_USERNAME = "Please enter your name!";
     private static final String TOAST_MSG_USER_COLLISION = "user already exists!";
+    private static final String TOAST_MSG_NO_HEIGHT = "Please enter a valid height!";
 
     @Before
     public void setup() {
@@ -69,14 +70,22 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
             signInAsGuestBtn = testActivity.findViewById(R.id.no_login_btn);
         });
     }
+//Cheery !!
+    //I don't think we need this test. Button isn't disabled first....
+//    @Test
+//    public void testFinishBtnEnabled() {
+//        feetEt.setText("5");
+//        inchesEt.setText("3");
+//        assertTrue(finishBtn.isEnabled());
+//    }
 
     @Test
-    public void testFinishBtnEnabled() {
-        feetEt.setText("5");
-        inchesEt.setText("3");
-        assertTrue(finishBtn.isEnabled());
+    public void loginWithoutHeight() {
+        gmail.setText("amber@gmail.com");
+        password.setText("testpw");
+        finishBtn.performClick();
+        assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_NO_HEIGHT);
     }
-
     @Test
     public void loginWithoutEmail() {
         feetEt.setText("5");
