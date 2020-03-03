@@ -59,7 +59,7 @@ public class HomeActivityUnitTest extends TestInjection {
     public void testHeightSaved() {
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            SharedPreferences preferences = activity.getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
+            SharedPreferences preferences = activity.getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
             assertEquals(5, preferences.getInt(HomeActivity.HEIGHT_FT_KEY, -1));
             assertEquals(3, preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, -1), 0.1);
         });

@@ -29,3 +29,31 @@ exports.sendInviteNotification = functions.firestore
 
         return "document was null or empty";
     });
+
+exports.sendNewTeammateNotification = functions.firestore
+    .document('teams/{team}/teammates/{teammate}')
+    .onCreate((snap, context) => {
+        const document = snap.exists ? snap.data() : null;
+
+        if (document) {
+            var message = {
+                notification: {
+                    title: document.name + ' has invited joined your team!',
+                    body: 'Click to see your team'
+                },
+                topic: context.params.team
+            };
+
+            return admin.messaging().send(message)
+                .then((response) => {
+                    console.log('Successfully sent new team notification:', message);
+                    return response;
+                })
+                .catch((error) => {
+                    console.log('Error sending new team notification:', error);
+                    return error;
+                });
+        }
+
+        return "document was null or empty";
+    });

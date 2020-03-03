@@ -9,20 +9,8 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnitRunner;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
-import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFactory;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseServiceFactory;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
-import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
-import com.cse110team24.walkwalkrevolution.models.user.IUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T> {
 
@@ -52,7 +40,7 @@ public class MockActivityTestRule<T extends Activity> extends ActivityTestRule<T
         super.beforeActivityLaunched();
         testInjection = new TestInjection();
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getTargetContext()
-                .getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE)
+                .getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE)
                 .edit()
                 .remove(HomeActivity.HEIGHT_FT_KEY)
                 .remove(HomeActivity.HEIGHT_IN_KEY)

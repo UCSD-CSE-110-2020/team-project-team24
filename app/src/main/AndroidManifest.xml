@@ -3,14 +3,15 @@
     package="com.cse110team24.walkwalkrevolution">
 
     <application
+        android:name=".application.FirebaseApplicationWWR"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".application.FirebaseApplicationWWR"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
+        <activity android:name=".InvitationsActivity"></activity>
         <activity android:name=".RouteDetailsActivity" />
         <activity
             android:name=".SaveRouteActivity"
@@ -19,11 +20,14 @@
             android:name=".RoutesActivity"
             android:label="@string/title_activity_routes"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ReceivedNotification"
+            android:label="@string/title_pending_invitations_page" />
         <activity android:name=".MockActivity" />
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".TeamActivity"
-            android:label="@string/title_team_page"/>
+            android:label="@string/title_team_page" />
         <activity
             android:name=".InviteTeamMemberActivity"
             android:label="@string/title_add_team_member" />
@@ -34,6 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".firebase.messaging.FirebaseMessagingServiceWWR"
             android:exported="false">

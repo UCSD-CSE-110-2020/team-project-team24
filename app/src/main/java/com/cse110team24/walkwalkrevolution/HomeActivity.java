@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -46,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final String HEIGHT_FT_KEY = "Height Feet";
     public static final String HEIGHT_IN_KEY = "Height Remainder Inches";
-    public static final String HEIGHT_PREF = "height_preferences";
+    public static final String APP_PREF = "height_preferences";
 
     private FitnessService fitnessService;
 
@@ -121,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void saveHeight() {
-        SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         heightFeet = getIntent().getIntExtra(HEIGHT_FT_KEY, -1);
         heightRemainderInches =  getIntent().getFloatExtra(HEIGHT_IN_KEY, -1);
@@ -143,11 +142,11 @@ public class HomeActivity extends AppCompatActivity {
 
     private void firebaseUserSetup() {
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService();
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
 
-        SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
-        String email = preferences.getString(LoginActivity.EMAIL_KEY, null);
+        SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
+        String email = preferences.getString(IUser.EMAIL_KEY, null);
         if (email != null) {
             mUser = authService.getUser();
             mUser.setEmail(email);
@@ -256,16 +255,16 @@ public class HomeActivity extends AppCompatActivity {
         startActivityForResult(intent, MockActivity.REQUEST_CODE);
     }
 
- /*   public void launchGoToRoutesActivity(Intent intent) {
+    /*
+    public void launchGoToRoutesActivity(Intent intent) {
         startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
     public void launchGoToTeamActivity(Intent intent) {
-
+        startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
-
-  */
+    */
 
     private void launchSaveRouteActivity() {
         Log.i(TAG, "launchSaveRouteActivity: route stopped, going to save");

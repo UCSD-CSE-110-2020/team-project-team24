@@ -48,22 +48,15 @@ public class LoginActivitySignUpEspressoTest {
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
 
-    private TestInjection testInjection;
+
 
     @Mock
     AuthServiceFactory asf;
-
-    @InjectMocks
-    FirebaseApplicationWWR applicationWWR = InstrumentationRegistry.getInstrumentation().callApplicationOnCreate();
 
     DatabaseServiceFactory dsf;
 
     @Before
     public void setup() {
-        testInjection = mActivityTestRule.testInjection;
-        testInjection.nextSignIn = true;
-        testInjection.nextSuccessStatus = true;
-        Mockito.when(asf.createAuthService()).thenReturn(new TestInjection.TestAuthService());
 //        mActivityTestRule.nextSignIn = true;
 //        mActivityTestRule.nextSuccessStatus = true;
 //        mActivityTestRule.asf = Mockito.mock(FirebaseAuthServiceFactory.class);

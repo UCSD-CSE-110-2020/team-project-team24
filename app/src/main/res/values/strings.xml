@@ -77,12 +77,24 @@
     <string name="title_team_member_email">Team Member Email</string>
     <string name="btn_send_invite">Send Invitation</string>
 
+    <!-- In activity_team.xml-->
+    <string name="title_team_page">Your Walking Team</string>
+    <string name="pending_invites">Pending&#10;Invites</string>
+    <string name="invite_team_member">Invite&#10;Teammate</string>
+    <string name="title_teammates_in_team">Teammates: </string>
+    <string name="btn_title_proposed_walks">Proposed Walks</string>
+    <string name="btn_title_scheduled_walks">Scheduled Walks</string>
+    <string name="text_no_teammates_in_team">You Have No Teammates :\'(</string>
+
+    <!-- In activity_received_invitation.xml-->
+    <string name="title_pending_invitations_page">Pending Invitations</string>
+    <string name="btn_accept_team_invitation">Accept</string>
+    <string name="btn_reject_team_invitation">Reject</string>
+    <string name="text_invitation_exists">The following users have sent you a team invitation: </string>
+    <string name="text_invitation_not_exist">You haven\'t received any team invitation.</string>
+
     <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
-
-    <!--    In activity_team -->
-    <string name="title_team_page">Your Walking Team</string>
-    <string name="invite_team_member">Invite&#10;Teammate</string>
 
     <!--    In both activity_home.xml and activity_route_details.xml-->
     <string name="total_steps_prompt">Total Steps: </string>

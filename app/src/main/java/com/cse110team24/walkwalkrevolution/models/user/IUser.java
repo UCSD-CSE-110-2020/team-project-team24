@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface IUser {
+    String USER_NAME_KEY = "name";
+    String EMAIL_KEY = "email";
+    String UID_KEY = "uid";
+    String TEAM_UID_KEY = "teamUid";
+
     String getDisplayName();
     String getEmail();
     String getUid();
