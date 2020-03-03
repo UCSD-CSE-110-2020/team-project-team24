@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -25,6 +26,8 @@ import org.robolectric.shadows.ShadowToast;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityUnitTest extends TestInjection implements AuthServiceObserver {
@@ -50,6 +53,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
 
         FirebaseApplicationWWR.setAuthServiceFactory(asf);
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
+        mAuth.register(this);
 
         ActivityScenario<LoginActivity> scenario = ActivityScenario.launch(LoginActivity.class);
         scenario.onActivity(activity -> {
@@ -96,8 +100,12 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         gmail.setText("amber@yahoo.com");
         password.setText("testpw");
         finishBtn.performClick();
-        // assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_NOT_GMAIL);
+//        Intent intent = Shadows.shadowOf(testActivity).peekNextStartedActivity();
+//        assertEquals(HomeActivity.class.getCanonicalName(), intent.getComponent().getClassName());
+//
         //TODO !!
+
+
     }
 
     @Test
@@ -134,8 +142,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         password.setText("testpw");
         username.setText("Cheery");
         finishBtn.performClick();
-
-        //assertTrue(userCollisionFlag == false);
+        when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.USER_COLLISION);
     }
 
     @Test
