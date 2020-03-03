@@ -43,13 +43,13 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     protected void onCreate(Bundle savedInstanceState) {
         /*super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
+*/
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_team);
         setUpServices();
         getTeamUid();
         getUIFields();
-        setButtonClickListeners();*/
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team);
-        getUIFields();
+        setButtonClickListeners();
         //fakeTesting();
     }
 
@@ -111,7 +111,7 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
         mTeam = team;
         List<IUser> users = mTeam.getTeam();
         TextView noTeamMessage = findViewById(R.id.text_no_teammates);
-        if(users.size() == 0) {
+        if(users.size() == 1) {
             noTeamMessage.setVisibility(View.VISIBLE);
         }else {
             noTeamMessage.setVisibility(View.GONE);

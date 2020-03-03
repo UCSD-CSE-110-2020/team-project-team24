@@ -80,7 +80,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             ITeam team = new TeamAdapter(new ArrayList<>());
             team.addMember(mFrom);
             mTeamUid = mDb.createTeamInDatabase(mFrom);
-            mFrom.updateTeamUid(mTeamUid);
             mDb.setUserTeam(mFrom, mTeamUid);
         }
 

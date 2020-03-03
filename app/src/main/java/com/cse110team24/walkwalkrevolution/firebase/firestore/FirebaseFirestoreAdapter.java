@@ -98,6 +98,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         // create new team document and update user's teamUid
         DocumentReference teamDocument = teamsCollection.document();
         String teamUid = teamDocument.getId();
+        user.updateTeamUid(teamUid);
 
         // create the teammates collection and the individual member document
         CollectionReference teamSubCollection = teamDocument.collection(TEAMMATES_SUB_COLLECTION);
