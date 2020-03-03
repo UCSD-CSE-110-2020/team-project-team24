@@ -23,6 +23,7 @@ import org.robolectric.shadows.ShadowToast;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityUnitTest extends TestInjection implements AuthServiceObserver {
@@ -50,6 +51,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
 
         FirebaseApplicationWWR.setAuthServiceFactory(asf);
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
+        mAuth.register(this);
 
         ActivityScenario<LoginActivity> scenario = ActivityScenario.launch(LoginActivity.class);
         scenario.onActivity(activity -> {
@@ -123,12 +125,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         password.setText("testpw");
         username.setText("Cheery");
         finishBtn.performClick();
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        verify(mAuth).notifyObserversSignUpError(AuthService.AuthError.USER_COLLISION);
+        when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.USER_COLLISION);
     }
 
     @Test
