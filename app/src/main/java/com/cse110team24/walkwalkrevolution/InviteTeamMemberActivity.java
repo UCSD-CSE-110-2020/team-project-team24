@@ -83,6 +83,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             mDb.setUserTeam(mFrom, mTeamUid);
         }
 
+        messagingService.subscribeToNotificationsTopic(mTeamUid);
         saveTeamUid();
     }
 
