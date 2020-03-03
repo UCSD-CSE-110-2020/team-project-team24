@@ -16,10 +16,18 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver{
     private static final String TAG = "InviteTeamMemberActivity";
@@ -58,7 +66,18 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         if (mFrom != null && mInvitation != null) {
             progressBar.setVisibility(View.VISIBLE);
             Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
+            createTeamIfNull();
             messagingService.sendInvitation(mInvitation);
+        }
+    }
+
+    private void createTeamIfNull() {
+        if (mFrom.teamUid() == null) {
+            List<IUser> teamMates = new ArrayList<>();
+            ITeam team = new TeamAdapter(teamMates);
+            team.addMember(mFrom);
+            DocumentReference teamRef = mDb.createTeamInDatabase(team);
+            mDb.setUserTeam(mFrom, teamRef.getId());
         }
     }
 
