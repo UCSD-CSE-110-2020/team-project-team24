@@ -157,10 +157,14 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
         return null;
     }
 
-    private Task<?> getUserDocument(IUser user) {
+    @Override
+    public void getUserData(IUser user) {
         DocumentReference documentReference = usersCollection.document(user.documentKey());
-        Task<DocumentSnapshot> task = documentReference.get();
-        return task;
+        documentReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                notifyObserversUserData(task.getResult().getData());
+            }
+        });
     }
 
     @Override
@@ -258,6 +262,13 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public void notifyObserversFieldRetrieved(Object field) {
         observers.forEach(observer -> {
             observer.onFieldRetrieved(field);
+        });
+    }
+
+    @Override
+    public void notifyObserversUserData(Map<String, Object> userDataMap) {
+        observers.forEach(observer -> {
+            observer.onUserData(userDataMap);
         });
     }
 

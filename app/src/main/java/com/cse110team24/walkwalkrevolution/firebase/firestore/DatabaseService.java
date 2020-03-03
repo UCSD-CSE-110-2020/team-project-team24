@@ -24,4 +24,6 @@ public interface DatabaseService extends DatabaseServiceSubject {
     ITeam getUserTeam(IUser user);
     void addInvitationsSnapshotListener(IUser user);
     DocumentReference addUserMessagingRegistrationToken(IUser user, String token);
+
+    void getUserData(IUser user);
 }

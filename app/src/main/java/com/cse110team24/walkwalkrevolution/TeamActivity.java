@@ -13,6 +13,7 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
+import java.util.Map;
 
 public class TeamActivity extends AppCompatActivity implements DatabaseServiceObserver {
 
@@ -90,6 +91,10 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
 
     @Override
     public void onFieldRetrieved(Object object) {
-        
+
+    }
+
+    @Override
+    public void onUserData(Map<String, Object> userDataMap) {
     }
 }
