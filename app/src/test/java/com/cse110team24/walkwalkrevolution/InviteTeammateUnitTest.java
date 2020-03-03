@@ -21,6 +21,7 @@ public class InviteTeammateUnitTest extends TestInjection {
     private TextView inviteNameTv;
     private TextView inviteEmailTv;
     private static final String TOAST_MSG_NOT_GMAIL = "Please enter a valid gmail address";
+    private static final String TOAST_MSG_NO_USERNAME = "please enter a name";
 
     @Before
     public void setup() {
@@ -41,11 +42,17 @@ public class InviteTeammateUnitTest extends TestInjection {
     }
 
     @Test
-    public void checkNameEntered() {
+    public void emailNotEntered() {
         inviteNameTv.setText("Marian");
         sendInviteBtn.performClick();
         assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_NOT_GMAIL);
+    }
 
+    @Test
+    public void nameNotEntered() {
+        inviteEmailTv.setText("test@gmail.com");
+        sendInviteBtn.performClick();
+        assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_NO_USERNAME);
     }
 
 }
