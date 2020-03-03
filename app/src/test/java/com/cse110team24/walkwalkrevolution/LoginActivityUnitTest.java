@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityUnitTest extends TestInjection implements AuthServiceObserver {
-
+    private static final String TAG = "LoginActivityUnitTest";
     private LoginActivity testActivity;
     private Button finishBtn;
     private TextView signUpTV;
@@ -32,6 +33,7 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     private EditText gmail;
     private EditText username;
     private EditText password;
+    private boolean userCollisionFlag = false;
     private static final String TOAST_MSG_NO_EMAIL = "Please enter an email!";
     private static final String TOAST_MSG_NO_PASSWORD = "Please enter your password!";
     private static final String TOAST_MSG_NOT_GMAIL = "Please enter a valid gmail address!";
@@ -119,6 +121,8 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     @Test
     public void userCollision() {
         mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
+        userCollisionFlag = true;
+        signUpTV.performClick();
         feetEt.setText("5");
         inchesEt.setText("3");
         gmail.setText("amber@gmail.com");
@@ -148,6 +152,10 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
 
     @Override
     public void onAuthSignUpError(AuthService.AuthError error) {
-        assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_USER_COLLISION);
+        if (userCollisionFlag) {
+            assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_USER_COLLISION);
+            userCollisionFlag = false;
+        }
+
     }
 }
