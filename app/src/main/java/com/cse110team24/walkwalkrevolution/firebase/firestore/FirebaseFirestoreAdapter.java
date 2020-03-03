@@ -148,6 +148,8 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
                 Log.i(TAG, "getUserTeam: team successfully retrieved");
                 ITeam team = getTeamList(task);
                 notifyObserversTeamRetrieved(team);
+            } else {
+                Log.e(TAG, "getUserTeam: error getting user team", task.getException());
             }
         });
     }

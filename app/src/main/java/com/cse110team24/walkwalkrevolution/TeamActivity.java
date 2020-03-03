@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Map;
 
 public class TeamActivity extends AppCompatActivity implements DatabaseServiceObserver {
-
+    private static final String TAG = "TeamActivity";
     private Button sendInviteBtn;
     private BottomNavigationView bottomNavigationView;
     private DatabaseService mDb;
@@ -33,8 +35,8 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
-        getTeamUid();
         setUpServices();
+        getTeamUid();
         getUIFields();
         setButtonClickListeners();
     }
@@ -45,6 +47,7 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
         if (mTeamUid == null) {
             showNoTeamToast();
         } else {
+            Log.d(TAG, "getTeamUid: team uid found, retrieving team");
             mDb.getUserTeam(mTeamUid);
         }
     }
@@ -95,6 +98,7 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     public void onTeamRetrieved(ITeam team) {
         mTeam = team;
         // start updating UI
+
     }
 
     @Override
