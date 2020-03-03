@@ -14,7 +14,6 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
@@ -23,13 +22,10 @@ import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, DatabaseServiceObserver {
@@ -83,14 +79,23 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             Log.i(TAG, "createTeamIfNull: user has no team. It has been created");
             ITeam team = new TeamAdapter(new ArrayList<>());
             team.addMember(mFrom);
-            String teamUid = mDb.createTeamInDatabase(team);
-            mDb.setUserTeam(mFrom, teamUid);
+            mTeamUid = mDb.createTeamInDatabase(team);
+            mDb.setUserTeam(mFrom, mTeamUid);
         }
+
+        saveTeamUid();
+    }
+
+    private void saveTeamUid() {
+        getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE)
+                .edit()
+                .putString(IUser.TEAM_UID_KEY, mTeamUid)
+                .apply();
     }
 
     private void createFromUser() {
-        String displayName = preferences.getString(LoginActivity.USER_NAME_KEY, null);
-        String email = preferences.getString(LoginActivity.EMAIL_KEY, null);
+        String displayName = preferences.getString(IUser.USER_NAME_KEY, null);
+        String email = preferences.getString(IUser.EMAIL_KEY, null);
         if (displayName != null && email != null) {
             mFrom = authService.getUser();
             mFrom.setDisplayName(displayName);

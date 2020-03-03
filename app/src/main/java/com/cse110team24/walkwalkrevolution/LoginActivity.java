@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,8 +26,6 @@ import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
-import java.util.regex.Pattern;
-
 public class LoginActivity extends AppCompatActivity implements AuthServiceObserver {
     private static final String TAG = "LoginActivity";
     private static final String INVALID_GMAIL_TOAST = "Please enter a valid gmail address!";
@@ -38,9 +35,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     public static final int MAX_FEET = 8;
     public static final float MAX_INCHES = 11.99f;
     public static final float INVALID_VAL = -1.0f;
-    public static final String USER_NAME_KEY = "name";
-    public static final String EMAIL_KEY = "email";
-    public static final String UID_KEY = "uid";
 
     private String fitnessServiceKey = "GOOGLE_FIT";
 
@@ -378,9 +372,9 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     private void saveUserInfo(IUser user) {
         preferences.edit()
-                .putString(USER_NAME_KEY, user.getDisplayName())
-                .putString(EMAIL_KEY, user.getEmail())
-                .putString(UID_KEY, user.getUid())
+                .putString(IUser.USER_NAME_KEY, user.getDisplayName())
+                .putString(IUser.EMAIL_KEY, user.getEmail())
+                .putString(IUser.UID_KEY, user.getUid())
                 .apply();
     }
 

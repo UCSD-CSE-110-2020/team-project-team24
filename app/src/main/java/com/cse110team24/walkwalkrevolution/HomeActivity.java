@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -147,7 +146,7 @@ public class HomeActivity extends AppCompatActivity {
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
 
         SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
-        String email = preferences.getString(LoginActivity.EMAIL_KEY, null);
+        String email = preferences.getString(IUser.EMAIL_KEY, null);
         if (email != null) {
             mUser = authService.getUser();
             mUser.setEmail(email);
