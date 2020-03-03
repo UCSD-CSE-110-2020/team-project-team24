@@ -8,6 +8,9 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +22,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class LoginActivityUnitTest extends TestInjection {
+public class LoginActivityUnitTest extends TestInjection implements AuthServiceObserver {
 
     private LoginActivity testActivity;
     private Button finishBtn;
@@ -113,17 +116,38 @@ public class LoginActivityUnitTest extends TestInjection {
         assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_NO_USERNAME);
     }
 
-//    @Test
-//    public void userCollision() {
-//        mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
-//        feetEt.setText("5");
-//        inchesEt.setText("3");
-//        gmail.setText("amber@gmail.com");
-//        password.setText("testpw");
-//        username.setText("Cheery");
-//        finishBtn.performClick();
-//        assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_USER_COLLISION);
-//    }
+    @Test
+    public void userCollision() {
+        mAuth.signUp("amber@gmail.com", "testpw", "Cheery");
+        feetEt.setText("5");
+        inchesEt.setText("3");
+        gmail.setText("amber@gmail.com");
+        password.setText("testpw");
+        username.setText("Cheery");
+        finishBtn.performClick();
+    }
 
 
+    @Override
+    public void onUserSignedIn(IUser user) {
+
+    }
+
+    @Override
+    public void onUserSignedUp(IUser user) {
+        if(mAuth.isUserSignedIn()) {
+            user.updateDisplayName(username.getText().toString());
+            mDb.createUserInDatabase(user);
+        }
+    }
+
+    @Override
+    public void onAuthSignInError(AuthService.AuthError error) {
+
+    }
+
+    @Override
+    public void onAuthSignUpError(AuthService.AuthError error) {
+        assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_USER_COLLISION);
+    }
 }
