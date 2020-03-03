@@ -4,10 +4,8 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FireBaseF
 import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FirebaseFirestoreAdapterInvitations;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FirebaseFirestoreAdapterUsers;
 
-// TODO: 3/3/20 return one of three database services
 public class FirestoreDatabaseServiceFactory implements DatabaseServiceFactory{
 
-    // TODO: 3/3/20 return correct type
     @Override
     public DatabaseService createDatabaseService(DatabaseService.Service service) {
         switch (service) {

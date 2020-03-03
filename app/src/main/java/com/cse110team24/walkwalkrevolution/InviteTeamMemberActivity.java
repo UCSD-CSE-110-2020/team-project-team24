@@ -14,6 +14,10 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseSeviceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
@@ -30,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 // TODO: 3/3/20 change to implement TeamsDatabaseServiceObserver and UsersDatabaseServiceObserver
-public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, DatabaseServiceObserver {
+public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, TeamsDatabaseServiceObserver, UsersDatabaseSeviceObserver {
     private static final String TAG = "InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;
@@ -42,7 +46,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private AuthService authService;
 
     // TODO: 3/3/20 change to TeamsDatabaseService and UsersDatabaseService
-    private DatabaseService mDb;
+    private UsersDatabaseService mUsersDB;
+    private TeamDatabaseService mTeamsDB;
     private MessagingService messagingService;
 
     private IUser mFrom;
@@ -56,11 +61,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
 
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
-        mDb.register(this);
 
-        messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
-        messagingService.register(this);
+
         getUIFields();
         createFromUser();
         btnSendInvite.setOnClickListener(view -> {
@@ -68,12 +70,23 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         });
     }
 
+    private void setUpServices() {
+        mUsersDB = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        mUsersDB.register(this);
+
+        mTeamsDB = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mTeamsDB.register(this);
+
+        messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mUsersDB);
+        messagingService.register(this);
+    }
+
     private void sendInvite(View view) {
         mInvitation = createInvitation();
         if (mFrom != null && mInvitation != null) {
             progressBar.setVisibility(View.VISIBLE);
             Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
-            mDb.getUserData(mFrom);
+            mUsersDB.getUserData(mFrom);
             messagingService.sendInvitation(mInvitation);
         }
     }
@@ -83,8 +96,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             Log.i(TAG, "createTeamIfNull: user has no team. It has been created");
             ITeam team = new TeamAdapter(new ArrayList<>());
             team.addMember(mFrom);
-            mTeamUid = mDb.createTeamInDatabase(mFrom);
-            mDb.setUserTeam(mFrom, mTeamUid);
+            mTeamUid = mTeamsDB.createTeamInDatabase(mFrom);
+            mUsersDB.setUserTeam(mFrom, mTeamUid);
         }
 
         messagingService.subscribeToNotificationsTopic(mTeamUid);
@@ -165,20 +178,10 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     @Override
-    public void onFieldRetrieved(Object field) {
-
-    }
-
-    @Override
     public void onUserData(Map<String, Object> userDataMap) {
         if (userDataMap != null) {
             mTeamUid = (String) userDataMap.get("teamUid");
             createTeamIfNull();
         }
-    }
-
-    @Override
-    public void onUserPendingInvitations(List<Invitation> invitations) {
-
     }
 }
