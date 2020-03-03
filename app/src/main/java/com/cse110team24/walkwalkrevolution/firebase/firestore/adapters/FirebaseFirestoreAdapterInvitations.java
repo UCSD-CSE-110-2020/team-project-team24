@@ -124,7 +124,7 @@ public class FirebaseFirestoreAdapterInvitations implements InvitationsDatabaseS
         observers.forEach(observer -> observer.onUserPendingInvitations(invitations));
     }
 
-    List<InvitationsDatabaseServiceObserver> observers;
+    List<InvitationsDatabaseServiceObserver> observers = new ArrayList<>();
     @Override
     public void register(InvitationsDatabaseServiceObserver invitationsDatabaseServiceObserver) {
         observers.add(invitationsDatabaseServiceObserver);
