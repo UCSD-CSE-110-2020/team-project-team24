@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -44,6 +45,11 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     private ITeam mTeam;
     private String mTeamUid;
 
+
+    private ListView teammatesList;
+    private ListviewAdapter listviewAdapter;
+    public Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*super.onCreate(savedInstanceState);
@@ -58,6 +64,9 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         seeInvitationsBtn.setOnClickListener(view -> {
             launchInvitationsActivity(view);
         });
+
+
+        fakeTesting();
     }
 
     private void launchInvitationsActivity(View view) {
@@ -133,7 +142,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         teammatesList.setAdapter(listviewAdapter);
     }
 
-    /*private void fakeTesting() {
+    private void fakeTesting() {
         List<IUser> users = new ArrayList<>();
         UserBuilder builder1 = new FirebaseUserAdapter.Builder();
         UserBuilder builder2 = new FirebaseUserAdapter.Builder();
@@ -144,10 +153,16 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         users.add(builder1.build());
         users.add(builder2.build());
         users.add(builder3.build());
-        ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
-        ListView teammatesList = (ListView) findViewById(R.id.list_members_in_team);
+        /*ListviewAdapter*/ listviewAdapter = new ListviewAdapter(this, users);
+        /*ListView*/ teammatesList = (ListView) findViewById(R.id.list_members_in_team);
+        teammatesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id)
+            {
+                Toast.makeText(context, "Item selected", Toast.LENGTH_SHORT).show();
+            }});
         teammatesList.setAdapter(listviewAdapter);
-    }*/
+        teammatesList.setSelector(android.R.color.darker_gray);
+    }
 
     private void showNoTeamToast() {
         Toast.makeText(this, "You don't have a team -^-. Try sending an invitation!", Toast.LENGTH_LONG).show();
