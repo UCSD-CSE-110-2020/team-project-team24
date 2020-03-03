@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
-public class LoginActivityUnitTest extends TestInjection implements AuthServiceObserver {
+public class LoginActivityUnitTest extends TestInjection {
     private LoginActivity testActivity;
     private Button finishBtn;
     private Button signInAsGuestBtn;
@@ -41,12 +41,10 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
     private EditText gmail;
     private EditText username;
     private EditText password;
-    private boolean userCollisionFlag = false;
     private static final String TOAST_MSG_NO_EMAIL = "Please enter an email!";
     private static final String TOAST_MSG_NO_PASSWORD = "Please enter your password!";
     private static final String TOAST_MSG_NOT_GMAIL = "Please enter a valid gmail address!";
     private static final String TOAST_MSG_NO_USERNAME = "Please enter your name!";
-    private static final String TOAST_MSG_USER_COLLISION = "user already exists!";
     private static final String TOAST_MSG_NO_HEIGHT = "Please enter a valid height!";
 
     @Before
@@ -55,7 +53,6 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
 
         FirebaseApplicationWWR.setAuthServiceFactory(asf);
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
-        mAuth.register(this);
 
         ActivityScenario<LoginActivity> scenario = ActivityScenario.launch(LoginActivity.class);
         scenario.onActivity(activity -> {
@@ -70,14 +67,6 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
             signInAsGuestBtn = testActivity.findViewById(R.id.no_login_btn);
         });
     }
-//Cheery !!
-    //I don't think we need this test. Button isn't disabled first....
-//    @Test
-//    public void testFinishBtnEnabled() {
-//        feetEt.setText("5");
-//        inchesEt.setText("3");
-//        assertTrue(finishBtn.isEnabled());
-//    }
 
     @Test
     public void loginWithoutHeight() {
@@ -182,31 +171,15 @@ public class LoginActivityUnitTest extends TestInjection implements AuthServiceO
         when(mAuth.isUserSignedIn()).thenReturn(true);
     }
 
-
-    @Override
-    public void onUserSignedIn(IUser user) {
-
-    }
-
-    @Override
-    public void onUserSignedUp(IUser user) {
-        if(mAuth.isUserSignedIn()) {
-            user.updateDisplayName(username.getText().toString());
-            mDb.createUserInDatabase(user);
-        }
-    }
-
-    @Override
-    public void onAuthSignInError(AuthService.AuthError error) {
-
-    }
-
-    @Override
-    public void onAuthSignUpError(AuthService.AuthError error) {
-        if (userCollisionFlag) {
-            assertEquals(ShadowToast.getTextOfLatestToast(), TOAST_MSG_USER_COLLISION);
-            userCollisionFlag = false;
-        }
-
+    @Test
+    public void signUpSuccess() {
+        signUpTV.performClick();
+        feetEt.setText("5");
+        inchesEt.setText("3");
+        gmail.setText("amber@gmail.com");
+        password.setText("testpw");
+        username.setText("Cheery");
+        finishBtn.performClick();
+        when(mAuth.isUserSignedIn()).thenReturn(true);
     }
 }
