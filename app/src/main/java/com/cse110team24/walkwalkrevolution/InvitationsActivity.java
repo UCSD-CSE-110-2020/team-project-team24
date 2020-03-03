@@ -12,6 +12,8 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
@@ -20,12 +22,10 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import java.util.List;
 import java.util.Map;
 
-// TODO: 3/3/20 change to  InvitationsDatabaseServiceObserver
-public class InvitationsActivity extends AppCompatActivity implements DatabaseServiceObserver {
+public class InvitationsActivity extends AppCompatActivity implements InvitationsDatabaseServiceObserver {
     private static final String TAG = "InvitationsActivity";
 
-    // TODO: 3/3/20 change to InvitationsDatabaseService
-    private DatabaseService mDb;
+    private InvitationsDatabaseService mDb;
     private MessagingService mMessagingService;
     private AuthService mAuth;
 
@@ -43,7 +43,7 @@ public class InvitationsActivity extends AppCompatActivity implements DatabaseSe
 
     private void setUpServices() {
         mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
+        mDb = (InvitationsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
         mDb.register(this);
         mMessagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
     }
@@ -63,17 +63,6 @@ public class InvitationsActivity extends AppCompatActivity implements DatabaseSe
             mCurrentUser.setEmail(email);
         }
     }
-
-    /* ---------------------- will be removed when changed to specialized service interfaces ------------------------ */
-    @Override
-    public void onTeamRetrieved(ITeam team) {
-    }
-
-    @Override
-    public void onFieldRetrieved(Object field) {
-    }
-
-    /* ---------------------- will be removed when changed to specialized service interfaces ------------------------ */
 
     // TODO: 3/3/20 display invitations and allow each one to be clickable
     @Override
