@@ -46,6 +46,7 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public static final String USER_RECEIVED_INVITATIONS_COLLECTION = "received";
     public static final String USER_SENT_INVITATIONS_COLLECTION = "sent";
     public static final String TEAMS_COLLECTION_KEY = "teams";
+    public static final String TEAMMATES_SUB_COLLECTION = "teammates";
     public static final String USER_REGISTRATION_TOKENS_COLLECTION_KEY = "tokens";
     public static final String TOKEN_SET_KEY = "token";
     public static final String TEAM_ID_KEY = "teamUid";
@@ -92,19 +93,23 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     }
 
     @Override
-    public String createTeamInDatabase(ITeam team) {
+    public void createTeamInDatabase(IUser user) {
+        // create new team document and update user's teamUid
         DocumentReference teamDocument = teamsCollection.document();
         String teamUid = teamDocument.getId();
-        team.setUid(teamUid);
-        Map<String, Object> teamData = team.teamData();
-        teamDocument.set(teamData).addOnCompleteListener(task -> {
+        user.updateTeamUid(teamUid);
+
+        // create the teammates collection and the individual member document
+        CollectionReference teamSubCollection = teamDocument.collection(TEAMMATES_SUB_COLLECTION);
+        DocumentReference memberDocument = teamSubCollection.document(user.documentKey());
+
+        memberDocument.set(user.getDisplayName()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "createTeamInDatabase: successfully created team document");
             } else {
                 Log.e(TAG, "createTeamInDatabase: error creating team document", task.getException());
             }
         });
-        return teamUid;
     }
 
     @Override
