@@ -8,8 +8,10 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ListViewAutoScrollHelper;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
@@ -18,6 +20,7 @@ import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.List;
 import java.util.Map;
 
 public class TeamActivity extends AppCompatActivity implements DatabaseServiceObserver {
@@ -97,6 +100,10 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     @Override
     public void onTeamRetrieved(ITeam team) {
         mTeam = team;
+        List<IUser> users = mTeam.getTeam();
+        ListView teammatesList = (ListView) findViewById(R.id.list_members_in_team);
+        ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
+        teammatesList.setAdapter(listviewAdapter);
         // start updating UI
 
     }
