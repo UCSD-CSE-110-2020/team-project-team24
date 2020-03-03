@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentReference;
@@ -57,6 +58,12 @@ public class FirebaseMessagingAdapter implements MessagingService {
                 notifyObserversFailedInvitationSent(task);
             }
         });
+    }
+
+    // TODO: 3/3/20 change status 
+    @Override
+    public void updateInvitationStatus(Invitation invitation, InvitationStatus status) {
+
     }
 
     @Override
