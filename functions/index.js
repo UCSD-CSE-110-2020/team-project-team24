@@ -31,7 +31,7 @@ exports.sendInviteNotification = functions.firestore
     });
 
 exports.sendNewTeammateNotification = functions.firestore
-    .document('teams/{team}/teammates/{member}')
+    .document('teams/{team}/teammates/{teammate}')
     .onCreate((snap, context) => {
         const document = snap.exists ? snap.data() : null;
 
