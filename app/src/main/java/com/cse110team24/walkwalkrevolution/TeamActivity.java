@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ListViewAutoScrollHelper;
@@ -17,9 +19,12 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.models.user.UserBuilder;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,12 +41,16 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        /*super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
         setUpServices();
         getTeamUid();
         getUIFields();
-        setButtonClickListeners();
+        setButtonClickListeners();*/
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_team);
+        getUIFields();
+        //fakeTesting();
     }
 
     private void getTeamUid() {
@@ -101,12 +110,32 @@ public class TeamActivity extends AppCompatActivity implements DatabaseServiceOb
     public void onTeamRetrieved(ITeam team) {
         mTeam = team;
         List<IUser> users = mTeam.getTeam();
-        ListView teammatesList = (ListView) findViewById(R.id.list_members_in_team);
+        TextView noTeamMessage = findViewById(R.id.text_no_teammates);
+        if(users.size() == 0) {
+            noTeamMessage.setVisibility(View.VISIBLE);
+        }else {
+            noTeamMessage.setVisibility(View.GONE);
+        }
+        ListView teammatesList = findViewById(R.id.list_members_in_team);
         ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
         teammatesList.setAdapter(listviewAdapter);
-        // start updating UI
-
     }
+
+    /*private void fakeTesting() {
+        List<IUser> users = new ArrayList<>();
+        UserBuilder builder1 = new FirebaseUserAdapter.Builder();
+        UserBuilder builder2 = new FirebaseUserAdapter.Builder();
+        UserBuilder builder3 = new FirebaseUserAdapter.Builder();
+        builder1.addDisplayName("Samuel Jackson");
+        builder2.addDisplayName("Takahashi Rie");
+        builder3.addDisplayName("Dennis");
+        users.add(builder1.build());
+        users.add(builder2.build());
+        users.add(builder3.build());
+        ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
+        ListView teammatesList = (ListView) findViewById(R.id.list_members_in_team);
+        teammatesList.setAdapter(listviewAdapter);
+    }*/
 
     @Override
     public void onFieldRetrieved(Object object) {

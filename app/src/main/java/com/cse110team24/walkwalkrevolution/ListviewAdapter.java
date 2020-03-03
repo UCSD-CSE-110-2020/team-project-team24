@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import java.util.List;
+import java.util.Random;
 
 public class ListviewAdapter extends BaseAdapter {
     Context context;
@@ -44,7 +46,8 @@ public class ListviewAdapter extends BaseAdapter {
         TextView initialView = (TextView)view.findViewById(R.id.initialView);
         nameView.setText(users.get(i).getDisplayName());
         initialView.setText(getInitialFromName(users.get(i).getDisplayName()));
-        return null;
+        setTextColor(initialView);
+        return view;
     }
 
     private String getInitialFromName(String name) {
@@ -56,5 +59,10 @@ public class ListviewAdapter extends BaseAdapter {
         return initialsToReturn;
     }
 
+    private void setTextColor(TextView view) {
+        Random rnd = new Random();
+        int color = Color.argb(255, rnd.nextInt(192), rnd.nextInt(192), rnd.nextInt(192));
+        view.setTextColor(color);
+    }
 
 }
