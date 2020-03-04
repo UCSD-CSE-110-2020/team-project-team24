@@ -57,6 +57,9 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private Invitation mInvitation;
     private String mTeamUid;
 
+    private String mToEmail;
+    private String mToDisplayName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +70,14 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         getUIFields();
         createFromUser();
         setUpServices();
-        mUsersDB.getUserData(mFrom);
+        btnSendInvite.setOnClickListener(view -> {
+            // don't call send invitation if the receiver information is invalid
+            mToEmail = editTeammateGmailInvite.getText().toString();
+            mToDisplayName = editTeammateNameInvite.getText().toString();
+            if (invalidEmail(mToEmail) || invalidName(mToDisplayName)) return;
+
+            sendInvite(view);
+        });
     }
 
     private void setUpServices() {
@@ -82,24 +92,16 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     private void sendInvite(View view) {
-        mInvitation = createInvitation();
-        if (mFrom != null && mInvitation != null) {
-            progressBar.setVisibility(View.VISIBLE);
-            Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
-            messagingService.sendInvitation(mInvitation);
-        }
+        mUsersDB.getUserData(mFrom);
     }
 
-    private void createTeamIfNull() {
-        if (mTeamUid == null) {
-            Log.i(TAG, "createTeamIfNull: user has no team. It has been created");
-            ITeam team = new TeamAdapter(new ArrayList<>());
-            team.addMember(mFrom);
-            mTeamUid = mTeamsDB.createTeamInDatabase(mFrom);
-            mUsersDB.setUserTeam(mFrom, mTeamUid);
-            mFrom.updateTeamUid(mTeamUid);
-        }
-
+    private void createTeam() {
+        Log.i(TAG, "createTeamIfNull: user has no team. It has been created");
+        ITeam team = new TeamAdapter(new ArrayList<>());
+        team.addMember(mFrom);
+        mTeamUid = mTeamsDB.createTeamInDatabase(mFrom);
+        mUsersDB.setUserTeam(mFrom, mTeamUid);
+        mFrom.updateTeamUid(mTeamUid);
         messagingService.subscribeToNotificationsTopic(mTeamUid);
         saveTeamUid();
     }
@@ -124,13 +126,11 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     private Invitation createInvitation() {
-        String toEmail = editTeammateGmailInvite.getText().toString();
-        String toDisplayName = editTeammateNameInvite.getText().toString();
-        if (invalidEmail(toEmail) || invalidName(toDisplayName)) return null;
+
         return Invitation.builder()
                 .addFromUser(mFrom)
-                .addToDisplayName(toDisplayName)
-                .addToEmail(toEmail)
+                .addToDisplayName(mToDisplayName)
+                .addToEmail(mToEmail)
                 .addTeamUid(mFrom.teamUid())
                 .build();
     }
@@ -179,10 +179,17 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     public void onUserData(Map<String, Object> userDataMap) {
         if (userDataMap != null) {
             mTeamUid = (String) userDataMap.get("teamUid");
-            createTeamIfNull();
-            btnSendInvite.setOnClickListener(view -> {
-                sendInvite(view);
-            });
+
+            if (mTeamUid == null) {
+               createTeam();
+            }
+
+            mInvitation = createInvitation();
+            if (mFrom != null && mInvitation != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
+                messagingService.sendInvitation(mInvitation);
+            }
         }
     }
 }
