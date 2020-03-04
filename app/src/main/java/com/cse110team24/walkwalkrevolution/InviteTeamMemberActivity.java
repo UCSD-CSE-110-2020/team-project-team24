@@ -68,6 +68,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         getUIFields();
         createFromUser();
         setUpServices();
+        mUsersDB.getUserData(mFrom);
         btnSendInvite.setOnClickListener(view -> {
             // don't call send invitation if the receiver information is invalid
             mToEmail = editTeammateGmailInvite.getText().toString();
@@ -90,7 +91,17 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     private void sendInvite(View view) {
-        mUsersDB.getUserData(mFrom);
+        if (mFrom != null) {
+            progressBar.setVisibility(View.VISIBLE);
+            // create team if it doesn't exist
+            Log.d(TAG, "sendInvite: getting user data");
+            if (mTeamUid == null) {
+                createTeam();
+            }
+            mInvitation = createInvitation();
+            Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
+            messagingService.sendInvitation(mInvitation);
+        }
     }
 
     private void createTeam() {
@@ -124,7 +135,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     private Invitation createInvitation() {
-
         return Invitation.builder()
                 .addFromUser(mFrom)
                 .addToDisplayName(mToDisplayName)
@@ -161,6 +171,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         handleInvitationResult("Invitation sent");
         editTeammateGmailInvite.setText("");
         editTeammateNameInvite.setText("");
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -176,18 +187,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     @Override
     public void onUserData(Map<String, Object> userDataMap) {
         if (userDataMap != null) {
+            Log.i(TAG, "onUserData: user data retrieved");
             mTeamUid = (String) userDataMap.get("teamUid");
-
-            if (mTeamUid == null) {
-               createTeam();
-            }
-
-            mInvitation = createInvitation();
-            if (mFrom != null && mInvitation != null) {
-                progressBar.setVisibility(View.VISIBLE);
-                Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
-                messagingService.sendInvitation(mInvitation);
-            }
         }
     }
 }
