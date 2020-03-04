@@ -39,15 +39,15 @@
         android:text="@string/btn_accept_team_invitation"
         android:background="@drawable/my_button_bg"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/buttonReject"
+        app:layout_constraintRight_toLeftOf="@id/buttonDecline"
         app:layout_constraintTop_toBottomOf="@id/invitationList"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
-        android:id="@+id/buttonReject"
+        android:id="@+id/buttonDecline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_reject_team_invitation"
+        android:text="@string/btn_decline_team_invitation"
         android:background="@drawable/my_button_bg"
         app:layout_constraintLeft_toRightOf="@id/buttonAccept"
         app:layout_constraintRight_toRightOf="parent"
