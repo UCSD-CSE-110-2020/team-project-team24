@@ -84,7 +84,7 @@
     <string name="title_teammates_in_team">Teammates: </string>
     <string name="btn_title_proposed_walks">Proposed Walks</string>
     <string name="btn_title_scheduled_walks">Scheduled Walks</string>
-    <string name="text_no_teammates_in_team">You Have No Teammates :\'(</string>
+    <string name="text_no_teammates_in_team">No Teammates Yet :-(</string>
 
     <!-- In activity_received_invitation.xml-->
     <string name="title_pending_invitations_page">Pending Invitations</string>
@@ -123,7 +123,7 @@
     <string name="team">Team</string>
 
     <!-- In ListviewAdapter.java -->
-    <string name="samuel_jackson">Samuel Jackson</string>
-    <string name="sj">SJ</string>
+    <string name="fake_teammate_name">Samuel Jackson</string>
+    <string name="fake_teammate_initials">SJ</string>
 
 </resources>

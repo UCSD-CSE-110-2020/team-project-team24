@@ -4,22 +4,18 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <!--    android:src="@drawable/ic_launcher" />-->
-
     <TextView
         android:id="@+id/initialView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="@string/fake_teammate_initials"
         android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/nameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="@string/fake_teammate_name"
         android:layout_marginStart="8dp"
         android:layout_gravity="center" />
-    <!--    android:padding="@dimen/activity_horizontal_margin"-->
-    <!--    android:textColor="@color/black" />-->
 </LinearLayout>
