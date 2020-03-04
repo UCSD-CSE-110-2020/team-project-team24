@@ -24,6 +24,7 @@ import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +90,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
             mCurrentUser.updateTeamUid(teamUid);
             mTDb.addUserToTeam(mCurrentUser, teamUid);
             mUDb.updateUserTeamUidInDatabase(mCurrentUser, teamUid);
+            Utils.saveString(preferences, IUser.TEAM_UID_KEY, teamUid);
         });
     }
 
