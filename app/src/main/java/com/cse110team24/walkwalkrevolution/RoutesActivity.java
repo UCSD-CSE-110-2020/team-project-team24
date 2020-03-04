@@ -86,6 +86,9 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void transitionWithAnimation() {
         saveListAsync();
+        Intent walkIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        walkIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(walkIntent);
         finish();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
