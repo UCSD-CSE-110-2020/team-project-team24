@@ -10,14 +10,14 @@
         android:id="@+id/initialView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SJ"
+        android:text="@string/sj"
         android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/nameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Samuel Jackson"
+        android:text="@string/samuel_jackson"
         android:layout_marginStart="8dp"
         android:layout_gravity="center" />
     <!--    android:padding="@dimen/activity_horizontal_margin"-->

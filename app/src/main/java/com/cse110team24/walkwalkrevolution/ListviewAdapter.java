@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -43,13 +44,18 @@ public class ListviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.item_teammate, null);
-        TextView nameView = (TextView)view.findViewById(R.id.nameView);
-        TextView initialView = (TextView)view.findViewById(R.id.initialView);
-        nameView.setText(users.get(i).getDisplayName());
-        initialView.setText(getInitialFromName(users.get(i).getDisplayName()));
-        setTextColor(initialView);
-        return view;
+        View newView;
+        if (view == null) {
+            newView = inflater.inflate(R.layout.item_teammate, viewGroup, false);
+            TextView nameView = (TextView) newView.findViewById(R.id.nameView);
+            TextView initialView = (TextView) newView.findViewById(R.id.initialView);
+            nameView.setText(users.get(i).getDisplayName());
+            initialView.setText(getInitialFromName(users.get(i).getDisplayName()));
+            setTextColor(initialView);
+        } else {
+            newView = view;
+        }
+        return newView;
     }
 
     private String getInitialFromName(String name) {

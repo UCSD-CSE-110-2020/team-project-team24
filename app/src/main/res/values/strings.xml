@@ -122,4 +122,8 @@
     <string name="home">Home</string>
     <string name="team">Team</string>
 
+    <!-- In ListviewAdapter.java -->
+    <string name="samuel_jackson">Samuel Jackson</string>
+    <string name="sj">SJ</string>
+
 </resources>
