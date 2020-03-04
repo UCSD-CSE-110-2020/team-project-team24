@@ -13,6 +13,8 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import java.util.List;
 import java.util.Random;
 
+import static android.icu.lang.UCharacter.toUpperCase;
+
 public class ListviewAdapter extends BaseAdapter {
     Context context;
     List<IUser> users;
@@ -54,7 +56,7 @@ public class ListviewAdapter extends BaseAdapter {
         String[] nameArraySeperatedBySpace = name.split(" ");
         String initialsToReturn = "";
         for(int i = 0; i < nameArraySeperatedBySpace.length; i++) {
-            initialsToReturn += nameArraySeperatedBySpace[i].toUpperCase().charAt(0);
+            initialsToReturn += toUpperCase(nameArraySeperatedBySpace[i]).charAt(0);
         }
         return initialsToReturn;
     }
