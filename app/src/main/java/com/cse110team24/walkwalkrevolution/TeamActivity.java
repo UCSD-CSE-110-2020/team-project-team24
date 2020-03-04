@@ -45,16 +45,15 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     private ITeam mTeam;
     private String mTeamUid;
 
+    private SharedPreferences preferences;
 
+    //The following three fields are for fakeTesting() only, should delete afterwards.
     private ListView teammatesList;
     private ListviewAdapter listviewAdapter;
     public Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team);
-*/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
         setUpServices();
@@ -64,7 +63,6 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         seeInvitationsBtn.setOnClickListener(view -> {
             launchInvitationsActivity(view);
         });
-
 
         fakeTesting();
     }
@@ -131,8 +129,16 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     public void onTeamRetrieved(ITeam team) {
         mTeam = team;
         List<IUser> users = mTeam.getTeam();
+        String thisUserName = preferences.getString(IUser.USER_NAME_KEY, null);
+        String thisUserEmail = preferences.getString(IUser.EMAIL_KEY, null);
+        for (IUser currUser : users) {
+            if(currUser.getDisplayName().equals(thisUserName) &&
+               currUser.getEmail().equals(thisUserEmail)) {
+                users.remove(currUser);
+            }
+        }
         TextView noTeamMessage = findViewById(R.id.text_no_teammates);
-        if(users.size() == 1) {
+        if(users.size() == 0) {
             noTeamMessage.setVisibility(View.VISIBLE);
         }else {
             noTeamMessage.setVisibility(View.GONE);
@@ -142,6 +148,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         teammatesList.setAdapter(listviewAdapter);
     }
 
+    //Just for checking whether the UI works, should delete afterwards.
     private void fakeTesting() {
         List<IUser> users = new ArrayList<>();
         UserBuilder builder1 = new FirebaseUserAdapter.Builder();
@@ -153,8 +160,10 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         users.add(builder1.build());
         users.add(builder2.build());
         users.add(builder3.build());
-        /*ListviewAdapter*/ listviewAdapter = new ListviewAdapter(this, users);
-        /*ListView*/ teammatesList = (ListView) findViewById(R.id.list_members_in_team);
+
+        // Usage for ListView item selection, useful reference for accept_invitation branch.
+        listviewAdapter = new ListviewAdapter(this, users);
+        teammatesList = (ListView) findViewById(R.id.list_members_in_team);
         teammatesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,int position, long id)
             {
