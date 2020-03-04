@@ -32,4 +32,6 @@
     <!--    In activity_routes.xml-->
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="recycle_view_margin">64dp</dimen>
+    <dimen name="recycler_view_upper_margin">120dp</dimen>
+    <dimen name="line_width">2dp</dimen>
 </resources>

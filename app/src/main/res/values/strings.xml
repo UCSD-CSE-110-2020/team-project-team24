@@ -63,6 +63,9 @@
     <string name="notesHint">Extra information about the route</string>
     <string name="save">SAVE</string>
 
+    <!--    In activity_routes.xml-->
+    <string name="btn_see_teammates_routes">See Teammate Routes</string>
+
     <!--    In item_route.xml-->
     <string name="fake_title">Canyon View Hiking Trail</string>
     <string name="fake_steps">22 steps</string>
@@ -115,7 +118,7 @@
     <!--    In AndroidManifest.xml-->
     <string name="app_name">WalkWalkRevolution</string>
     <string name="title_activity_saving_page">Save your walk</string>
-    <string name="title_activity_routes">Routes</string>
+    <string name="title_activity_routes">My Routes</string>
 
     <!--    Others-->
     <string name="routes">Routes</string>
