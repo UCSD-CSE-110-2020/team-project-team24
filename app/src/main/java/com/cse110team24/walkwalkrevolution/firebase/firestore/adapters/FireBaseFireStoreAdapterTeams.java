@@ -57,15 +57,16 @@ public class FireBaseFireStoreAdapterTeams implements TeamDatabaseService {
 
     @Override
     public void addUserToTeam(IUser user, String teamUid) {
-//        DocumentReference documentReference = teamsCollection.document(team.documentKey());
-//        documentReference.update(MEMBERS_KEY, team.getTeam()).addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Log.i(TAG, "updateTeamMembers: successfully updated team member list");
-//            } else {
-//                Log.e(TAG, "updateTeamMembers: error updating team member list", task.getException());
-//            }
-//        });
-//        return teamsCollection.document(team.getUid());
+        // teamsCollection/teamDocument/teammatesCollection/userDocument
+        DocumentReference teamDocument = teamsCollection.document(teamUid);
+        CollectionReference teammatesCollection = teamDocument.collection(TEAMMATES_SUB_COLLECTION);
+        teammatesCollection.document(user.documentKey()).set(user.userData()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "addUserToTeam: successfully updated team");
+            } else {
+                Log.e(TAG, "addUserToTeam: error updating team", task.getException());
+            }
+        });
     }
 
     // TODO: 2/28/20 need to determine if this will be real time
