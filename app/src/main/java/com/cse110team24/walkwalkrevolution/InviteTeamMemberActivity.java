@@ -228,7 +228,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     @Override
     public void onUserDoesNotExist() {
-        Toast.makeText(this, "A user with this email does not exist", Toast.LENGTH_LONG).show();
-        progressBar.setVisibility(View.GONE);
+        handleInvitationResult("A user with this email does not exist");
     }
 }
