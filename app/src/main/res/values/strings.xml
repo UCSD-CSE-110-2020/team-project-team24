@@ -89,7 +89,7 @@
     <!-- In activity_invitations -->
     <string name="title_pending_invitations_page">Pending Invitations</string>
     <string name="btn_accept_team_invitation">Accept</string>
-    <string name="btn_reject_team_invitation">Reject</string>
+    <string name="btn_decline_team_invitation">Decline</string>
     <string name="text_invitation_exists">The following users have sent you a team invitation: </string>
     <string name="text_invitation_not_exist">You haven\'t received any team invitation.</string>
 
