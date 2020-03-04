@@ -32,8 +32,8 @@ exports.sendInviteNotification = functions.firestore
 
 exports.invitationResponseNotification = functions.firestore
     .document('invitations/{userInvite}/sent/{inviteId}')
-    .onUpdate((snap, context) => {
-        const document = snap.exists ? snap.data() : null;
+    .onUpdate((change, context) => {
+        const document = change.exists ? change.data() : null;
 
         if (document) {
             var message = {
