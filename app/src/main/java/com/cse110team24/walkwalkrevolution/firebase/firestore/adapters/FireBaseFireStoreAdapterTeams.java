@@ -56,7 +56,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamDatabaseService {
     }
 
     @Override
-    public void addUserToTeam(IUser user) {
+    public void addUserToTeam(IUser user, String teamUid) {
 //        DocumentReference documentReference = teamsCollection.document(team.documentKey());
 //        documentReference.update(MEMBERS_KEY, team.getTeam()).addOnCompleteListener(task -> {
 //            if (task.isSuccessful()) {

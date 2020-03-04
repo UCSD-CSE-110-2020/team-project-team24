@@ -8,7 +8,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 public interface TeamDatabaseService extends TeamsDatabaseServiceSubject, DatabaseService {
     String createTeamInDatabase(IUser user);
-    public void addUserToTeam(IUser user);
+    void addUserToTeam(IUser user, String teamUid);
     void getUserTeam(String teamUid);
 
 }
