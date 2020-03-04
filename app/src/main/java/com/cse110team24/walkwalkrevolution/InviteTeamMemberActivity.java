@@ -33,7 +33,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Map;
 
-// TODO: 3/3/20 change to implement TeamsDatabaseServiceObserver and UsersDatabaseServiceObserver
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseServiceObserver {
     private static final String TAG = "InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
@@ -45,7 +44,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     private AuthService authService;
 
-    // TODO: 3/3/20 change to TeamsDatabaseService and UsersDatabaseService
     private UsersDatabaseService mUsersDB;
 
     private InvitationsDatabaseService mInvitationsDB;

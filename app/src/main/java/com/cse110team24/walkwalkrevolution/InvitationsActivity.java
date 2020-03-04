@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,9 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,24 +17,25 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
-import com.cse110team24.walkwalkrevolution.models.team.ITeam;
-import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.utils.Utils;
-import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 public class InvitationsActivity extends AppCompatActivity implements InvitationsDatabaseServiceObserver {
     private static final String TAG = "InvitationsActivity";
 
-    private InvitationsDatabaseService mDb;
+    private InvitationsDatabaseService mIDb;
+    private TeamDatabaseService mTDb;
+    private UsersDatabaseService mUDb;
     private MessagingService mMessagingService;
     private AuthService mAuth;
 
@@ -51,12 +49,16 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
 
     private Invitation mCurrentSelectedInvitation;
 
+    private Button acceptBtn;
+    private Button declineBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invitations);
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         getUIElements();
+        setButtonsOnClickListener();
         setUpServices();
         getPendingInvitations();
     }
@@ -69,6 +71,36 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         mInvitationsListView.setOnItemClickListener((parent, view, position, id) -> {
             selectInvitation(parent, view, position, id);
         });
+        acceptBtn = findViewById(R.id.buttonAccept);
+        declineBtn = findViewById(R.id.buttonDecline);
+    }
+
+    private void setButtonsOnClickListener() {
+        setAcceptButtonOnClickListener();
+        setDeclineButtonOnClickListener();
+    }
+
+    private void setAcceptButtonOnClickListener() {
+        acceptBtn.setOnClickListener(view -> {
+            mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
+            updateInvitations();
+            String teamUid = mCurrentSelectedInvitation.getTeamUid();
+            mCurrentUser.updateTeamUid(teamUid);
+            mTDb.addUserToTeam(mCurrentUser, teamUid);
+            mUDb.setUserTeam(mCurrentUser, teamUid);
+        });
+    }
+
+    private void setDeclineButtonOnClickListener() {
+        declineBtn.setOnClickListener(view -> {
+            mCurrentSelectedInvitation.setStatus(InvitationStatus.DECLINED);
+            updateInvitations();
+        });
+    }
+
+    private void updateInvitations() {
+        mIDb.updateInvitationForSendingUser(mCurrentSelectedInvitation);
+        mIDb.updateInvitationForReceivingUser(mCurrentSelectedInvitation);
     }
 
     private void selectInvitation(AdapterView<?> parent, View view, int position, long id) {
@@ -78,14 +110,19 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
 
     private void setUpServices() {
         mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
-        mDb = (InvitationsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
-        mDb.register(this);
-        mMessagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
+        mIDb = (InvitationsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
+        mIDb.register(this);
+
+        mTDb = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+
+        mUDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+
+        mMessagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mIDb);
     }
 
     private void getPendingInvitations() {
         getCurrentUser();
-        mDb.getUserPendingInvitations(mCurrentUser);
+        mIDb.getUserPendingInvitations(mCurrentUser);
         Toast.makeText(this, "Getting your invitations", Toast.LENGTH_SHORT).show();
     }
 
