@@ -95,11 +95,13 @@ public class FirebaseFirestoreAdapterInvitations implements InvitationsDatabaseS
     private Invitation buildInvitation(DocumentSnapshot invitationDocument, IUser user) {
         IUser from = buildUserFromInvitation(invitationDocument);
         String uid = invitationDocument.getString(Invitation.INVITATION_UID_SET_KEY);
+        String teamUid = invitationDocument.getString(Invitation.INVITATION_TEAM_UID_SET_KEY);
         return Invitation.builder()
                 .addFromUser(from)
                 .addToEmail(user.getEmail())
                 .addToDisplayName(user.getDisplayName())
                 .addUid(uid)
+                .addTeamUid(teamUid)
                 .build();
     }
 

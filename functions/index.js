@@ -32,8 +32,8 @@ exports.sendInviteNotification = functions.firestore
 
 exports.invitationResponseNotification = functions.firestore
     .document('invitations/{userInvite}/sent/{inviteId}')
-    .onUpdate((snap, context) => {
-        const document = snap.exists ? snap.data() : null;
+    .onUpdate((change, context) => {
+        const document = change.exists ? change.data() : null;
 
         if (document) {
             var message = {
@@ -66,7 +66,7 @@ exports.sendNewTeammateNotification = functions.firestore
         if (document) {
             var message = {
                 notification: {
-                    title: document.name + ' has joined your team!',
+                    title: document.displayName + ' has joined your team!',
                     body: 'Click to see your team'
                 },
                 topic: context.params.team

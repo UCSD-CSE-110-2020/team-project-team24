@@ -13,9 +13,7 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseSeviceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 
@@ -24,20 +22,15 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersData
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
-import com.cse110team24.walkwalkrevolution.models.team.ITeam;
-import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.gms.tasks.Task;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-// TODO: 3/3/20 change to implement TeamsDatabaseServiceObserver and UsersDatabaseServiceObserver
-public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseSeviceObserver {
+public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseServiceObserver {
     private static final String TAG = "InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;
@@ -48,7 +41,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     private AuthService authService;
 
-    // TODO: 3/3/20 change to TeamsDatabaseService and UsersDatabaseService
     private UsersDatabaseService mUsersDB;
 
     private InvitationsDatabaseService mInvitationsDB;
@@ -60,22 +52,38 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private Invitation mInvitation;
     private String mTeamUid;
 
+    private String mToEmail;
+    private String mToDisplayName;
+    private boolean receiverExists = false;
+    private boolean dataReady = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_invite_member);
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
-        authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
-
         getUIFields();
-        createFromUser();
         setUpServices();
+
+        createFromUser();
+        // check if there is a teamUid in the shared preferences file - if not, get the user's data
+        if ( (mTeamUid = preferences.getString(IUser.TEAM_UID_KEY, null)) == null) {
+            mUsersDB.getUserData(mFrom);
+        } else {
+            dataReady = true;
+            mFrom.updateTeamUid(mTeamUid);
+            btnSendInvite.setEnabled(true);
+        }
+
+
         btnSendInvite.setOnClickListener(view -> {
-            sendInvite(view);
+            tryToSendInvitation(view);
         });
     }
 
     private void setUpServices() {
+        authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+
         mUsersDB = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         mUsersDB.register(this);
 
@@ -86,36 +94,48 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         messagingService.register(this);
     }
 
-    private void sendInvite(View view) {
-        mInvitation = createInvitation();
-        if (mFrom != null && mInvitation != null) {
+    private void tryToSendInvitation(View view) {
+
+        // don't call send invitation if the receiver information is invalid
+        mToEmail = editTeammateGmailInvite.getText().toString();
+        mToDisplayName = editTeammateNameInvite.getText().toString();
+        if (invalidEmail(mToEmail) || invalidName(mToDisplayName)) return;
+
+        // dataReady indicates we have exhausted all places to read the teamUid from
+        // this will be true if the button can be clicked (probably need to remove)
+        if (dataReady) {
             progressBar.setVisibility(View.VISIBLE);
-            Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
-            mUsersDB.getUserData(mFrom);
-            messagingService.sendInvitation(mInvitation);
+            mUsersDB.checkIfOtherUserExists(Utils.cleanEmail(mToEmail));
         }
     }
 
-    private void createTeamIfNull() {
-        if (mTeamUid == null) {
-            Log.i(TAG, "createTeamIfNull: user has no team. It has been created");
-            ITeam team = new TeamAdapter(new ArrayList<>());
-            team.addMember(mFrom);
-            mTeamUid = mTeamsDB.createTeamInDatabase(mFrom);
-            mUsersDB.setUserTeam(mFrom, mTeamUid);
-        }
+    // create the sending user's team in the database
+    // only do this if the teamUid is null both in shared preferences and in the UID
+    private void createTeam() {
+        Log.i(TAG, "createTeamIfNull: user has no team. It has been created");
+        // create the team
+        mTeamUid = mTeamsDB.createTeamInDatabase(mFrom);
 
+        // update the user's user document
+        mFrom.updateTeamUid(mTeamUid);
+        mUsersDB.updateUserTeamUidInDatabase(mFrom, mTeamUid);
+
+        // subscribe to the topic
         messagingService.subscribeToNotificationsTopic(mTeamUid);
-        saveTeamUid();
+        saveTeamUidInPreferences();
+        dataReady = true;
     }
 
-    private void saveTeamUid() {
+    // save the team UID into shared preferences for future use
+    private void saveTeamUidInPreferences() {
         getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE)
                 .edit()
                 .putString(IUser.TEAM_UID_KEY, mTeamUid)
                 .apply();
     }
 
+    // create an IUser representation of the sending user that contains their name, email, and
+    // team Uid regardless of whether the teamUid exists
     private void createFromUser() {
         String displayName = preferences.getString(IUser.USER_NAME_KEY, null);
         String email = preferences.getString(IUser.EMAIL_KEY, null);
@@ -126,14 +146,14 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         }
     }
 
+    // create the Invitation with the sending user's IUser representation and the receiving user's
+    // email and name, and includes the sender's teamUid (which must always exist)
     private Invitation createInvitation() {
-        String toEmail = editTeammateGmailInvite.getText().toString();
-        String toDisplayName = editTeammateNameInvite.getText().toString();
-        if (invalidEmail(toEmail) || invalidName(toDisplayName)) return null;
         return Invitation.builder()
                 .addFromUser(mFrom)
-                .addToDisplayName(toDisplayName)
-                .addToEmail(toEmail)
+                .addToDisplayName(mToDisplayName)
+                .addToEmail(mToEmail)
+                .addTeamUid(mFrom.teamUid())
                 .build();
     }
 
@@ -157,6 +177,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         editTeammateGmailInvite = findViewById(R.id.field_enter_member_email);
         editTeammateNameInvite = findViewById(R.id.field_enter_member_name);
         btnSendInvite = findViewById(R.id.btn_send_invite);
+        btnSendInvite.setEnabled(false);
         progressBar = findViewById(R.id.progressBar);
     }
 
@@ -169,19 +190,44 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     @Override
     public void onFailedInvitationSent(Task<?> task) {
-        handleInvitationResult("Error sending invitation. User may not exist");
+        handleInvitationResult("Error sending invitation");
     }
 
     private void handleInvitationResult(String message) {
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onUserData(Map<String, Object> userDataMap) {
         if (userDataMap != null) {
+            Log.i(TAG, "onUserData: user data retrieved");
             mTeamUid = (String) userDataMap.get("teamUid");
-            createTeamIfNull();
+
+            // still check if the teamUid exists because they could have deleted app data
+            dataReady = true;
+            btnSendInvite.setEnabled(true);
         }
+    }
+
+    // allow the invitation and team to be created only if the receiver exists and doesn't have a team
+    @Override
+    public void onUserExists(IUser user) {
+        if (user.teamUid() != null) {
+            handleInvitationResult("Cannot send invite. User already has a team.");
+        } else if (mFrom != null) {
+            // create team if it doesn't exist and invitation receiver exists
+            if (mTeamUid == null) {
+                createTeam();
+            }
+            mInvitation = createInvitation();
+            Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
+            messagingService.sendInvitation(mInvitation);
+        }
+    }
+
+    @Override
+    public void onUserDoesNotExist() {
+        handleInvitationResult("A user with this email does not exist");
     }
 }
