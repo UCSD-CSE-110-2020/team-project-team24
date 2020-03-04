@@ -82,6 +82,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
 
     private void setAcceptButtonOnClickListener() {
         acceptBtn.setOnClickListener(view -> {
+            if (mCurrentSelectedInvitation == null) return;
+
             mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
             updateInvitations();
             String teamUid = mCurrentSelectedInvitation.getTeamUid();
@@ -93,6 +95,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
 
     private void setDeclineButtonOnClickListener() {
         declineBtn.setOnClickListener(view -> {
+            if (mCurrentSelectedInvitation == null) return;
+
             mCurrentSelectedInvitation.setStatus(InvitationStatus.DECLINED);
             updateInvitations();
         });
