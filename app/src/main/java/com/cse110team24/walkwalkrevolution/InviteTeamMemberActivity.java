@@ -65,14 +65,15 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         getUIFields();
         setUpServices();
 
+        createFromUser();
         // check if there is a teamUid in the shared preferences file - if not, get the user's data
         if ( (mTeamUid = preferences.getString(IUser.TEAM_UID_KEY, null)) == null) {
             mUsersDB.getUserData(mFrom);
         } else {
             dataReady = true;
+            mFrom.updateTeamUid(mTeamUid);
             btnSendInvite.setEnabled(true);
         }
-        createFromUser();
 
 
         btnSendInvite.setOnClickListener(view -> {
@@ -142,7 +143,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             mFrom = authService.getUser();
             mFrom.setDisplayName(displayName);
             mFrom.setEmail(email);
-            mFrom.updateTeamUid(mTeamUid);
         }
     }
 
@@ -190,7 +190,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     @Override
     public void onFailedInvitationSent(Task<?> task) {
-        handleInvitationResult("Error sending invitation. User may not exist");
+        handleInvitationResult("Error sending invitation. User may already have a team");
     }
 
     private void handleInvitationResult(String message) {
@@ -205,10 +205,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             mTeamUid = (String) userDataMap.get("teamUid");
 
             // still check if the teamUid exists because they could have deleted app data
-            if (mTeamUid != null) {
-                dataReady = true;
-                btnSendInvite.setEnabled(true);
-            }
+            dataReady = true;
+            btnSendInvite.setEnabled(true);
         }
     }
 
