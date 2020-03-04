@@ -203,7 +203,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         if (userDataMap != null) {
             Log.i(TAG, "onUserData: user data retrieved");
             mTeamUid = (String) userDataMap.get("teamUid");
-
+            mFrom.updateTeamUid(mTeamUid);
             // still check if the teamUid exists because they could have deleted app data
             dataReady = true;
             btnSendInvite.setEnabled(true);
