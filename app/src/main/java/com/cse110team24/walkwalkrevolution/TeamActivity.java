@@ -131,6 +131,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         ListView teammatesList = findViewById(R.id.list_members_in_team);
         ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
         teammatesList.setAdapter(listviewAdapter);
+
     }
 
     /*private void fakeTesting() {

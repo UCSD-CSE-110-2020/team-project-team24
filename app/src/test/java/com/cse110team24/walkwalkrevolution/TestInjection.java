@@ -7,9 +7,21 @@ import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseServiceFactory;
+<<<<<<< HEAD
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
 
+=======
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
+
+import org.mockito.Mock;
+>>>>>>> master
 import org.mockito.Mockito;
 
 public class TestInjection {
@@ -21,6 +33,20 @@ public class TestInjection {
     protected MessagingService mMsg;
     protected Activity activity;
 
+<<<<<<< HEAD
+=======
+    protected UsersDatabaseService usersDatabaseService;
+    protected TeamDatabaseService teamDatabaseService;
+    protected InvitationsDatabaseService invitationsDatabaseService;
+
+    IUser testUser = FirebaseUserAdapter.builder()
+            .addDisplayName("tester")
+            .addEmail("test@gmail.com")
+            .addTeamUid("666")
+            .addUid("0")
+            .build();
+
+>>>>>>> master
     void setup() {
         asf = Mockito.mock(FirebaseAuthServiceFactory.class);
         dsf = Mockito.mock(FirestoreDatabaseServiceFactory.class);
@@ -37,5 +63,13 @@ public class TestInjection {
         FirebaseApplicationWWR.setAuthServiceFactory(asf);
         FirebaseApplicationWWR.setMessagingServiceFactory(msf);
 
+<<<<<<< HEAD
+=======
+        usersDatabaseService = Mockito.mock(UsersDatabaseService.class);
+        teamDatabaseService = Mockito.mock(TeamDatabaseService.class);
+        invitationsDatabaseService = Mockito.mock(InvitationsDatabaseService.class);
+
+        Mockito.when(mAuth.getUser()).thenReturn(testUser);
+>>>>>>> master
     }
 }
