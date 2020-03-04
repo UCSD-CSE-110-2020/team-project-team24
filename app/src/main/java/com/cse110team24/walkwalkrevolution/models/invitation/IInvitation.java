@@ -13,6 +13,7 @@ public interface IInvitation {
     public String toDocumentKey();
     public String fromDocumentKey();
     public InvitationStatus status();
+    public void setStatus(InvitationStatus status);
     public String uid();
     public void setUid(String uid);
     public Map<String, Object> invitationData();

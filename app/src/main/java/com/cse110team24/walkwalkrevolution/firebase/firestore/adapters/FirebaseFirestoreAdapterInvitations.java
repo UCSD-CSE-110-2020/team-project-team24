@@ -53,6 +53,20 @@ public class FirebaseFirestoreAdapterInvitations implements InvitationsDatabaseS
         return result;
     }
 
+    public void updateInvitationForReceivingUser(Invitation invitation) {
+        DocumentReference userInvitationDoc = invitationsRootCollection.document(invitation.toDocumentKey() + "invitations");
+        CollectionReference receivedInvitations = userInvitationDoc.collection(USER_RECEIVED_INVITATIONS_COLLECTION);
+        DocumentReference invitationDoc = receivedInvitations.document(invitation.uid());
+        invitationDoc.update(invitation.invitationData());
+    }
+
+    public void updateInvitationForSendingUser(Invitation invitation) {
+        DocumentReference userInvitationDoc = invitationsRootCollection.document(invitation.fromDocumentKey() + "invitations");
+        CollectionReference sentInvitations = userInvitationDoc.collection(USER_SENT_INVITATIONS_COLLECTION);
+        DocumentReference invitationDoc = sentInvitations.document(invitation.uid());
+        invitationDoc.update(invitation.invitationData());
+    }
+
     @Override
     public void getUserPendingInvitations(IUser user) {
         invitationsRootCollection

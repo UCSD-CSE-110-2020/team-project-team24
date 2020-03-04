@@ -72,6 +72,11 @@ public class Invitation implements IInvitation {
     }
 
     @Override
+    public void setStatus(InvitationStatus status) {
+        this.mStatus = status;
+    }
+
+    @Override
     public String uid() {
         return mUid;
     }
