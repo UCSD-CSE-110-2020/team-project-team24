@@ -104,6 +104,11 @@ public class HomeActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate: handler posted");
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
     private void getUIFields() {
         dailyStepsTv = findViewById(R.id.tv_daily_steps);
         dailyDistanceTv = findViewById(R.id.tv_daily_distance);
