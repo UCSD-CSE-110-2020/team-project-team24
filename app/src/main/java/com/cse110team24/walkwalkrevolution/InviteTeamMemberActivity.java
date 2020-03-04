@@ -97,6 +97,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             team.addMember(mFrom);
             mTeamUid = mTeamsDB.createTeamInDatabase(mFrom);
             mUsersDB.setUserTeam(mFrom, mTeamUid);
+            mFrom.updateTeamUid(mTeamUid);
         }
 
         messagingService.subscribeToNotificationsTopic(mTeamUid);
