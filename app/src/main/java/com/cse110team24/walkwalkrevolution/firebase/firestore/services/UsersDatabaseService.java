@@ -10,5 +10,5 @@ public interface UsersDatabaseService extends UsersDatabaseServiceSubject, Datab
     void setUserTeam(IUser user, String teamUid);
     DocumentReference addUserMessagingRegistrationToken(IUser user, String token);
     void getUserData(IUser user);
-
+    void checkIfOtherUserExists(String userDocumentKey);
 }

@@ -191,4 +191,15 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             mTeamUid = (String) userDataMap.get("teamUid");
         }
     }
+
+    // TODO: 3/4/20 check this before sending the invitation/creating the team 
+    @Override
+    public void onUserExists() {
+
+    }
+
+    @Override
+    public void onUserDoesNotExist() {
+
+    }
 }

@@ -90,6 +90,25 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
         });
     }
 
+    @Override
+    public void checkIfOtherUserExists(String userDocumentKey) {
+        DocumentReference otherUserDoc = usersCollection.document(userDocumentKey);
+        otherUserDoc.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                notifyObserversIfUserExists(task.getResult().exists());
+            }
+        });
+    }
+
+    @Override
+    public void notifyObserversIfUserExists(boolean exists) {
+        if (exists) {
+            observers.forEach(observer -> observer.onUserExists());
+        } else {
+            observers.forEach(observer -> observer.onUserDoesNotExist());
+        }
+    }
+
     List<UsersDatabaseServiceObserver> observers = new ArrayList<>();
     @Override
     public void register(UsersDatabaseServiceObserver usersDatabaseServiceObserver) {

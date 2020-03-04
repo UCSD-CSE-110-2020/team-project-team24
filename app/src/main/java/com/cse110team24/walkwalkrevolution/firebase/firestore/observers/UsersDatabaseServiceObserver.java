@@ -4,4 +4,6 @@ import java.util.Map;
 
 public interface UsersDatabaseServiceObserver {
     void onUserData(Map<String, Object> userDataMap);
+    void onUserExists();
+    void onUserDoesNotExist();
 }

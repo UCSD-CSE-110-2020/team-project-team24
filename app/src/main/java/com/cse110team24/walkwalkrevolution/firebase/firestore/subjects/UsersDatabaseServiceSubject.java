@@ -7,5 +7,5 @@ import java.util.Map;
 
 public interface UsersDatabaseServiceSubject extends Subject<UsersDatabaseServiceObserver> {
     void notifyObserversUserData(Map<String, Object> userDataMap);
-
+    void notifyObserversIfUserExists(boolean exists);
 }
