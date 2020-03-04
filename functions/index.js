@@ -66,7 +66,7 @@ exports.sendNewTeammateNotification = functions.firestore
         if (document) {
             var message = {
                 notification: {
-                    title: document.name + ' has joined your team!',
+                    title: document.displayName + ' has joined your team!',
                     body: 'Click to see your team'
                 },
                 topic: context.params.team
