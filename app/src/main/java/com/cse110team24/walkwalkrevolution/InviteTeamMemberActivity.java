@@ -186,7 +186,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         handleInvitationResult("Invitation sent");
         editTeammateGmailInvite.setText("");
         editTeammateNameInvite.setText("");
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -230,5 +229,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     @Override
     public void onUserDoesNotExist() {
         Toast.makeText(this, "A user with this email does not exist", Toast.LENGTH_LONG).show();
+        progressBar.setVisibility(View.GONE);
     }
 }
