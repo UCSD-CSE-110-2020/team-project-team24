@@ -78,6 +78,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         setDeclineButtonOnClickListener();
     }
 
+    // TODO: 3/4/20 subscribe to topic: new team
     private void setAcceptButtonOnClickListener() {
         acceptBtn.setOnClickListener(view -> {
             if (mCurrentSelectedInvitation == null) return;
