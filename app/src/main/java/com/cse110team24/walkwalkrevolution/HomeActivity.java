@@ -17,14 +17,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 
-import com.cse110team24.walkwalkrevolution.models.Route;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import com.cse110team24.walkwalkrevolution.models.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -40,9 +45,15 @@ public class HomeActivity extends AppCompatActivity {
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final String HEIGHT_FT_KEY = "Height Feet";
     public static final String HEIGHT_IN_KEY = "Height Remainder Inches";
-    public static final String HEIGHT_PREF = "height_preferences";
+    public static final String APP_PREF = "height_preferences";
 
     private FitnessService fitnessService;
+
+    private AuthService authService;
+    private DatabaseService mDb;
+    private MessagingService messagingService;
+
+    private IUser mUser;
 
     private Handler handler = new Handler();
     private Runnable runUpdateSteps = new Runnable() {
@@ -60,6 +71,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean recordingExistingRoute;
     private boolean saved;
     private Intent data;
+    private Intent myIntent = null;
 
     private int heightFeet;
     private float heightRemainderInches;
@@ -83,9 +95,10 @@ public class HomeActivity extends AppCompatActivity {
         getUIFields();
         saveHeight();
         setFitnessService();
+        firebaseUserSetup();
+        subscribeToReceiveInvitations();
 
         setButtonOnClickListeners();
-
 
         handler.post(runUpdateSteps);
         Log.i(TAG, "onCreate: handler posted");
@@ -107,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void saveHeight() {
-        SharedPreferences preferences = getSharedPreferences(HEIGHT_PREF, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         heightFeet = getIntent().getIntExtra(HEIGHT_FT_KEY, -1);
         heightRemainderInches =  getIntent().getFloatExtra(HEIGHT_IN_KEY, -1);
@@ -125,6 +138,25 @@ public class HomeActivity extends AppCompatActivity {
 
     private String getServiceKey() {
         return getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+    }
+
+    private void firebaseUserSetup() {
+        authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
+
+        SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
+        String email = preferences.getString(IUser.EMAIL_KEY, null);
+        if (email != null) {
+            mUser = authService.getUser();
+            mUser.setEmail(email);
+        }
+    }
+
+    private void subscribeToReceiveInvitations() {
+        if (mUser != null) {
+            messagingService.subscribeToNotificationsTopic(mUser.documentKey() + "invitations");
+        }
     }
 
     private void setButtonOnClickListeners() {
@@ -187,7 +219,14 @@ public class HomeActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             if(menuItem.getItemId() == R.id.action_routes_list) {
-                launchGoToRoutesActivity(new Intent(this, RoutesActivity.class));
+                myIntent = new Intent(getApplicationContext(), RoutesActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(myIntent);
+            }
+            if(menuItem.getItemId() == R.id.action_team) {
+                myIntent = new Intent(getApplicationContext(), TeamActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(myIntent);
             }
             return true;
         });
@@ -216,10 +255,16 @@ public class HomeActivity extends AppCompatActivity {
         startActivityForResult(intent, MockActivity.REQUEST_CODE);
     }
 
+    /*
     public void launchGoToRoutesActivity(Intent intent) {
         startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
+    public void launchGoToTeamActivity(Intent intent) {
+        startActivityForResult(intent, RoutesActivity.REQUEST_CODE);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+    */
 
     private void launchSaveRouteActivity() {
         Log.i(TAG, "launchSaveRouteActivity: route stopped, going to save");

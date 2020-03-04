@@ -1,10 +1,19 @@
 <resources>
 
-    <!--    In activity_height.xml -->
+    <!--    In activity_login.xml -->
     <string name="height_prompt">Please enter your height:</string>
     <string name="num_hint">0</string>
     <string name="feet_units">ft</string>
     <string name="inch_units">in</string>
+    <string name="without_login">Continue without login</string>
+    <string name="with_login">Go back to login</string>
+    <string name="enter_gmail_address">Enter gmail address</string>
+    <string name="enter_password">Enter unique password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_name">Enter name</string>
+    <string name="sign_up_tv">Don\'t have an account? Sign up here</string>
+    <string name="login_tv">Already have an account? Log in here</string>
 
     <!--    In activity_home.xml-->
     <string name="daily_steps">Daily Steps</string>
@@ -60,7 +69,31 @@
     <string name="fake_distance">0.01 miles</string>
     <string name="fake_date">1/20</string>
 
-    <!--    In both activity_height.xml and activity_mock.xml-->
+    <!-- In activity_teaminvite_member.xml-->
+    <string name="title_add_team_member">Add Team Member</string>
+    <string name="hint_enter_team_name">Enter Team Member Name</string>
+    <string name="title_team_member_name">Team Member Name</string>
+    <string name="hint_enter_team_email">Enter Team Member Email</string>
+    <string name="title_team_member_email">Team Member Email</string>
+    <string name="btn_send_invite">Send Invitation</string>
+
+    <!-- In activity_team.xml-->
+    <string name="title_team_page">Your Walking Team</string>
+    <string name="pending_invites">Pending&#10;Invites</string>
+    <string name="invite_team_member">Invite&#10;Teammate</string>
+    <string name="title_teammates_in_team">Teammates: </string>
+    <string name="btn_title_proposed_walks">Proposed Walks</string>
+    <string name="btn_title_scheduled_walks">Scheduled Walks</string>
+    <string name="text_no_teammates_in_team">You Have No Teammates :\'(</string>
+
+    <!-- In activity_received_invitation.xml-->
+    <string name="title_pending_invitations_page">Pending Invitations</string>
+<!--    <string name="btn_accept_team_invitation">Accept</string>-->
+<!--    <string name="btn_reject_team_invitation">Reject</string>-->
+<!--    <string name="text_invitation_exists">The following users have sent you a team invitation: </string>-->
+<!--    <string name="text_invitation_not_exist">You haven\'t received any team invitation.</string>-->
+
+    <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
 
     <!--    In both activity_home.xml and activity_route_details.xml-->
@@ -87,4 +120,6 @@
     <!--    Others-->
     <string name="routes">Routes</string>
     <string name="home">Home</string>
+    <string name="team">Team</string>
+
 </resources>

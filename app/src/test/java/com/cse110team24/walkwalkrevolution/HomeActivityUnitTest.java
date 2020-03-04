@@ -25,7 +25,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class HomeActivityUnitTest {
+public class HomeActivityUnitTest extends TestInjection {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     private static final int FEET = 5;
     private static final float INCHES = 3f;
@@ -46,6 +46,7 @@ public class HomeActivityUnitTest {
 
     @Before
     public void setup() {
+        super.setup();
         FitnessServiceFactory.put(TEST_SERVICE, TestFitnessService::new);
         intent = new Intent(ApplicationProvider.getApplicationContext(), HomeActivity.class)
                     .putExtra(HomeActivity.FITNESS_SERVICE_KEY, TEST_SERVICE)
@@ -58,7 +59,7 @@ public class HomeActivityUnitTest {
     public void testHeightSaved() {
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            SharedPreferences preferences = activity.getSharedPreferences(HomeActivity.HEIGHT_PREF, Context.MODE_PRIVATE);
+            SharedPreferences preferences = activity.getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
             assertEquals(5, preferences.getInt(HomeActivity.HEIGHT_FT_KEY, -1));
             assertEquals(3, preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, -1), 0.1);
         });

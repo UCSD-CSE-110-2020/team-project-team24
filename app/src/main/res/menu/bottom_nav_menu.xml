@@ -15,6 +15,12 @@
         android:icon="@drawable/ic_terrain_black_24dp"
         android:title="@string/routes"
          />
+    <item
+        android:id="@+id/action_team"
+        android:enabled="true"
+        android:icon="@drawable/ic_team_black_24dp"
+        android:title="@string/team"
+        />
 
 
 </menu>

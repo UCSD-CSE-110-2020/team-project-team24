@@ -1,6 +1,9 @@
 package com.cse110team24.walkwalkrevolution;
 
-import com.cse110team24.walkwalkrevolution.models.*;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
+import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+
 import java.util.*;
 
 import org.junit.Before;

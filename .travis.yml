@@ -1,4 +1,4 @@
-anguage: android
+language: android
 dist: trusty
 
 before_cache:
