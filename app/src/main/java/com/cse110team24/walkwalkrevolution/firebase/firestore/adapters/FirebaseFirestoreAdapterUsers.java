@@ -4,9 +4,12 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapterBuilder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -95,15 +98,27 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
         DocumentReference otherUserDoc = usersCollection.document(userDocumentKey);
         otherUserDoc.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
-                notifyObserversIfUserExists(task.getResult().exists());
+                notifyObserversIfUserExists(task.getResult().exists(), buildUser(task.getResult()));
             }
         });
     }
 
+    // build user, only gives display name and teamUid
+    private IUser buildUser(DocumentSnapshot data) {
+        if (data.exists()) {
+            return FirebaseUserAdapter.builder()
+                    .addDisplayName(data.getString("displayName"))
+                    .addTeamUid(data.getString("teamUid"))
+                    .build();
+        } else {
+            return null;
+        }
+    }
+
     @Override
-    public void notifyObserversIfUserExists(boolean exists) {
+    public void notifyObserversIfUserExists(boolean exists, IUser otherUser) {
         if (exists) {
-            observers.forEach(observer -> observer.onUserExists());
+            observers.forEach(observer -> observer.onUserExists(otherUser));
         } else {
             observers.forEach(observer -> observer.onUserDoesNotExist());
         }

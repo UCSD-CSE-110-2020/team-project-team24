@@ -190,7 +190,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     @Override
     public void onFailedInvitationSent(Task<?> task) {
-        handleInvitationResult("Error sending invitation. User may already have a team");
+        handleInvitationResult("Error sending invitation");
     }
 
     private void handleInvitationResult(String message) {
@@ -212,7 +212,11 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     // allow the invitation and team to be created only if the receiver exists
     @Override
-    public void onUserExists() {
+    public void onUserExists(IUser user) {
+        if (user.teamUid() != null) {
+            handleInvitationResult("Cannot send invite. User already has a team.");
+            return;
+        }
         if (mFrom != null) {
             // create team if it doesn't exist and invitation receiver exists
             if (mTeamUid == null) {
