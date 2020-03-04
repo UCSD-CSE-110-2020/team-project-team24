@@ -44,7 +44,11 @@ public class RoutesActivity extends AppCompatActivity {
 
         getUIElements();
         setListeners();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         checkForExistingSavedRoutes();
         configureRecyclerViewAdapter();
     }
@@ -129,6 +133,7 @@ public class RoutesActivity extends AppCompatActivity {
         String filename = getSaveFilename();
         try {
             List<Route> tempList = RoutesManager.readList(filename, this);
+            routes.clear();
             routes.addAll(tempList);
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,6 +147,9 @@ public class RoutesActivity extends AppCompatActivity {
         return (filename == null) ? LIST_SAVE_FILE : filename;
     }
 
+    private void addToRoutes(List<Route> savedRoutes) {
+
+    }
 
     private void configureRecyclerViewAdapter() {
         Collections.sort(routes);
