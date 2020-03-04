@@ -45,7 +45,7 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     }
 
     @Override
-    public void setUserTeam(IUser user, String teamUid) {
+    public void updateUserTeamUidInDatabase(IUser user, String teamUid) {
         DocumentReference documentReference = usersCollection.document(user.documentKey());
         documentReference.update(TEAM_UID_KEY, teamUid).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

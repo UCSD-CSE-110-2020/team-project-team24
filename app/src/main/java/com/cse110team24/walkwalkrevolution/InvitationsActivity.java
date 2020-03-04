@@ -17,7 +17,6 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
@@ -28,7 +27,6 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class InvitationsActivity extends AppCompatActivity implements InvitationsDatabaseServiceObserver {
     private static final String TAG = "InvitationsActivity";
@@ -89,7 +87,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
             String teamUid = mCurrentSelectedInvitation.getTeamUid();
             mCurrentUser.updateTeamUid(teamUid);
             mTDb.addUserToTeam(mCurrentUser, teamUid);
-            mUDb.setUserTeam(mCurrentUser, teamUid);
+            mUDb.updateUserTeamUidInDatabase(mCurrentUser, teamUid);
         });
     }
 
