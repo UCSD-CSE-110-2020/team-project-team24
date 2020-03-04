@@ -67,9 +67,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         getUIFields();
         createFromUser();
         setUpServices();
-        btnSendInvite.setOnClickListener(view -> {
-            sendInvite(view);
-        });
+        mUsersDB.getUserData(mFrom);
     }
 
     private void setUpServices() {
@@ -88,7 +86,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         if (mFrom != null && mInvitation != null) {
             progressBar.setVisibility(View.VISIBLE);
             Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
-            mUsersDB.getUserData(mFrom);
             messagingService.sendInvitation(mInvitation);
         }
     }
@@ -116,10 +113,12 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private void createFromUser() {
         String displayName = preferences.getString(IUser.USER_NAME_KEY, null);
         String email = preferences.getString(IUser.EMAIL_KEY, null);
+        mTeamUid = preferences.getString(IUser.TEAM_UID_KEY, null);
         if (displayName != null && email != null) {
             mFrom = authService.getUser();
             mFrom.setDisplayName(displayName);
             mFrom.setEmail(email);
+            mFrom.updateTeamUid(mTeamUid);
         }
     }
 
@@ -131,6 +130,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
                 .addFromUser(mFrom)
                 .addToDisplayName(toDisplayName)
                 .addToEmail(toEmail)
+                .addTeamUid(mFrom.teamUid())
                 .build();
     }
 
@@ -179,6 +179,9 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         if (userDataMap != null) {
             mTeamUid = (String) userDataMap.get("teamUid");
             createTeamIfNull();
+            btnSendInvite.setOnClickListener(view -> {
+                sendInvite(view);
+            });
         }
     }
 }
