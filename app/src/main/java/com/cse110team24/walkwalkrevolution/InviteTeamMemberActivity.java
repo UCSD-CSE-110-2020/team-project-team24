@@ -13,9 +13,7 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseSeviceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 
@@ -33,11 +31,10 @@ import com.google.android.gms.tasks.Task;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 // TODO: 3/3/20 change to implement TeamsDatabaseServiceObserver and UsersDatabaseServiceObserver
-public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseSeviceObserver {
+public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseServiceObserver {
     private static final String TAG = "InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;

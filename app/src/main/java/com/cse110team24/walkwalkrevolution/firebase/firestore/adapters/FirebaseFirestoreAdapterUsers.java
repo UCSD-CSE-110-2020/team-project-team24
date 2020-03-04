@@ -2,7 +2,7 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore.adapters;
 
 import android.util.Log;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseSeviceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -90,14 +90,14 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
         });
     }
 
-    List<UsersDatabaseSeviceObserver> observers = new ArrayList<>();
+    List<UsersDatabaseServiceObserver> observers = new ArrayList<>();
     @Override
-    public void register(UsersDatabaseSeviceObserver usersDatabaseSeviceObserver) {
-        observers.add(usersDatabaseSeviceObserver);
+    public void register(UsersDatabaseServiceObserver usersDatabaseServiceObserver) {
+        observers.add(usersDatabaseServiceObserver);
     }
 
     @Override
-    public void deregister(UsersDatabaseSeviceObserver usersDatabaseSeviceObserver) {
-        observers.remove(usersDatabaseSeviceObserver);
+    public void deregister(UsersDatabaseServiceObserver usersDatabaseServiceObserver) {
+        observers.remove(usersDatabaseServiceObserver);
     }
 }
