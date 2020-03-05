@@ -120,7 +120,7 @@ public class Route implements Serializable, Comparable<Route> {
         data.put("title", mTitle);
         data.put("startingLocation", mStartingLocation);
         data.put("environment", mEnvironment);
-        data.put("stats", mStats.statsData());
+        data.put("stats", (mStats == null) ? null : mStats.statsData());
         data.put("notes", mNotes);
         return data;
     }
