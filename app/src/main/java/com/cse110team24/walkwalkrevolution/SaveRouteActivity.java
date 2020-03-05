@@ -17,7 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class SaveRouteActivity extends AppCompatActivity {
-    private static final String TAG = "SaveRouteActivity";
+    private static final String TAG = "WWR_SaveRouteActivity";
 
     public static final String WALK_STATS_KEY = "walk_stats";
     public static final String NEW_ROUTE_KEY = "new_route";

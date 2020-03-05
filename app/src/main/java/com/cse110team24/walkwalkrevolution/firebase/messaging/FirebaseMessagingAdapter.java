@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseMessagingAdapter implements MessagingService {
-    private static final String TAG = "FirebaseMessagingAdapter";
+    private static final String TAG = "WWR_FirebaseMessagingAdapter";
     private static final String databaseUrl = "https://walkwalkrevolution.firebaseio.com";
 
     private FirebaseMessaging mFirebaseMessaging;

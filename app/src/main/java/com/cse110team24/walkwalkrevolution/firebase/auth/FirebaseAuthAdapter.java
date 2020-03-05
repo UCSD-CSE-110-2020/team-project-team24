@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateListener {
-    private static String TAG = "FirebaseAuthAdapter";
+    private static String TAG = "WWR_FirebaseAuthAdapter";
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;

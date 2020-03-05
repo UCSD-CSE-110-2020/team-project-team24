@@ -20,7 +20,7 @@ import java.util.List;
 import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBERS_KEY;
 
 public class FireBaseFireStoreAdapterTeams implements TeamDatabaseService {
-    private static final String TAG = "FirebaseFirestoreAdapterTeams";
+    private static final String TAG = "WWR_FirebaseFirestoreAdapterTeams";
 
     public static final String TEAMS_COLLECTION_KEY = "teams";
     public static final String TEAMMATES_SUB_COLLECTION = "teammates";

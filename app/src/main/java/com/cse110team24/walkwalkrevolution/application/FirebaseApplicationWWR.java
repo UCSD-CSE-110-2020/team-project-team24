@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseApplicationWWR extends Application implements ApplicationSubject {
-    private static final String TAG = "FirebaseApplicationWWR";
+    private static final String TAG = "WWR_FirebaseApplicationWWR";
     private static AuthServiceFactory authServiceFactory;
     private static DatabaseServiceFactory databaseServiceFactory;
     private static MessagingServiceFactory messagingServiceFactory;

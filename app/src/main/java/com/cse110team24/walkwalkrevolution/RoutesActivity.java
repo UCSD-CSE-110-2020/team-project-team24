@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class RoutesActivity extends AppCompatActivity {
-    public static final String TAG = "RoutesActivity";
+    public static final String TAG = "WWR_RoutesActivity";
 
     public static final String LIST_SAVE_FILE = ".WWR_route_list_data";
     public static final String SAVE_FILE_KEY = "save_file";

@@ -40,7 +40,7 @@ import java.util.Date;
 
 
 public class HomeActivity extends AppCompatActivity {
-    private static final String TAG = "HomeActivity";
+    private static final String TAG = "WWR_HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
     private static final long UPDATE_PERIOD = 10_000;
 

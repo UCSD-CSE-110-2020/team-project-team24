@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
-    private static final String TAG = "TeamActivity";
+    private static final String TAG = "WWR_TeamActivity";
     private Button sendInviteBtn;
     private Button seeInvitationsBtn;
     private BottomNavigationView bottomNavigationView;
