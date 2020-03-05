@@ -41,6 +41,7 @@ public class TestInjection {
 
     IUser otherUser = FirebaseUserAdapter.builder()
             .addDisplayName("cheery")
+            .addEmail("amara@gmail.com")
             .build();
 
     void setup() {
