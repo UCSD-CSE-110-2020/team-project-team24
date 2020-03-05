@@ -15,6 +15,7 @@ import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingS
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
+
 import org.mockito.Mockito;
 
 public class TestInjection {
@@ -25,6 +26,7 @@ public class TestInjection {
     protected DatabaseService mDb;
     protected MessagingService mMsg;
     protected Activity activity;
+
 
     protected UsersDatabaseService usersDatabaseService;
     protected TeamDatabaseService teamDatabaseService;
@@ -56,6 +58,7 @@ public class TestInjection {
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
         FirebaseApplicationWWR.setAuthServiceFactory(asf);
         FirebaseApplicationWWR.setMessagingServiceFactory(msf);
+
 
         usersDatabaseService = Mockito.mock(UsersDatabaseService.class);
         teamDatabaseService = Mockito.mock(TeamDatabaseService.class);

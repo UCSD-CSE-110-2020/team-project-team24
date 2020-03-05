@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private SharedPreferences preferences;
     private IUser mCurrentUser;
 
+
     private List<Invitation> mInvitations = new ArrayList<>();
     private InvitationsListViewAdapter mAdapter;
     private ListView mInvitationsListView;
@@ -61,11 +63,13 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invitations);
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
+
         getUIElements();
         setButtonsOnClickListener();
         setUpServices();
         getPendingInvitations();
     }
+
 
     private void getUIElements() {
         mInvitationsListView = findViewById(R.id.invitationList);
@@ -95,8 +99,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
                 mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
                 updateInvitations();
                 String senderTeamUid = mCurrentSelectedInvitation.getTeamUid();
-                mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
                 updateTeamUidLocallyAndDatabase(senderTeamUid);
+                mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
                 mMessagingService.subscribeToNotificationsTopic(senderTeamUid);
                 Utils.showToast(this, "welcome to " + mCurrentSelectedInvitation.fromName() + "'s team", Toast.LENGTH_LONG);
                 dismissSelectedInvitation();
@@ -175,6 +179,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     // TODO: 3/3/20 display invitations and allow each one to be clickable
     @Override
     public void onUserPendingInvitations(List<Invitation> invitations) {
+
         Log.i(TAG, "onUserPendingInvitations: user's pending invitations retrieved");
         progressBar.setVisibility(View.GONE);
         mInvitations.addAll(invitations);

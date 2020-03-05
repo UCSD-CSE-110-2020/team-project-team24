@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
@@ -61,6 +62,7 @@ public class TeamActivityUnitTest extends TestInjection {
         noTeammatesInTeamText = activity.findViewById(R.id.text_no_teammates);
     }
 
+<<<<<<< HEAD
     private void mockTeamDbRegister() {
         Mockito.doAnswer(invocation -> {
             teamDbObserver = invocation.getArgument(0);
@@ -107,6 +109,7 @@ public class TeamActivityUnitTest extends TestInjection {
                 .addUid("2")
                 .build();
         listOfUsers = new ArrayList<IUser>();
+
         teamList = new TeamAdapter(listOfUsers);
         teamList.addMember(userOne);
         teamList.addMember(userTwo);
@@ -121,12 +124,10 @@ public class TeamActivityUnitTest extends TestInjection {
             Mockito.verify(teamDatabaseService).register(any());
             getUIFields(activity);
             teamDbObserver.onTeamRetrieved(teamList);
+
             assertEquals(noTeammatesInTeamText.getVisibility(), View.GONE);
             assertEquals(teammatesList.getChildCount(), 2);
         });
 
     }
-
-
-
 }
