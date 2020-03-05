@@ -131,7 +131,6 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     public void onTeamRetrieved(ITeam team) {
         mTeam = team;
         List<IUser> users = mTeam.getTeam();
-        removeCurrentUser(users);
         TextView noTeamMessage = findViewById(R.id.text_no_teammates);
         if(users.size() == 0) {
             noTeamMessage.setVisibility(View.VISIBLE);
