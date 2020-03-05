@@ -18,9 +18,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.Mockito;
+
+import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.any;
 import static org.mockito.ArgumentMatchers.eq;
 import org.robolectric.shadows.ShadowToast;
+
+import java.util.HashMap;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -199,6 +203,43 @@ public class InviteTeammateUnitTest extends TestInjection {
             Mockito.verify(usersDatabaseService).checkIfOtherUserExists(any());
             Mockito.verify(mMsg).sendInvitation(Mockito.any());
             assertEquals(TOAST_MSG_INVITATION_SENT, ShadowToast.getTextOfLatestToast());
+        });
+    }
+
+    @Test
+    public void userWithoutTeamIDLocally() {
+        mockUserDbRegister();
+        scenario = ActivityScenario.launch(InviteTeamMemberActivity.class);
+        scenario.onActivity(activity -> {
+            Mockito.verify(usersDatabaseService).register(any());
+            Mockito.verify(usersDatabaseService).getUserData(any());
+            assertNotNull(testUser.teamUid()); // test if team id has been created
+        });
+    }
+
+    @Test
+    public void userWithoutTeamID() {
+        testUser.updateTeamUid(null);
+        mockUserDbRegister();
+        mockOtherUserExists();
+
+        Mockito.doAnswer(invocation -> {
+            userDbObserver.onUserData(new HashMap<>());
+            return null;
+        }).when(usersDatabaseService).getUserData(any());
+
+        Mockito.doReturn("666").when(teamDatabaseService).createTeamInDatabase(any());
+
+        scenario = ActivityScenario.launch(InviteTeamMemberActivity.class);
+        scenario.onActivity(activity -> {
+            Mockito.verify(usersDatabaseService).register(any());
+
+            getUIFields(activity);
+            inviteUserWithName("cheery");
+
+            Mockito.verify(usersDatabaseService).checkIfOtherUserExists(any());
+            Mockito.verify(teamDatabaseService).createTeamInDatabase(any());
+            assertNotNull(testUser.teamUid());
         });
     }
 
