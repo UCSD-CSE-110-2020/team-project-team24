@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 @LooperMode(LooperMode.Mode.PAUSED)
-public class RoutesActivityUnitTest {
+public class RoutesActivityUnitTest extends TestInjection{
     public static final String TEST_SAVE_FILE = ".WWR_test_save_file";
 
     private BottomNavigationView bottomNavigation;
@@ -49,6 +49,7 @@ public class RoutesActivityUnitTest {
 
     @Before
     public void setup() {
+        super.setup();
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), RoutesActivity.class)
                 .putExtra(RoutesActivity.SAVE_FILE_KEY, TEST_SAVE_FILE);
         try {

@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Log.i(TAG, "onCreate: login activity created");
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         homeIntent = new Intent(this, HomeActivity.class);
 
