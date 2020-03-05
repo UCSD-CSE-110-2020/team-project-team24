@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
 
     private Button acceptBtn;
     private Button declineBtn;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         });
         acceptBtn = findViewById(R.id.buttonAccept);
         declineBtn = findViewById(R.id.buttonDecline);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     private void setButtonsOnClickListener() {
@@ -127,9 +130,9 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     }
 
     private void getPendingInvitations() {
+        progressBar.setVisibility(View.VISIBLE);
         getCurrentUser();
         mIDb.getUserPendingInvitations(mCurrentUser);
-        Toast.makeText(this, "Getting your invitations", Toast.LENGTH_SHORT).show();
     }
 
     private void getCurrentUser() {
@@ -145,7 +148,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     // TODO: 3/3/20 display invitations and allow each one to be clickable
     @Override
     public void onUserPendingInvitations(List<Invitation> invitations) {
-        Toast.makeText(this, "retrieved your invitations successfully!", Toast.LENGTH_LONG).show();
+        Log.i(TAG, "onUserPendingInvitations: user's pending invitations retrieved");
+        progressBar.setVisibility(View.GONE);
         mInvitations.addAll(invitations);
         mAdapter.notifyDataSetChanged();
         if (!invitations.isEmpty()) {
