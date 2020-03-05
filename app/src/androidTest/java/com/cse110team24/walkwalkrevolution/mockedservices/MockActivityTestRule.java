@@ -15,16 +15,14 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
  * use it like this [this will the instance variable for the testing class] :
  *      [@rule] - no brackets
  *      public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
- * @param the activity that first launches (LoginActivity.class)
  * if you need to change what happens before the activity is launched, feel free to extend this class
  *
  */
 public class  MockActivityTestRule<LoginActivity extends Activity> extends ActivityTestRule<LoginActivity> {
 
     FirebaseApplicationWWR testApplicationWWR;
-    MockActivityTestRule(Class<LoginActivity> activityClass) {
+    public MockActivityTestRule(Class<LoginActivity> activityClass) {
         super(activityClass);
-        testApplicationWWR = (FirebaseApplicationWWR) getActivity().getApplication();
     }
 
     @Override
