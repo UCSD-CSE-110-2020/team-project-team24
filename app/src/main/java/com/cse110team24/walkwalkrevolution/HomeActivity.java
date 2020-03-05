@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -27,6 +28,7 @@ import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
@@ -50,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
     private FitnessService fitnessService;
 
     private AuthService authService;
-    private DatabaseService mDb;
+    private UsersDatabaseService mDb;
     private MessagingService messagingService;
 
     private IUser mUser;
@@ -97,7 +99,6 @@ public class HomeActivity extends AppCompatActivity {
         setFitnessService();
         firebaseUserSetup();
         subscribeToReceiveInvitations();
-
         setButtonOnClickListeners();
 
         handler.post(runUpdateSteps);
@@ -142,7 +143,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void firebaseUserSetup() {
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
 
         SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
@@ -297,6 +298,11 @@ public class HomeActivity extends AppCompatActivity {
     private void handleNewRouteRecorded(Intent data) {
         toggleBtn(saveRouteBtn);
         Route route = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
+        // upload the new route to db
+        mDb.uploadRoute(
+                getSharedPreferences(APP_PREF, Context.MODE_PRIVATE).
+                        getString(Utils.cleanEmail(IUser.EMAIL_KEY), ""),
+                route);
         saveIntoList(route);
         showRouteSavedToast();
     }
@@ -336,6 +342,9 @@ public class HomeActivity extends AppCompatActivity {
             Log.i(TAG, "checkIfRouteExisted: returning to route details view for automatic recording");
             Route existingRoute = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
             existingRoute.setStats(stats);
+
+            // update existing route in db
+            
             saveIntoList(existingRoute);
             showRouteUpdatedToast();
         }
