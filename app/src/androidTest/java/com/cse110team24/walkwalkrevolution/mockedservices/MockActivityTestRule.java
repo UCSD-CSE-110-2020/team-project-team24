@@ -31,6 +31,8 @@ public class  MockActivityTestRule<T extends Activity> extends ActivityTestRule<
                 .remove(HomeActivity.HEIGHT_FT_KEY)
                 .remove(HomeActivity.HEIGHT_IN_KEY)
                 .apply();
+
+//        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().get
     }
 
 }
