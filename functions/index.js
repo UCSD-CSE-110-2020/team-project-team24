@@ -47,7 +47,6 @@ exports.sendInvitationResponseNotification = functions.firestore
                     body: 'Click to see your team'
                 },
                 topic: context.params.userInvite
-                console.log('Topic: ' + context.params.userInvite);
             };
 
             return admin.messaging().send(message)
