@@ -32,4 +32,11 @@
     <!--    In activity_routes.xml-->
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="recycle_view_margin">64dp</dimen>
+
+    <!--    In activity_invitations.xml-->
+    <dimen name="btn_bottom_margin">20sp</dimen>
+
+    <!--    In item_inviter.xml & item_teammate.xml-->
+    <dimen name="list_item_margin">6dp</dimen>
+    <dimen name="list_item_font_size">16sp</dimen>
 </resources>
