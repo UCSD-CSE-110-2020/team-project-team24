@@ -97,6 +97,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
                 mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
                 updateTeamUidLocallyAndDatabase(senderTeamUid);
                 mMessagingService.subscribeToNotificationsTopic(senderTeamUid);
+                Utils.showToast(this, "welcome to " + mCurrentSelectedInvitation.fromName() + "'s team", Toast.LENGTH_LONG);
                 dismissSelectedInvitation();
             }
         });
@@ -110,6 +111,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
 
     private void dismissSelectedInvitation() {
         mInvitations.remove(selectedIdx);
+        mInvitationsListView.setSelector(android.R.color.background_light);
         if (mInvitations.size() == 0) {
             mNoInvitationsTextView.setVisibility(View.VISIBLE);
         }
@@ -135,6 +137,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     }
 
     private void selectInvitation(AdapterView<?> parent, View view, int position, long id) {
+        mInvitationsListView.setSelector(android.R.color.holo_red_light);
         selectedIdx = position;
         mCurrentSelectedInvitation = (Invitation) mAdapter.getItem(position);
         Log.d(TAG, "selectInvitation: item selected: " + mCurrentSelectedInvitation.fromName());
