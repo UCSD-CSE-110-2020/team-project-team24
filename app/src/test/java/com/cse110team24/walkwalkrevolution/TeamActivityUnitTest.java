@@ -89,10 +89,27 @@ public class TeamActivityUnitTest extends TestInjection {
             assertEquals(teammatesList.getChildCount(), 0);
         });
     }
+/*    @Test
+    public void TeamMyselfOnlyOnTeamRetrieved() {
+        mockTeamDbRegister();
+
+        listOfUsers = new ArrayList<IUser>();
+        teamList = new TeamAdapter(listOfUsers);
+        teamList.addMember(testUser);
+
+        scenario = ActivityScenario.launch(TeamActivity.class);
+        scenario.onActivity(activity -> {
+            Mockito.verify(teamDatabaseService).register(any());
+            getUIFields(activity);
+            teamDbObserver.onTeamRetrieved(teamList);
+            assertEquals(noTeammatesInTeamText.getVisibility(), View.VISIBLE);
+            assertEquals(teammatesList.getChildCount(), 0);
+        });
+    }
+ */
     @Test
     public void TeamOfTwoOnTeamRetrieved() {
         mockTeamDbRegister();
-        mockTeamExists();
 
         IUser userOne = FirebaseUserAdapter.builder()
                 .addDisplayName("testerOne")
@@ -126,6 +143,55 @@ public class TeamActivityUnitTest extends TestInjection {
             assertEquals(noTeammatesInTeamText.getVisibility(), View.GONE);
             assertEquals(teammatesList.getChildCount(), 2);
         });
-
     }
+    public void savedTeamUIDToPreferences() {
+        sp.edit().putString("teamUid", "666")
+                .commit();
+    }
+    @Test
+    public void TeamOfTwoPlusMyselfOnTeamRetrieved() {
+        mockTeamDbRegister();
+
+
+        IUser userOne = FirebaseUserAdapter.builder()
+                .addDisplayName("testerOne")
+                .addEmail("testOne@gmail.com")
+                .addTeamUid("666")
+                .addUid("1")
+                .build();
+        IUser userTwo = FirebaseUserAdapter.builder()
+                .addDisplayName("testerTwo")
+                .addEmail("testTwo@gmail.com")
+                .addTeamUid("666")
+                .addUid("2")
+                .build();
+        IUser userThree = FirebaseUserAdapter.builder()
+                .addDisplayName("testerThree")
+                .addEmail("testThree@gmail.com")
+                .addTeamUid("666")
+                .addUid("3")
+                .build();
+        listOfUsers = new ArrayList<IUser>();
+        teamList = new TeamAdapter(listOfUsers);
+        teamList.addMember(userOne);
+        teamList.addMember(userTwo);
+        teamList.addMember(userThree);
+        //teamList.addMember(testUser);
+
+        savedTeamUIDToPreferences();
+        Mockito.doAnswer(invocation -> {
+            teamDbObserver.onTeamRetrieved(teamList);
+            return null;
+        }).when(teamDatabaseService).getUserTeam(any());
+
+        scenario = ActivityScenario.launch(TeamActivity.class);
+        scenario.onActivity(activity -> {
+            Mockito.verify(teamDatabaseService).getUserTeam(any());
+            Mockito.verify(teamDatabaseService).register(any());
+            getUIFields(activity);
+        //    assertEquals(View.GONE, noTeammatesInTeamText.getVisibility());
+            assertEquals(3, teammatesList.getChildCount());
+        });
+    }
+
 }
