@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -14,7 +13,7 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import java.util.List;
 import java.util.Random;
 
-import static android.icu.lang.UCharacter.toUpperCase;
+import static com.google.common.base.Ascii.toUpperCase;
 
 public class ListviewAdapter extends BaseAdapter {
     Context context;
@@ -47,8 +46,9 @@ public class ListviewAdapter extends BaseAdapter {
         View newView;
         if (view == null) {
             newView = inflater.inflate(R.layout.item_teammate, viewGroup, false);
-            TextView nameView = (TextView) newView.findViewById(R.id.nameView);
-            TextView initialView = (TextView) newView.findViewById(R.id.initialView);
+
+            TextView nameView = newView.findViewById(R.id.nameView);
+            TextView initialView = newView.findViewById(R.id.initialView);
             nameView.setText(users.get(i).getDisplayName());
             initialView.setText(getInitialFromName(users.get(i).getDisplayName()));
             setTextColor(initialView);

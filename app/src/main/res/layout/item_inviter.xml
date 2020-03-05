@@ -5,17 +5,7 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/initialView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fake_teammate_initials"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:layout_marginStart="36dp"
-        android:layout_gravity="center"/>
-
-    <TextView
-        android:id="@+id/nameView"
+        android:id="@+id/inviterNameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fake_teammate_name"
@@ -24,4 +14,5 @@
         android:layout_marginTop="@dimen/list_item_margin"
         android:layout_marginBottom="@dimen/list_item_margin"
         android:layout_gravity="center" />
+
 </LinearLayout>

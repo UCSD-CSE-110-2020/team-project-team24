@@ -9,6 +9,8 @@ import com.google.android.gms.tasks.Task;
 public interface InvitationsDatabaseService extends InvitationsDatabaseServiceSubject, DatabaseService {
     Task<?> addInvitationForReceivingUser(Invitation invitation);
     Task<?> addInvitationForSendingUser(Invitation invitation);
+    void updateInvitationForReceivingUser(Invitation invitation);
+    void updateInvitationForSendingUser(Invitation invitation);
     void getUserPendingInvitations(IUser user);
     void addInvitationsSnapshotListener(IUser user);
 }

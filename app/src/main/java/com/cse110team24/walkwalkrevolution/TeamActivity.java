@@ -54,15 +54,14 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         getUIFields();
         setButtonClickListeners();
         seeInvitationsBtn.setOnClickListener(view -> {
-            launchInvitationsActivity();
+            launchInvitationsActivity(view);
         });
     }
 
-    private void launchInvitationsActivity() {
+    private void launchInvitationsActivity(View view) {
         Intent intent = new Intent(this, InvitationsActivity.class);
         startActivity(intent);
     }
-
 
     private void getTeamUid() {
         mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
@@ -124,16 +123,18 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     @Override
     public void onTeamRetrieved(ITeam team) {
-        mTeam.getTeam().addAll(team.getTeam());
+        mTeam = team;
         List<IUser> users = mTeam.getTeam();
-        removeCurrentUser(users);
-
-        if(users.size() == 0) {
+        TextView noTeamMessage = findViewById(R.id.text_no_teammates);
+        if(users.size() == 1) {
             noTeamMessage.setVisibility(View.VISIBLE);
-        } else {
+        }else {
             noTeamMessage.setVisibility(View.GONE);
         }
-        listviewAdapter.notifyDataSetChanged();
+        ListView teammatesList = findViewById(R.id.list_members_in_team);
+        ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
+        teammatesList.setAdapter(listviewAdapter);
+
     }
 
     private void removeCurrentUser(List<IUser> users) {

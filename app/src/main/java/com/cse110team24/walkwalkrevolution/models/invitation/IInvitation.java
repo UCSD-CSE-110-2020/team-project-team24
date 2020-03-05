@@ -7,12 +7,14 @@ import java.util.Map;
 public interface IInvitation {
     public IUser fromUser();
     public String fromEmail();
-    public String toEmail();
     public String fromName();
+    public String fromDocumentKey();
+    public String toEmail();
     public String toName();
     public String toDocumentKey();
-    public String fromDocumentKey();
+    public String getTeamUid();
     public InvitationStatus status();
+    public void setStatus(InvitationStatus status);
     public String uid();
     public void setUid(String uid);
     public Map<String, Object> invitationData();

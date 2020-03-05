@@ -15,7 +15,6 @@ import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingS
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
-import org.mockito.Mock;
 
 import org.mockito.Mockito;
 
@@ -38,6 +37,10 @@ public class TestInjection {
             .addEmail("test@gmail.com")
             .addTeamUid("666")
             .addUid("0")
+            .build();
+
+    IUser otherUser = FirebaseUserAdapter.builder()
+            .addDisplayName("cheery")
             .build();
 
     void setup() {
