@@ -71,14 +71,14 @@ public class FireBaseFireStoreAdapterTeams implements TeamDatabaseService {
 
     // TODO: 2/28/20 need to determine if this will be real time
     @Override
-    public void getUserTeam(String teamUid) {
+    public void getUserTeam(String teamUid, String currentUserDisplayName) {
         DocumentReference documentReference = teamsCollection.document(teamUid);
         CollectionReference teammatesCollection = documentReference.collection(TEAMMATES_SUB_COLLECTION);
         teammatesCollection.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 Log.i(TAG, "getUserTeam: team successfully retrieved");
                 List<DocumentSnapshot> documents = task.getResult().getDocuments();
-                ITeam team = getTeamList(documents);
+                ITeam team = getTeamList(documents, currentUserDisplayName);
                 notifyObserversTeamRetrieved(team);
             } else {
                 Log.e(TAG, "getUserTeam: error getting user team", task.getException());
@@ -86,10 +86,12 @@ public class FireBaseFireStoreAdapterTeams implements TeamDatabaseService {
         });
     }
 
-    private ITeam getTeamList(List<DocumentSnapshot> documents) {
+    private ITeam getTeamList(List<DocumentSnapshot> documents, String currentUserDisplayName) {
         ITeam team = new TeamAdapter(new ArrayList<>());
         for (DocumentSnapshot member : documents) {
             String displayName = (String) member.get("displayName");
+            // skip the current user
+            if (currentUserDisplayName.equals(displayName)) continue;
             IUser user = FirebaseUserAdapter.builder()
                     .addDisplayName(displayName)
                     .build();

@@ -46,6 +46,7 @@ public class ListviewAdapter extends BaseAdapter {
         View newView;
         if (view == null) {
             newView = inflater.inflate(R.layout.item_teammate, viewGroup, false);
+
             TextView nameView = newView.findViewById(R.id.nameView);
             TextView initialView = newView.findViewById(R.id.initialView);
             nameView.setText(users.get(i).getDisplayName());

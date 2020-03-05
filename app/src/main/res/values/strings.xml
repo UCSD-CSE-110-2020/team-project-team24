@@ -84,7 +84,7 @@
     <string name="title_teammates_in_team">Teammates: </string>
     <string name="btn_title_proposed_walks">Proposed Walks</string>
     <string name="btn_title_scheduled_walks">Scheduled Walks</string>
-    <string name="text_no_teammates_in_team">You Have No Teammates :\'(</string>
+    <string name="text_no_teammates_in_team">No Teammates Yet :-(</string>
 
     <!-- In activity_invitations -->
     <string name="title_pending_invitations_page">Pending Invitations</string>
@@ -92,9 +92,6 @@
     <string name="btn_decline_team_invitation">Decline</string>
     <string name="text_invitation_not_exist">You don\'t have any pending invitations.</string>
 
-    <!--    In item_teammate.xml-->
-    <string name="fake_teammate_initials">SJ</string>
-    <string name="fake_teammate_name">Samuel Jackson</string>
 
     <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
@@ -124,5 +121,9 @@
     <string name="routes">Routes</string>
     <string name="home">Home</string>
     <string name="team">Team</string>
+
+    <!-- In ListviewAdapter.java -->
+    <string name="fake_teammate_name">Samuel Jackson</string>
+    <string name="fake_teammate_initials">SJ</string>
 
 </resources>
