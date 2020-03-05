@@ -2,55 +2,42 @@ package com.cse110team24.walkwalkrevolution;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
-import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
-import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
-import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.shadows.ShadowToast;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(AndroidJUnit4.class)
 public class TeamActivityUnitTest extends TestInjection {
 
     ActivityScenario<TeamActivity> scenario;
-    MessagingObserver messagingObserver;
-    UsersDatabaseServiceObserver userDbObserver;
+  //  MessagingObserver messagingObserver;
+//    UsersDatabaseServiceObserver userDbObserver;
     SharedPreferences sp;
     ListView teammatesList;
     TextView noTeammatesInTeamText;
-    TeamAdapter teamList;
-    List<IUser> listOfUsers;
+  //  TeamAdapter teamList;
+  //  List<IUser> listOfUsers;
 
     @Before
     public void setup() {
@@ -70,6 +57,7 @@ public class TeamActivityUnitTest extends TestInjection {
     }
 
     @Test
+
         public void emptyTeamOnTeamRetrieved() {
             scenario = ActivityScenario.launch(TeamActivity.class);
             scenario.onActivity(activity -> {
