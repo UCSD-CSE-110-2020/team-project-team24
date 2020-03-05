@@ -6,20 +6,25 @@ import android.content.Context;
 import androidx.test.rule.ActivityTestRule;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 
 
 /** TODO
  * new activity test rule to forcibly remove app data
  * Use this rule in your tests
  * use it like this [this will the instance variable for the testing class] :
+ *      [@rule] - no brackets
  *      public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
- * @param <T> the activity that first launches (LoginActivity.class)
+ * @param the activity that first launches (LoginActivity.class)
  * if you need to change what happens before the activity is launched, feel free to extend this class
  *
  */
-public class  MockActivityTestRule<T extends Activity> extends ActivityTestRule<T> {
-    MockActivityTestRule(Class<T> activityClass) {
+public class  MockActivityTestRule<LoginActivity extends Activity> extends ActivityTestRule<LoginActivity> {
+
+    FirebaseApplicationWWR testApplicationWWR;
+    MockActivityTestRule(Class<LoginActivity> activityClass) {
         super(activityClass);
+        testApplicationWWR = (FirebaseApplicationWWR) getActivity().getApplication();
     }
 
     @Override
@@ -31,8 +36,7 @@ public class  MockActivityTestRule<T extends Activity> extends ActivityTestRule<
                 .remove(HomeActivity.HEIGHT_FT_KEY)
                 .remove(HomeActivity.HEIGHT_IN_KEY)
                 .apply();
-
-//        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().get
+        FirebaseApplicationWWR.setAuthServiceFactory(new TestAuth.TestAuthAuthServiceFactory());
     }
 
 }
