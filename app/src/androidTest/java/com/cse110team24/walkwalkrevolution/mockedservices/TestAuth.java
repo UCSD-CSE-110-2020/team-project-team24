@@ -23,9 +23,12 @@ public class TestAuth {
 
 
     // set these when you need to.
-    public static IUser testUser;
+    public static IUser testAuthUser;
     public static AuthService.AuthError testAuthError;
     public static boolean isTestUserSignedIn;
+
+    public static boolean successUserSignedUp;
+    public static boolean successUserSignedIn;
 
     /** TODO
      * instead of having observers, you should manually call the observer's method
@@ -33,19 +36,36 @@ public class TestAuth {
      * [observer].onUserSignedIn(testUser) should be called
      */
     public static class TestAuthService implements AuthService{
-
+        AuthServiceObserver observer;
         @Override
         public void signIn(String email, String password) {
+            /** TODO: 3/5/20 should call one of
+             * [observer].onUserSignedUp(testAuthUser)
+             * [observer].onAuthSignUpError(testAuthError)
+             */
+            if (successUserSignedUp) {
+                observer.onUserSignedUp(testAuthUser);
+            } else {
+                observer.onAuthSignUpError(testAuthError);
+            }
         }
 
         @Override
         public void signUp(String email, String password, String displayName) {
-
+            /** TODO: 3/5/20 should call one of
+             * [observer].onUserSignedUp(testAuthUser)
+             * [observer].onAuthSignUpError(testAuthError)
+             */
+            if (successUserSignedIn) {
+                observer.onUserSignedIn(testAuthUser);
+            } else {
+                observer.onAuthSignInError(testAuthError);
+            }
         }
 
         @Override
         public IUser getUser() {
-            return testUser;
+            return testAuthUser;
         }
 
         @Override
@@ -80,6 +100,7 @@ public class TestAuth {
 
         @Override
         public void register(AuthServiceObserver authServiceObserver) {
+            observer = authServiceObserver;
         }
 
         @Override

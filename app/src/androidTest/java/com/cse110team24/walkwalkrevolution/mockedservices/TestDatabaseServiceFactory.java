@@ -6,6 +6,11 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFac
 public class TestDatabaseServiceFactory implements DatabaseServiceFactory {
     @Override
     public DatabaseService createDatabaseService(DatabaseService.Service service) {
-        return null;
+        switch (service) {
+            case USERS:
+                return new TestUsersDatabaseService();
+            default:
+                return null;
+        }
     }
 }

@@ -7,7 +7,11 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestUsersDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +29,18 @@ public class LoginActivityUIEspressoTest {
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
+
+    @Before
+    public void setup() {
+        TestAuth.isTestUserSignedIn = false;
+        TestAuth.successUserSignedIn = true;
+        TestAuth.testAuthUser = FirebaseUserAdapter.builder()
+                .addDisplayName("Test")
+                .addEmail("test@gmail.com")
+                .addTeamUid("666")
+                .addUid("1")
+                .build();
+    }
 
     @Test
     public void loginActivityUIEspressoTest() {
