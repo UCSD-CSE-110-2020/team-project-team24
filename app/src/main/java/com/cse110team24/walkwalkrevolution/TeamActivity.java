@@ -76,7 +76,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
             showNoTeamToast();
         } else {
             Log.d(TAG, "getTeamUid: team uid found, retrieving team");
-            mDb.getUserTeam(mTeamUid);
+            mDb.getUserTeam(mTeamUid, preferences.getString(IUser.USER_NAME_KEY, ""));
         }
     }
 
@@ -132,7 +132,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         mTeam = team;
         List<IUser> users = mTeam.getTeam();
         TextView noTeamMessage = findViewById(R.id.text_no_teammates);
-        if(users.size() == 1) {
+        if(users.size() == 0) {
             noTeamMessage.setVisibility(View.VISIBLE);
         }else {
             noTeamMessage.setVisibility(View.GONE);
@@ -141,17 +141,6 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
         teammatesList.setAdapter(listviewAdapter);
 
-    }
-
-    private void removeCurrentUser(List<IUser> users) {
-        String thisUserName = preferences.getString(IUser.USER_NAME_KEY, null);
-        String thisUserEmail = preferences.getString(IUser.EMAIL_KEY, null);
-        for (IUser currUser : users) {
-            if(currUser.getDisplayName().equals(thisUserName) &&
-               currUser.getEmail().equals(thisUserEmail)) {
-                users.remove(currUser);
-            }
-        }
     }
 
     private void showNoTeamToast() {
