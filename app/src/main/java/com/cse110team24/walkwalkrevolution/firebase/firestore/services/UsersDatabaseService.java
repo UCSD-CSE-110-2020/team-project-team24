@@ -12,4 +12,6 @@ public interface UsersDatabaseService extends UsersDatabaseServiceSubject, Datab
     DocumentReference addUserMessagingRegistrationToken(IUser user, String token);
     void getUserData(IUser user);
     void uploadRoute(String userDocumentKey, Route route);
+    void updateRoute(String userDocumentKey, Route route);
+
 }

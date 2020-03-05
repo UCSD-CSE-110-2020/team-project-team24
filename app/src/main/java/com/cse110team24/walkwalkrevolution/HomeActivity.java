@@ -344,7 +344,10 @@ public class HomeActivity extends AppCompatActivity {
             existingRoute.setStats(stats);
 
             // update existing route in db
-            
+            mDb.updateRoute(
+                    getSharedPreferences(APP_PREF, Context.MODE_PRIVATE).
+                            getString(Utils.cleanEmail(IUser.EMAIL_KEY), ""),
+                    existingRoute);
             saveIntoList(existingRoute);
             showRouteUpdatedToast();
         }
