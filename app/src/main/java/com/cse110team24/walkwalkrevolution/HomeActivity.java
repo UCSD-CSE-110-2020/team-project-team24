@@ -300,8 +300,8 @@ public class HomeActivity extends AppCompatActivity {
         Route route = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
         // upload the new route to db
         mDb.uploadRoute(
-                getSharedPreferences(APP_PREF, Context.MODE_PRIVATE).
-                        getString(Utils.cleanEmail(IUser.EMAIL_KEY), ""),
+                Utils.cleanEmail(getSharedPreferences(APP_PREF, Context.MODE_PRIVATE).
+                        getString(IUser.EMAIL_KEY, "")),
                 route);
         saveIntoList(route);
         showRouteSavedToast();
@@ -345,8 +345,8 @@ public class HomeActivity extends AppCompatActivity {
 
             // update existing route in db
             mDb.updateRoute(
-                    getSharedPreferences(APP_PREF, Context.MODE_PRIVATE).
-                            getString(Utils.cleanEmail(IUser.EMAIL_KEY), ""),
+                    Utils.cleanEmail(getSharedPreferences(APP_PREF, Context.MODE_PRIVATE).
+                            getString(IUser.EMAIL_KEY, "")),
                     existingRoute);
             saveIntoList(existingRoute);
             showRouteUpdatedToast();

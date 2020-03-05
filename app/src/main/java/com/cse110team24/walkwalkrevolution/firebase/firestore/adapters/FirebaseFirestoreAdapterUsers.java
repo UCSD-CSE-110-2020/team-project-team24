@@ -90,7 +90,7 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
         CollectionReference userRoutesCollection = usersCollection.document(userDocumentKey).collection(USER_ROUTES_SUB_COLLECTION_KEY);
         DocumentReference routeDoc = userRoutesCollection.document();
         route.setRouteUid(routeDoc.getId());
-        routeDoc.set(route).addOnCompleteListener(task -> {
+        routeDoc.set(route.routeData()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "uploadRoute: success uploading route " + route);
             } else {
@@ -103,7 +103,7 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     public void updateRoute(String userDocumentKey, Route route) {
         CollectionReference userRoutesCollection = usersCollection.document(userDocumentKey).collection(USER_ROUTES_SUB_COLLECTION_KEY);
         DocumentReference routeDoc = userRoutesCollection.document(route.getRouteUid());
-        routeDoc.set(route).addOnCompleteListener(task -> {
+        routeDoc.set(route.routeData()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(TAG, "uploadRoute: success updated route " + route);
             } else {

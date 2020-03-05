@@ -2,6 +2,8 @@ package com.cse110team24.walkwalkrevolution.models.route;
 
 import java.io.Serializable;
 import java.lang.Comparable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Route implements Serializable, Comparable<Route> {
@@ -111,6 +113,16 @@ public class Route implements Serializable, Comparable<Route> {
                     && statsEquals && notesEquals && mIsFavorite == route.mIsFavorite;
         }
         return false;
+    }
+
+    public Map<String, Object> routeData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", mTitle);
+        data.put("startingLocation", mStartingLocation);
+        data.put("environment", mEnvironment);
+        data.put("stats", mStats.statsData());
+        data.put("notes", mNotes);
+        return data;
     }
 
     @Override

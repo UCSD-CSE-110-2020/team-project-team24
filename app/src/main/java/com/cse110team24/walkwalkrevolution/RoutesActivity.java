@@ -72,8 +72,8 @@ public class RoutesActivity extends AppCompatActivity {
         Route newRoute = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
         // upload the new route to db
         mUsersDbService.uploadRoute(
-                getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).
-                        getString(Utils.cleanEmail(IUser.EMAIL_KEY), ""),
+                Utils.cleanEmail(getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).
+                        getString(IUser.EMAIL_KEY, "")),
                 newRoute);
         routes.add(newRoute);
         Collections.sort(routes);
