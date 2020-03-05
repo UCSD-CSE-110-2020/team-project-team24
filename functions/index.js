@@ -33,17 +33,12 @@ exports.sendInviteNotification = functions.firestore
 exports.sendInvitationResponseNotification = functions.firestore
     .document('invitations/{userInvite}/sent/{inviteId}')
     .onUpdate((change, context) => {
-        console.log('Change: ' + change);
-        console.log('Context ' + context);
-        const document = change.exists ? change.data() : null;
-        console.log('Document: ' + document);
+        const document = change.after.data();
 
         if (document) {
-            console.log('To User: ' + document.to.name);
-            console.log('Status: ' + document.status);
             var message = {
                 notification: {
-                    title: document.to.name + 'has ' + document.status + ' your invitation!',
+                    title: document.to.name + ' has ' + document.status + ' your invitation!',
                     body: 'Click to see your team'
                 },
                 topic: context.params.userInvite
