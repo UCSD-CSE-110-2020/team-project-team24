@@ -48,10 +48,14 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
         setUpServices();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getTeamUid();
         getUIFields();
         setButtonClickListeners();
