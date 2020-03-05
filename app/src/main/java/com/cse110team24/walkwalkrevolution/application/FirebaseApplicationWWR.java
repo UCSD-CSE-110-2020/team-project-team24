@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution.application;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFactory;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseApplicationWWR extends Application implements ApplicationSubject {
-
+    private static final String TAG = "FirebaseApplicationWWR";
     private static AuthServiceFactory authServiceFactory;
     private static DatabaseServiceFactory databaseServiceFactory;
     private static MessagingServiceFactory messagingServiceFactory;
@@ -22,6 +23,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i(TAG, "onCreate: application created");
         authServiceFactory = new FirebaseAuthServiceFactory();
         databaseServiceFactory = new FirestoreDatabaseServiceFactory();
         messagingServiceFactory = new FirebaseMessagingServiceFactory();
@@ -32,6 +34,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static AuthServiceFactory setAuthServiceFactory(AuthServiceFactory asf) {
+        Log.i(TAG, "setAuthServiceFactory: auth service factory set");
         return authServiceFactory = asf;
     }
 
@@ -40,6 +43,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static DatabaseServiceFactory setDatabaseServiceFactory(DatabaseServiceFactory dsf) {
+        Log.i(TAG, "setDatabaseServiceFactory: database service factory set");
         return databaseServiceFactory = dsf;
     }
 
@@ -48,6 +52,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static MessagingServiceFactory setMessagingServiceFactory(MessagingServiceFactory msf) {
+        Log.i(TAG, "setMessagingServiceFactory: messaging service factory set");
         return messagingServiceFactory = msf;
     }
 
