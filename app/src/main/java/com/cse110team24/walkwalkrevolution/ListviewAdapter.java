@@ -13,6 +13,8 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import java.util.List;
 import java.util.Random;
 
+import static com.google.common.base.Ascii.toUpperCase;
+
 public class ListviewAdapter extends BaseAdapter {
     Context context;
     List<IUser> users;
@@ -41,20 +43,25 @@ public class ListviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.item_teammate, null);
-        TextView nameView = (TextView)view.findViewById(R.id.nameView);
-        TextView initialView = (TextView)view.findViewById(R.id.initialView);
-        nameView.setText(users.get(i).getDisplayName());
-        initialView.setText(getInitialFromName(users.get(i).getDisplayName()));
-        setTextColor(initialView);
-        return view;
+        View newView;
+        if (view == null) {
+            newView = inflater.inflate(R.layout.item_teammate, viewGroup, false);
+            TextView nameView = newView.findViewById(R.id.nameView);
+            TextView initialView = newView.findViewById(R.id.initialView);
+            nameView.setText(users.get(i).getDisplayName());
+            initialView.setText(getInitialFromName(users.get(i).getDisplayName()));
+            setTextColor(initialView);
+        } else {
+            newView = view;
+        }
+        return newView;
     }
 
     private String getInitialFromName(String name) {
         String[] nameArraySeperatedBySpace = name.split(" ");
         String initialsToReturn = "";
         for(int i = 0; i < nameArraySeperatedBySpace.length; i++) {
-            initialsToReturn += nameArraySeperatedBySpace[i].toUpperCase().charAt(0);
+            initialsToReturn += toUpperCase(nameArraySeperatedBySpace[i]).charAt(0);
         }
         return initialsToReturn;
     }

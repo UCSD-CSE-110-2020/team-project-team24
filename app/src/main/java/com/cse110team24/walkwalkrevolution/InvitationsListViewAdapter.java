@@ -42,9 +42,11 @@ public class InvitationsListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.item_inviter, null);
-        TextView nameView = view.findViewById(R.id.inviterNameView);
-        nameView.setText(invitations.get(i).fromName());
+        if(view == null) {
+            view = inflater.inflate(R.layout.item_inviter, viewGroup, false);
+            TextView nameView = view.findViewById(R.id.inviterNameView);
+            nameView.setText(invitations.get(i).fromName());
+        }
         return view;
     }
 

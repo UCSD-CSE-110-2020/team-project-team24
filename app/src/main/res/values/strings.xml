@@ -93,6 +93,10 @@
     <string name="text_invitation_exists">The following users have sent you a team invitation: </string>
     <string name="text_invitation_not_exist">You don\'t have any pending invitations.</string>
 
+    <!--    In item_teammate.xml-->
+    <string name="fake_teammate_initials">SJ</string>
+    <string name="fake_teammate_name">Samuel Jackson</string>
+
     <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>
 

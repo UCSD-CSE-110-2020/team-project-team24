@@ -46,12 +46,15 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private InvitationsListViewAdapter mAdapter;
     private ListView mInvitationsListView;
     private TextView mNoInvitationsTextView;
+    private TextView mSentYouInvitationsTextView;
 
     private Invitation mCurrentSelectedInvitation;
 
     private Button acceptBtn;
     private Button declineBtn;
     private ProgressBar progressBar;
+
+    private int selectedIdx = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         acceptBtn = findViewById(R.id.buttonAccept);
         declineBtn = findViewById(R.id.buttonDecline);
         progressBar = findViewById(R.id.progressBar);
+
+        mSentYouInvitationsTextView = findViewById(R.id.textViewPrompt);
     }
 
     private void setButtonsOnClickListener() {
@@ -92,21 +97,41 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
                 mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
                 updateInvitations();
                 String senderTeamUid = mCurrentSelectedInvitation.getTeamUid();
-                mCurrentUser.updateTeamUid(senderTeamUid);
                 mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
-                mUDb.updateUserTeamUidInDatabase(mCurrentUser, senderTeamUid);
-                Utils.saveString(preferences, IUser.TEAM_UID_KEY, senderTeamUid);
+                updateTeamUidLocallyAndDatabase(senderTeamUid);
                 mMessagingService.subscribeToNotificationsTopic(senderTeamUid);
+                Utils.showToast(this, "welcome to " + mCurrentSelectedInvitation.fromName() + "'s team", Toast.LENGTH_LONG);
+                dismissSelectedInvitation();
             }
         });
     }
 
+    private void updateTeamUidLocallyAndDatabase(String senderTeamUid) {
+        mCurrentUser.updateTeamUid(senderTeamUid);
+        mUDb.updateUserTeamUidInDatabase(mCurrentUser, senderTeamUid);
+        Utils.saveString(preferences, IUser.TEAM_UID_KEY, senderTeamUid);
+    }
+
+    private void dismissSelectedInvitation() {
+        mInvitations.remove(selectedIdx);
+        mInvitationsListView.setSelector(android.R.color.background_light);
+        if (mInvitations.size() == 0) {
+            mNoInvitationsTextView.setVisibility(View.VISIBLE);
+            mSentYouInvitationsTextView.setVisibility(View.INVISIBLE);
+        }
+        mCurrentSelectedInvitation = null;
+        mAdapter.notifyDataSetChanged();
+    }
+
     private void setDeclineButtonOnClickListener() {
         declineBtn.setOnClickListener(view -> {
-            if (mCurrentSelectedInvitation == null) return;
-
-            mCurrentSelectedInvitation.setStatus(InvitationStatus.DECLINED);
-            updateInvitations();
+            if (mCurrentSelectedInvitation == null) {
+                Utils.showToast(this, "Please select an invitation", Toast.LENGTH_SHORT);
+            } else {
+                mCurrentSelectedInvitation.setStatus(InvitationStatus.DECLINED);
+                updateInvitations();
+                dismissSelectedInvitation();
+            }
         });
     }
 
@@ -116,6 +141,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     }
 
     private void selectInvitation(AdapterView<?> parent, View view, int position, long id) {
+        mInvitationsListView.setSelector(android.R.color.holo_red_light);
+        selectedIdx = position;
         mCurrentSelectedInvitation = (Invitation) mAdapter.getItem(position);
         Log.d(TAG, "selectInvitation: item selected: " + mCurrentSelectedInvitation.fromName());
     }
@@ -157,6 +184,9 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         mAdapter.notifyDataSetChanged();
         if (!invitations.isEmpty()) {
             mNoInvitationsTextView.setVisibility(View.GONE);
+            mSentYouInvitationsTextView.setVisibility(View.VISIBLE);
+        } else {
+            mNoInvitationsTextView.setVisibility(View.VISIBLE);
         }
     }
 }

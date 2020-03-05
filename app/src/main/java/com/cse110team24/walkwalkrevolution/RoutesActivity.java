@@ -47,6 +47,18 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        saveListAsync();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveListAsync();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         checkForExistingSavedRoutes();

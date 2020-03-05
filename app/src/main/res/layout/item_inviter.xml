@@ -8,7 +8,7 @@
         android:id="@+id/inviterNameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Samuel Jackson"
+        android:text="@string/fake_teammate_name"
         android:layout_marginStart="8dp"
         android:layout_gravity="center" />
 
