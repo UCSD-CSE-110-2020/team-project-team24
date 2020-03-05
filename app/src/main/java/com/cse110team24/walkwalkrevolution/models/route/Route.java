@@ -17,6 +17,8 @@ public class Route implements Serializable, Comparable<Route> {
     private boolean mIsFavorite;
     private String mNotes;
 
+    private String mRouteUid;
+
     public Route(String title) throws IllegalArgumentException {
         if (title == null) {
             throw new IllegalArgumentException(TITLE_ERR);
@@ -81,6 +83,15 @@ public class Route implements Serializable, Comparable<Route> {
         return this;
     }
 
+    public Route setRouteUid(String routeUid) {
+        mRouteUid = routeUid;
+        return this;
+    }
+
+    public String getRouteUid() {
+        return mRouteUid;
+    }
+
     @Override
     public int compareTo(Route o) {
         return mTitle.compareTo(o.mTitle);
@@ -142,6 +153,12 @@ public class Route implements Serializable, Comparable<Route> {
         @Override
         public Builder addFavStatus(boolean isFavorite) {
             mToBuild.setFavorite(isFavorite);
+            return this;
+        }
+
+        @Override
+        public Builder addRouteUid(String routeUid) {
+            mToBuild.setRouteUid(routeUid);
             return this;
         }
 

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseSeviceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -20,6 +21,7 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     private static final String TAG = "FirebaseFirestoreAdapterUsers";
 
     public static final String USERS_COLLECTION_KEY = "users";
+    public static final String USER_ROUTES_SUB_COLLECTION_KEY = "routes";
     public static final String USER_REGISTRATION_TOKENS_COLLECTION_KEY = "tokens";
     public static final String TOKEN_SET_KEY = "token";
 
@@ -79,6 +81,20 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 notifyObserversUserData(task.getResult().getData());
+            }
+        });
+    }
+
+    @Override
+    public void uploadRoute(String userDocumentKey, Route route) {
+        CollectionReference userRoutesCollection = usersCollection.document(userDocumentKey).collection(USER_ROUTES_SUB_COLLECTION_KEY);
+        DocumentReference routeDoc = userRoutesCollection.document();
+        route.setRouteUid(routeDoc.getId());
+        routeDoc.set(route).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "uploadRoute: success uploading route " + route);
+            } else {
+                Log.e(TAG, "uploadRoute: error uploading route.", task.getException());
             }
         });
     }
