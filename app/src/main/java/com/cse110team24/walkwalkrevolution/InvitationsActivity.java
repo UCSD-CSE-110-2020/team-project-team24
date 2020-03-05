@@ -91,6 +91,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
             mTDb.addUserToTeam(mCurrentUser, teamUid);
             mUDb.updateUserTeamUidInDatabase(mCurrentUser, teamUid);
             Utils.saveString(preferences, IUser.TEAM_UID_KEY, teamUid);
+            mMessagingService.subscribeToNotificationsTopic(teamUid);
         });
     }
 
