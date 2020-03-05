@@ -91,13 +91,13 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
             } else if (mCurrentUser.teamUid() != null) {
                 Utils.showToast(this, "You already have a team! You can only decline invitations", Toast.LENGTH_LONG);
             } else {
-                dismissSelectedInvitation();
                 mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
                 updateInvitations();
                 String senderTeamUid = mCurrentSelectedInvitation.getTeamUid();
                 mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
                 updateTeamUidLocallyAndDatabase(senderTeamUid);
                 mMessagingService.subscribeToNotificationsTopic(senderTeamUid);
+                dismissSelectedInvitation();
             }
         });
     }
@@ -110,6 +110,9 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
 
     private void dismissSelectedInvitation() {
         mInvitations.remove(selectedIdx);
+        if (mInvitations.size() == 0) {
+            mNoInvitationsTextView.setVisibility(View.VISIBLE);
+        }
         mCurrentSelectedInvitation = null;
         mAdapter.notifyDataSetChanged();
     }
@@ -119,9 +122,9 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
             if (mCurrentSelectedInvitation == null) {
                 Utils.showToast(this, "Please select an invitation", Toast.LENGTH_SHORT);
             } else {
-                dismissSelectedInvitation();
                 mCurrentSelectedInvitation.setStatus(InvitationStatus.DECLINED);
                 updateInvitations();
+                dismissSelectedInvitation();
             }
         });
     }
