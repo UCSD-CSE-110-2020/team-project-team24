@@ -213,7 +213,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     // allow the invitation and team to be created only if the receiver exists and doesn't have a team
     @Override
     public void onUserExists(IUser otherUser) {
-        if (mToDisplayName.equals(otherUser.getDisplayName())) {
+        if (!mToDisplayName.equals(otherUser.getDisplayName())) {
             onUserDoesNotExist();
         }
         else if (otherUser.teamUid() != null) {
