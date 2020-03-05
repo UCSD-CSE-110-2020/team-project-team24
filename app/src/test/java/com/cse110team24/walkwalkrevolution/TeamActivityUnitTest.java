@@ -61,8 +61,6 @@ public class TeamActivityUnitTest extends TestInjection {
         teammatesList = activity.findViewById(R.id.list_members_in_team);
         noTeammatesInTeamText = activity.findViewById(R.id.text_no_teammates);
     }
-
-<<<<<<< HEAD
     private void mockTeamDbRegister() {
         Mockito.doAnswer(invocation -> {
             teamDbObserver = invocation.getArgument(0);
@@ -74,7 +72,7 @@ public class TeamActivityUnitTest extends TestInjection {
         Mockito.doAnswer(invocation -> {
             teamDbObserver.onTeamRetrieved(null);
             return null;
-        }).when(teamDatabaseService).getUserTeam(Mockito.any());
+        }).when(teamDatabaseService).getUserTeam(Mockito.any(), any());
     }
 
 
