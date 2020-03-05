@@ -90,7 +90,6 @@
     <string name="title_pending_invitations_page">Pending Invitations</string>
     <string name="btn_accept_team_invitation">Accept</string>
     <string name="btn_decline_team_invitation">Decline</string>
-    <string name="text_invitation_exists">The following users have sent you a team invitation: </string>
     <string name="text_invitation_not_exist">You don\'t have any pending invitations.</string>
 
     <!--    In item_teammate.xml-->
