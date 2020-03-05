@@ -34,7 +34,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static AuthServiceFactory setAuthServiceFactory(AuthServiceFactory asf) {
-        Log.i(TAG, "setAuthServiceFactory: auth service factory set");
+        Log.i(TAG, "setAuthServiceFactory: auth service factory set with class name " + asf.getClass().getSimpleName());
         return authServiceFactory = asf;
     }
 
@@ -43,7 +43,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static DatabaseServiceFactory setDatabaseServiceFactory(DatabaseServiceFactory dsf) {
-        Log.i(TAG, "setDatabaseServiceFactory: database service factory set");
+        Log.i(TAG, "setDatabaseServiceFactory: database service factory set with class name " + dsf.getClass().getSimpleName());
         return databaseServiceFactory = dsf;
     }
 
@@ -52,7 +52,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static MessagingServiceFactory setMessagingServiceFactory(MessagingServiceFactory msf) {
-        Log.i(TAG, "setMessagingServiceFactory: messaging service factory set");
+        Log.i(TAG, "setMessagingServiceFactory: messaging service factory set with class name " + msf.getClass().getSimpleName());
         return messagingServiceFactory = msf;
     }
 

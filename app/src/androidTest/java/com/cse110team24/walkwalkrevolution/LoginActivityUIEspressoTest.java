@@ -44,7 +44,7 @@ public class LoginActivityUIEspressoTest {
                 .build();
     }
 
-    // TODO: 3/5/20 apparently assertions for EditText types suck. They will most likely fail. 
+    // TODO: 3/5/20 apparently assertions for EditText types suck. They will most likely fail.
     @Test
     public void loginActivityUIEspressoTest() {
         ViewInteraction button = onView(
