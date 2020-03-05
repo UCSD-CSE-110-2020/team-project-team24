@@ -1,10 +1,16 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,6 +39,8 @@ public class RoutesActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private BottomNavigationView bottomNavigationView;
 
+    private UsersDatabaseService mUsersDbService;
+
     private List<Route> routes = new ArrayList<>();
 
     @Override
@@ -44,7 +52,7 @@ public class RoutesActivity extends AppCompatActivity {
 
         getUIElements();
         setListeners();
-
+        mUsersDbService = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         checkForExistingSavedRoutes();
         configureRecyclerViewAdapter();
     }
@@ -62,6 +70,11 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void handleNewRoute(Intent data) {
         Route newRoute = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
+        // upload the new route to db
+        mUsersDbService.uploadRoute(
+                getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).
+                        getString(Utils.cleanEmail(IUser.EMAIL_KEY), ""),
+                newRoute);
         routes.add(newRoute);
         Collections.sort(routes);
         adapter.notifyDataSetChanged();
