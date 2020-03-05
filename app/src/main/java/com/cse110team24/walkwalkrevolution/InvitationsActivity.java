@@ -46,6 +46,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private InvitationsListViewAdapter mAdapter;
     private ListView mInvitationsListView;
     private TextView mNoInvitationsTextView;
+    private TextView mSentYouInvitationsTextView;
 
     private Invitation mCurrentSelectedInvitation;
 
@@ -77,6 +78,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         acceptBtn = findViewById(R.id.buttonAccept);
         declineBtn = findViewById(R.id.buttonDecline);
         progressBar = findViewById(R.id.progressBar);
+
+        mSentYouInvitationsTextView = findViewById(R.id.textViewPrompt);
     }
 
     private void setButtonsOnClickListener() {
@@ -114,6 +117,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         mInvitationsListView.setSelector(android.R.color.background_light);
         if (mInvitations.size() == 0) {
             mNoInvitationsTextView.setVisibility(View.VISIBLE);
+            mSentYouInvitationsTextView.setVisibility(View.INVISIBLE);
         }
         mCurrentSelectedInvitation = null;
         mAdapter.notifyDataSetChanged();
@@ -180,6 +184,9 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         mAdapter.notifyDataSetChanged();
         if (!invitations.isEmpty()) {
             mNoInvitationsTextView.setVisibility(View.GONE);
+            mSentYouInvitationsTextView.setVisibility(View.VISIBLE);
+        } else {
+            mNoInvitationsTextView.setVisibility(View.VISIBLE);
         }
     }
 }
