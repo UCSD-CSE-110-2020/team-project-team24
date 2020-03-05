@@ -32,6 +32,8 @@ public class LoginActivityUIEspressoTest {
 
     @Before
     public void setup() {
+
+        // todo you're mocking what the next of each of these will be
         TestAuth.isTestUserSignedIn = false;
         TestAuth.successUserSignedIn = true;
         TestAuth.testAuthUser = FirebaseUserAdapter.builder()

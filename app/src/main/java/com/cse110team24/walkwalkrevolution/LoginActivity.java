@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     // firebase dependencies
     private AuthService mAuth;
     private IUser mUser;
-    // TODO: 3/3/20 change to UsersDatabaseService
     private UsersDatabaseService mDb;
     private ProgressBar progressBar;
 
