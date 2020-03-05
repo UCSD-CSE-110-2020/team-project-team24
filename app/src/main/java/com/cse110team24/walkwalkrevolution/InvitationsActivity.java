@@ -99,8 +99,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
                 mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
                 updateInvitations();
                 String senderTeamUid = mCurrentSelectedInvitation.getTeamUid();
-                mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
                 updateTeamUidLocallyAndDatabase(senderTeamUid);
+                mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
                 mMessagingService.subscribeToNotificationsTopic(senderTeamUid);
                 Utils.showToast(this, "welcome to " + mCurrentSelectedInvitation.fromName() + "'s team", Toast.LENGTH_LONG);
                 dismissSelectedInvitation();
