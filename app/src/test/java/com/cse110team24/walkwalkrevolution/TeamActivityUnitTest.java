@@ -25,6 +25,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
@@ -59,9 +61,26 @@ public class TeamActivityUnitTest extends TestInjection {
         noTeammatesInTeamText = activity.findViewById(R.id.text_no_teammates);
     }
 
-    @Test
+    private void mockTeamDbRegister() {
+        Mockito.doAnswer(invocation -> {
+            teamDbObserver = invocation.getArgument(0);
+            return invocation;
+        }).when(teamDatabaseService).register(any());
+    }
 
+    private void mockTeamExists() {
+        Mockito.doAnswer(invocation -> {
+            teamDbObserver.onTeamRetrieved(null);
+            return null;
+        }).when(teamDatabaseService).getUserTeam(Mockito.any());
+    }
+
+
+
+    @Test
     public void emptyTeamOnTeamRetrieved() {
+
+        mockTeamDbRegister();
         scenario = ActivityScenario.launch(TeamActivity.class);
         scenario.onActivity(activity -> {
             Mockito.verify(teamDatabaseService).register(any());
@@ -72,6 +91,9 @@ public class TeamActivityUnitTest extends TestInjection {
     }
     @Test
     public void TeamOfTwoOnTeamRetrieved() {
+        mockTeamDbRegister();
+        mockTeamExists();
+
         IUser userOne = FirebaseUserAdapter.builder()
                 .addDisplayName("testerOne")
                 .addEmail("testOne@gmail.com")
@@ -84,6 +106,7 @@ public class TeamActivityUnitTest extends TestInjection {
                 .addTeamUid("666")
                 .addUid("2")
                 .build();
+        listOfUsers = new ArrayList<IUser>();
         teamList = new TeamAdapter(listOfUsers);
         teamList.addMember(userOne);
         teamList.addMember(userTwo);
@@ -93,12 +116,11 @@ public class TeamActivityUnitTest extends TestInjection {
             return null;
         }).when(teamDatabaseService).getUserTeam(any());
 
-
-
         scenario = ActivityScenario.launch(TeamActivity.class);
         scenario.onActivity(activity -> {
             Mockito.verify(teamDatabaseService).register(any());
             getUIFields(activity);
+
             assertEquals(noTeammatesInTeamText.getVisibility(), View.GONE);
             assertEquals(teammatesList.getChildCount(), 2);
         });
