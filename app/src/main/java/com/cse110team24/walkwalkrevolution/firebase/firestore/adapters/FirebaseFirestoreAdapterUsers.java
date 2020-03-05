@@ -2,12 +2,15 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore.adapters;
 
 import android.util.Log;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseSeviceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapterBuilder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
 
     private CollectionReference usersCollection;
     private FirebaseFirestore firebaseFirestore;
+    List<UsersDatabaseServiceObserver> observers = new ArrayList<>();
 
     public FirebaseFirestoreAdapterUsers() {
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -47,7 +51,7 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     }
 
     @Override
-    public void setUserTeam(IUser user, String teamUid) {
+    public void updateUserTeamUidInDatabase(IUser user, String teamUid) {
         DocumentReference documentReference = usersCollection.document(user.documentKey());
         documentReference.update(TEAM_UID_KEY, teamUid).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -119,14 +123,43 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
         });
     }
 
-    List<UsersDatabaseSeviceObserver> observers = new ArrayList<>();
     @Override
-    public void register(UsersDatabaseSeviceObserver usersDatabaseSeviceObserver) {
-        observers.add(usersDatabaseSeviceObserver);
+    public void checkIfOtherUserExists(String userDocumentKey) {
+        DocumentReference otherUserDoc = usersCollection.document(userDocumentKey);
+        otherUserDoc.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                notifyObserversIfUserExists(task.getResult().exists(), buildUser(task.getResult()));
+            }
+        });
+    }
+
+    // build user, only gives display name and teamUid
+    private IUser buildUser(DocumentSnapshot data) {
+        if (data.exists()) {
+            return FirebaseUserAdapter.builder()
+                    .addDisplayName(data.getString("displayName"))
+                    .addTeamUid(data.getString("teamUid"))
+                    .build();
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public void deregister(UsersDatabaseSeviceObserver usersDatabaseSeviceObserver) {
-        observers.remove(usersDatabaseSeviceObserver);
+    public void notifyObserversIfUserExists(boolean exists, IUser otherUser) {
+        if (exists) {
+            observers.forEach(observer -> observer.onUserExists(otherUser));
+        } else {
+            observers.forEach(observer -> observer.onUserDoesNotExist());
+        }
+    }
+    @Override
+    public void register(UsersDatabaseServiceObserver usersDatabaseServiceObserver) {
+        observers.add(usersDatabaseServiceObserver);
+    }
+
+    @Override
+    public void deregister(UsersDatabaseServiceObserver usersDatabaseServiceObserver) {
+        observers.remove(usersDatabaseServiceObserver);
     }
 }

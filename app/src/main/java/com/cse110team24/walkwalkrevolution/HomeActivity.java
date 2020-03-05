@@ -105,6 +105,11 @@ public class HomeActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate: handler posted");
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
     private void getUIFields() {
         dailyStepsTv = findViewById(R.id.tv_daily_steps);
         dailyDistanceTv = findViewById(R.id.tv_daily_distance);
@@ -222,7 +227,7 @@ public class HomeActivity extends AppCompatActivity {
             if(menuItem.getItemId() == R.id.action_routes_list) {
                 myIntent = new Intent(getApplicationContext(), RoutesActivity.class);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(myIntent);
+                startActivityForResult(myIntent, RoutesActivity.REQUEST_CODE);
             }
             if(menuItem.getItemId() == R.id.action_team) {
                 myIntent = new Intent(getApplicationContext(), TeamActivity.class);

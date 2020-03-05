@@ -92,12 +92,15 @@
     <string name="btn_title_scheduled_walks">Scheduled Walks</string>
     <string name="text_no_teammates_in_team">You Have No Teammates :\'(</string>
 
-    <!-- In activity_received_invitation.xml-->
+    <!-- In activity_invitations -->
     <string name="title_pending_invitations_page">Pending Invitations</string>
-<!--    <string name="btn_accept_team_invitation">Accept</string>-->
-<!--    <string name="btn_reject_team_invitation">Reject</string>-->
-<!--    <string name="text_invitation_exists">The following users have sent you a team invitation: </string>-->
-<!--    <string name="text_invitation_not_exist">You haven\'t received any team invitation.</string>-->
+    <string name="btn_accept_team_invitation">Accept</string>
+    <string name="btn_decline_team_invitation">Decline</string>
+    <string name="text_invitation_not_exist">You don\'t have any pending invitations.</string>
+
+    <!--    In item_teammate.xml-->
+    <string name="fake_teammate_initials">SJ</string>
+    <string name="fake_teammate_name">Samuel Jackson</string>
 
     <!--    In both activity_loginxml and activity_mock.xml-->
     <string name="finish_btn_text">Finish</string>

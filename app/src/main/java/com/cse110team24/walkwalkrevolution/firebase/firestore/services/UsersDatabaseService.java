@@ -8,10 +8,10 @@ import com.google.firebase.firestore.DocumentReference;
 
 public interface UsersDatabaseService extends UsersDatabaseServiceSubject, DatabaseService {
     void createUserInDatabase(IUser user);
-    void setUserTeam(IUser user, String teamUid);
+    void updateUserTeamUidInDatabase(IUser user, String teamUid);
     DocumentReference addUserMessagingRegistrationToken(IUser user, String token);
     void getUserData(IUser user);
     void uploadRoute(String userDocumentKey, Route route);
     void updateRoute(String userDocumentKey, Route route);
-
+    void checkIfOtherUserExists(String userDocumentKey);
 }

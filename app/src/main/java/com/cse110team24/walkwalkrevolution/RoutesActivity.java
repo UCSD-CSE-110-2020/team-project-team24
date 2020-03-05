@@ -52,7 +52,25 @@ public class RoutesActivity extends AppCompatActivity {
 
         getUIElements();
         setListeners();
+
         mUsersDbService = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveListAsync();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveListAsync();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         checkForExistingSavedRoutes();
         configureRecyclerViewAdapter();
     }
@@ -95,6 +113,9 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void transitionWithAnimation() {
         saveListAsync();
+        Intent walkIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        walkIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(walkIntent);
         finish();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
@@ -142,6 +163,7 @@ public class RoutesActivity extends AppCompatActivity {
         String filename = getSaveFilename();
         try {
             List<Route> tempList = RoutesManager.readList(filename, this);
+            routes.clear();
             routes.addAll(tempList);
         } catch (IOException e) {
             e.printStackTrace();
@@ -154,7 +176,6 @@ public class RoutesActivity extends AppCompatActivity {
         String filename = getIntent().getStringExtra(SAVE_FILE_KEY);
         return (filename == null) ? LIST_SAVE_FILE : filename;
     }
-
 
     private void configureRecyclerViewAdapter() {
         Collections.sort(routes);
