@@ -53,6 +53,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private Button declineBtn;
     private ProgressBar progressBar;
 
+    private int selectedIdx = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,24 +91,38 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
             } else if (mCurrentUser.teamUid() != null) {
                 Utils.showToast(this, "You already have a team! You can only decline invitations", Toast.LENGTH_LONG);
             } else {
+                dismissSelectedInvitation();
                 mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
                 updateInvitations();
                 String senderTeamUid = mCurrentSelectedInvitation.getTeamUid();
-                mCurrentUser.updateTeamUid(senderTeamUid);
                 mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
-                mUDb.updateUserTeamUidInDatabase(mCurrentUser, senderTeamUid);
-                Utils.saveString(preferences, IUser.TEAM_UID_KEY, senderTeamUid);
+                updateTeamUidLocallyAndDatabase(senderTeamUid);
                 mMessagingService.subscribeToNotificationsTopic(senderTeamUid);
             }
         });
     }
 
+    private void updateTeamUidLocallyAndDatabase(String senderTeamUid) {
+        mCurrentUser.updateTeamUid(senderTeamUid);
+        mUDb.updateUserTeamUidInDatabase(mCurrentUser, senderTeamUid);
+        Utils.saveString(preferences, IUser.TEAM_UID_KEY, senderTeamUid);
+    }
+
+    private void dismissSelectedInvitation() {
+        mInvitations.remove(selectedIdx);
+        mCurrentSelectedInvitation = null;
+        mAdapter.notifyDataSetChanged();
+    }
+
     private void setDeclineButtonOnClickListener() {
         declineBtn.setOnClickListener(view -> {
-            if (mCurrentSelectedInvitation == null) return;
-
-            mCurrentSelectedInvitation.setStatus(InvitationStatus.DECLINED);
-            updateInvitations();
+            if (mCurrentSelectedInvitation == null) {
+                Utils.showToast(this, "Please select an invitation", Toast.LENGTH_SHORT);
+            } else {
+                dismissSelectedInvitation();
+                mCurrentSelectedInvitation.setStatus(InvitationStatus.DECLINED);
+                updateInvitations();
+            }
         });
     }
 
@@ -116,6 +132,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     }
 
     private void selectInvitation(AdapterView<?> parent, View view, int position, long id) {
+        selectedIdx = position;
         mCurrentSelectedInvitation = (Invitation) mAdapter.getItem(position);
         Log.d(TAG, "selectInvitation: item selected: " + mCurrentSelectedInvitation.fromName());
     }
