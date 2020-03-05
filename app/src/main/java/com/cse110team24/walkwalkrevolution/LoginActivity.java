@@ -94,7 +94,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         hideName();
         FitnessServiceFactory.put(fitnessServiceKey, homeActivity -> new GoogleFitAdapter(homeActivity));
         signUpTvOnClickListener();
-        withoutLoginOnClickListener();
         loginBtnOnClickListener();
     }
 
@@ -242,6 +241,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         nameEditText = findViewById(R.id.enter_username);
         signUpTv = findViewById(R.id.sign_up_tv);
         progressBar = findViewById(R.id.progressBar);
+        withoutLoginBtn.setVisibility(View.GONE); // Guest mode not currently supported
     }
 
     private void showEmailPassword() {
