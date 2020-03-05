@@ -111,16 +111,16 @@ public class TeamActivityUnitTest extends TestInjection {
         teamList.addMember(userOne);
         teamList.addMember(userTwo);
 
-        Mockito.doAnswer(invocation -> {
+        /*Mockito.doAnswer(invocation -> {
             teamDbObserver.onTeamRetrieved(teamList);
             return null;
-        }).when(teamDatabaseService).getUserTeam(any());
+        }).when(teamDatabaseService).getUserTeam(any());*/
 
         scenario = ActivityScenario.launch(TeamActivity.class);
         scenario.onActivity(activity -> {
             Mockito.verify(teamDatabaseService).register(any());
             getUIFields(activity);
-
+            teamDbObserver.onTeamRetrieved(teamList);
             assertEquals(noTeammatesInTeamText.getVisibility(), View.GONE);
             assertEquals(teammatesList.getChildCount(), 2);
         });
