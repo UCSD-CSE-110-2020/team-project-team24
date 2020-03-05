@@ -82,19 +82,22 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         setDeclineButtonOnClickListener();
     }
 
-    // TODO: 3/4/20 subscribe to topic: new team
     private void setAcceptButtonOnClickListener() {
         acceptBtn.setOnClickListener(view -> {
-            if (mCurrentSelectedInvitation == null) return;
-
-            mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
-            updateInvitations();
-            String teamUid = mCurrentSelectedInvitation.getTeamUid();
-            mCurrentUser.updateTeamUid(teamUid);
-            mTDb.addUserToTeam(mCurrentUser, teamUid);
-            mUDb.updateUserTeamUidInDatabase(mCurrentUser, teamUid);
-            Utils.saveString(preferences, IUser.TEAM_UID_KEY, teamUid);
-            mMessagingService.subscribeToNotificationsTopic(teamUid);
+            if (mCurrentSelectedInvitation == null) {
+                Utils.showToast(this, "Please select an invitation", Toast.LENGTH_SHORT);
+            } else if (mCurrentUser.teamUid() != null) {
+                Utils.showToast(this, "You already have a team! You can only decline invitations", Toast.LENGTH_LONG);
+            } else {
+                mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
+                updateInvitations();
+                String senderTeamUid = mCurrentSelectedInvitation.getTeamUid();
+                mCurrentUser.updateTeamUid(senderTeamUid);
+                mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
+                mUDb.updateUserTeamUidInDatabase(mCurrentUser, senderTeamUid);
+                Utils.saveString(preferences, IUser.TEAM_UID_KEY, senderTeamUid);
+                mMessagingService.subscribeToNotificationsTopic(senderTeamUid);
+            }
         });
     }
 
@@ -138,11 +141,11 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private void getCurrentUser() {
         String displayName = preferences.getString(IUser.USER_NAME_KEY, null);
         String email = preferences.getString(IUser.EMAIL_KEY, null);
-        if (displayName != null && email != null) {
-            mCurrentUser = mAuth.getUser();
-            mCurrentUser.setDisplayName(displayName);
-            mCurrentUser.setEmail(email);
-        }
+        String teamUid = preferences.getString(IUser.TEAM_UID_KEY, null);
+        mCurrentUser = mAuth.getUser();
+        mCurrentUser.setDisplayName(displayName);
+        mCurrentUser.setEmail(email);
+        mCurrentUser.updateTeamUid(teamUid);
     }
 
     // TODO: 3/3/20 display invitations and allow each one to be clickable

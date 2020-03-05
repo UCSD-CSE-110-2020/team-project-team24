@@ -1,6 +1,8 @@
 package com.cse110team24.walkwalkrevolution.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
@@ -17,5 +19,9 @@ public class Utils {
         preferences.edit()
                 .putString(key, value)
                 .apply();
+    }
+
+    public static void showToast(Context context, String msg, int len) {
+        Toast.makeText(context, msg, len).show();
     }
 }
