@@ -7,8 +7,8 @@ import com.google.firebase.firestore.DocumentReference;
 
 public interface UsersDatabaseService extends UsersDatabaseServiceSubject, DatabaseService {
     void createUserInDatabase(IUser user);
-    void setUserTeam(IUser user, String teamUid);
+    void updateUserTeamUidInDatabase(IUser user, String teamUid);
     DocumentReference addUserMessagingRegistrationToken(IUser user, String token);
     void getUserData(IUser user);
-
+    void checkIfOtherUserExists(String userDocumentKey);
 }

@@ -8,5 +8,6 @@ public interface InvitationBuilder extends Builder<Invitation> {
     InvitationBuilder addToEmail(String email);
     InvitationBuilder addToDisplayName(String displayName);
     InvitationBuilder addUid(String uid);
+    InvitationBuilder addTeamUid(String teamUid);
     InvitationBuilder addStatus(InvitationStatus status);
 }

@@ -13,11 +13,13 @@ public class Invitation implements IInvitation {
     public static final String INVITATION_UID_SET_KEY = "invitationUid";
     public static final String INVITATION_FROM_SET_KEY = "from";
     public static final String INVITATION_TO_SET_KEY = "to";
+    public static final String INVITATION_TEAM_UID_SET_KEY = "teamUid";
     public static final String USER_DATA_NAME = "name";
     public static final String USER_DATA_EMAIL = "identifier";
     public static final String INVITATION_STATUS_SET_KEY = "status";
 
     private IUser mFrom;
+    private String mTeamUid;
     private String mUid;
     private String mToEmail;
     private String mToDisplayName;
@@ -32,6 +34,7 @@ public class Invitation implements IInvitation {
         mFrom = from;
     }
 
+    @Override
     public IUser fromUser() {
         return mFrom;
     }
@@ -42,13 +45,18 @@ public class Invitation implements IInvitation {
     }
 
     @Override
-    public String toEmail() {
-        return mToEmail;
+    public String fromName() {
+        return mFrom.getDisplayName();
     }
 
     @Override
-    public String fromName() {
-        return mFrom.getDisplayName();
+    public String fromDocumentKey() {
+        return mFrom.documentKey();
+    }
+
+    @Override
+    public String toEmail() {
+        return mToEmail;
     }
 
     @Override
@@ -62,13 +70,18 @@ public class Invitation implements IInvitation {
     }
 
     @Override
-    public String fromDocumentKey() {
-        return mFrom.documentKey();
+    public String getTeamUid() {
+        return mTeamUid;
     }
 
     @Override
     public InvitationStatus status() {
         return mStatus;
+    }
+
+    @Override
+    public void setStatus(InvitationStatus status) {
+        this.mStatus = status;
     }
 
     @Override
@@ -83,6 +96,7 @@ public class Invitation implements IInvitation {
         data.put(INVITATION_FROM_SET_KEY, fromData());
         data.put(INVITATION_TO_SET_KEY, toData());
         data.put(INVITATION_STATUS_SET_KEY, status().toString().toLowerCase(Locale.getDefault()));
+        data.put(INVITATION_TEAM_UID_SET_KEY, mTeamUid);
         return data;
     }
 
@@ -137,6 +151,12 @@ public class Invitation implements IInvitation {
         @Override
         public InvitationBuilder addUid(String uid) {
             mInvitation.mUid = uid;
+            return this;
+        }
+
+        @Override
+        public InvitationBuilder addTeamUid(String teamUid) {
+            mInvitation.mTeamUid = teamUid;
             return this;
         }
 
