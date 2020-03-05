@@ -2,12 +2,16 @@ package com.cse110team24.walkwalkrevolution;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.models.user.UserBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,19 +36,21 @@ public class InviteTeammateUnitTest extends TestInjection {
     private TextView inviteEmailTv;
     private static final String TOAST_MSG_NOT_GMAIL = "Please enter a valid gmail address";
     private static final String TOAST_MSG_NO_USERNAME = "please enter a name";
-    private static final String TOAST_MSG_USER_NOT_EXIST = "Error sending invitation. User may not exist";
+    private static final String TOAST_MSG_USER_NOT_EXIST = "A user with this name/email combination does not exist";
+    private static final String TOAST_MSG_OTHER_USER_HAS_TEAM = "Cannot send invite. User already has a team.";
     private static final String TOAST_MSG_INVITATION_SENT = "Invitation sent";
 
     ActivityScenario<InviteTeamMemberActivity> scenario;
-    MessagingObserver observer;
+    MessagingObserver messagingObserver;
+    UsersDatabaseServiceObserver userDbObserver;
+    SharedPreferences sp;
 
     @Before
     public void setup() {
         super.setup();
-        ApplicationProvider.getApplicationContext().getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE)
-                .edit()
-                .putString(IUser.EMAIL_KEY, "test@gmail.com")
-                .putString(IUser.USER_NAME_KEY, "tester")
+        sp = ApplicationProvider.getApplicationContext().getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
+        sp.edit().putString(IUser.EMAIL_KEY, testUser.getEmail())
+                .putString(IUser.USER_NAME_KEY, testUser.getDisplayName())
                 .commit();
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.USERS)).thenReturn(usersDatabaseService);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.INVITATIONS)).thenReturn(invitationsDatabaseService);
@@ -59,6 +65,26 @@ public class InviteTeammateUnitTest extends TestInjection {
         inviteEmailTv = activity.findViewById(R.id.field_enter_member_email);
     }
 
+    private void inviteUserWithName(String name) {
+        inviteNameTv.setText(name);
+        inviteEmailTv.setText("cheery@gmail.com");
+        sendInviteBtn.performClick();
+    }
+
+    private void mockUserDbRegister() {
+        Mockito.doAnswer(invocation -> {
+            userDbObserver = invocation.getArgument(0);
+            return invocation;
+        }).when(usersDatabaseService).register(any());
+    }
+
+    private void mockOtherUserExists() {
+        Mockito.doAnswer(invocation -> {
+            userDbObserver.onUserExists(otherUser);
+            return null;
+        }).when(usersDatabaseService).checkIfOtherUserExists(Mockito.any());
+    }
+
     @Test
     public void noInfoEntered() {
         scenario = ActivityScenario.launch(InviteTeamMemberActivity.class);
@@ -67,7 +93,6 @@ public class InviteTeammateUnitTest extends TestInjection {
             sendInviteBtn.performClick();
             assertEquals(TOAST_MSG_NOT_GMAIL, ShadowToast.getTextOfLatestToast());
         });
-
     }
 
     @Test
@@ -93,53 +118,86 @@ public class InviteTeammateUnitTest extends TestInjection {
     }
 
     @Test
-    public void nonExistentUserEntered() {
-        Mockito.doAnswer(invocation -> {
-            observer = invocation.getArgument(0);
-            return invocation;
-        }).when(mMsg).register(any());
+    public void nonExistentUserEmailEntered() {
+        sp.edit().putString(IUser.TEAM_UID_KEY, testUser.teamUid()).commit();
+        mockUserDbRegister();
 
         Mockito.doAnswer(invocation -> {
-            observer.onFailedInvitationSent(null);
+            userDbObserver.onUserDoesNotExist();
             return null;
-        }).when(mMsg).sendInvitation(Mockito.any());
+        }).when(usersDatabaseService).checkIfOtherUserExists(Mockito.any());
 
         scenario = ActivityScenario.launch(InviteTeamMemberActivity.class);
         scenario.onActivity(activity -> {
-            Mockito.verify(mMsg).register(any());
+            Mockito.verify(usersDatabaseService).register(any());
             getUIFields(activity);
+            inviteUserWithName("c");
 
-            inviteNameTv.setText("c");
-            inviteEmailTv.setText("cheery@gmail.com");
-            sendInviteBtn.performClick();
-
-            Mockito.verify(mMsg).sendInvitation(any());
+            Mockito.verify(usersDatabaseService).checkIfOtherUserExists(any());
             assertEquals(TOAST_MSG_USER_NOT_EXIST, ShadowToast.getTextOfLatestToast());
         });
     }
 
     @Test
-    public void existentUserEntered() {
+    public void nonExistentUserNameEntered() {
+        sp.edit().putString(IUser.TEAM_UID_KEY, testUser.teamUid()).commit();
+        mockUserDbRegister();
+        mockOtherUserExists();
+
+        scenario = ActivityScenario.launch(InviteTeamMemberActivity.class);
+        scenario.onActivity(activity -> {
+            Mockito.verify(usersDatabaseService).register(any());
+            getUIFields(activity);
+            inviteUserWithName("c");
+
+            Mockito.verify(usersDatabaseService).checkIfOtherUserExists(any());
+            assertEquals(TOAST_MSG_USER_NOT_EXIST, ShadowToast.getTextOfLatestToast());
+        });
+    }
+
+    @Test
+    public void otherUserHasTeam() {
+        sp.edit().putString(IUser.TEAM_UID_KEY, testUser.teamUid()).commit();
+        otherUser.updateTeamUid("888");
+        mockUserDbRegister();
+        mockOtherUserExists();
+
+        scenario = ActivityScenario.launch(InviteTeamMemberActivity.class);
+        scenario.onActivity(activity -> {
+            Mockito.verify(usersDatabaseService).register(any());
+            getUIFields(activity);
+            inviteUserWithName("cheery");
+
+            Mockito.verify(usersDatabaseService).checkIfOtherUserExists(any());
+            assertEquals(TOAST_MSG_OTHER_USER_HAS_TEAM, ShadowToast.getTextOfLatestToast());
+        });
+    }
+
+    @Test
+    public void availableUserEntered() {
+        sp.edit().putString(IUser.TEAM_UID_KEY, testUser.teamUid()).commit();
+        mockUserDbRegister();
+        mockOtherUserExists();
+
         Mockito.doAnswer(invocation -> {
-            observer = invocation.getArgument(0);
+            messagingObserver = invocation.getArgument(0);
             return invocation;
         }).when(mMsg).register(any());
 
         Mockito.doAnswer(invocation -> {
-            observer.onInvitationSent(null);
+            messagingObserver.onInvitationSent(null);
             return null;
         }).when(mMsg).sendInvitation(Mockito.any());
 
         scenario = ActivityScenario.launch(InviteTeamMemberActivity.class);
         scenario.onActivity(activity -> {
             Mockito.verify(mMsg).register(any());
+            Mockito.verify(usersDatabaseService).register(any());
             getUIFields(activity);
+            inviteUserWithName("cheery");
 
-            inviteNameTv.setText("c");
-            inviteEmailTv.setText("cheery@gmail.com");
-            sendInviteBtn.performClick();
-
-            Mockito.verify(mMsg).sendInvitation(any());
+            Mockito.verify(usersDatabaseService).checkIfOtherUserExists(any());
+            Mockito.verify(mMsg).sendInvitation(Mockito.any());
             assertEquals(TOAST_MSG_INVITATION_SENT, ShadowToast.getTextOfLatestToast());
         });
     }

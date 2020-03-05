@@ -28,6 +28,7 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
 
     private CollectionReference usersCollection;
     private FirebaseFirestore firebaseFirestore;
+    List<UsersDatabaseServiceObserver> observers = new ArrayList<>();
 
     public FirebaseFirestoreAdapterUsers() {
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -123,8 +124,6 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
             observers.forEach(observer -> observer.onUserDoesNotExist());
         }
     }
-
-    List<UsersDatabaseServiceObserver> observers = new ArrayList<>();
     @Override
     public void register(UsersDatabaseServiceObserver usersDatabaseServiceObserver) {
         observers.add(usersDatabaseServiceObserver);
