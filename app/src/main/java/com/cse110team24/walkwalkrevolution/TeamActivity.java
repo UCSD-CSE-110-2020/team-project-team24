@@ -50,6 +50,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
+        preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         setUpServices();
     }
 
