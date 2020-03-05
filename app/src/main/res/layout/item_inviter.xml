@@ -9,7 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fake_teammate_name"
-        android:layout_marginStart="8dp"
+        android:textSize="@dimen/list_item_font_size"
+        android:layout_marginStart="@dimen/details_indent"
+        android:layout_marginTop="@dimen/list_item_margin"
+        android:layout_marginBottom="@dimen/list_item_margin"
         android:layout_gravity="center" />
 
 </LinearLayout>

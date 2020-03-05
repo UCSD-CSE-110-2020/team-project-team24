@@ -46,6 +46,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private InvitationsListViewAdapter mAdapter;
     private ListView mInvitationsListView;
     private TextView mNoInvitationsTextView;
+    private TextView mSentYouInvitationsTextView;
 
     private Invitation mCurrentSelectedInvitation;
 
@@ -180,6 +181,8 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         mAdapter.notifyDataSetChanged();
         if (!invitations.isEmpty()) {
             mNoInvitationsTextView.setVisibility(View.GONE);
+        } else {
+            mNoInvitationsTextView.setVisibility(View.VISIBLE);
         }
     }
 }
