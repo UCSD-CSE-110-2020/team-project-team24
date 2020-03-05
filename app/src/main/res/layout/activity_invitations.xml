@@ -23,6 +23,8 @@
 
     <ListView
         android:id="@+id/invitationList"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/holo_red_light"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@+id/buttonAccept"
