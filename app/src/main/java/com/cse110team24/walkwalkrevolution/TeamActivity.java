@@ -28,6 +28,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     private Button sendInviteBtn;
     private Button seeInvitationsBtn;
     private BottomNavigationView bottomNavigationView;
+
     private TeamDatabaseService mDb;
 
     SharedPreferences mPreferences;
@@ -45,6 +46,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
         setUpServices();
@@ -60,6 +62,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         Intent intent = new Intent(this, InvitationsActivity.class);
         startActivity(intent);
     }
+
 
     private void getTeamUid() {
         mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
@@ -110,6 +113,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(myIntent);
             }
+
             return true;
         });
     }
