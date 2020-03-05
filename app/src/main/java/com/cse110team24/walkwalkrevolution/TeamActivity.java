@@ -18,9 +18,11 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
@@ -33,7 +35,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     SharedPreferences mPreferences;
 
-    private ITeam mTeam;
+    private ITeam mTeam = new TeamAdapter(new ArrayList<>());
     private String mTeamUid;
 
     private SharedPreferences preferences;
