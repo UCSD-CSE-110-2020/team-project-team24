@@ -42,8 +42,8 @@ public class LoginActivitySignInEspressoTest {
     public void setup() {
         FitnessServiceFactory.put(TEST_SERVICE_KEY, activity -> new TestFitnessService(activity));
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE_KEY);
-        TestAuth.isTestUserSignedIn = true;
-        TestAuth.successUserSignedUp = true;
+        TestAuth.isTestUserSignedIn = false;
+        TestAuth.successUserSignedIn = true;
         TestAuth.testAuthUser = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
                 .addEmail("amara@gmail.com")
