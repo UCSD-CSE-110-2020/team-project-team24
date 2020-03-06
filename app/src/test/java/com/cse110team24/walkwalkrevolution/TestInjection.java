@@ -8,7 +8,7 @@ import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFact
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
@@ -29,7 +29,7 @@ public class TestInjection {
 
 
     protected UsersDatabaseService usersDatabaseService;
-    protected TeamDatabaseService teamDatabaseService;
+    protected TeamsDatabaseService teamsDatabaseService;
     protected InvitationsDatabaseService invitationsDatabaseService;
 
     IUser testUser = FirebaseUserAdapter.builder()
@@ -62,7 +62,7 @@ public class TestInjection {
 
 
         usersDatabaseService = Mockito.mock(UsersDatabaseService.class);
-        teamDatabaseService = Mockito.mock(TeamDatabaseService.class);
+        teamsDatabaseService = Mockito.mock(TeamsDatabaseService.class);
         invitationsDatabaseService = Mockito.mock(InvitationsDatabaseService.class);
 
         Mockito.when(mAuth.getUser()).thenReturn(testUser);

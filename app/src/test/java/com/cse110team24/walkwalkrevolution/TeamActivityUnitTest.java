@@ -13,7 +13,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
@@ -54,7 +53,7 @@ public class TeamActivityUnitTest extends TestInjection {
                 .commit();
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.USERS)).thenReturn(usersDatabaseService);
         //Mockito.when(dsf.createDatabaseService(DatabaseService.Service.INVITATIONS)).thenReturn(invitationsDatabaseService);
-        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamDatabaseService);
+        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamsDatabaseService);
     }
 
     private void getUIFields(Activity activity) {
@@ -65,7 +64,7 @@ public class TeamActivityUnitTest extends TestInjection {
         Mockito.doAnswer(invocation -> {
             teamDbObserver = invocation.getArgument(0);
             return invocation;
-        }).when(teamDatabaseService).register(any());
+        }).when(teamsDatabaseService).register(any());
     }
 
     public void savedTeamUIDToPreferences() {
@@ -84,11 +83,11 @@ public class TeamActivityUnitTest extends TestInjection {
         Mockito.doAnswer(invocation -> {
             teamDbObserver.onTeamRetrieved(teamList);
             return null;
-        }).when(teamDatabaseService).getUserTeam(any(), any());
+        }).when(teamsDatabaseService).getUserTeam(any(), any());
 
         scenario = ActivityScenario.launch(TeamActivity.class);
         scenario.onActivity(activity -> {
-            Mockito.verify(teamDatabaseService).register(any());
+            Mockito.verify(teamsDatabaseService).register(any());
             getUIFields(activity);
             assertEquals(View.VISIBLE, noTeammatesInTeamText.getVisibility());
             assertEquals(0, teammatesList.getCount());
@@ -120,11 +119,11 @@ public class TeamActivityUnitTest extends TestInjection {
         Mockito.doAnswer(invocation -> {
             teamDbObserver.onTeamRetrieved(teamList);
             return null;
-        }).when(teamDatabaseService).getUserTeam(any(), any());
+        }).when(teamsDatabaseService).getUserTeam(any(), any());
 
         scenario = ActivityScenario.launch(TeamActivity.class);
         scenario.onActivity(activity -> {
-            Mockito.verify(teamDatabaseService).register(any());
+            Mockito.verify(teamsDatabaseService).register(any());
             getUIFields(activity);
             teamDbObserver.onTeamRetrieved(teamList);
 
@@ -172,12 +171,12 @@ public class TeamActivityUnitTest extends TestInjection {
         Mockito.doAnswer(invocation -> {
             teamDbObserver.onTeamRetrieved(teamList);
             return null;
-        }).when(teamDatabaseService).getUserTeam(any(), any());
+        }).when(teamsDatabaseService).getUserTeam(any(), any());
 
         scenario = ActivityScenario.launch(TeamActivity.class);
         scenario.onActivity(activity -> {
-            Mockito.verify(teamDatabaseService).getUserTeam(any(), any());
-            Mockito.verify(teamDatabaseService).register(any());
+            Mockito.verify(teamsDatabaseService).getUserTeam(any(), any());
+            Mockito.verify(teamsDatabaseService).register(any());
             getUIFields(activity);
             assertEquals(View.GONE, noTeammatesInTeamText.getVisibility());
             assertEquals(4, teammatesList.getCount());

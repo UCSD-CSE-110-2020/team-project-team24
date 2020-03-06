@@ -22,7 +22,8 @@ import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapte
 
 /**
  * {@inheritDoc}
- * This type's database provider is Cloud Firestore.
+ * This type's database provider is Cloud Firestore. The document path for a user is
+ * users/\{user\}.
  */
 public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     private static final String TAG = "WWR_FirebaseFirestoreAdapterUsers";

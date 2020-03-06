@@ -17,7 +17,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDat
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
@@ -48,7 +48,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     private InvitationsDatabaseService mInvitationsDB;
 
-    private TeamDatabaseService mTeamsDB;
+    private TeamsDatabaseService mTeamsDB;
     private MessagingService messagingService;
 
     private IUser mFrom;
@@ -91,7 +91,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         mUsersDB.register(this);
 
         mInvitationsDB = (InvitationsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
-        mTeamsDB = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mTeamsDB = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
 
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mInvitationsDB);
         messagingService.register(this);

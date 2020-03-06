@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private AuthService authService;
     private UsersDatabaseService mDb;
-    private TeamDatabaseService mTeamsDbService;
+    private TeamsDatabaseService mTeamsDbService;
     private MessagingService messagingService;
 
     private SharedPreferences preferences;
@@ -152,7 +152,7 @@ public class HomeActivity extends AppCompatActivity {
     private void firebaseUserSetup() {
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
         mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
-        mTeamsDbService = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mTeamsDbService = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
 
         SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);

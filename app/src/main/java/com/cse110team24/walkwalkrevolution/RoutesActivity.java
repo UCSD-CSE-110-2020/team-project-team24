@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -44,7 +44,7 @@ public class RoutesActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     private UsersDatabaseService mUsersDbService;
-    private TeamDatabaseService mTeamsDbService;
+    private TeamsDatabaseService mTeamsDbService;
 
     private SharedPreferences preferences;
 
@@ -62,7 +62,7 @@ public class RoutesActivity extends AppCompatActivity {
         setListeners();
 
         mUsersDbService = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
-        mTeamsDbService = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mTeamsDbService = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
     }
 
     @Override

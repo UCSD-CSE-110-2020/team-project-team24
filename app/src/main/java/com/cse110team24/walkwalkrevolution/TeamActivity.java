@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
@@ -33,7 +33,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     private Button seeInvitationsBtn;
     private BottomNavigationView bottomNavigationView;
 
-    private TeamDatabaseService mDb;
+    private TeamsDatabaseService mDb;
 
     SharedPreferences mPreferences;
 
@@ -84,7 +84,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     }
 
     private void setUpServices() {
-        mDb = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mDb = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
         mDb.register(this);
     }
 

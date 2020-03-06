@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface UsersDatabaseService extends UsersDatabaseServiceSubject, DatabaseService {
     /**
-     * Create a document in this service's provider database.
+     * Create a user document in this service's provider database.
      * @param user the signed in user whose document is being created. User must have a defined email.
      */
     void createUserInDatabase(IUser user);
