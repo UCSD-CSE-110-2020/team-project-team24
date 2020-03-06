@@ -148,7 +148,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     @Override
     public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
-        // TODO: 3/6/20 ? 
+        // TODO: 3/6/20 ?
     }
 
     private void showNoTeamToast() {

@@ -25,6 +25,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamDatabaseService {
 
     public static final String TEAMS_COLLECTION_KEY = "teams";
     public static final String TEAMMATES_SUB_COLLECTION = "teammates";
+    public static final String TEAM_ROUTES_SUB_COLLECTION_KEY = "routes";
 
     private CollectionReference teamsCollection;
     private FirebaseFirestore firebaseFirestore;
@@ -90,44 +91,41 @@ public class FireBaseFireStoreAdapterTeams implements TeamDatabaseService {
     @Override
     public void getUserTeamRoutes(String teamUid, String currentUserDisplay, int routeLimitCount, DocumentSnapshot lastRoute) {
         // todo get routeLimitCount amount of routes
+
     }
 
     @Override
     public void uploadRoute(String teamUid, Route route) {
-        // TODO upload to teams/{team}/routes/{route}
+        // upload to teams/{team}/routes/{route}
+        DocumentReference routeDoc = teamsCollection
+                .document(teamUid)
+                .collection(TEAM_ROUTES_SUB_COLLECTION_KEY)
+                .document();
+        route.setRouteUid(routeDoc.getId());
+        routeDoc.set(route.routeData()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "uploadRoute: route uploaded successfully");
+            } else {
+                Log.e(TAG, "uploadRoute: route failed to upload", task.getException());
+            }
+        });
     }
 
     @Override
     public void updateRoute(String teamUid, Route route) {
-        // TODO: 3/6/20 update in teams/{team}/routes/{route}
+        // update in teams/{team}/routes/{route}
+        DocumentReference routeDoc = teamsCollection
+                .document(teamUid)
+                .collection(TEAM_ROUTES_SUB_COLLECTION_KEY)
+                .document(route.getRouteUid());
+        routeDoc.set(route.routeData()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "uploadRoute: success updated route " + route);
+            } else {
+                Log.e(TAG, "uploadRoute: error updating route.", task.getException());
+            }
+        });
     }
-// todo something similar
-//    @Override
-//    public void uploadRoute(String userDocumentKey, Route route) {
-//        CollectionReference userRoutesCollection = usersCollection.document(userDocumentKey).collection(USER_ROUTES_SUB_COLLECTION_KEY);
-//        DocumentReference routeDoc = userRoutesCollection.document();
-//        route.setRouteUid(routeDoc.getId());
-//        routeDoc.set(route.routeData()).addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Log.i(TAG, "uploadRoute: success uploading route " + route);
-//            } else {
-//                Log.e(TAG, "uploadRoute: error uploading route.", task.getException());
-//            }
-//        });
-//    }
-// todo
-//    @Override
-//    public void updateRoute(String userDocumentKey, Route route) {
-//        CollectionReference userRoutesCollection = usersCollection.document(userDocumentKey).collection(USER_ROUTES_SUB_COLLECTION_KEY);
-//        DocumentReference routeDoc = userRoutesCollection.document(route.getRouteUid());
-//        routeDoc.set(route.routeData()).addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Log.i(TAG, "uploadRoute: success updated route " + route);
-//            } else {
-//                Log.e(TAG, "uploadRoute: error updating route.", task.getException());
-//            }
-//        });
-//    }
 
     private ITeam getTeamList(List<DocumentSnapshot> documents, String currentUserDisplayName) {
         ITeam team = new TeamAdapter(new ArrayList<>());

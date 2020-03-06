@@ -24,7 +24,6 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     private static final String TAG = "WWR_FirebaseFirestoreAdapterUsers";
 
     public static final String USERS_COLLECTION_KEY = "users";
-    public static final String USER_ROUTES_SUB_COLLECTION_KEY = "routes";
     public static final String USER_REGISTRATION_TOKENS_COLLECTION_KEY = "tokens";
     public static final String TOKEN_SET_KEY = "token";
 
