@@ -55,6 +55,8 @@ public class HomeActivity extends AppCompatActivity {
     private UsersDatabaseService mDb;
     private MessagingService messagingService;
 
+    private SharedPreferences preferences;
+
     private IUser mUser;
 
     private Handler handler = new Handler();
@@ -93,7 +95,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         getUIFields();
         saveHeight();
         setFitnessService();
@@ -126,7 +128,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void saveHeight() {
-        SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         heightFeet = getIntent().getIntExtra(HEIGHT_FT_KEY, -1);
         heightRemainderInches =  getIntent().getFloatExtra(HEIGHT_IN_KEY, -1);
@@ -303,13 +304,20 @@ public class HomeActivity extends AppCompatActivity {
     private void handleNewRouteRecorded(Intent data) {
         toggleBtn(saveRouteBtn);
         Route route = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
-        // upload the new route to db
-        mDb.uploadRoute(
-                Utils.cleanEmail(getSharedPreferences(APP_PREF, Context.MODE_PRIVATE).
-                        getString(IUser.EMAIL_KEY, "")),
-                route);
+        uploadRouteToTeamIfExists(route);
         saveIntoList(route);
         showRouteSavedToast();
+    }
+
+    // if the user's team exists, upload the route to the routes collection of the Team
+    private void uploadRouteToTeamIfExists(Route route) {
+        String teamUid = Utils.getString(preferences, IUser.TEAM_UID_KEY);
+
+        if (teamUid != null) {
+            mDb.uploadRoute(
+                    Utils.cleanEmail(Utils.getString(preferences, IUser.EMAIL_KEY)),
+                    route);
+        }
     }
 
     private void showRouteSavedToast() {
@@ -349,10 +357,7 @@ public class HomeActivity extends AppCompatActivity {
             existingRoute.setStats(stats);
 
             // update existing route in db
-            mDb.updateRoute(
-                    Utils.cleanEmail(getSharedPreferences(APP_PREF, Context.MODE_PRIVATE).
-                            getString(IUser.EMAIL_KEY, "")),
-                    existingRoute);
+            uploadRouteToTeamIfExists(existingRoute);
             saveIntoList(existingRoute);
             showRouteUpdatedToast();
         }

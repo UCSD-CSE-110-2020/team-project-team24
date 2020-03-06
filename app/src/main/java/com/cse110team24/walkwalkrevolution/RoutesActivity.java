@@ -89,14 +89,18 @@ public class RoutesActivity extends AppCompatActivity {
     private void handleNewRoute(Intent data) {
         Route newRoute = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
         // upload the new route to db
-        mUsersDbService.uploadRoute(
-                Utils.cleanEmail(getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).
-                        getString(IUser.EMAIL_KEY, "")),
-                newRoute);
+        uploadRouteIfTeamExists(newRoute);
         routes.add(newRoute);
         Collections.sort(routes);
         adapter.notifyDataSetChanged();
         saveListAsync();
+    }
+
+    private void uploadRouteIfTeamExists(Route newRoute) {
+        mUsersDbService.uploadRoute(
+                Utils.cleanEmail(getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).
+                        getString(IUser.EMAIL_KEY, "")),
+                newRoute);
     }
 
     private void returnToHomeForWalk(Intent data) {

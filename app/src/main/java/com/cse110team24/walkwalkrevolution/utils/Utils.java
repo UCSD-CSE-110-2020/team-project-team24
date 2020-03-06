@@ -21,6 +21,10 @@ public class Utils {
                 .apply();
     }
 
+    public static String getString(SharedPreferences preferences, String key) {
+        return preferences.getString(key, null);
+    }
+
     public static void showToast(Context context, String msg, int len) {
         Toast.makeText(context, msg, len).show();
     }
