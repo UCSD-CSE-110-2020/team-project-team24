@@ -15,6 +15,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ * This type's Messaging provider is FirebaseMessaging.
+ */
 public class FirebaseMessagingAdapter implements MessagingService {
     private static final String TAG = "WWR_FirebaseMessagingAdapter";
     private static final String databaseUrl = "https://walkwalkrevolution.firebaseio.com";
