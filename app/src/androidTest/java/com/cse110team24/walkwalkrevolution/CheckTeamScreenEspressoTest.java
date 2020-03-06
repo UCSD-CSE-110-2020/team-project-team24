@@ -1,13 +1,18 @@
 package com.cse110team24.walkwalkrevolution;
 
 
+import android.content.Context;
+import android.content.Intent;
+
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
@@ -33,6 +38,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -43,10 +49,10 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class CheckTeamScreenEspressoTest {
+public class CheckTeamScreenEspressoTest implements TeamsDatabaseServiceObserver {
 
     private List<IUser> listOfUsers;
-   // ITeam teamList;
+//    ITeam teamList;
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
@@ -57,6 +63,7 @@ public class CheckTeamScreenEspressoTest {
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE_KEY);
         TestAuth.isTestUserSignedIn = true;
         TestAuth.successUserSignedUp = true;
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         IUser satta_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Satta Momoh")
                 .addEmail("amara@gmail.com")
@@ -64,11 +71,12 @@ public class CheckTeamScreenEspressoTest {
                 .addTeamUid("666")
                 .build();
        TestAuth.testAuthUser = satta_momoh;
-        //listOfUsers = new ArrayList<IUser>();
-        //teamList = new TeamAdapter(listOfUsers);
+        listOfUsers = new ArrayList<IUser>();
+        testTeam = new TeamAdapter(listOfUsers);
+//        List<IUser> team = testTeam.getTeam();
         testTeam.addMember(satta_momoh);
-//       TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
-//       TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
+       TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
+       TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
 //       String teamID = testTeamsDatabaseService.createTeamInDatabase(satta_momoh);
        IUser amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
@@ -77,6 +85,12 @@ public class CheckTeamScreenEspressoTest {
                 .addTeamUid("666")
                 .build();
         testTeam.addMember(amara_momoh);
+        testTeamsDatabaseService.register(this);
+       // Intent intent = new Intent(appContext, TeamActivity.class);
+
+        testTeamsDatabaseService.mObserver.onTeamRetrieved(testTeam);
+       // testTeamsDatabaseService.getUserTeam("666", "Satta Momoh");
+
 
 //        testTeamsDatabaseService.addUserToTeam(amara_momoh, teamID);
 //        TestTeamsDatabaseService.testTeam.addMember(satta_momoh);
@@ -116,5 +130,14 @@ public class CheckTeamScreenEspressoTest {
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.action_team), withContentDescription("Team"), isDisplayed()));
         bottomNavigationItemView.perform(click());
+
+//        ViewInteraction listview = onView(withId(R.id.list_members_in_team)).check(matches(isDisplayed()));
+        ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
+
+    }
+
+    @Override
+    public void onTeamRetrieved(ITeam team) {
+
     }
 }
