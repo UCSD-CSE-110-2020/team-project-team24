@@ -47,7 +47,7 @@ public class TestAuth {
             if (successUserSignedIn) {
                 observer.onUserSignedIn(testAuthUser);
             } else {
-                observer.onAuthSignUpError(testAuthError);
+                observer.onAuthSignInError(testAuthError);
             }
         }
 
@@ -62,7 +62,7 @@ public class TestAuth {
             if (successUserSignedUp) {
                 observer.onUserSignedUp(testAuthUser);
             } else {
-                observer.onAuthSignInError(testAuthError);
+                observer.onAuthSignUpError(testAuthError);
             }
         }
 
