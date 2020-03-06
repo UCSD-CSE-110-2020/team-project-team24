@@ -136,9 +136,15 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             List<Route> routes = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, this);
             routes.forEach(route -> mTeamsDB.updateRoute(mTeamUid, route));
             Log.i(TAG, "uploadAllSavedRoutes: uploaded all routes to database");
+            saveListAsync(routes);
         } catch (IOException e) {
             Log.e(TAG, "uploadAllSavedRoutes: error reading list from file", e);
         }
+    }
+
+    private void saveListAsync(List<Route> routes) {
+        RoutesManager.AsyncTaskSaveRoutes saver = new RoutesManager.AsyncTaskSaveRoutes();
+        saver.execute(routes, this);
     }
 
     // save the team UID into shared preferences for future use
