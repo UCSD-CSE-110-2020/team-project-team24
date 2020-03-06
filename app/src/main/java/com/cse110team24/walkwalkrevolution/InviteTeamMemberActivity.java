@@ -22,12 +22,15 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersData
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.gms.tasks.Task;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseServiceObserver {
@@ -129,6 +132,13 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     private void uploadAllSavedRoutes(String mTeamUid) {
         // todo get the list locally then upload them one by one
+        try {
+            List<Route> routes = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, this);
+            routes.forEach(route -> mTeamsDB.updateRoute(mTeamUid, route));
+            Log.i(TAG, "uploadAllSavedRoutes: uploaded all routes to database");
+        } catch (IOException e) {
+            Log.e(TAG, "uploadAllSavedRoutes: error reading list from file", e);
+        }
     }
 
     // save the team UID into shared preferences for future use
