@@ -9,7 +9,7 @@ public interface AuthService extends AuthServiceSubject {
     /**
      * Signs in a user to this service's provider, given email and password. On success, a call to
      * {@link AuthServiceSubject#notifyObserversSignedIn(IUser)} is made with the sign in user. On
-     * failure, a call to {@link AuthServiceSubject#notifyObserversSignInError(AuthError)} is made
+     * failure, a call to {@link AuthServiceSubject#notifyObserversSignInError(AuthService.AuthError)} is made
      * with the AuthError that occurred.
      * @param email the existing user's email
      * @param password the existing user's password
@@ -19,7 +19,7 @@ public interface AuthService extends AuthServiceSubject {
     /**
      * Signs up a user to this service's provider given email, password, and display name and automatically
      * signs the user into the provider. On success, a call to {@link AuthServiceSubject#notifyObserversSignedUp(IUser)}
-     * is made with the sign in user. On failure, a call to {@link AuthServiceSubject#notifyObserversSignUpError(AuthError)}
+     * is made with the sign in user. On failure, a call to {@link AuthServiceSubject#notifyObserversSignUpError(AuthService.AuthError)}
      * is made with the AuthError that occurred.
      * @param email the new user's email
      * @param password the new user's password
