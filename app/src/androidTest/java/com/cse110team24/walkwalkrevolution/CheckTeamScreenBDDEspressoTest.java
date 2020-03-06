@@ -51,7 +51,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class CheckTeamScreenBDDEspressoTest implements TeamsDatabaseServiceObserver {
+public class CheckTeamScreenBDDEspressoTest {
 
     private List<IUser> listOfUsers;
 //    ITeam teamList;
@@ -77,8 +77,8 @@ public class CheckTeamScreenBDDEspressoTest implements TeamsDatabaseServiceObser
         testTeam = new TeamAdapter(listOfUsers);
 //        List<IUser> team = testTeam.getTeam();
         testTeam.addMember(satta_momoh);
-       TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
-       TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
+//       TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
+//       TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
 //       String teamID = testTeamsDatabaseService.createTeamInDatabase(satta_momoh);
        IUser amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
@@ -87,10 +87,12 @@ public class CheckTeamScreenBDDEspressoTest implements TeamsDatabaseServiceObser
                 .addTeamUid("666")
                 .build();
         testTeam.addMember(amara_momoh);
-        testTeamsDatabaseService.register(this);
+       // testTeamsDatabaseService.register(this);
        // Intent intent = new Intent(appContext, TeamActivity.class);
 
-        testTeamsDatabaseService.mObserver.onTeamRetrieved(testTeam);
+    //    testTeamsDatabaseService.mObserver.onTeamRetrieved(testTeam);
+
+
        // testTeamsDatabaseService.getUserTeam("666", "Satta Momoh");
 
 
@@ -138,13 +140,13 @@ public class CheckTeamScreenBDDEspressoTest implements TeamsDatabaseServiceObser
 
     }
 
-    @Override
-    public void onTeamRetrieved(ITeam team) {
-
-    }
-
-    @Override
-    public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
-
-    }
+//    @Override
+//    public void onTeamRetrieved(ITeam team) {
+//
+//    }
+//
+//    @Override
+//    public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
+//
+//    }
 }
