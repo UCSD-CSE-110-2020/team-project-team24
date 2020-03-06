@@ -63,7 +63,6 @@ public class InvitationsActivityUnitTest extends TestInjection {
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.INVITATIONS)).thenReturn(invitationsDatabaseService);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamDatabaseService);
         Mockito.when(msf.createMessagingService(Mockito.any(), eq(invitationsDatabaseService))).thenReturn(mMsg);
-        //mockInvitationSent();
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Invitation invitation = new Invitation(testUser);
         Invitation invitationBuilder = Invitation.builder()
@@ -74,7 +73,6 @@ public class InvitationsActivityUnitTest extends TestInjection {
 
         mInvitations.add(invitationBuilder);
         listViewAdapter = new InvitationsListViewAdapter(appContext, mInvitations);
-       // LayoutInflater inflater = (LayoutInflater.from(appContext));
     }
 
     private void getUIFields(Activity activity) {
@@ -115,20 +113,15 @@ public class InvitationsActivityUnitTest extends TestInjection {
 
     @Test
     public void approveInvitation() {
-//        List<String> items = new ArrayList<>();
-//        List<String> spyList = Mockito.spy(items);
-//        items.add("Amara");
-
         setup();
         scenario = ActivityScenario.launch(InvitationsActivity.class);
         scenario.onActivity(activity -> {
             getUIFields(activity);
-
-           // assertNotNull(invitationsList);
             invitationsList.setAdapter(listViewAdapter);
-            invitationsList.performItemClick(invitationsList.getChildAt(0), 0, invitationsList.getAdapter().getItemId(0));
-            //  acceptBtn.performClick();
-           // assertEquals("not sure", ShadowToast.getTextOfLatestToast());
+            assertEquals(mInvitations.get(0), listViewAdapter.getItem(0));
+
+           // invitationsList.performItemClick(invitationsList.getChildAt(0), 0, invitationsList.getAdapter().getItemId(0));
+
         });
     }
 
