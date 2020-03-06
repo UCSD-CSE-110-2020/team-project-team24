@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseApplicationWWR extends Application implements ApplicationSubject {
-    private static final String TAG = "FirebaseApplicationWWR";
+    private static final String TAG = "WWR_FirebaseApplicationWWR";
     private static AuthServiceFactory authServiceFactory;
     private static DatabaseServiceFactory databaseServiceFactory;
     private static MessagingServiceFactory messagingServiceFactory;
@@ -34,7 +34,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static AuthServiceFactory setAuthServiceFactory(AuthServiceFactory asf) {
-        Log.i(TAG, "setAuthServiceFactory: auth service factory set");
+        Log.i(TAG, "setAuthServiceFactory: auth service factory set with class name " + asf.getClass().getSimpleName());
         return authServiceFactory = asf;
     }
 
@@ -43,7 +43,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static DatabaseServiceFactory setDatabaseServiceFactory(DatabaseServiceFactory dsf) {
-        Log.i(TAG, "setDatabaseServiceFactory: database service factory set");
+        Log.i(TAG, "setDatabaseServiceFactory: database service factory set with class name " + dsf.getClass().getSimpleName());
         return databaseServiceFactory = dsf;
     }
 
@@ -52,7 +52,7 @@ public class FirebaseApplicationWWR extends Application implements ApplicationSu
     }
 
     public static MessagingServiceFactory setMessagingServiceFactory(MessagingServiceFactory msf) {
-        Log.i(TAG, "setMessagingServiceFactory: messaging service factory set");
+        Log.i(TAG, "setMessagingServiceFactory: messaging service factory set with class name " + msf.getClass().getSimpleName());
         return messagingServiceFactory = msf;
     }
 

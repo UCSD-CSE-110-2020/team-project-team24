@@ -28,7 +28,7 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 public class LoginActivity extends AppCompatActivity implements AuthServiceObserver {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "WWR_LoginActivity";
     private static final String INVALID_GMAIL_TOAST = "Please enter a valid gmail address!";
     private static final String INVALID_PASSWORD_TOAST = "Please enter a password at least 6 characters long!";
     private static final String INVALID_SIGN_IN = "Incorrect email or password";
@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     // firebase dependencies
     private AuthService mAuth;
     private IUser mUser;
-    // TODO: 3/3/20 change to UsersDatabaseService
     private UsersDatabaseService mDb;
     private ProgressBar progressBar;
 

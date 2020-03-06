@@ -21,7 +21,7 @@ import java.util.Map;
 import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.TEAM_UID_KEY;
 
 public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
-    private static final String TAG = "FirebaseFirestoreAdapterUsers";
+    private static final String TAG = "WWR_FirebaseFirestoreAdapterUsers";
 
     public static final String USERS_COLLECTION_KEY = "users";
     public static final String USER_ROUTES_SUB_COLLECTION_KEY = "routes";

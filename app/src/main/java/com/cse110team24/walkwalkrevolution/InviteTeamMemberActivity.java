@@ -31,7 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Map;
 
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseServiceObserver {
-    private static final String TAG = "InviteTeamMemberActivity";
+    private static final String TAG = "WWR_InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;
     private Button btnSendInvite;

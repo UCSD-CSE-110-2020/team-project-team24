@@ -68,31 +68,36 @@ public class TeamActivityUnitTest extends TestInjection {
         }).when(teamDatabaseService).register(any());
     }
 
-    private void mockTeamExists() {
-        Mockito.doAnswer(invocation -> {
-            teamDbObserver.onTeamRetrieved(null);
-            return null;
-        }).when(teamDatabaseService).getUserTeam(Mockito.any(), any());
+    public void savedTeamUIDToPreferences() {
+        sp.edit().putString("teamUid", "666")
+                .commit();
     }
-
-
 
     @Test
     public void emptyTeamOnTeamRetrieved() {
-
         mockTeamDbRegister();
+
+        listOfUsers = new ArrayList<IUser>();
+        teamList = new TeamAdapter(listOfUsers);
+
+        savedTeamUIDToPreferences();
+        Mockito.doAnswer(invocation -> {
+            teamDbObserver.onTeamRetrieved(teamList);
+            return null;
+        }).when(teamDatabaseService).getUserTeam(any(), any());
+
         scenario = ActivityScenario.launch(TeamActivity.class);
         scenario.onActivity(activity -> {
             Mockito.verify(teamDatabaseService).register(any());
             getUIFields(activity);
-            assertEquals(noTeammatesInTeamText.getVisibility(), View.VISIBLE);
-            assertEquals(teammatesList.getChildCount(), 0);
+            assertEquals(View.VISIBLE, noTeammatesInTeamText.getVisibility());
+            assertEquals(0, teammatesList.getCount());
         });
     }
+
     @Test
     public void TeamOfTwoOnTeamRetrieved() {
         mockTeamDbRegister();
-        mockTeamExists();
 
         IUser userOne = FirebaseUserAdapter.builder()
                 .addDisplayName("testerOne")
@@ -107,15 +112,15 @@ public class TeamActivityUnitTest extends TestInjection {
                 .addUid("2")
                 .build();
         listOfUsers = new ArrayList<IUser>();
-
         teamList = new TeamAdapter(listOfUsers);
         teamList.addMember(userOne);
         teamList.addMember(userTwo);
 
-        /*Mockito.doAnswer(invocation -> {
+        savedTeamUIDToPreferences();
+        Mockito.doAnswer(invocation -> {
             teamDbObserver.onTeamRetrieved(teamList);
             return null;
-        }).when(teamDatabaseService).getUserTeam(any());*/
+        }).when(teamDatabaseService).getUserTeam(any(), any());
 
         scenario = ActivityScenario.launch(TeamActivity.class);
         scenario.onActivity(activity -> {
@@ -123,9 +128,60 @@ public class TeamActivityUnitTest extends TestInjection {
             getUIFields(activity);
             teamDbObserver.onTeamRetrieved(teamList);
 
-            assertEquals(noTeammatesInTeamText.getVisibility(), View.GONE);
-            assertEquals(teammatesList.getChildCount(), 2);
+            assertEquals(View.GONE, noTeammatesInTeamText.getVisibility());
+            assertEquals(2, teammatesList.getCount());
         });
-
     }
+
+    @Test
+    public void TeamOfFourOnTeamRetrieved() {
+        mockTeamDbRegister();
+
+        IUser userOne = FirebaseUserAdapter.builder()
+                .addDisplayName("testerOne")
+                .addEmail("testOne@gmail.com")
+                .addTeamUid("666")
+                .addUid("1")
+                .build();
+        IUser userTwo = FirebaseUserAdapter.builder()
+                .addDisplayName("testerTwo")
+                .addEmail("testTwo@gmail.com")
+                .addTeamUid("666")
+                .addUid("2")
+                .build();
+        IUser userThree = FirebaseUserAdapter.builder()
+                .addDisplayName("testerThree")
+                .addEmail("testThree@gmail.com")
+                .addTeamUid("666")
+                .addUid("3")
+                .build();
+        IUser userFour = FirebaseUserAdapter.builder()
+                .addDisplayName("testerFour")
+                .addEmail("testFour@gmail.com")
+                .addTeamUid("666")
+                .addUid("4")
+                .build();
+        listOfUsers = new ArrayList<IUser>();
+        teamList = new TeamAdapter(listOfUsers);
+        teamList.addMember(userOne);
+        teamList.addMember(userTwo);
+        teamList.addMember(userThree);
+        teamList.addMember(userFour);
+
+        savedTeamUIDToPreferences();
+        Mockito.doAnswer(invocation -> {
+            teamDbObserver.onTeamRetrieved(teamList);
+            return null;
+        }).when(teamDatabaseService).getUserTeam(any(), any());
+
+        scenario = ActivityScenario.launch(TeamActivity.class);
+        scenario.onActivity(activity -> {
+            Mockito.verify(teamDatabaseService).getUserTeam(any(), any());
+            Mockito.verify(teamDatabaseService).register(any());
+            getUIFields(activity);
+            assertEquals(View.GONE, noTeammatesInTeamText.getVisibility());
+            assertEquals(4, teammatesList.getCount());
+        });
+    }
+
 }

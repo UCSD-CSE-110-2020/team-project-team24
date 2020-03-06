@@ -15,7 +15,7 @@ import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 
 public class RouteDetailsActivity extends AppCompatActivity {
-    private static final String TAG = "RouteDetailsActivity";
+    private static final String TAG = "WWR_RouteDetailsActivity";
     
     public static final String ROUTE_KEY = "route";
     public static final String ROUTE_IDX_KEY = "route_adapter_idx";

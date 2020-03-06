@@ -19,7 +19,7 @@ import java.util.List;
  * provides various methods to help manage Routes
  */
 public class RoutesManager {
-    private static final String TAG = "RoutesManager";
+    private static final String TAG = "WWR_RoutesManager";
 
     /**
      * write a list of Route objects to a file

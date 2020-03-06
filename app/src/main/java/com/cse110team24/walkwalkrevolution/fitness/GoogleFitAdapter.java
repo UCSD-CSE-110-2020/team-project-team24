@@ -12,7 +12,7 @@ import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 
 public class GoogleFitAdapter implements FitnessService {
-    private static final String TAG = "GoogleFitAdapter";
+    private static final String TAG = "WWR_GoogleFitAdapter";
     private static final double STRIDE_LEN_CONST = 0.413;
     private static final int FEET_IN_MILE = 5280;
     private static final int INCHES_IN_FEET = 12;

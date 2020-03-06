@@ -20,7 +20,7 @@ import java.util.List;
 
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> {
-    private static final String TAG = "RouteAdapter";
+    private static final String TAG = "WWR_RouteAdapter";
     private List<Route> mRoutes;
     private Context context;
 

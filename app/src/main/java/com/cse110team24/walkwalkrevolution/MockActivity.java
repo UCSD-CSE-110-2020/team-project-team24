@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.text.ParseException;
 
 public class MockActivity extends AppCompatActivity {
-    private static final String TAG = "MockActivity";
+    private static final String TAG = "WWR_MockActivity";
     private static final int ADD_MOCK_CONST = 500;
 
     public static final String START_WALK_BTN_VISIBILITY_KEY = "start button";

@@ -44,7 +44,7 @@ import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapte
  */
 // TODO: 3/3/20 split this adapter into three specialized service adapters
 public class FirebaseFirestoreAdapter implements DatabaseService {
-    private static final String TAG = "FirebaseFirestoreAdapter";
+    private static final String TAG = "WWR_FirebaseFirestoreAdapter";
     public static final String ROUTES_COLLECTION_KEY = "routes";
     public static final String TEAM_ID_KEY = "teamUid";
 

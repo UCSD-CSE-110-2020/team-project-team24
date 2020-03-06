@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InvitationsActivity extends AppCompatActivity implements InvitationsDatabaseServiceObserver {
-    private static final String TAG = "InvitationsActivity";
+    private static final String TAG = "WWR_InvitationsActivity";
 
     private InvitationsDatabaseService mIDb;
     private TeamDatabaseService mTDb;
