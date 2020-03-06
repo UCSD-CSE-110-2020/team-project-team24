@@ -20,11 +20,13 @@ import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestMessage;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,7 +51,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class CheckTeamScreenEspressoTest implements TeamsDatabaseServiceObserver {
+public class CheckTeamScreenBDDEspressoTest implements TeamsDatabaseServiceObserver {
 
     private List<IUser> listOfUsers;
 //    ITeam teamList;
@@ -138,6 +140,11 @@ public class CheckTeamScreenEspressoTest implements TeamsDatabaseServiceObserver
 
     @Override
     public void onTeamRetrieved(ITeam team) {
+
+    }
+
+    @Override
+    public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
 
     }
 }

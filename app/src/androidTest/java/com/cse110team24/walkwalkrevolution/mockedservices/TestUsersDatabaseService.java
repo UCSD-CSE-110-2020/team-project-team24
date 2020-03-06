@@ -42,15 +42,15 @@ public class TestUsersDatabaseService implements UsersDatabaseService {
         observer.onUserData(testCurrentUserData);
     }
 
-    @Override
-    public void uploadRoute(String userDocumentKey, Route route) {
-
-    }
-
-    @Override
-    public void updateRoute(String userDocumentKey, Route route) {
-
-    }
+//    @Override
+//    public void uploadRoute(String userDocumentKey, Route route) {
+//
+//    }
+//
+//    @Override
+//    public void updateRoute(String userDocumentKey, Route route) {
+//
+//    }
 
     @Override
     public void checkIfOtherUserExists(String userDocumentKey) {
