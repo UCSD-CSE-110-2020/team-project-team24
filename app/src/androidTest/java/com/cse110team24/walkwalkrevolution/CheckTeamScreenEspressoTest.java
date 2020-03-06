@@ -7,6 +7,7 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
@@ -14,13 +15,19 @@ import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestMessage;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -31,11 +38,15 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
+import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeam;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class CheckTeamScreenEspressoTest {
+
+    private List<IUser> listOfUsers;
+   // ITeam teamList;
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
@@ -53,13 +64,21 @@ public class CheckTeamScreenEspressoTest {
                 .addTeamUid("666")
                 .build();
        TestAuth.testAuthUser = satta_momoh;
-        IUser amara_momoh = FirebaseUserAdapter.builder()
+        //listOfUsers = new ArrayList<IUser>();
+        //teamList = new TeamAdapter(listOfUsers);
+        testTeam.addMember(satta_momoh);
+//       TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
+//       TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
+//       String teamID = testTeamsDatabaseService.createTeamInDatabase(satta_momoh);
+       IUser amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
                 .addEmail("ival@gmail.com")
                 .addUid("2")
                 .addTeamUid("666")
                 .build();
+        testTeam.addMember(amara_momoh);
 
+//        testTeamsDatabaseService.addUserToTeam(amara_momoh, teamID);
 //        TestTeamsDatabaseService.testTeam.addMember(satta_momoh);
 //        TestTeamsDatabaseService.testTeam.addMember(amara_momoh);
     }
