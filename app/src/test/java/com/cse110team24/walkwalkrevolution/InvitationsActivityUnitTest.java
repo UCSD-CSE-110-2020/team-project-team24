@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -50,6 +52,7 @@ public class InvitationsActivityUnitTest extends TestInjection {
     private List<Invitation> mInvitations = new ArrayList<>();
     ListView invitationsList;
     InvitationsListViewAdapter listViewAdapter;
+    Context appContext;
     //In<IUser> namesList = new List<IUser>;
 
     @Before
@@ -63,15 +66,15 @@ public class InvitationsActivityUnitTest extends TestInjection {
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.INVITATIONS)).thenReturn(invitationsDatabaseService);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamDatabaseService);
         Mockito.when(msf.createMessagingService(Mockito.any(), eq(invitationsDatabaseService))).thenReturn(mMsg);
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Invitation invitation = new Invitation(testUser);
-        Invitation invitationBuilder = Invitation.builder()
+        appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+       // Invitation invitation = new Invitation(testUser);
+        Invitation invitation = Invitation.builder()
                 .addFromUser(testUser)
                 .addToEmail("amara@gmail.com")
                 .addToDisplayName("Amara")
                 .build();
 
-        mInvitations.add(invitationBuilder);
+        mInvitations.add(invitation);
         listViewAdapter = new InvitationsListViewAdapter(appContext, mInvitations);
     }
 
@@ -119,7 +122,10 @@ public class InvitationsActivityUnitTest extends TestInjection {
             getUIFields(activity);
             invitationsList.setAdapter(listViewAdapter);
             assertEquals(mInvitations.get(0), listViewAdapter.getItem(0));
-
+           assertEquals(2, listViewAdapter.getCount());
+//            View itemView = listViewAdapter.getView(1, null, invitationsList);
+//            invitationsList.performItemClick(itemView, 1, listViewAdapter.getItemId(1));
+          // invitationsList.performItemClick(invitationsList.getAdapter().getView(0, null, null), 0, invitationsList.getAdapter().getItemId(0));
            // invitationsList.performItemClick(invitationsList.getChildAt(0), 0, invitationsList.getAdapter().getItemId(0));
 
         });
