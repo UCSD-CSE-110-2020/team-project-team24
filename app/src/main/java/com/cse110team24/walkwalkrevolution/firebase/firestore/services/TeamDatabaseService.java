@@ -10,5 +10,5 @@ public interface TeamDatabaseService extends TeamsDatabaseServiceSubject, Databa
     String createTeamInDatabase(IUser user);
     void addUserToTeam(IUser user, String teamUid);
     void getUserTeam(String teamUid, String currentUserDisplayName);
-
+    void getUserTeamRoutes(String teamUid, String currentUserDisplay, int routeLimitCount);
 }
