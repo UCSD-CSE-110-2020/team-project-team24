@@ -355,6 +355,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     @Override
     public void onUserSignedUp(IUser user) {
+        Log.i(TAG, "onUserSignedUp: user signed up");
         if(mAuth.isUserSignedIn()) {
             user.updateDisplayName(username);
             saveUserInfo(user);
@@ -365,6 +366,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     @Override
     public void onUserSignedIn(IUser user) {
+        Log.i(TAG, "onUserSignedIn: user signed in");
         if (validateFeet() && validateInches() && mAuth.isUserSignedIn()) {
             saveUserInfo(user);
             launchHome();

@@ -36,6 +36,7 @@ public class TestAuth {
      * [observer].onUserSignedIn(testUser) should be called
      */
     public static class TestAuthService implements AuthService{
+        private static final String TAG = "[WWR_TestAuthService]";
         AuthServiceObserver observer;
         @Override
         public void signIn(String email, String password) {
@@ -43,8 +44,8 @@ public class TestAuth {
              * [observer].onUserSignedUp(testAuthUser)
              * [observer].onAuthSignUpError(testAuthError)
              */
-            if (successUserSignedUp) {
-                observer.onUserSignedUp(testAuthUser);
+            if (successUserSignedIn) {
+                observer.onUserSignedIn(testAuthUser);
             } else {
                 observer.onAuthSignUpError(testAuthError);
             }
@@ -56,8 +57,10 @@ public class TestAuth {
              * [observer].onUserSignedUp(testAuthUser)
              * [observer].onAuthSignUpError(testAuthError)
              */
-            if (successUserSignedIn) {
-                observer.onUserSignedIn(testAuthUser);
+
+            System.out.println(TAG + ": signUp: called with email " + email + " and name " + displayName);
+            if (successUserSignedUp) {
+                observer.onUserSignedUp(testAuthUser);
             } else {
                 observer.onAuthSignInError(testAuthError);
             }
