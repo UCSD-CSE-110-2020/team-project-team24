@@ -85,10 +85,5 @@ public class LoginActivitySignUpEspressoTest {
                 allOf(withId(R.id.btn_height_finish), withText("Sign Up"), isDisplayed()));
         appCompatButton.perform(click());
 
-
-
-//        ViewInteraction progressBar = onView(
-//                allOf(withId(R.id.progressBar), isDisplayed()));
-//        progressBar.check(matches(isDisplayed()));
     }
 }
