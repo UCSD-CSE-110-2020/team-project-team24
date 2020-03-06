@@ -7,6 +7,18 @@ import com.cse110team24.walkwalkrevolution.utils.Subject;
 import java.util.Map;
 
 public interface UsersDatabaseServiceSubject extends Subject<UsersDatabaseServiceObserver> {
+    /**
+     * Notify this subject's observers that the user data being requested is ready for reading.
+     * See also: {@link UsersDatabaseServiceObserver#onUserData(Map)}.
+     * @param userDataMap the user data being requested
+     */
     void notifyObserversUserData(Map<String, Object> userDataMap);
+
+    /**
+     * Notify this subject's observers whether a user exists in the database.
+     * See also: {@link UsersDatabaseServiceObserver#onUserExists(IUser)}} and {@link UsersDatabaseServiceObserver#onUserDoesNotExist()}
+     * @param exists true if the user exists in the database
+     * @param otherUser the user whose existence was checked, if they exist.
+     */
     void notifyObserversIfUserExists(boolean exists, IUser otherUser);
 }

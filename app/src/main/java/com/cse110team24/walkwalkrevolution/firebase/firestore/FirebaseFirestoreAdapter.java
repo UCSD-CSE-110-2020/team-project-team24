@@ -48,8 +48,6 @@ public class FirebaseFirestoreAdapter implements DatabaseService {
     public static final String ROUTES_COLLECTION_KEY = "routes";
     public static final String TEAM_ID_KEY = "teamUid";
 
-    List<DatabaseServiceObserver> observers = new ArrayList<>();
-
     public FirebaseFirestoreAdapter() {
 
     }
