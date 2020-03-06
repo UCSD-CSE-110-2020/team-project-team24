@@ -22,6 +22,10 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ * The provider for this class is Firebase
+ */
 public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateListener {
     private static String TAG = "WWR_FirebaseAuthAdapter";
 
