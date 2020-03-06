@@ -9,6 +9,12 @@ public class TestDatabaseServiceFactory implements DatabaseServiceFactory {
         switch (service) {
             case USERS:
                 return new TestUsersDatabaseService();
+
+            case TEAMS:
+                return new TestTeamsDatabaseService();
+
+            case INVITATIONS:
+                return new TestInvitationsDatabaseService();
             default:
                 return null;
         }

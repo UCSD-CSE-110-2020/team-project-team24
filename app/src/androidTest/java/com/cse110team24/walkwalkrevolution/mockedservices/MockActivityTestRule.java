@@ -36,6 +36,7 @@ public class  MockActivityTestRule<LoginActivity extends Activity> extends Activ
                 .apply();
         FirebaseApplicationWWR.setAuthServiceFactory(new TestAuth.TestAuthAuthServiceFactory());
         FirebaseApplicationWWR.setDatabaseServiceFactory(new TestDatabaseServiceFactory());
+        FirebaseApplicationWWR.setMessagingServiceFactory(new TestMessage.TestMessagingServiceFactory());
     }
 
 }
