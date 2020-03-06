@@ -6,9 +6,12 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
@@ -43,13 +46,13 @@ public class CheckTeamScreenEspressoTest {
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE_KEY);
         TestAuth.isTestUserSignedIn = true;
         TestAuth.successUserSignedUp = true;
-        TestAuth.testAuthUser = FirebaseUserAdapter.builder()
+        IUser satta_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Satta Momoh")
                 .addEmail("amara@gmail.com")
                 .addUid("1")
                 .addTeamUid("666")
                 .build();
-       // TestTeamsDatabaseService.testTeam.addMember()
+       TestAuth.testAuthUser = satta_momoh;
         IUser amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
                 .addEmail("ival@gmail.com")
@@ -57,6 +60,8 @@ public class CheckTeamScreenEspressoTest {
                 .addTeamUid("666")
                 .build();
 
+//        TestTeamsDatabaseService.testTeam.addMember(satta_momoh);
+//        TestTeamsDatabaseService.testTeam.addMember(amara_momoh);
     }
 
     @Test
