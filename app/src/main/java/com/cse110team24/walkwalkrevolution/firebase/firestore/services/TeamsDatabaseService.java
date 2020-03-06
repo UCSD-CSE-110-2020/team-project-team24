@@ -32,7 +32,8 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
     /**
      * Query this service's provider database for the teammates in the specified team document.
      * All teammates' data are returned except the currently signed in user's.
-     * <p>On complete, a call to {@link TeamsDatabaseServiceSubject#notifyObserversTeamRetrieved(ITeam)} is made.</p>
+     * <p>On complete, a call to {@link TeamsDatabaseServiceSubject#notifyObserversTeamRetrieved(ITeam)} is made
+     * to notify observers that the team is ready.</p>
      * @param teamUid the already-existing team's ID
      * @param currentUserDisplayName the currently signed-in user's displayName
      */

@@ -27,7 +27,7 @@ public interface UsersDatabaseService extends UsersDatabaseServiceSubject, Datab
     void updateUserTeamUidInDatabase(IUser user, String teamUid);
 
     /**
-     * Query this service's provider database for the given user's data. On success, a call to
+     * Query this service's provider database for the given user's data. On complete, a call to
      * {@link UsersDatabaseServiceSubject#notifyObserversUserData(Map) is made with the requested user's data}.
      *
      * @param user the user whose data is being requested. User must have a defined email.
@@ -35,9 +35,9 @@ public interface UsersDatabaseService extends UsersDatabaseServiceSubject, Datab
     void getUserData(IUser user);
 
     /**
-     * Query this service's provider database for a user given userDocumentKey. If user exists, a call to
-     * {@link UsersDatabaseServiceSubject#notifyObserversIfUserExists(boolean, IUser)} with value true
-     * and the requested user's data, otherwise, with value false and null user data.
+     * Query this service's provider database for a user given userDocumentKey.
+     * <p>If user exists, a call to {@link UsersDatabaseServiceSubject#notifyObserversIfUserExists(boolean, IUser)}
+     * with value true and the requested user's data, otherwise, with the call is made with value false and null user data.</p>
      * @param userDocumentKey the requested user's documentKey. Must be in the form of a an email with
      *                        non-alphanumeric characters removed.
      */

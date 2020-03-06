@@ -4,6 +4,9 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FireBaseF
 import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FirebaseFirestoreAdapterInvitations;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FirebaseFirestoreAdapterUsers;
 
+/**
+ * Instantiates one of 4 Cloud Firestore implementations of {@link DatabaseService}
+ */
 public class FirestoreDatabaseServiceFactory implements DatabaseServiceFactory{
 
     @Override
