@@ -17,10 +17,12 @@ import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +144,11 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
         teammatesList.setAdapter(listviewAdapter);
 
+    }
+
+    @Override
+    public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
+        // TODO: 3/6/20 ? 
     }
 
     private void showNoTeamToast() {

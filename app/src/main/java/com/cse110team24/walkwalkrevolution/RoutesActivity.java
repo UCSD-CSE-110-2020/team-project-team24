@@ -3,10 +3,12 @@ package com.cse110team24.walkwalkrevolution;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -27,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.cse110team24.walkwalkrevolution.HomeActivity.APP_PREF;
+
 public class RoutesActivity extends AppCompatActivity {
     public static final String TAG = "WWR_RoutesActivity";
 
@@ -40,6 +44,9 @@ public class RoutesActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     private UsersDatabaseService mUsersDbService;
+    private TeamDatabaseService mTeamsDbService;
+
+    private SharedPreferences preferences;
 
     private List<Route> routes = new ArrayList<>();
 
@@ -47,6 +54,7 @@ public class RoutesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
+        preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -54,6 +62,7 @@ public class RoutesActivity extends AppCompatActivity {
         setListeners();
 
         mUsersDbService = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        mTeamsDbService = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
     }
 
     @Override
@@ -89,14 +98,19 @@ public class RoutesActivity extends AppCompatActivity {
     private void handleNewRoute(Intent data) {
         Route newRoute = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
         // upload the new route to db
-        mUsersDbService.uploadRoute(
-                Utils.cleanEmail(getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).
-                        getString(IUser.EMAIL_KEY, "")),
-                newRoute);
+        uploadRouteIfTeamExists(newRoute);
         routes.add(newRoute);
         Collections.sort(routes);
         adapter.notifyDataSetChanged();
         saveListAsync();
+    }
+
+    // only upload the route if the team already exists
+    private void uploadRouteIfTeamExists(Route newRoute) {
+        String teamUid = Utils.getString(preferences, IUser.TEAM_UID_KEY);
+        if (teamUid != null) {
+            mTeamsDbService.uploadRoute(teamUid, newRoute);
+        }
     }
 
     private void returnToHomeForWalk(Intent data) {
