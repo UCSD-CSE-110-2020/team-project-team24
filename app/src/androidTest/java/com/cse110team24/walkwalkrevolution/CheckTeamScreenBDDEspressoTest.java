@@ -20,11 +20,13 @@ import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestMessage;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,7 +51,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class CheckTeamScreenEspressoTest implements TeamsDatabaseServiceObserver {
+public class CheckTeamScreenBDDEspressoTest {
 
     private List<IUser> listOfUsers;
 //    ITeam teamList;
@@ -75,8 +77,8 @@ public class CheckTeamScreenEspressoTest implements TeamsDatabaseServiceObserver
         testTeam = new TeamAdapter(listOfUsers);
 //        List<IUser> team = testTeam.getTeam();
         testTeam.addMember(satta_momoh);
-       TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
-       TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
+//       TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
+//       TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
 //       String teamID = testTeamsDatabaseService.createTeamInDatabase(satta_momoh);
        IUser amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
@@ -85,10 +87,12 @@ public class CheckTeamScreenEspressoTest implements TeamsDatabaseServiceObserver
                 .addTeamUid("666")
                 .build();
         testTeam.addMember(amara_momoh);
-        testTeamsDatabaseService.register(this);
+       // testTeamsDatabaseService.register(this);
        // Intent intent = new Intent(appContext, TeamActivity.class);
 
-        testTeamsDatabaseService.mObserver.onTeamRetrieved(testTeam);
+    //    testTeamsDatabaseService.mObserver.onTeamRetrieved(testTeam);
+
+
        // testTeamsDatabaseService.getUserTeam("666", "Satta Momoh");
 
 
@@ -136,8 +140,13 @@ public class CheckTeamScreenEspressoTest implements TeamsDatabaseServiceObserver
 
     }
 
-    @Override
-    public void onTeamRetrieved(ITeam team) {
-
-    }
+//    @Override
+//    public void onTeamRetrieved(ITeam team) {
+//
+//    }
+//
+//    @Override
+//    public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
+//
+//    }
 }
