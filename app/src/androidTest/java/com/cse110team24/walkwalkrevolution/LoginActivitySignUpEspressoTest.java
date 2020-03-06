@@ -5,10 +5,13 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+
+import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.MockedApplicationAndroidTestRunner;
 
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 
 import org.junit.Before;
@@ -25,6 +28,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -36,12 +40,21 @@ public class LoginActivitySignUpEspressoTest {
 
     @Before
     public void setup() {
+        FitnessServiceFactory.put(TEST_SERVICE_KEY, activity -> new TestFitnessService(activity));
+        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE_KEY);
+        TestAuth.isTestUserSignedIn = true;
+        TestAuth.successUserSignedUp = true;
+        TestAuth.testAuthUser = FirebaseUserAdapter.builder()
+                .addDisplayName("Amara Momoh")
+                .addEmail("amara@gmail.com")
+                .addUid("1")
+                .addTeamUid("666")
+                .build();
 
-        // todo you're mocking what the next of each of these will be
-        TestAuth.isTestUserSignedIn = false;
     }
     @Test
     public void loginActivitySignUpEspressoTest() {
+        setup();
         ViewInteraction appCompatTextView = onView(
                 allOf(withId(R.id.sign_up_tv), withText("Don't have an account? Sign up here"), isDisplayed()));
         appCompatTextView.perform(click());
@@ -66,7 +79,7 @@ public class LoginActivitySignUpEspressoTest {
                 allOf(withId(R.id.et_height_remainder_inches), isDisplayed()));
         appCompatEditText5.perform(replaceText("1"), closeSoftKeyboard());
 
-        TestAuth.successUserSignedUp = true;
+
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.btn_height_finish), withText("Sign Up"), isDisplayed()));
