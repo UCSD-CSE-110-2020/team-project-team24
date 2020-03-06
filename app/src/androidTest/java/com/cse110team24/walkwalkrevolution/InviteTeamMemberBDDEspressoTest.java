@@ -33,12 +33,21 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
 import static org.hamcrest.Matchers.allOf;
 
+/*
+Given that I have logged into my WWR account with a valid email address
+And I want to invite a team member with a valid email address and the WWR app
+When I click the “Team” button on the Home screen,
+And click the “+” button on the team screen,
+When I am prompted to enter the name and gmail address of the person I want to join my team,
+And I click invite,
+Then the sent invitation will be sent successfully.
+ */
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class InviteTeamMemberEspressoTest {
+public class InviteTeamMemberBDDEspressoTest {
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
-  //  public MockActivityTestRule<HomeActivity> mLoginActivityTestRule = new MockActivityTestRule<>(HomeActivity.class);
 
     @Before
     public void setup() {
@@ -53,7 +62,6 @@ public class InviteTeamMemberEspressoTest {
                 .addUid("1")
                 .addTeamUid("666")
                 .build();
-
 
     }
     @Test
@@ -99,12 +107,6 @@ public class InviteTeamMemberEspressoTest {
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.btn_send_invite), withText("Send Invitation"), isDisplayed()));
         appCompatButton3.perform(click());
-
-
-
-
-
-
 
     }
 }
