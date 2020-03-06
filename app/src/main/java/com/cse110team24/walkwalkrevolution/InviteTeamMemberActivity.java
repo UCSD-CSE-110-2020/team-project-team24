@@ -124,6 +124,11 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         messagingService.subscribeToNotificationsTopic(mTeamUid);
         saveTeamUidInPreferences();
         dataReady = true;
+        uploadAllSavedRoutes(mTeamUid);
+    }
+
+    private void uploadAllSavedRoutes(String mTeamUid) {
+        // todo get the list locally then upload them one by one
     }
 
     // save the team UID into shared preferences for future use

@@ -90,33 +90,6 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     }
 
     @Override
-    public void uploadRoute(String userDocumentKey, Route route) {
-        CollectionReference userRoutesCollection = usersCollection.document(userDocumentKey).collection(USER_ROUTES_SUB_COLLECTION_KEY);
-        DocumentReference routeDoc = userRoutesCollection.document();
-        route.setRouteUid(routeDoc.getId());
-        routeDoc.set(route.routeData()).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.i(TAG, "uploadRoute: success uploading route " + route);
-            } else {
-                Log.e(TAG, "uploadRoute: error uploading route.", task.getException());
-            }
-        });
-    }
-
-    @Override
-    public void updateRoute(String userDocumentKey, Route route) {
-        CollectionReference userRoutesCollection = usersCollection.document(userDocumentKey).collection(USER_ROUTES_SUB_COLLECTION_KEY);
-        DocumentReference routeDoc = userRoutesCollection.document(route.getRouteUid());
-        routeDoc.set(route.routeData()).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.i(TAG, "uploadRoute: success updated route " + route);
-            } else {
-                Log.e(TAG, "uploadRoute: error updating route.", task.getException());
-            }
-        });
-    }
-
-    @Override
     public void notifyObserversUserData(Map<String, Object> userDataMap) {
         observers.forEach(observer -> {
             observer.onUserData(userDataMap);

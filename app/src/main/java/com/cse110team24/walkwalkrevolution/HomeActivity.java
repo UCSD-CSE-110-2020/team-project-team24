@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
@@ -53,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private AuthService authService;
     private UsersDatabaseService mDb;
+    private TeamDatabaseService mTeamsDbService;
     private MessagingService messagingService;
 
     private SharedPreferences preferences;
@@ -150,6 +152,7 @@ public class HomeActivity extends AppCompatActivity {
     private void firebaseUserSetup() {
         authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
         mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        mTeamsDbService = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
 
         SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
@@ -314,9 +317,7 @@ public class HomeActivity extends AppCompatActivity {
         String teamUid = Utils.getString(preferences, IUser.TEAM_UID_KEY);
 
         if (teamUid != null) {
-            mDb.uploadRoute(
-                    Utils.cleanEmail(Utils.getString(preferences, IUser.EMAIL_KEY)),
-                    route);
+            mTeamsDbService.uploadRoute(teamUid, route);
         }
     }
 
@@ -357,9 +358,18 @@ public class HomeActivity extends AppCompatActivity {
             existingRoute.setStats(stats);
 
             // update existing route in db
-            uploadRouteToTeamIfExists(existingRoute);
+            updateRouteToTeamIfExists(existingRoute);
             saveIntoList(existingRoute);
             showRouteUpdatedToast();
+        }
+    }
+
+    // if the user's team exists, upload the route to the routes collection of the Team
+    private void updateRouteToTeamIfExists(Route route) {
+        String teamUid = Utils.getString(preferences, IUser.TEAM_UID_KEY);
+
+        if (teamUid != null) {
+            mTeamsDbService.updateRoute(teamUid, route);
         }
     }
 
