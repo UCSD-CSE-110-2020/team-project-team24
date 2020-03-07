@@ -100,10 +100,9 @@ public class CheckTeamScreenBDDEspressoTest {
                 .addTeamUid("666")
                 .build();
         testTeam.addMember(amara_momoh);
-        testTeam.addMember(satta_momoh);
-        testTeamUid = testTeam.getUid();
+        testTeamUid = "666";
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getTargetContext()
-                .getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).edit().putString(IUser.TEAM_UID_KEY, testTeamUid).commit();
+                .getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).edit().putString(amara_momoh.TEAM_UID_KEY, testTeamUid).commit();
     }
 
     @Test
