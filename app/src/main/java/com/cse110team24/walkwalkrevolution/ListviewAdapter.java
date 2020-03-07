@@ -51,7 +51,7 @@ public class ListviewAdapter extends BaseAdapter {
             TextView initialView = newView.findViewById(R.id.initialView);
             nameView.setText(users.get(i).getDisplayName());
             initialView.setText(getInitialFromName(users.get(i).getDisplayName()));
-            setTextColor(initialView);
+            setTextColor(initialView, i);
         } else {
             newView = view;
         }
@@ -67,8 +67,8 @@ public class ListviewAdapter extends BaseAdapter {
         return initialsToReturn;
     }
 
-    private void setTextColor(TextView view) {
-        Random rnd = new Random();
+    private void setTextColor(TextView view, int seed) {
+        Random rnd = new Random(seed);
         int color = Color.argb(255, rnd.nextInt(192), rnd.nextInt(192), rnd.nextInt(192));
         view.setTextColor(color);
     }
