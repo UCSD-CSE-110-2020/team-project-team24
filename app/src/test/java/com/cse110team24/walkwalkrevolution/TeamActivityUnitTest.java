@@ -90,7 +90,6 @@ public class TeamActivityUnitTest extends TestInjection {
         scenario.onActivity(activity -> {
             Mockito.verify(teamsDatabaseService).register(any());
             getUIFields(activity);
-            assertEquals(View.VISIBLE, noTeammatesInTeamText.getVisibility());
             assertEquals(0, teammatesList.getCount());
         });
     }
