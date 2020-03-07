@@ -24,7 +24,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.Invitati
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.Messaging;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -39,7 +39,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private InvitationsDatabaseService mIDb;
     private TeamsDatabaseService mTDb;
     private UsersDatabaseService mUDb;
-    private MessagingService mMessagingService;
+    private Messaging mMessaging;
     private Auth mAuth;
 
     private SharedPreferences preferences;
@@ -103,7 +103,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
                 String senderTeamUid = mCurrentSelectedInvitation.getTeamUid();
                 updateTeamUidLocallyAndDatabase(senderTeamUid);
                 mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
-                mMessagingService.subscribeToNotificationsTopic(senderTeamUid);
+                mMessaging.subscribeToNotificationsTopic(senderTeamUid);
                 Utils.showToast(this, "welcome to " + mCurrentSelectedInvitation.fromName() + "'s team", Toast.LENGTH_LONG);
                 dismissSelectedInvitation();
             }
@@ -159,7 +159,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
 
         mUDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
 
-        mMessagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mIDb);
+        mMessaging = FirebaseApplicationWWR.getMessagingFactory().createMessagingService(this, mIDb);
     }
 
     private void getPendingInvitations() {

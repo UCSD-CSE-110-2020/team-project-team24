@@ -10,8 +10,8 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseS
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingFactory;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.Messaging;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
@@ -21,10 +21,10 @@ import org.mockito.Mockito;
 public class TestInjection {
     protected FirebaseAuthFactory asf;
     protected FirestoreDatabaseServiceFactory dsf;
-    protected FirebaseMessagingServiceFactory msf;
+    protected FirebaseMessagingFactory msf;
     protected Auth mAuth;
     protected DatabaseService mDb;
-    protected MessagingService mMsg;
+    protected Messaging mMsg;
     protected Activity activity;
 
 
@@ -47,10 +47,10 @@ public class TestInjection {
     void setup() {
         asf = Mockito.mock(FirebaseAuthFactory.class);
         dsf = Mockito.mock(FirestoreDatabaseServiceFactory.class);
-        msf = Mockito.mock(FirebaseMessagingServiceFactory.class);
+        msf = Mockito.mock(FirebaseMessagingFactory.class);
         mAuth = Mockito.mock(Auth.class);
         mDb = Mockito.mock(DatabaseService.class);
-        mMsg = Mockito.mock(MessagingService.class);
+        mMsg = Mockito.mock(Messaging.class);
 
         Mockito.when(asf.createAuthService()).thenReturn(mAuth);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.LEGACY)).thenReturn(mDb);

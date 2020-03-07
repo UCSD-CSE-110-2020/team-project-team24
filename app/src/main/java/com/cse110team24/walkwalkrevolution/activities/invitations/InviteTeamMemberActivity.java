@@ -24,7 +24,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.Invitatio
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.Messaging;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -40,9 +40,9 @@ import java.util.Map;
 /**
  * Handles sending invitations to other users.
  * <p>Integrates {@link Auth}, {@link UsersDatabaseService}, {@link InvitationsDatabaseService},
- * {@link TeamsDatabaseService}, and {@link MessagingService}</p>
+ * {@link TeamsDatabaseService}, and {@link Messaging}</p>
  *
- * <p>Implements {@link MessagingService} to be notified when an invitation was sent.</p>
+ * <p>Implements {@link Messaging} to be notified when an invitation was sent.</p>
  * <p>Implements {@link UsersDatabaseServiceObserver} to be notified when current user's data is ready
  * or to know when {@link UsersDatabaseService} has finished checking if the user being invited exists</p>
  *
@@ -74,7 +74,7 @@ import java.util.Map;
  *             <li>Subscribes current user to their new team's document as a notification topic</li>
  *             <li>uploads the current user's locally saved routes to their new team</li>
  *         </ol>
- *         <li>Sends invitation using {@link MessagingService}</li>
+ *         <li>Sends invitation using {@link Messaging}</li>
  *     </ol>
  * </ol>
  */
@@ -94,7 +94,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private InvitationsDatabaseService mInvitationsDB;
 
     private TeamsDatabaseService mTeamsDB;
-    private MessagingService messagingService;
+    private Messaging mMessaging;
 
     private IUser mFrom;
     private Invitation mInvitation;
@@ -138,8 +138,8 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         mInvitationsDB = (InvitationsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
         mTeamsDB = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
 
-        messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mInvitationsDB);
-        messagingService.register(this);
+        mMessaging = FirebaseApplicationWWR.getMessagingFactory().createMessagingService(this, mInvitationsDB);
+        mMessaging.register(this);
     }
 
     private void tryToSendInvitation(View view) {
@@ -169,7 +169,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         mUsersDB.updateUserTeamUidInDatabase(mFrom, mTeamUid);
 
         // subscribe to the topic
-        messagingService.subscribeToNotificationsTopic(mTeamUid);
+        mMessaging.subscribeToNotificationsTopic(mTeamUid);
         saveTeamUidInPreferences();
         dataReady = true;
         uploadAllSavedRoutes(mTeamUid);
@@ -291,7 +291,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             }
             mInvitation = createInvitation();
             Log.i(TAG, "sendInvite: sending invitation from " + mInvitation.fromName() + " to " + mInvitation.toName());
-            messagingService.sendInvitation(mInvitation);
+            mMessaging.sendInvitation(mInvitation);
         }
     }
 

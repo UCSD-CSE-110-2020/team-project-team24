@@ -4,6 +4,6 @@ import android.app.Activity;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 
-public interface MessagingServiceFactory {
-    MessagingService createMessagingService(Activity activity, DatabaseService databaseService);
+public interface MessagingFactory {
+    Messaging createMessagingService(Activity activity, DatabaseService databaseService);
 }
