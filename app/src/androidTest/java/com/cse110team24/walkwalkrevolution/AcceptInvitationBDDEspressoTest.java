@@ -40,6 +40,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 
 /**
  Given that I login successfully,
@@ -147,7 +148,7 @@ public class AcceptInvitationBDDEspressoTest {
 
         pressBack();
 
-
+        onView(withId(R.id.text_no_teammates)).check(matches(not(isDisplayed())));
 
 
 
