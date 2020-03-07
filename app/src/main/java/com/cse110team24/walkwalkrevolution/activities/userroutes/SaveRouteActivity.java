@@ -1,13 +1,17 @@
 package com.cse110team24.walkwalkrevolution.activities.userroutes;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -81,12 +85,14 @@ public class SaveRouteActivity extends AppCompatActivity {
             route = null;
         }
         else {
+            String creatorName = Utils.getString(getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE), IUser.USER_NAME_KEY);
             createRouteEnv();
             route = new Route.Builder(title)
                     .addStartingLocation(editTextLocation.getText().toString())
                     .addNotes(editTextNotes.getText().toString())
                     .addRouteEnvironment(env)
                     .addWalkStats(stats)
+                    .addCreatorName(creatorName)
                     .build();
         }
     }

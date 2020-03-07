@@ -20,7 +20,7 @@ public class Route implements Serializable, Comparable<Route> {
     private String mNotes;
 
     private String mRouteUid;
-    private String mCreateName;
+    private String mCreatorName;
 
     public Route(String title) throws IllegalArgumentException {
         if (title == null) {
@@ -95,13 +95,13 @@ public class Route implements Serializable, Comparable<Route> {
         return mRouteUid;
     }
 
-    public Route setCreatoreName(String name) {
-        mCreateName = name;
+    public Route setCreatorName(String name) {
+        mCreatorName = name;
         return this;
     }
 
-    public String getCreateName() {
-        return mCreateName;
+    public String getCreatorName() {
+        return mCreatorName;
     }
 
     @Override
@@ -128,6 +128,7 @@ public class Route implements Serializable, Comparable<Route> {
     public Map<String, Object> routeData() {
         Map<String, Object> data = new HashMap<>();
         data.put("title", mTitle);
+        data.put("createdBy", mCreatorName);
         data.put("startingLocation", mStartingLocation);
         data.put("environment", mEnvironment);
         data.put("stats", (mStats == null) ? null : mStats.statsData());
