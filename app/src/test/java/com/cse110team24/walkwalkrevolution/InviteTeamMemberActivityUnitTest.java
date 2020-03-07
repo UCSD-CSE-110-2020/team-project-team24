@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
+import com.cse110team24.walkwalkrevolution.invitations.InviteTeamMemberActivity;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import org.junit.Before;

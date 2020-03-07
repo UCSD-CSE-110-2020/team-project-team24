@@ -14,6 +14,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
+import com.cse110team24.walkwalkrevolution.invitations.InvitationsActivity;
+import com.cse110team24.walkwalkrevolution.invitations.InvitationsListViewAdapter;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 

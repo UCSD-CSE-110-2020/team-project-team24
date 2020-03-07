@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution;
+package com.cse110team24.walkwalkrevolution.invitations;
 
 
 import android.content.Context;
@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cse110team24.walkwalkrevolution.HomeActivity;
+import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;

@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution;
+package com.cse110team24.walkwalkrevolution.teammates;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cse110team24.walkwalkrevolution.HomeActivity;
+import com.cse110team24.walkwalkrevolution.invitations.InvitationsActivity;
+import com.cse110team24.walkwalkrevolution.invitations.InviteTeamMemberActivity;
+import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;

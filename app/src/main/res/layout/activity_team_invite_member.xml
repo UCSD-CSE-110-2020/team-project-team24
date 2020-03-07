@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
     android:orientation="vertical"
-    tools:context=".InviteTeamMemberActivity">
+    tools:context=".invitations.InviteTeamMemberActivity">
 
     <EditText
         android:id="@+id/field_enter_member_name"

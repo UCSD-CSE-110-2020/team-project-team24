@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution;
+package com.cse110team24.walkwalkrevolution.invitations;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,6 +10,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.HomeActivity;
+import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.RoutesActivity;
+import com.cse110team24.walkwalkrevolution.RoutesManager;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;

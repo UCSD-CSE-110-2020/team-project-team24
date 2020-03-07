@@ -1,8 +1,10 @@
-package com.cse110team24.walkwalkrevolution;
+package com.cse110team24.walkwalkrevolution.teammates;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.cse110team24.walkwalkrevolution.R;
 
 public class TeamRoutesActivity extends AppCompatActivity {
 
