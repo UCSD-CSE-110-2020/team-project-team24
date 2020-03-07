@@ -31,6 +31,8 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
  * Handles user authentication UI, integrating {@link AuthService} and {@link UsersDatabaseService}.
  * Asks for user height information in any mode.
  * <ol>
+ *     <li>On successful sign in or sign up, the user's name, email, and display name are saved locally
+ *     to the device. See {@link IUser} for the SharedPreferences keys.</li>
  *     <li>Implements {@link AuthServiceObserver} in order to detect authentication changes.</li>
  *     <li>Starts in sign-in mode. Asks for User email and password.</li>
  *     <ul>
