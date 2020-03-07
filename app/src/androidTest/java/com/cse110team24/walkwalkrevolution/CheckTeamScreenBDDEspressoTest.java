@@ -2,8 +2,11 @@ package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.BaseAdapter;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -27,6 +30,10 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestMessage;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,6 +42,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -46,7 +54,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeam;
+import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.EasyMock2Matchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.instanceOf;
 
 /* Scenario: User has a team, sees team members listed in app
  *
@@ -60,6 +72,8 @@ import static org.hamcrest.Matchers.allOf;
 public class CheckTeamScreenBDDEspressoTest {
 
     private List<IUser> listOfUsers;
+    IUser amara_momoh;
+    IUser satta_momoh;
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
@@ -70,7 +84,7 @@ public class CheckTeamScreenBDDEspressoTest {
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE_KEY);
         TestAuth.isTestUserSignedIn = true;
         TestAuth.successUserSignedUp = true;
-        IUser satta_momoh = FirebaseUserAdapter.builder()
+        satta_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Satta Momoh")
                 .addEmail("amara@gmail.com")
                 .addUid("1")
@@ -83,7 +97,7 @@ public class CheckTeamScreenBDDEspressoTest {
 
         testTeam.addMember(satta_momoh);
 
-        IUser amara_momoh = FirebaseUserAdapter.builder()
+        amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
                 .addEmail("ival@gmail.com")
                 .addUid("2")
@@ -126,7 +140,28 @@ public class CheckTeamScreenBDDEspressoTest {
                 allOf(withId(R.id.action_team), withContentDescription("Team"), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
+        // I don't think the below two lines do anything...
         ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
+        onData(withName("Amara Momoh")).inAdapterView(withId(R.id.list_members_in_team));
 
+        // In actuality no temmates are displayed
+        ViewInteraction textView = onView(allOf(withId(R.id.text_no_teammates), withText("No Teammates Yet :-("), isDisplayed()));
+        textView.check(matches(withText("No Teammates Yet :-(")));
+    }
+
+    public static Matcher<IUser> withName(final String name){
+        return new TypeSafeMatcher<IUser>(ListviewAdapter.class){
+            @Override
+            public boolean matchesSafely(IUser user) {
+                return name.matches(user.getDisplayName());
+            }
+
+            @Override
+            public void describeTo(Description description) {
+
+            }
+        };
     }
 }
+
+
