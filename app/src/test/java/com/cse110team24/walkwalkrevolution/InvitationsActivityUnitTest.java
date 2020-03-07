@@ -114,11 +114,9 @@ public class InvitationsActivityUnitTest extends TestInjection {
             invitationsList.setAdapter(listViewAdapter);
             assertEquals(mInvitations.get(0), listViewAdapter.getItem(0));
            assertEquals(2, listViewAdapter.getCount());
-//            View itemView = listViewAdapter.getView(1, null, invitationsList);
-//            invitationsList.performItemClick(itemView, 1, listViewAdapter.getItemId(1));
-          // invitationsList.performItemClick(invitationsList.getAdapter().getView(0, null, null), 0, invitationsList.getAdapter().getItemId(0));
-           // invitationsList.performItemClick(invitationsList.getChildAt(0), 0, invitationsList.getAdapter().getItemId(0));
-
+           Invitation invitation = (Invitation)listViewAdapter.getItem(0);
+           assertEquals("tester", invitation.fromName());
+           //invitationsList.performItemClick(invitationsList.getAdapter().getView(0, null, null), 0, invitationsList.getAdapter().getItemId(0));
         });
     }
 

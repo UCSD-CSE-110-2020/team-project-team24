@@ -56,8 +56,10 @@ import static org.hamcrest.EasyMock2Matchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.StringStartsWith.startsWith;
 
 /** Scenario: User has a team, sees team members listed in app
  *
@@ -134,11 +136,16 @@ public class CheckTeamScreenBDDEspressoTest {
                 allOf(withId(R.id.action_team), withContentDescription("Team"), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
+        //ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
         onView(withId(R.id.text_no_teammates)).check(matches(not(isDisplayed())));
-        onData(anything()).inAdapterView(withId(R.id.list_members_in_team)).atPosition(0).perform(click());
+        //onData(anything()).inAdapterView(withId(R.id.list_members_in_team)).atPosition(0).perform(click());
+       // onData(anything()).inAdapterView(with("Amara Momoh")).atPosition(0).perform(click());
+       // onData(anything()).inAdapterView(withText("Amara Momoh"));
+        onView(withId(R.id.list_members_in_team)).check(matches(isDisplayed()));
 
     }
+
+
 }
 
 
