@@ -36,6 +36,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeam;
+import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeamUid;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasEntry;
@@ -81,6 +82,7 @@ public class AcceptInvitationBDDEspressoTest {
         listOfUsers = new ArrayList<IUser>();
         invitationList = new ArrayList<Invitation>();
         testTeam = new TeamAdapter(listOfUsers);
+        testTeamUid = testTeam.getUid();
 
 //PERSON INVITING ME
         IUser amara_momoh = FirebaseUserAdapter.builder()

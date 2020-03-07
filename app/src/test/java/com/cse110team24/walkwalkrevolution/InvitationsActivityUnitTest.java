@@ -15,7 +15,6 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseS
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
-import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsListViewAdapter;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
@@ -40,11 +39,9 @@ public class InvitationsActivityUnitTest extends TestInjection {
     SharedPreferences sp;
     Button acceptBtn;
     Button declineBtn;
-    private List<Invitation> mInvitations = new ArrayList<>();
-    ListView invitationsList;
-    InvitationsListViewAdapter listViewAdapter;
+    ListView invitationsListView;
+    //InvitationsListViewAdapter listViewAdapter;
     Context appContext;
-    //In<IUser> namesList = new List<IUser>;
 
     @Before
     public void setup() {
@@ -64,14 +61,13 @@ public class InvitationsActivityUnitTest extends TestInjection {
                 .addToDisplayName("Amara")
                 .build();
 
-        mInvitations.add(invitation);
-        listViewAdapter = new InvitationsListViewAdapter(appContext, mInvitations);
+        mMsg.sendInvitation(invitation);
     }
 
     private void getUIFields(Activity activity) {
         acceptBtn = activity.findViewById(R.id.buttonAccept);
         declineBtn = activity.findViewById(R.id.buttonDecline);
-        invitationsList = activity.findViewById(R.id.invitationList);
+        invitationsListView = activity.findViewById(R.id.invitationList);
     }
 
     private void mockUserDbRegister() {
@@ -110,12 +106,7 @@ public class InvitationsActivityUnitTest extends TestInjection {
         scenario = ActivityScenario.launch(InvitationsActivity.class);
         scenario.onActivity(activity -> {
             getUIFields(activity);
-            invitationsList.setAdapter(listViewAdapter);
-            assertEquals(mInvitations.get(0), listViewAdapter.getItem(0));
-           assertEquals(2, listViewAdapter.getCount());
-           Invitation invitation = (Invitation)listViewAdapter.getItem(0);
-           assertEquals("tester", invitation.fromName());
-           //invitationsList.performItemClick(invitationsList.getAdapter().getView(0, null, null), 0, invitationsList.getAdapter().getItemId(0));
+          // invitationsListView.performItemClick(invitationsListView.getAdapter().getView(0, null, null), 0, invitationsListView.getAdapter().getItemId(0));
         });
     }
 

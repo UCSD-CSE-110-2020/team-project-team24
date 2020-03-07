@@ -129,10 +129,6 @@ public class CheckTeamScreenBDDEspressoTest {
                 .check(matches(hasDescendant(
                         withText(containsString("Amara Momoh")))));
     }
-
-
-
-
 }
 
 
