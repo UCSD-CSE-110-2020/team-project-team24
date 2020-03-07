@@ -1,6 +1,6 @@
 package com.cse110team24.walkwalkrevolution.mockedservices;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
 
 /**

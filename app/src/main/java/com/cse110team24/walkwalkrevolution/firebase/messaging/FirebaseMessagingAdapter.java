@@ -3,7 +3,7 @@ package com.cse110team24.walkwalkrevolution.firebase.messaging;
 import android.app.Activity;
 import android.util.Log;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.invitations.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.invitations.invitation.InvitationStatus;

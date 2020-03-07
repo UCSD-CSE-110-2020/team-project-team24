@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.InvitationsDatabaseServiceSubject;
 import com.cse110team24.walkwalkrevolution.invitations.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.invitations.invitation.InvitationStatus;

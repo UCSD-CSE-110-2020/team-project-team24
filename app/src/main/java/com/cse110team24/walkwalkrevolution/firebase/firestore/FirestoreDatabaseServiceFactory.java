@@ -1,8 +1,10 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FireBaseFireStoreAdapterTeams;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FirebaseFirestoreAdapter;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FirebaseFirestoreAdapterInvitations;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.adapters.FirebaseFirestoreAdapterUsers;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 
 /**
  * Instantiates one of 4 Cloud Firestore implementations of {@link DatabaseService}

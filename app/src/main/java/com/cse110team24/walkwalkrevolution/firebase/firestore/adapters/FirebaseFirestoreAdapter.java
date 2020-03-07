@@ -1,4 +1,6 @@
-package com.cse110team24.walkwalkrevolution.firebase.firestore;
+package com.cse110team24.walkwalkrevolution.firebase.firestore.adapters;
+
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 
 /** TODO: 2/28/20 flow for a team should be
  * get the user's account (sign in or up if necessary)

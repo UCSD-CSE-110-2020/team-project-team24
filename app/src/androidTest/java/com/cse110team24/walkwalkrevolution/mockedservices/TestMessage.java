@@ -2,7 +2,7 @@ package com.cse110team24.walkwalkrevolution.mockedservices;
 
 import android.app.Activity;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingServiceFactory;

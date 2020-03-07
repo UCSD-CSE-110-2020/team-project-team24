@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.firebase.firestore;
+package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 
 /**
  * Associates various database handlers with a common type.

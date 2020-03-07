@@ -16,7 +16,7 @@ import com.cse110team24.walkwalkrevolution.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.RoutesManager;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
