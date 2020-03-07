@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.matcher.BoundedMatcher;
@@ -8,10 +9,17 @@ import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestInvitationsDatabaseService;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestMessage;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -40,6 +48,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeam;
+import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeamUid;
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.EasyMock2Matchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
@@ -58,8 +67,10 @@ import static org.hamcrest.Matchers.instanceOf;
 public class CheckTeamScreenBDDEspressoTest {
 
     private List<IUser> listOfUsers;
+    private List<Invitation> invitationList;
     IUser amara_momoh;
     IUser satta_momoh;
+    String TAG = "Team Screen Espresso";
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
@@ -69,7 +80,8 @@ public class CheckTeamScreenBDDEspressoTest {
         FitnessServiceFactory.put(TEST_SERVICE_KEY, activity -> new TestFitnessService(activity));
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE_KEY);
         TestAuth.isTestUserSignedIn = true;
-        TestAuth.successUserSignedUp = true;
+        TestAuth.successUserSignedIn = true;
+
         satta_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Satta Momoh")
                 .addEmail("amara@gmail.com")
@@ -81,8 +93,6 @@ public class CheckTeamScreenBDDEspressoTest {
         listOfUsers = new ArrayList<IUser>();
         testTeam = new TeamAdapter(listOfUsers);
 
-        testTeam.addMember(satta_momoh);
-
         amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
                 .addEmail("ival@gmail.com")
@@ -90,13 +100,15 @@ public class CheckTeamScreenBDDEspressoTest {
                 .addTeamUid("666")
                 .build();
         testTeam.addMember(amara_momoh);
+        testTeam.addMember(satta_momoh);
+        testTeamUid = testTeam.getUid();
+//        TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
+//        TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
+//        testTeamsDatabaseService.getUserTeam("666", "Satta Momoh");
     }
 
     @Test
     public void checkTeamScreenEspressoTest() {
-        ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.sign_up_tv), withText("Don't have an account? Sign up here"), isDisplayed()));
-        appCompatTextView.perform(click());
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.enter_gmail_address), isDisplayed()));
@@ -105,10 +117,6 @@ public class CheckTeamScreenBDDEspressoTest {
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.enter_password), isDisplayed()));
         appCompatEditText2.perform(replaceText("pretzel"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.enter_username), isDisplayed()));
-        appCompatEditText3.perform(replaceText("Satta Momoh"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.et_height_feet), isDisplayed()));
@@ -119,7 +127,7 @@ public class CheckTeamScreenBDDEspressoTest {
         appCompatEditText5.perform(replaceText("4"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.btn_height_finish), withText("Sign Up"), isDisplayed()));
+                allOf(withId(R.id.btn_height_finish), withText("Login"), isDisplayed()));
         appCompatButton.perform(click());
 
         ViewInteraction bottomNavigationItemView = onView(
@@ -130,9 +138,6 @@ public class CheckTeamScreenBDDEspressoTest {
         ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
         onData(withName("Amara Momoh")).inAdapterView(withId(R.id.list_members_in_team));
 
-        // In actuality no temmates are displayed
-        ViewInteraction textView = onView(allOf(withId(R.id.text_no_teammates), withText("No Teammates Yet :-("), isDisplayed()));
-        textView.check(matches(withText("No Teammates Yet :-(")));
     }
 
     public static Matcher<IUser> withName(final String name){
