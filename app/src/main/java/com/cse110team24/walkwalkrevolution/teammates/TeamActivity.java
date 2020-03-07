@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution;
+package com.cse110team24.walkwalkrevolution.teammates;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cse110team24.walkwalkrevolution.HomeActivity;
+import com.cse110team24.walkwalkrevolution.invitations.InvitationsActivity;
+import com.cse110team24.walkwalkrevolution.invitations.InviteTeamMemberActivity;
+import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
@@ -50,7 +55,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     //The following three fields are for fakeTesting() only, should delete afterwards.
     private ListView teammatesList;
-    private ListviewAdapter listviewAdapter;
+    private TeammatesListViewAdapter teammatesListViewAdapter;
     TextView noTeamMessage;
     public Context context = this;
 
@@ -106,9 +111,9 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         seeInvitationsBtn = findViewById(R.id.btn_pending_invites);
         noTeamMessage = findViewById(R.id.text_no_teammates);
         teammatesList = findViewById(R.id.list_members_in_team);
-        listviewAdapter = new ListviewAdapter(this, mTeam.getTeam());
+        teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam());
         noTeamMessage.setVisibility(View.GONE);
-        teammatesList.setAdapter(listviewAdapter);
+        teammatesList.setAdapter(teammatesListViewAdapter);
     }
 
     private void setButtonClickListeners() {
@@ -154,8 +159,8 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
             noTeamMessage.setVisibility(View.GONE);
         }
         ListView teammatesList = findViewById(R.id.list_members_in_team);
-        ListviewAdapter listviewAdapter = new ListviewAdapter(this, users);
-        teammatesList.setAdapter(listviewAdapter);
+        TeammatesListViewAdapter teammatesListViewAdapter = new TeammatesListViewAdapter(this, users);
+        teammatesList.setAdapter(teammatesListViewAdapter);
 
     }
 

@@ -12,6 +12,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsData
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.teammates.TeamActivity;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,7 +48,7 @@ public class RoutesActivity extends AppCompatActivity {
     public static final String SAVE_FILE_KEY = "save_file";
     public static final int REQUEST_CODE = 11;
 
-    private RouteAdapter adapter;
+    private RouteRecyclerViewAdapter adapter;
     private RecyclerView rvRoutes;
     private FloatingActionButton fab;
     private BottomNavigationView bottomNavigationView;
@@ -202,7 +203,7 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void configureRecyclerViewAdapter() {
         Collections.sort(routes);
-        adapter = new RouteAdapter(routes, this);
+        adapter = new RouteRecyclerViewAdapter(routes, this);
         rvRoutes.setAdapter(adapter);
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }

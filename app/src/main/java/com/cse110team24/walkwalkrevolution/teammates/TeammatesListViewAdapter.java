@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution;
+package com.cse110team24.walkwalkrevolution.teammates;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import java.util.List;
@@ -15,12 +16,12 @@ import java.util.Random;
 
 import static com.google.common.base.Ascii.toUpperCase;
 
-public class ListviewAdapter extends BaseAdapter {
+public class TeammatesListViewAdapter extends BaseAdapter {
     Context context;
     List<IUser> users;
     LayoutInflater inflater;
 
-    public ListviewAdapter(Context context, List<IUser> users) {
+    public TeammatesListViewAdapter(Context context, List<IUser> users) {
         this.context = context;
         this.users = users;
         inflater = (LayoutInflater.from(context));
