@@ -33,7 +33,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import static junit.framework.TestCase.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
-public class InviteTeammateUnitTest extends TestInjection {
+public class InviteTeamMemberActivityUnitTest extends TestInjection {
 
     private Button sendInviteBtn;
     private TextView inviteNameTv;

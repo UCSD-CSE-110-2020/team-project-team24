@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution;
 
-
 import android.content.Context;
 import android.content.Intent;
 
@@ -49,12 +48,18 @@ import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessServ
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeam;
 import static org.hamcrest.Matchers.allOf;
 
+/* Scenario: User has a team, sees team members listed in app
+ *
+ * Given that the user has a team,
+ * When they click on the "Team" button from the home screen
+ * Then a list of their fellow teammates will be displayed.
+ */
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class CheckTeamScreenBDDEspressoTest {
 
     private List<IUser> listOfUsers;
-//    ITeam teamList;
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
@@ -65,40 +70,26 @@ public class CheckTeamScreenBDDEspressoTest {
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE_KEY);
         TestAuth.isTestUserSignedIn = true;
         TestAuth.successUserSignedUp = true;
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         IUser satta_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Satta Momoh")
                 .addEmail("amara@gmail.com")
                 .addUid("1")
                 .addTeamUid("666")
                 .build();
-       TestAuth.testAuthUser = satta_momoh;
+        TestAuth.testAuthUser = satta_momoh;
+
         listOfUsers = new ArrayList<IUser>();
         testTeam = new TeamAdapter(listOfUsers);
-//        List<IUser> team = testTeam.getTeam();
+
         testTeam.addMember(satta_momoh);
-//       TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
-//       TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
-//       String teamID = testTeamsDatabaseService.createTeamInDatabase(satta_momoh);
-       IUser amara_momoh = FirebaseUserAdapter.builder()
+
+        IUser amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
                 .addEmail("ival@gmail.com")
                 .addUid("2")
                 .addTeamUid("666")
                 .build();
         testTeam.addMember(amara_momoh);
-       // testTeamsDatabaseService.register(this);
-       // Intent intent = new Intent(appContext, TeamActivity.class);
-
-    //    testTeamsDatabaseService.mObserver.onTeamRetrieved(testTeam);
-
-
-       // testTeamsDatabaseService.getUserTeam("666", "Satta Momoh");
-
-
-//        testTeamsDatabaseService.addUserToTeam(amara_momoh, teamID);
-//        TestTeamsDatabaseService.testTeam.addMember(satta_momoh);
-//        TestTeamsDatabaseService.testTeam.addMember(amara_momoh);
     }
 
     @Test
@@ -135,18 +126,7 @@ public class CheckTeamScreenBDDEspressoTest {
                 allOf(withId(R.id.action_team), withContentDescription("Team"), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-//        ViewInteraction listview = onView(withId(R.id.list_members_in_team)).check(matches(isDisplayed()));
         ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
 
     }
-
-//    @Override
-//    public void onTeamRetrieved(ITeam team) {
-//
-//    }
-//
-//    @Override
-//    public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
-//
-//    }
 }
