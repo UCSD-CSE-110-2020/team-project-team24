@@ -9,7 +9,7 @@ import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 
-/** TODO
+/**
  * inject this service like this inside the @setup method:
  * FitnessServiceFactory.put(TEST_SERVICE, activity -> new TestFitnessService(activity));
  */

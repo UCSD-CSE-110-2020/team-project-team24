@@ -8,10 +8,21 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
+/**
+ * Test implementation of {@link InvitationsDatabaseService}.
+ */
 public class TestInvitationsDatabaseService implements InvitationsDatabaseService {
 
+    /**
+     * The single observer registered to this service.
+     */
     public InvitationsDatabaseServiceObserver mObserver;
-    // TODO: 3/5/20 set these when needed
+
+    /**
+     * Set this when testing invitations received.
+     * <p>This list is sent to observers by {@link TestInvitationsDatabaseService#getUserPendingInvitations(IUser)}
+     * when {@link InvitationsDatabaseService#getUserPendingInvitations(IUser) is called}</p>
+     */
     public static List<Invitation> testInvitationsList;
 
     @Override

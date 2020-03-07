@@ -33,27 +33,38 @@ public class TestAuth {
     // set these when you need to.
     /**
      * The intended user signed in to the app. Should be set both in sign-up and sign-in tests.
+     * <p>This user is returned by {@link TestAuthService#getUser()}</p>
      */
     public static IUser testAuthUser;
 
     /**
      * The intended {@link com.cse110team24.walkwalkrevolution.firebase.auth.AuthService.AuthError} during
      * sign-in and sing-up error tests.
+     * <p>This auth error is returned by {@link TestAuthService#getAuthError()} and is sent to observers by
+     * {@link TestAuthService#signUp(String, String, String)} or {@link TestAuthService#signIn(String, String)}
+     * when one of {@link TestAuth#successUserSignedUp} or {@link TestAuth#successUserSignedIn} is false</p>
      */
     public static AuthService.AuthError testAuthError;
 
     /**
      * Set to true when sign-in or sign-up is required for the test.
+     * <p>This boolean is returned by {@link TestAuthService#isUserSignedIn()}}</p>
      */
     public static boolean isTestUserSignedIn;
 
     /**
      * Set to true when testing that a user signed up successfully. Set false when testing sign-up errors.
+     *
+     * <p>When this is true, this TestAuthService will call {@link AuthServiceObserver#onUserSignedUp(IUser)} with argument {@link TestAuth#testAuthUser}</p>
+     * <p>When this is false, this TestAuthService will call {@link AuthServiceObserver#onAuthSignUpError(AuthService.AuthError)} with argument {@link TestAuth#testAuthError}</p>
      */
     public static boolean successUserSignedUp;
 
     /**
      * Set to true when testing that user sign in successfully. Set false when testing sign-in errors.
+     *
+     * <p>When this is true, this TestAuthService will call {@link AuthServiceObserver#onUserSignedIn(IUser)} with argument {@link TestAuth#testAuthUser}</p>
+     * <p>When this is false, this TestAuthService will call {@link AuthServiceObserver#onAuthSignInError(AuthService.AuthError)} with argument {@link TestAuth#testAuthError}</p>
      */
     public static boolean successUserSignedIn;
 

@@ -2,7 +2,6 @@ package com.cse110team24.walkwalkrevolution.mockedservices;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
@@ -12,14 +11,36 @@ import com.google.firebase.firestore.DocumentReference;
 import java.util.Map;
 
 /**
- * TODO - for the observer methods that should be called, you call the notify methods manually
+ * Test implementation of {@link UsersDatabaseService}.
  */
 public class TestUsersDatabaseService implements UsersDatabaseService {
     public UsersDatabaseServiceObserver observer;
 
-    // TODO: 3/5/20 set these in your tests
+    /**
+     * Set this when testing if an invitation was sent, because the activity will first check if
+     * the user being invited exists.
+     *
+     */
     public static IUser testOtherUser;
+
+    /**
+     * Set this when a user's data is being retrieved. This is called in order to check if the user has a teamUid
+     * on the database.
+     *
+     * <p>Do testCurrentUserData.put("teamUid", [some test uid]) when sending an invitation after a team already exists.</p>
+     * <p>Don't set teamUid or simply don't set this map when testing if a team will get created first.</p>
+     */
     public static Map<String, Object> testCurrentUserData;
+
+    /**
+     * Set this to true when testing invitation sent. Set this to false when testing invitation errors.
+     *
+     * <p>If true, when {@link UsersDatabaseService#checkIfOtherUserExists(String)} is called,
+     * then the {@link TestUsersDatabaseService} will call {@link UsersDatabaseServiceObserver#onUserExists(IUser)} with
+     * {@link TestUsersDatabaseService#testOtherUser} </p>
+     *
+     * <p>If false, {@link UsersDatabaseServiceObserver#onUserDoesNotExist()} will be called.</p>
+     */
     public static boolean testOtherUserExits;
 
     @Override
@@ -32,25 +53,10 @@ public class TestUsersDatabaseService implements UsersDatabaseService {
     }
 
     @Override
-    public DocumentReference addUserMessagingRegistrationToken(IUser user, String token) {
-        return null;
-    }
-
-    @Override
     public void getUserData(IUser user) {
         // TODO: 3/5/20 should call [observer].onUserData(Map<String, Object> data) with user's data
         observer.onUserData(testCurrentUserData);
     }
-
-//    @Override
-//    public void uploadRoute(String userDocumentKey, Route route) {
-//
-//    }
-//
-//    @Override
-//    public void updateRoute(String userDocumentKey, Route route) {
-//
-//    }
 
     @Override
     public void checkIfOtherUserExists(String userDocumentKey) {

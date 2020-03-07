@@ -13,6 +13,9 @@ import java.util.List;
 
 /**
  * Associates various database handlers with a common type.
+ * <p>See also: {@link com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService}</p>
+ * <p>See also: {@link com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService}</p>
+ * <p>See also: {@link com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService}</p>
  */
 public interface DatabaseService{
 
