@@ -69,10 +69,9 @@ import java.util.Map;
  *             <li>Updates the database with the current user's new teamUid</li>
  *             <li>Subscribes current user to their new team's document as a notification topic</li>
  *             <li>uploads the current user's locally saved routes to their new team</li>
- *             Log.i(TAG, "createTeamIfNull: user has no team. It has been created");
  *         </ol>
+ *         <li>Sends invitation using {@link MessagingService}</li>
  *     </ol>
- *     <li>Sends invitation using {@link MessagingService}</li>
  * </ol>
  */
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseServiceObserver {
