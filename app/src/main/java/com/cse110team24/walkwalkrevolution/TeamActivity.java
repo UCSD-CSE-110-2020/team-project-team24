@@ -107,6 +107,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         noTeamMessage = findViewById(R.id.text_no_teammates);
         teammatesList = findViewById(R.id.list_members_in_team);
         listviewAdapter = new ListviewAdapter(this, mTeam.getTeam());
+        noTeamMessage.setVisibility(View.GONE);
         teammatesList.setAdapter(listviewAdapter);
     }
 
