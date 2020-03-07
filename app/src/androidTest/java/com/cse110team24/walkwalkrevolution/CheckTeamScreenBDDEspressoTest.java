@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.test.espresso.ViewInteraction;
@@ -36,6 +37,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -100,7 +102,8 @@ public class CheckTeamScreenBDDEspressoTest {
         testTeam.addMember(amara_momoh);
         testTeam.addMember(satta_momoh);
         testTeamUid = testTeam.getUid();
-
+        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getTargetContext()
+                .getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).edit().putString(IUser.TEAM_UID_KEY, testTeamUid).commit();
     }
 
     @Test
