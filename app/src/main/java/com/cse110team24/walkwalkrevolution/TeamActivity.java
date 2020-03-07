@@ -22,6 +22,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersData
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -81,7 +82,10 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         mTeamUid = mPreferences.getString(IUser.TEAM_UID_KEY, null);
         if (mTeamUid == null) {
-            showNoTeamToast();
+            IUser currUser = FirebaseUserAdapter.builder()
+                    .addEmail(Utils.getString(preferences, IUser.EMAIL_KEY))
+                    .build();
+            uDb.getUserData(currUser);
         } else {
             Log.d(TAG, "getTeamUid: team uid found, retrieving team");
             mDb.getUserTeam(mTeamUid, preferences.getString(IUser.USER_NAME_KEY, ""));
@@ -168,7 +172,11 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         if (userDataMap != null) {
             mTeamUid = (String) userDataMap.get(IUser.TEAM_UID_KEY);
             Utils.saveString(preferences, IUser.TEAM_UID_KEY, mTeamUid);
-            getTeamUid();
+            if (mTeamUid == null) {
+                showNoTeamToast();
+            } else {
+                getTeamUid();
+            }
         }
     }
 
