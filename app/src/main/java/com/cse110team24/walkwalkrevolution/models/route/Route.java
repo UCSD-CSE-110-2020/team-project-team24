@@ -187,7 +187,7 @@ public class Route implements Serializable, Comparable<Route> {
 
         @Override
         public Builder addCreatorName(String name) {
-            mToBuild.setCreatoreName(name);
+            mToBuild.setCreatorName(name);
             return this;
         }
 
