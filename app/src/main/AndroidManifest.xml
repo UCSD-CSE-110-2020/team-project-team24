@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
-        <activity android:name=".TeamRoutes"></activity>
+        <activity android:name=".TeamRoutesActivity"></activity>
         <activity android:name=".RouteDetailsActivity" />
         <activity
             android:name=".SaveRouteActivity"

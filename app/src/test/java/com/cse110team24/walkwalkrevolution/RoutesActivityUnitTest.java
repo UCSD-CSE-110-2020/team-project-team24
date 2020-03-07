@@ -37,7 +37,7 @@ public class RoutesActivityUnitTest extends TestInjection{
     public static final String TEST_SAVE_FILE = ".WWR_test_save_file";
 
     private BottomNavigationView bottomNavigation;
-    private RouteAdapter adapter;
+    private RouteRecyclerViewAdapter adapter;
     private View secondBtn;
     private Button thirdBtn;
     private TextView firstTv;
@@ -119,7 +119,7 @@ public class RoutesActivityUnitTest extends TestInjection{
         bottomNavigation = activity.findViewById(R.id.bottom_navigation);
 
         RecyclerView recyclerView = activity.findViewById(R.id.recycler_view);
-        adapter = (RouteAdapter) recyclerView.getAdapter();
+        adapter = (RouteRecyclerViewAdapter) recyclerView.getAdapter();
 
         View firstView = recyclerView.getLayoutManager().findViewByPosition(0);
         View secondView = recyclerView.getLayoutManager().findViewByPosition(1);

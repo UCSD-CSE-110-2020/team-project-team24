@@ -19,18 +19,18 @@ import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import java.util.List;
 
 
-public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> {
+public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "WWR_RouteAdapter";
     private List<Route> mRoutes;
     private Context context;
 
-    public RouteAdapter(List<Route> myRoutes, Context context) {
+    public RouteRecyclerViewAdapter(List<Route> myRoutes, Context context) {
         this.context = context;
         mRoutes = myRoutes;
     }
 
     @Override
-    public RouteAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RouteRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.item_route, parent, false);
@@ -39,7 +39,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(RouteAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(RouteRecyclerViewAdapter.ViewHolder viewHolder, int position) {
         Route currRoute = mRoutes.get(position);
         viewHolder.bind(currRoute);
     }

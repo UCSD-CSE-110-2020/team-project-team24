@@ -15,12 +15,12 @@ import java.util.Random;
 
 import static com.google.common.base.Ascii.toUpperCase;
 
-public class ListviewAdapter extends BaseAdapter {
+public class TeammatesListViewAdapter extends BaseAdapter {
     Context context;
     List<IUser> users;
     LayoutInflater inflater;
 
-    public ListviewAdapter(Context context, List<IUser> users) {
+    public TeammatesListViewAdapter(Context context, List<IUser> users) {
         this.context = context;
         this.users = users;
         inflater = (LayoutInflater.from(context));
