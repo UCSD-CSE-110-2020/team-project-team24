@@ -10,7 +10,7 @@ import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
-import com.cse110team24.walkwalkrevolution.team.teammodel.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.teams.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
@@ -39,7 +39,6 @@ import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
 
 /** Scenario: User has a team, sees team members listed in app

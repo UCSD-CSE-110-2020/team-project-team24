@@ -25,8 +25,8 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.Invitatio
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
-import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
-import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
+import com.cse110team24.walkwalkrevolution.invitations.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.invitations.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 

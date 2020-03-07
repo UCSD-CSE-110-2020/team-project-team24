@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.models.invitation;
+package com.cse110team24.walkwalkrevolution.invitations.invitation;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
@@ -6,8 +6,6 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import io.grpc.okhttp.internal.Util;
 
 public class Invitation implements IInvitation {
     public static final String INVITATION_UID_SET_KEY = "invitationUid";

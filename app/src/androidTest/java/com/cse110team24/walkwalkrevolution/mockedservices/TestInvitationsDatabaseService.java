@@ -2,7 +2,7 @@ package com.cse110team24.walkwalkrevolution.mockedservices;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
-import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.invitations.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.gms.tasks.Task;
 

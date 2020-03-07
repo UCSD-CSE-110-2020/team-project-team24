@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.models.invitation;
+package com.cse110team24.walkwalkrevolution.invitations.invitation;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 

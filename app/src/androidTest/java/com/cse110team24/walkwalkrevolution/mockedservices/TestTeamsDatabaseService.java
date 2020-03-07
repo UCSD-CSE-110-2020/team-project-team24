@@ -3,7 +3,7 @@ package com.cse110team24.walkwalkrevolution.mockedservices;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.team.teammodel.ITeam;
+import com.cse110team24.walkwalkrevolution.teams.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 

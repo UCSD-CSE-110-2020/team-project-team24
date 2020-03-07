@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.team.teammodel;
+package com.cse110team24.walkwalkrevolution.teams.team;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 

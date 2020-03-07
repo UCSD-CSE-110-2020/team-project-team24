@@ -5,11 +5,10 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
-import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
-import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
+import com.cse110team24.walkwalkrevolution.invitations.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.invitations.invitation.InvitationStatus;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;

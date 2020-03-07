@@ -12,7 +12,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsData
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.team.TeamActivity;
+import com.cse110team24.walkwalkrevolution.teams.TeamActivity;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

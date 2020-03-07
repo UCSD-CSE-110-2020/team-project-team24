@@ -1,7 +1,6 @@
 package com.cse110team24.walkwalkrevolution.invitations;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.R;
-import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
-import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.invitations.invitation.Invitation;
 
 import java.util.List;
-import java.util.Random;
 
 public class InvitationsListViewAdapter extends BaseAdapter {
     Context context;
