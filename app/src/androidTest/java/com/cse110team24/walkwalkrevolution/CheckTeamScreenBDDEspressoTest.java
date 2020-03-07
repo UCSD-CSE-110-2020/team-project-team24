@@ -35,7 +35,7 @@ import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessServ
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeam;
 import static org.hamcrest.Matchers.allOf;
 
-/* Scenario: User has a team, sees team members listed in app
+/** Scenario: User has a team, sees team members listed in app
  *
  * Given that the user has a team,
  * When they click on the "Team" button from the home screen

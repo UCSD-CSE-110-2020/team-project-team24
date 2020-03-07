@@ -38,6 +38,15 @@ import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.instanceOf;
 
+/**
+ Given that I login successfully,
+ and click "Team",
+ When click I click "Pending Invites",
+ Then I will see all my invitations,
+ When I click on one of them,
+ and accept,
+ Then I will see my new list of teammates in Team Screen.
+ */
 public class AcceptInvitationBDDEspressoTest {
 
     private List<IUser> listOfUsers;
