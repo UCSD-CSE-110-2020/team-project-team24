@@ -54,8 +54,10 @@ import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDataba
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.EasyMock2Matchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 
 /** Scenario: User has a team, sees team members listed in app
  *
@@ -132,13 +134,11 @@ public class CheckTeamScreenBDDEspressoTest {
                 allOf(withId(R.id.action_team), withContentDescription("Team"), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        // This line doesn't do anything
         ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
-
+        onView(withId(R.id.text_no_teammates)).check(matches(not(isDisplayed())));
+        onData(anything()).inAdapterView(withId(R.id.list_members_in_team)).atPosition(0).perform(click());
 
     }
-
-
 }
 
 
