@@ -22,10 +22,12 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -35,7 +37,10 @@ import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDataba
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeamUid;
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 
 /** Scenario: User has a team, sees team members listed in app
  *
@@ -112,13 +117,11 @@ public class CheckTeamScreenBDDEspressoTest {
                 allOf(withId(R.id.action_team), withContentDescription("Team"), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        // This line doesn't do anything
         ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
-
+        onView(withId(R.id.text_no_teammates)).check(matches(not(isDisplayed())));
+        onData(anything()).inAdapterView(withId(R.id.list_members_in_team)).atPosition(0).perform(click());
 
     }
-
-
 }
 
 
