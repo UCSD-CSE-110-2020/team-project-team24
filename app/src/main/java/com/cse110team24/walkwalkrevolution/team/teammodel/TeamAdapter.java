@@ -1,8 +1,7 @@
-package com.cse110team24.walkwalkrevolution.models.team;
+package com.cse110team24.walkwalkrevolution.team.teammodel;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

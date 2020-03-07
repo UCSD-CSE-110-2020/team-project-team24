@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.teammates;
+package com.cse110team24.walkwalkrevolution.team;
 
 import androidx.appcompat.app.AppCompatActivity;
 

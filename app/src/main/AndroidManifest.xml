@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
-        <activity android:name=".teammates.TeamRoutesActivity"></activity>
+        <activity android:name=".team.TeamRoutesActivity"></activity>
         <activity android:name=".RouteDetailsActivity" />
         <activity
             android:name=".SaveRouteActivity"
@@ -26,7 +26,7 @@
         <activity android:name=".MockActivity" />
         <activity android:name=".HomeActivity" />
         <activity
-            android:name=".teammates.TeamActivity"
+            android:name=".team.TeamActivity"
             android:label="@string/title_team_page" />
         <activity
             android:name=".invitations.InviteTeamMemberActivity"

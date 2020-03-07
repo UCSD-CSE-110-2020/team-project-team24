@@ -11,7 +11,7 @@ import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestInvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestMessage;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
-import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.team.teammodel.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 

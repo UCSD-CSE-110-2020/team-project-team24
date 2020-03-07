@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.teammates;
+package com.cse110team24.walkwalkrevolution.team;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,8 +25,8 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDat
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.models.team.ITeam;
-import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.team.teammodel.ITeam;
+import com.cse110team24.walkwalkrevolution.team.teammodel.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
