@@ -119,7 +119,7 @@
     <string name="app_name">WalkWalkRevolution</string>
     <string name="title_activity_saving_page">Save your walk</string>
     <string name="title_activity_routes">My Routes</string>
-    
+
     <!--    Others-->
     <string name="routes">Routes</string>
     <string name="home">Home</string>

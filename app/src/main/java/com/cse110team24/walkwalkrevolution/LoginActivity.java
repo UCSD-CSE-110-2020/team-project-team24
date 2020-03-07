@@ -323,7 +323,7 @@ public class LoginActivity extends AppCompatActivity implements AuthObserver {
         return feet > 0 && inches > 0;
     }
 
-    private void checkLogin(SharedPreferences preferences) { ;
+    private void checkLogin(SharedPreferences preferences) {
         if (checkHeight(preferences) && mAuth.isUserSignedIn()) {
             Log.i(TAG, "checkHeight: valid height in preferences already exists (feet: " + feet + ", inches: " + inches + ").");
             launchHome();
