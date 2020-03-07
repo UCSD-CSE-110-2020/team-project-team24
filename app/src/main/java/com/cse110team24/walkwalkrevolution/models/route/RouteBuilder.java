@@ -15,4 +15,6 @@ public interface RouteBuilder extends Builder<Route> {
     RouteBuilder addFavStatus(boolean isFavorite);
 
     RouteBuilder addRouteUid(String routeUid);
+
+    RouteBuilder addCreatorName(String name);
 }

@@ -22,7 +22,7 @@ import java.util.List;
 
 
 public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRoutesRecyclerViewAdapter.ViewHolder> {
-    private static final String TAG = "WWR_RouteAdapter";
+    private static final String TAG = "WWR_TeamRoutesAdapter";
     private List<Route> mRoutes;
     private Context context;
 
@@ -78,14 +78,7 @@ public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRout
         }
 
         public void bind(Route route) {
-            container.setOnClickListener(view -> {
-                Intent intent = new Intent(context, RouteDetailsActivity.class)
-                        .putExtra(RouteDetailsActivity.ROUTE_KEY, route)
-                        .putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, getAdapterPosition());
-                if (context instanceof Activity) {
-                    ((Activity) context).startActivityForResult(intent, RouteDetailsActivity.REQUEST_CODE);
-                }
-            });
+            launchRouteDetailsActivityOnClick(route);
 
             routeNameTv.setText(route.getTitle());
             WalkStats stats = route.getStats();
@@ -98,6 +91,17 @@ public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRout
                 distanceTv.setText(stats.formattedDistance());
                 dateTv.setText(stats.formattedDate());
             }
+        }
+
+        private void launchRouteDetailsActivityOnClick(Route route) {
+            container.setOnClickListener(view -> {
+                Intent intent = new Intent(context, RouteDetailsActivity.class)
+                        .putExtra(RouteDetailsActivity.ROUTE_KEY, route)
+                        .putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, getAdapterPosition());
+                if (context instanceof Activity) {
+                    ((Activity) context).startActivityForResult(intent, RouteDetailsActivity.REQUEST_CODE);
+                }
+            });
         }
     }
 

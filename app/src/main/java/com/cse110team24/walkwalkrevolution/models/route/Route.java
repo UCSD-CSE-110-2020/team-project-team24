@@ -20,6 +20,7 @@ public class Route implements Serializable, Comparable<Route> {
     private String mNotes;
 
     private String mRouteUid;
+    private String mCreateName;
 
     public Route(String title) throws IllegalArgumentException {
         if (title == null) {
@@ -92,6 +93,15 @@ public class Route implements Serializable, Comparable<Route> {
 
     public String getRouteUid() {
         return mRouteUid;
+    }
+
+    public Route setCreatoreName(String name) {
+        mCreateName = name;
+        return this;
+    }
+
+    public String getCreateName() {
+        return mCreateName;
     }
 
     @Override
@@ -171,6 +181,12 @@ public class Route implements Serializable, Comparable<Route> {
         @Override
         public Builder addRouteUid(String routeUid) {
             mToBuild.setRouteUid(routeUid);
+            return this;
+        }
+
+        @Override
+        public Builder addCreatorName(String name) {
+            mToBuild.setCreatoreName(name);
             return this;
         }
 
