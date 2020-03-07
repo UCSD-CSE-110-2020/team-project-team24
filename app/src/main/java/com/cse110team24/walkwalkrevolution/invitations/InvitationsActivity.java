@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
@@ -40,7 +40,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private TeamsDatabaseService mTDb;
     private UsersDatabaseService mUDb;
     private MessagingService mMessagingService;
-    private AuthService mAuth;
+    private Auth mAuth;
 
     private SharedPreferences preferences;
     private IUser mCurrentUser;
@@ -151,7 +151,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     }
 
     private void setUpServices() {
-        mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        mAuth = FirebaseApplicationWWR.getAuthFactory().createAuthService();
         mIDb = (InvitationsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
         mIDb.register(this);
 

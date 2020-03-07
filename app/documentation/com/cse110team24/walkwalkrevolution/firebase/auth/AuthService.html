@@ -180,11 +180,11 @@ extends <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/aut
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a name="methods.inherited.from.class.com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceSubject">
+<li class="blockList"><a name="methods.inherited.from.class.com.cse110team24.walkwalkrevolution.firebase.auth.AuthSubject">
 <!--   -->
 </a>
 <h3>Methods inherited from interface&nbsp;com.cse110team24.walkwalkrevolution.firebase.auth.<a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html" title="interface in com.cse110team24.walkwalkrevolution.firebase.auth">AuthServiceSubject</a></h3>
-<code><a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignedIn-com.cse110team24.walkwalkrevolution.models.user.IUser-">notifyObserversSignedIn</a>, <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignedUp-com.cse110team24.walkwalkrevolution.models.user.IUser-">notifyObserversSignedUp</a>, <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignInError-com.cse110team24.walkwalkrevolution.firebase.auth.AuthService.AuthError-">notifyObserversSignInError</a>, <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignUpError-com.cse110team24.walkwalkrevolution.firebase.auth.AuthService.AuthError-">notifyObserversSignUpError</a></code></li>
+<code><a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignedIn-com.cse110team24.walkwalkrevolution.models.user.IUser-">notifyObserversSignedIn</a>, <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignedUp-com.cse110team24.walkwalkrevolution.models.user.IUser-">notifyObserversSignedUp</a>, <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignInError-com.cse110team24.walkwalkrevolution.firebase.auth.Auth.AuthError-">notifyObserversSignInError</a>, <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignUpError-com.cse110team24.walkwalkrevolution.firebase.auth.Auth.AuthError-">notifyObserversSignUpError</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.com.cse110team24.walkwalkrevolution.utils.Subject">
@@ -217,7 +217,7 @@ extends <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/aut
             java.lang.String&nbsp;password)</pre>
 <div class="block">Signs in a user to this service's provider, given email and password. <p>On success, a call to
  <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignedIn-com.cse110team24.walkwalkrevolution.models.user.IUser-"><code>AuthServiceSubject.notifyObserversSignedIn(IUser)</code></a> is made with the sign in user.</p><p>On
- failure, a call to <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignInError-com.cse110team24.walkwalkrevolution.firebase.auth.AuthService.AuthError-"><code>AuthServiceSubject.notifyObserversSignInError(AuthService.AuthError)</code></a> is made
+ failure, a call to <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignInError-com.cse110team24.walkwalkrevolution.firebase.auth.Auth.AuthError-"><code>AuthServiceSubject.notifyObserversSignInError(AuthService.AuthError)</code></a> is made
  with the AuthError that occurred.</p></div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -237,7 +237,7 @@ extends <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/aut
             java.lang.String&nbsp;displayName)</pre>
 <div class="block">Signs up a user to this service's provider given email, password, and display name and automatically
  signs the user into the provider. <p>On success, a call to <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignedUp-com.cse110team24.walkwalkrevolution.models.user.IUser-"><code>AuthServiceSubject.notifyObserversSignedUp(IUser)</code></a>
- is made with the sign in user.</p> <p>On failure, a call to <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignUpError-com.cse110team24.walkwalkrevolution.firebase.auth.AuthService.AuthError-"><code>AuthServiceSubject.notifyObserversSignUpError(AuthService.AuthError)</code></a>
+ is made with the sign in user.</p> <p>On failure, a call to <a href="../../../../../com/cse110team24/walkwalkrevolution/firebase/auth/AuthServiceSubject.html#notifyObserversSignUpError-com.cse110team24.walkwalkrevolution.firebase.auth.Auth.AuthError-"><code>AuthServiceSubject.notifyObserversSignUpError(AuthService.AuthError)</code></a>
  is made with the AuthError that occurred.</p></div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

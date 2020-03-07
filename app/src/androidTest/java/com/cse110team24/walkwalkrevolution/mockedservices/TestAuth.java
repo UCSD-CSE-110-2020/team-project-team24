@@ -1,15 +1,12 @@
 package com.cse110team24.walkwalkrevolution.mockedservices;
 
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceFactory;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthFactory;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthObserver;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Contains the test implementation of {@link AuthServiceFactory} and {@link AuthService}.
+ * Contains the test implementation of {@link AuthFactory} and {@link Auth}.
  * <p><b>Set the static fields of this class to provide results for method calls.</b></p>
  */
 public class TestAuth {
@@ -17,15 +14,15 @@ public class TestAuth {
     /**
      * Creates instance of TestAuthService.
      */
-    public static class TestAuthAuthServiceFactory implements AuthServiceFactory {
+    public static class TestAuthFactory implements AuthFactory {
 
         /**
          *
-         * @return an instance of {@link TestAuthService}
+         * @return an instance of {@link TestAuthImplementation}
          */
         @Override
-        public AuthService createAuthService() {
-            return new TestAuthService();
+        public Auth createAuthService() {
+            return new TestAuthImplementation();
         }
     }
 
@@ -33,45 +30,45 @@ public class TestAuth {
     // set these when you need to.
     /**
      * The intended user signed in to the app. Should be set both in sign-up and sign-in tests.
-     * <p>This user is returned by {@link TestAuthService#getUser()}</p>
+     * <p>This user is returned by {@link TestAuthImplementation#getUser()}</p>
      */
     public static IUser testAuthUser;
 
     /**
-     * The intended {@link com.cse110team24.walkwalkrevolution.firebase.auth.AuthService.AuthError} during
+     * The intended {@link Auth.AuthError} during
      * sign-in and sing-up error tests.
-     * <p>This auth error is returned by {@link TestAuthService#getAuthError()} and is sent to observers by
-     * {@link TestAuthService#signUp(String, String, String)} or {@link TestAuthService#signIn(String, String)}
-     * when one of {@link TestAuth#successUserSignedUp} or {@link TestAuth#successUserSignedIn} is false</p>
+     * <p>This auth error is returned by {@link TestAuthImplementation#getAuthError()} and is sent to observers by
+     * {@link TestAuthImplementation#signUp(String, String, String)} or {@link TestAuthImplementation#signIn(String, String)}
+     * when one of {@link com.cse110team24.walkwalkrevolution.mockedservices.TestAuth#successUserSignedUp} or {@link com.cse110team24.walkwalkrevolution.mockedservices.TestAuth#successUserSignedIn} is false</p>
      */
-    public static AuthService.AuthError testAuthError;
+    public static Auth.AuthError testAuthError;
 
     /**
      * Set to true when sign-in or sign-up is required for the test.
-     * <p>This boolean is returned by {@link TestAuthService#isUserSignedIn()}</p>
+     * <p>This boolean is returned by {@link TestAuthImplementation#isUserSignedIn()}</p>
      */
     public static boolean isTestUserSignedIn;
 
     /**
      * Set to true when testing that a user signed up successfully. Set false when testing sign-up errors.
      *
-     * <p>When this is true, this TestAuthService will call {@link AuthServiceObserver#onUserSignedUp(IUser)} with argument {@link TestAuth#testAuthUser}</p>
-     * <p>When this is false, this TestAuthService will call {@link AuthServiceObserver#onAuthSignUpError(AuthService.AuthError)} with argument {@link TestAuth#testAuthError}</p>
+     * <p>When this is true, this TestAuthService will call {@link AuthObserver#onUserSignedUp(IUser)} with argument {@link com.cse110team24.walkwalkrevolution.mockedservices.TestAuth#testAuthUser}</p>
+     * <p>When this is false, this TestAuthService will call {@link AuthObserver#onAuthSignUpError(Auth.AuthError)} with argument {@link com.cse110team24.walkwalkrevolution.mockedservices.TestAuth#testAuthError}</p>
      */
     public static boolean successUserSignedUp;
 
     /**
      * Set to true when testing that user sign in successfully. Set false when testing sign-in errors.
      *
-     * <p>When this is true, this TestAuthService will call {@link AuthServiceObserver#onUserSignedIn(IUser)} with argument {@link TestAuth#testAuthUser}</p>
-     * <p>When this is false, this TestAuthService will call {@link AuthServiceObserver#onAuthSignInError(AuthService.AuthError)} with argument {@link TestAuth#testAuthError}</p>
+     * <p>When this is true, this TestAuthService will call {@link AuthObserver#onUserSignedIn(IUser)} with argument {@link com.cse110team24.walkwalkrevolution.mockedservices.TestAuth#testAuthUser}</p>
+     * <p>When this is false, this TestAuthService will call {@link AuthObserver#onAuthSignInError(Auth.AuthError)} with argument {@link com.cse110team24.walkwalkrevolution.mockedservices.TestAuth#testAuthError}</p>
      */
     public static boolean successUserSignedIn;
 
     /**
-     * Test implementation of {@link AuthService}.
+     * Test implementation of {@link Auth}.
      */
-    public static class TestAuthService implements AuthService{
+    public static class TestAuthImplementation implements Auth {
         private static final String TAG = "[WWR_TestAuthService]";
 
         @Override
@@ -90,7 +87,7 @@ public class TestAuth {
         /**
          * The single observer who will be notified of method calls.
          */
-        public AuthServiceObserver observer;
+        public AuthObserver observer;
 
         @Override
         public void signUp(String email, String password, String displayName) {
@@ -143,12 +140,12 @@ public class TestAuth {
         }
 
         @Override
-        public void register(AuthServiceObserver authServiceObserver) {
-            observer = authServiceObserver;
+        public void register(AuthObserver authObserver) {
+            observer = authObserver;
         }
 
         @Override
-        public void deregister(AuthServiceObserver authServiceObserver) {
+        public void deregister(AuthObserver authObserver) {
 
         }
     }

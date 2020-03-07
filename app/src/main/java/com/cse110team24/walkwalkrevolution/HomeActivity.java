@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
@@ -42,7 +42,7 @@ import java.util.Date;
 
 /**
  * Handles Daily Steps and distance, latest steps, distance, and time, recording a walk.
- * <p>Integrates {@link AuthService}, {@link TeamsDatabaseService}, {@link UsersDatabaseService}, and
+ * <p>Integrates {@link Auth}, {@link TeamsDatabaseService}, {@link UsersDatabaseService}, and
  * {@link MessagingService}.</p>
  * <ol>
  *     <li>Saves the user's height locally, passed by {@link LoginActivity}</li>
@@ -166,7 +166,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void firebaseUserSetup() {
-        AuthService authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        Auth auth = FirebaseApplicationWWR.getAuthFactory().createAuthService();
         UsersDatabaseService mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         mTeamsDbService = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
@@ -174,7 +174,7 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         String email = preferences.getString(IUser.EMAIL_KEY, null);
         if (email != null) {
-            mUser = authService.getUser();
+            mUser = auth.getUser();
             mUser.setEmail(email);
         }
     }

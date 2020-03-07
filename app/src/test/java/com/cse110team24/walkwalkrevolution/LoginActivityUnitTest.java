@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution;
 
-import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,12 +8,11 @@ import androidx.test.core.app.ActivityScenario;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowToast;
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.when;
@@ -90,7 +88,7 @@ public class LoginActivityUnitTest extends TestInjection {
         gmail.setText("amber@yahoo.com");
         password.setText("testpw");
         finishBtn.performClick();
-        when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.DOES_NOT_EXIST);
+        when(mAuth.getAuthError()).thenReturn(Auth.AuthError.DOES_NOT_EXIST);
         when(mAuth.isUserSignedIn()).thenReturn(false);
     }
 
@@ -127,7 +125,7 @@ public class LoginActivityUnitTest extends TestInjection {
         password.setText("testpw");
         username.setText("Cheery");
         finishBtn.performClick();
-        when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.USER_COLLISION);
+        when(mAuth.getAuthError()).thenReturn(Auth.AuthError.USER_COLLISION);
         when(mAuth.isUserSignedIn()).thenReturn(false);
     }
 
@@ -149,7 +147,7 @@ public class LoginActivityUnitTest extends TestInjection {
         gmail.setText("amber@gmail.com");
         password.setText("password");
         finishBtn.performClick();
-        when(mAuth.getAuthError()).thenReturn(AuthService.AuthError.INVALID_PASSWORD);
+        when(mAuth.getAuthError()).thenReturn(Auth.AuthError.INVALID_PASSWORD);
         when(mAuth.isUserSignedIn()).thenReturn(false);
     }
 

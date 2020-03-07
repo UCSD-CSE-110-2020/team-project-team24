@@ -5,11 +5,11 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 /**
  * Handles user authentication given the implementing type's provider
  */
-public interface AuthService extends AuthServiceSubject {
+public interface Auth extends AuthSubject {
     /**
      * Signs in a user to this service's provider, given email and password. <p>On success, a call to
-     * {@link AuthServiceSubject#notifyObserversSignedIn(IUser)} is made with the sign in user.</p><p>On
-     * failure, a call to {@link AuthServiceSubject#notifyObserversSignInError(AuthService.AuthError)} is made
+     * {@link AuthSubject#notifyObserversSignedIn(IUser)} is made with the sign in user.</p><p>On
+     * failure, a call to {@link AuthSubject#notifyObserversSignInError(Auth.AuthError)} is made
      * with the AuthError that occurred.</p>
      * @param email the existing user's email
      * @param password the existing user's password
@@ -18,8 +18,8 @@ public interface AuthService extends AuthServiceSubject {
 
     /**
      * Signs up a user to this service's provider given email, password, and display name and automatically
-     * signs the user into the provider. <p>On success, a call to {@link AuthServiceSubject#notifyObserversSignedUp(IUser)}
-     * is made with the sign in user.</p> <p>On failure, a call to {@link AuthServiceSubject#notifyObserversSignUpError(AuthService.AuthError)}
+     * signs the user into the provider. <p>On success, a call to {@link AuthSubject#notifyObserversSignedUp(IUser)}
+     * is made with the sign in user.</p> <p>On failure, a call to {@link AuthSubject#notifyObserversSignUpError(Auth.AuthError)}
      * is made with the AuthError that occurred.</p>
      * @param email the new user's email
      * @param password the new user's password

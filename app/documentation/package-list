@@ -8,9 +8,11 @@ com.cse110team24.walkwalkrevolution.firebase.firestore.services
 com.cse110team24.walkwalkrevolution.firebase.firestore.subjects
 com.cse110team24.walkwalkrevolution.firebase.messaging
 com.cse110team24.walkwalkrevolution.fitness
+com.cse110team24.walkwalkrevolution.invitations
+com.cse110team24.walkwalkrevolution.invitations.invitation
 com.cse110team24.walkwalkrevolution.mockedservices
-com.cse110team24.walkwalkrevolution.models.invitation
 com.cse110team24.walkwalkrevolution.models.route
-com.cse110team24.walkwalkrevolution.models.team
 com.cse110team24.walkwalkrevolution.models.user
+com.cse110team24.walkwalkrevolution.teams
+com.cse110team24.walkwalkrevolution.teams.team
 com.cse110team24.walkwalkrevolution.utils

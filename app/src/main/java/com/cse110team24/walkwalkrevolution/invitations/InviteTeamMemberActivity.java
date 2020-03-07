@@ -15,7 +15,7 @@ import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.RoutesManager;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 
@@ -39,7 +39,7 @@ import java.util.Map;
 
 /**
  * Handles sending invitations to other users.
- * <p>Integrates {@link AuthService}, {@link UsersDatabaseService}, {@link InvitationsDatabaseService},
+ * <p>Integrates {@link Auth}, {@link UsersDatabaseService}, {@link InvitationsDatabaseService},
  * {@link TeamsDatabaseService}, and {@link MessagingService}</p>
  *
  * <p>Implements {@link MessagingService} to be notified when an invitation was sent.</p>
@@ -87,7 +87,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     private SharedPreferences preferences;
 
-    private AuthService authService;
+    private Auth auth;
 
     private UsersDatabaseService mUsersDB;
 
@@ -130,7 +130,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     }
 
     private void setUpServices() {
-        authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        auth = FirebaseApplicationWWR.getAuthFactory().createAuthService();
 
         mUsersDB = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         mUsersDB.register(this);
@@ -206,7 +206,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         String displayName = preferences.getString(IUser.USER_NAME_KEY, null);
         String email = preferences.getString(IUser.EMAIL_KEY, null);
         if (displayName != null && email != null) {
-            mFrom = authService.getUser();
+            mFrom = auth.getUser();
             mFrom.setDisplayName(displayName);
             mFrom.setEmail(email);
         }
