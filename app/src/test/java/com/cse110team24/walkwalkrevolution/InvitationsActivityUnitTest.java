@@ -11,11 +11,11 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
-import com.cse110team24.walkwalkrevolution.invitations.InvitationsActivity;
-import com.cse110team24.walkwalkrevolution.invitations.InvitationsListViewAdapter;
+import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
+import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsListViewAdapter;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
@@ -58,7 +58,6 @@ public class InvitationsActivityUnitTest extends TestInjection {
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamsDatabaseService);
         Mockito.when(msf.createMessagingService(Mockito.any(), eq(invitationsDatabaseService))).thenReturn(mMsg);
         appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-       // Invitation invitation = new Invitation(testUser);
         Invitation invitation = Invitation.builder()
                 .addFromUser(testUser)
                 .addToEmail("amara@gmail.com")

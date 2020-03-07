@@ -36,9 +36,9 @@ public class  MockActivityTestRule<LoginActivity extends Activity> extends Activ
                 .remove(HomeActivity.HEIGHT_IN_KEY)
                 .remove(IUser.TEAM_UID_KEY)
                 .apply();
-        FirebaseApplicationWWR.setAuthServiceFactory(new TestAuth.TestAuthAuthServiceFactory());
+        FirebaseApplicationWWR.setAuthServiceFactory(new TestAuth.TestAuthFactory());
         FirebaseApplicationWWR.setDatabaseServiceFactory(new TestDatabaseServiceFactory());
-        FirebaseApplicationWWR.setMessagingServiceFactory(new TestMessage.TestMessagingServiceFactory());
+        FirebaseApplicationWWR.setMessagingServiceFactory(new TestMessage.TestMessagingFactory());
     }
 
 }

@@ -2,7 +2,7 @@ package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import org.junit.Before;

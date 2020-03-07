@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".teammates.TeamRoutesActivity">
+    tools:context=".activities.teams.TeamRoutesActivity">
 
     <View
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:layout_height="fill_parent"
         android:layout_marginBottom="@dimen/recycle_view_margin"
         android:layout_marginTop="@dimen/recycler_view_upper_margin"
-        app:layout_constraintTop_toBottomOf="@+id/btn_see_teammate_routes"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

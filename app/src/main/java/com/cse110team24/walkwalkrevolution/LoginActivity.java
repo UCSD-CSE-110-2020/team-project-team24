@@ -17,9 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -28,12 +28,12 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 /**
- * Handles user authentication UI, integrating {@link AuthService} and {@link UsersDatabaseService}.
+ * Handles user authentication UI, integrating {@link Auth} and {@link UsersDatabaseService}.
  * Asks for user height information in any mode.
  * <ol>
  *     <li>On successful sign in or sign up, the user's name, email, and display name are saved locally
  *     to the device. See {@link IUser} for the SharedPreferences keys.</li>
- *     <li>Implements {@link AuthServiceObserver} in order to detect authentication changes.</li>
+ *     <li>Implements {@link AuthObserver} in order to detect authentication changes.</li>
  *     <li>Starts in sign-in mode. Asks for User email and password.</li>
  *     <ul>
  *         <li>If there is no error, launches {@link HomeActivity}</li>
@@ -48,7 +48,7 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
  *     </ul>
  * </ol>
  */
-public class LoginActivity extends AppCompatActivity implements AuthServiceObserver {
+public class LoginActivity extends AppCompatActivity implements AuthObserver {
     private static final String TAG = "WWR_LoginActivity";
     private static final String INVALID_GMAIL_TOAST = "Please enter a valid gmail address!";
     private static final String INVALID_PASSWORD_TOAST = "Please enter a password at least 6 characters long!";
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     SharedPreferences preferences;
 
     // firebase dependencies
-    private AuthService mAuth;
+    private Auth mAuth;
     private IUser mUser;
     private UsersDatabaseService mDb;
     private ProgressBar progressBar;
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         homeIntent = new Intent(this, HomeActivity.class);
 
-        mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        mAuth = FirebaseApplicationWWR.getAuthFactory().createAuthService();
         mAuth.register(this);
         mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
 
@@ -323,7 +323,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         return feet > 0 && inches > 0;
     }
 
-    private void checkLogin(SharedPreferences preferences) { ;
+    private void checkLogin(SharedPreferences preferences) {
         if (checkHeight(preferences) && mAuth.isUserSignedIn()) {
             Log.i(TAG, "checkHeight: valid height in preferences already exists (feet: " + feet + ", inches: " + inches + ").");
             launchHome();
@@ -353,7 +353,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     @Override
-    public void onAuthSignInError(AuthService.AuthError error) {
+    public void onAuthSignInError(Auth.AuthError error) {
         String errorString = "";
         switch (error) {
             case DOES_NOT_EXIST:
@@ -403,7 +403,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     @Override
-    public void onAuthSignUpError(AuthService.AuthError error) {
+    public void onAuthSignUpError(Auth.AuthError error) {
         String errorString = "";
         switch (error) {
             case USER_COLLISION:

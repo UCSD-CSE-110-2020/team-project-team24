@@ -11,7 +11,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 
@@ -19,7 +19,7 @@ import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.teammates.TeamActivity;
+import com.cse110team24.walkwalkrevolution.activities.teams.TeamActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -90,7 +90,6 @@ public class TeamActivityUnitTest extends TestInjection {
         scenario.onActivity(activity -> {
             Mockito.verify(teamsDatabaseService).register(any());
             getUIFields(activity);
-            assertEquals(View.VISIBLE, noTeammatesInTeamText.getVisibility());
             assertEquals(0, teammatesList.getCount());
         });
     }

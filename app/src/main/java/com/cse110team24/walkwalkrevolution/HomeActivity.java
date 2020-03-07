@@ -17,19 +17,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.Messaging;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.teammates.TeamActivity;
+import com.cse110team24.walkwalkrevolution.activities.teams.TeamActivity;
+import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -42,8 +46,8 @@ import java.util.Date;
 
 /**
  * Handles Daily Steps and distance, latest steps, distance, and time, recording a walk.
- * <p>Integrates {@link AuthService}, {@link TeamsDatabaseService}, {@link UsersDatabaseService}, and
- * {@link MessagingService}.</p>
+ * <p>Integrates {@link Auth}, {@link TeamsDatabaseService}, {@link UsersDatabaseService}, and
+ * {@link Messaging}.</p>
  * <ol>
  *     <li>Saves the user's height locally, passed by {@link LoginActivity}</li>
  *     <li>Creates instance of {@link FitnessService}</li>
@@ -71,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
     private FitnessService fitnessService;
 
     private TeamsDatabaseService mTeamsDbService;
-    private MessagingService messagingService;
+    private Messaging mMessaging;
 
     private SharedPreferences preferences;
 
@@ -166,22 +170,22 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void firebaseUserSetup() {
-        AuthService authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        Auth auth = FirebaseApplicationWWR.getAuthFactory().createAuthService();
         UsersDatabaseService mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         mTeamsDbService = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
-        messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
+        mMessaging = FirebaseApplicationWWR.getMessagingFactory().createMessagingService(this, mDb);
 
         SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         String email = preferences.getString(IUser.EMAIL_KEY, null);
         if (email != null) {
-            mUser = authService.getUser();
+            mUser = auth.getUser();
             mUser.setEmail(email);
         }
     }
 
     private void subscribeToReceiveInvitations() {
         if (mUser != null) {
-            messagingService.subscribeToNotificationsTopic(mUser.documentKey() + "invitations");
+            mMessaging.subscribeToNotificationsTopic(mUser.documentKey() + "invitations");
         }
     }
 

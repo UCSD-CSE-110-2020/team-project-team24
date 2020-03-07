@@ -1,10 +1,7 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.UsersDatabaseServiceSubject;
-import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.google.firebase.firestore.DocumentReference;
 
 import java.util.Map;
 

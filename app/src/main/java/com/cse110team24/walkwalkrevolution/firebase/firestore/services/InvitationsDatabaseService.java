@@ -1,8 +1,8 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.InvitationsDatabaseServiceSubject;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.gms.tasks.Task;
 
@@ -47,7 +47,7 @@ public interface InvitationsDatabaseService extends InvitationsDatabaseServiceSu
 
     /**
      * Query this service's provider database for the given user's received invitations that have
-     * {@link com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus} equal to PENDING.
+     * {@link InvitationStatus} equal to PENDING.
      * <p>On complete, calls {@link InvitationsDatabaseServiceSubject#notifyObserversPendingInvitations(List)} to
      * notify observers that the invitations are ready to read.</p>
      * @param user

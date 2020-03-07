@@ -3,13 +3,12 @@ package com.cse110team24.walkwalkrevolution.firebase.messaging;
 import android.app.Activity;
 import android.util.Log;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
  * {@inheritDoc}
  * This type's Messaging provider is FirebaseMessaging.
  */
-public class FirebaseMessagingAdapter implements MessagingService {
+public class FirebaseMessagingAdapter implements Messaging {
     private static final String TAG = "WWR_FirebaseMessagingAdapter";
     private static final String databaseUrl = "https://walkwalkrevolution.firebaseio.com";
 

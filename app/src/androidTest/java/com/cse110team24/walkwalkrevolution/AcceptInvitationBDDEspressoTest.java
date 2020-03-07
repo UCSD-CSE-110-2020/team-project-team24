@@ -39,7 +39,6 @@ import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDataba
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
 
 /**
