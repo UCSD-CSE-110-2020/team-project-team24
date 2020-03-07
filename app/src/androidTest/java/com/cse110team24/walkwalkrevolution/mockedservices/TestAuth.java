@@ -48,7 +48,7 @@ public class TestAuth {
 
     /**
      * Set to true when sign-in or sign-up is required for the test.
-     * <p>This boolean is returned by {@link TestAuthService#isUserSignedIn()}}</p>
+     * <p>This boolean is returned by {@link TestAuthService#isUserSignedIn()}</p>
      */
     public static boolean isTestUserSignedIn;
 
