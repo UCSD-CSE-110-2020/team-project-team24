@@ -67,10 +67,8 @@ import static org.hamcrest.Matchers.instanceOf;
 public class CheckTeamScreenBDDEspressoTest {
 
     private List<IUser> listOfUsers;
-    private List<Invitation> invitationList;
     IUser amara_momoh;
     IUser satta_momoh;
-    String TAG = "Team Screen Espresso";
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
@@ -102,9 +100,7 @@ public class CheckTeamScreenBDDEspressoTest {
         testTeam.addMember(amara_momoh);
         testTeam.addMember(satta_momoh);
         testTeamUid = testTeam.getUid();
-//        TestDatabaseServiceFactory testDatabaseServiceFactory = new TestDatabaseServiceFactory();
-//        TestTeamsDatabaseService testTeamsDatabaseService = (TestTeamsDatabaseService) testDatabaseServiceFactory.createDatabaseService(DatabaseService.Service.TEAMS);
-//        testTeamsDatabaseService.getUserTeam("666", "Satta Momoh");
+
     }
 
     @Test
@@ -134,25 +130,13 @@ public class CheckTeamScreenBDDEspressoTest {
                 allOf(withId(R.id.action_team), withContentDescription("Team"), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        // I don't think the below two lines do anything...
+        // This line doesn't do anything
         ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
-        onData(withName("Amara Momoh")).inAdapterView(withId(R.id.list_members_in_team));
+
 
     }
 
-    public static Matcher<IUser> withName(final String name){
-        return new TypeSafeMatcher<IUser>(ListviewAdapter.class){
-            @Override
-            public boolean matchesSafely(IUser user) {
-                return name.matches(user.getDisplayName());
-            }
 
-            @Override
-            public void describeTo(Description description) {
-
-            }
-        };
-    }
 }
 
 
