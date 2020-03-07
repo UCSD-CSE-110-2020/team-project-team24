@@ -20,7 +20,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
@@ -33,6 +35,8 @@ import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessServ
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeam;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.instanceOf;
 
 public class AcceptInvitationBDDEspressoTest {
 
@@ -64,7 +68,6 @@ public class AcceptInvitationBDDEspressoTest {
         invitationList = new ArrayList<Invitation>();
         testTeam = new TeamAdapter(listOfUsers);
 
-        testTeam.addMember(satta_momoh);
 //PERSON INVITING ME
         IUser amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
@@ -75,6 +78,7 @@ public class AcceptInvitationBDDEspressoTest {
         testTeam.addMember(amara_momoh);
 
         Invitation sentInvitation = new Invitation(amara_momoh);
+        sentInvitation = Invitation.builder().addFromUser(amara_momoh).addTeamUid("666").build();
 
         invitationList.add(sentInvitation);
 
@@ -121,10 +125,13 @@ public class AcceptInvitationBDDEspressoTest {
                 allOf(withId(R.id.btn_pending_invites), withText("Pending Invites"), isDisplayed()));
         appCompatButton2.perform(click());
 
-        ViewInteraction listViewClick = onView(
-                allOf(withId(R.id.invitationList), withContentDescription("Amara Momoh"), isDisplayed()));
-        //listViewClick.perform(click());
+        onData(anything()).inAdapterView((withId(R.id.invitationList))).atPosition(0).perform(click());
 
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.buttonAccept), withText("Accept"), isDisplayed()));
+        appCompatButton3.perform(click());
+
+        pressBack();
 
 
 
