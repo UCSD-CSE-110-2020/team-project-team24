@@ -29,7 +29,6 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -38,8 +37,6 @@ import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessServ
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService.testTeam;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.instanceOf;
 
 /**
  Given that I login successfully,
@@ -47,12 +44,12 @@ import static org.hamcrest.Matchers.instanceOf;
  When click I click "Pending Invites",
  Then I will see all my invitations,
  When I click on one of them,
- and accept,
- Then I will see my new list of teammates in Team Screen.
+ and decline,
+ Then I will still not be in a team.
  */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AcceptInvitationBDDEspressoTest {
+public class RejectInvitationBDDEspressoTest {
 
     private List<IUser> listOfUsers;
     private List<Invitation> invitationList;
@@ -142,14 +139,11 @@ public class AcceptInvitationBDDEspressoTest {
         onData(anything()).inAdapterView((withId(R.id.invitationList))).atPosition(0).perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.buttonAccept), withText("Accept"), isDisplayed()));
+                allOf(withId(R.id.buttonDecline), withText("Decline"), isDisplayed()));
         appCompatButton3.perform(click());
 
+       // ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
+
         pressBack();
-
-
-
-
-
     }
 }
