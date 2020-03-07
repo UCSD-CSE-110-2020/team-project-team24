@@ -1,8 +1,8 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.InvitationsDatabaseServiceSubject;
-import com.cse110team24.walkwalkrevolution.invitations.invitation.Invitation;
-import com.cse110team24.walkwalkrevolution.invitations.invitation.InvitationStatus;
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.android.gms.tasks.Task;
 

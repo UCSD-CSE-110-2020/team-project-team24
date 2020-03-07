@@ -1,6 +1,6 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.observers;
 
-import com.cse110team24.walkwalkrevolution.invitations.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 
 import java.util.List;
 

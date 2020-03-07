@@ -15,11 +15,11 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseS
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 
-import com.cse110team24.walkwalkrevolution.teams.team.ITeam;
-import com.cse110team24.walkwalkrevolution.teams.team.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.teams.TeamActivity;
+import com.cse110team24.walkwalkrevolution.activities.teams.TeamActivity;
 
 import org.junit.Before;
 import org.junit.Test;

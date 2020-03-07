@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
@@ -29,7 +32,8 @@ import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.teams.TeamActivity;
+import com.cse110team24.walkwalkrevolution.activities.teams.TeamActivity;
+import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

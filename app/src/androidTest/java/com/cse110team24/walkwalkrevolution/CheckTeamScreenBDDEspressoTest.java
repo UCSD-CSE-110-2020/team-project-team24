@@ -10,7 +10,7 @@ import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
-import com.cse110team24.walkwalkrevolution.teams.team.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
