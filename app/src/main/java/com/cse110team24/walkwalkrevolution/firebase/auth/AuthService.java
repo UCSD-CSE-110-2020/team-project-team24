@@ -8,7 +8,7 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 public interface AuthService extends AuthServiceSubject {
     /**
      * Signs in a user to this service's provider, given email and password. <p>On success, a call to
-     * {@link AuthServiceSubject#notifyObserversSignedIn(IUser)} is made with the sign in user</p>. <p>On
+     * {@link AuthServiceSubject#notifyObserversSignedIn(IUser)} is made with the sign in user.</p><p>On
      * failure, a call to {@link AuthServiceSubject#notifyObserversSignInError(AuthService.AuthError)} is made
      * with the AuthError that occurred.</p>
      * @param email the existing user's email
