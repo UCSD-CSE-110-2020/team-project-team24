@@ -1,34 +1,20 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.content.Context;
-import android.content.Intent;
-import android.view.View;
-import android.widget.BaseAdapter;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseServiceFactory;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
-import com.cse110team24.walkwalkrevolution.mockedservices.TestDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
-import com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService;
-import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.mockedservices.TestMessage;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -60,7 +46,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.instanceOf;
 
-/* Scenario: User has a team, sees team members listed in app
+/** Scenario: User has a team, sees team members listed in app
  *
  * Given that the user has a team,
  * When they click on the "Team" button from the home screen

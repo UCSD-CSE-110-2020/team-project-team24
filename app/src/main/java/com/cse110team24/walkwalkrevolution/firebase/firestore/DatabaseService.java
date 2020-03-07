@@ -11,9 +11,17 @@ import org.w3c.dom.Document;
 
 import java.util.List;
 
-// TODO: 3/3/20 split this interface into the three specialized interface services 
+/**
+ * Associates various database handlers with a common type.
+ * <p>See also: {@link com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService}</p>
+ * <p>See also: {@link com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService}</p>
+ * <p>See also: {@link com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService}</p>
+ */
 public interface DatabaseService{
 
+    /**
+     * Various observer interfaces that can be instantiated.
+     */
     enum Service {
         USERS,
         TEAMS,

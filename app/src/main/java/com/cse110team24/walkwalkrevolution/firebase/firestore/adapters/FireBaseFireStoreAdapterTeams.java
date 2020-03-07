@@ -4,7 +4,7 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore.adapters;
 import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
@@ -18,9 +18,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cse110team24.walkwalkrevolution.models.team.TeamAdapter.MEMBERS_KEY;
-
-public class FireBaseFireStoreAdapterTeams implements TeamDatabaseService {
+/**
+ * {@inheritDoc}
+ * This type's database provider is Cloud Firestore. The document path for a team is
+ * teams/\{team\}. The document path for a teammate is teams/{\team\}/teammates/\{teammate}.
+ * The document path for a teammate route is teams/{\team\}/routes/\{route}.
+ */
+public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     private static final String TAG = "WWR_FirebaseFirestoreAdapterTeams";
 
     public static final String TEAMS_COLLECTION_KEY = "teams";
@@ -41,7 +45,6 @@ public class FireBaseFireStoreAdapterTeams implements TeamDatabaseService {
         // create new team document and update user's teamUid
         DocumentReference teamDocument = teamsCollection.document();
         String teamUid = teamDocument.getId();
-        user.updateTeamUid(teamUid);
 
         // create the teammates collection and the individual member document
         CollectionReference teamSubCollection = teamDocument.collection(TEAMMATES_SUB_COLLECTION);

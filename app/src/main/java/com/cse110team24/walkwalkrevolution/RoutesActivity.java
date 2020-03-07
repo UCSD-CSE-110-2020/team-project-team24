@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -31,6 +31,15 @@ import java.util.List;
 
 import static com.cse110team24.walkwalkrevolution.HomeActivity.APP_PREF;
 
+/**
+ * Handles displaying and saving user's routes.
+ * <p>Integrates {@link TeamsDatabaseService}</p>
+ *
+ * <ol>
+ *     <li>Saves and displays user's list of routes locally</li>
+ *     <li>If a user has a team, uploads newly added routes to user's team in database</li>
+ * </ol>
+ */
 public class RoutesActivity extends AppCompatActivity {
     public static final String TAG = "WWR_RoutesActivity";
 
@@ -44,7 +53,7 @@ public class RoutesActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     private UsersDatabaseService mUsersDbService;
-    private TeamDatabaseService mTeamsDbService;
+    private TeamsDatabaseService mTeamsDbService;
 
     private SharedPreferences preferences;
 
@@ -62,7 +71,7 @@ public class RoutesActivity extends AppCompatActivity {
         setListeners();
 
         mUsersDbService = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
-        mTeamsDbService = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mTeamsDbService = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
     }
 
     @Override

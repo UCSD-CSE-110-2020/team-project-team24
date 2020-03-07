@@ -50,7 +50,7 @@ public class LoginActivityUIEspressoTest {
     public void loginActivityUIEspressoTest() {
         ViewInteraction button = onView(
                 allOf(withId(R.id.btn_height_finish), isDisplayed()));
-        button.check(matches(isDisplayed()));
+            button.check(matches(isDisplayed()));
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.sign_up_tv), withText("Don't have an account? Sign up here"), isDisplayed()));

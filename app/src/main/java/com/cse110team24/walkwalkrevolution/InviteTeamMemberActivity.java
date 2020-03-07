@@ -17,7 +17,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDat
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
@@ -33,6 +33,47 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Handles sending invitations to other users.
+ * <p>Integrates {@link AuthService}, {@link UsersDatabaseService}, {@link InvitationsDatabaseService},
+ * {@link TeamsDatabaseService}, and {@link MessagingService}</p>
+ *
+ * <p>Implements {@link MessagingService} to be notified when an invitation was sent.</p>
+ * <p>Implements {@link UsersDatabaseServiceObserver} to be notified when current user's data is ready
+ * or to know when {@link UsersDatabaseService} has finished checking if the user being invited exists</p>
+ *
+ * <ol>
+ *     <li>Current user begins with no existing team in the database.</li>
+ *     <li>Sets {@link InviteTeamMemberActivity#mFrom} using name and email information saved in
+ *     SharedPreferences</li>
+ *     <li>Checks in SharedPreferences for user's teamUid</li>
+ *     <ul>
+ *         <li>If it exists, Enables Send invitation button immediately; invitations can be sent normally</li>
+ *         <li>If it doesn't exist, calls {@link UsersDatabaseService#getUserData(IUser)}</li>
+ *     </ul>
+ *     <li>After receiving the current user's data, enables send invitation button and tries to assign teamUid, even if it is null</li>
+ *     <li>User tries to send invitation</li>
+ *     <ol>
+ *         <li>{@link InviteTeamMemberActivity#onUserData(Map)} must have been called to enable the button</li>
+ *         <li>Validates receiver's information. Must be a valid name and email.</li>
+ *         <li>Calls {@link UsersDatabaseService#checkIfOtherUserExists(String)} to check if the entered information
+ *         matches an existing user</li>
+ *     </ol>
+ *     <li>{@link InviteTeamMemberActivity#onUserExists(IUser)} is called by {@link UsersDatabaseService}</li>
+ *     <ol>
+ *         <li>If otherUser has a teamUid already, invitation failed because a user can't have two teams</li>
+ *         <li>If the currentUser teamUid is null, calls {@link InviteTeamMemberActivity#createTeam()}</li>
+ *         <ol>
+ *             <li>Calls {@link TeamsDatabaseService#createTeamInDatabase(IUser)} to create team in database and add user as teammate</li>
+ *             <li>Updates the current user's teamUid to the uid returned by above</li>
+ *             <li>Updates the database with the current user's new teamUid</li>
+ *             <li>Subscribes current user to their new team's document as a notification topic</li>
+ *             <li>uploads the current user's locally saved routes to their new team</li>
+ *         </ol>
+ *         <li>Sends invitation using {@link MessagingService}</li>
+ *     </ol>
+ * </ol>
+ */
 public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseServiceObserver {
     private static final String TAG = "WWR_InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
@@ -48,7 +89,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
 
     private InvitationsDatabaseService mInvitationsDB;
 
-    private TeamDatabaseService mTeamsDB;
+    private TeamsDatabaseService mTeamsDB;
     private MessagingService messagingService;
 
     private IUser mFrom;
@@ -91,7 +132,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
         mUsersDB.register(this);
 
         mInvitationsDB = (InvitationsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
-        mTeamsDB = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mTeamsDB = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
 
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mInvitationsDB);
         messagingService.register(this);

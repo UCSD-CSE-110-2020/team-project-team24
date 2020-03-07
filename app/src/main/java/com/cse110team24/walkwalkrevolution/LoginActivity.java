@@ -27,6 +27,27 @@ import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
+/**
+ * Handles user authentication UI, integrating {@link AuthService} and {@link UsersDatabaseService}.
+ * Asks for user height information in any mode.
+ * <ol>
+ *     <li>On successful sign in or sign up, the user's name, email, and display name are saved locally
+ *     to the device. See {@link IUser} for the SharedPreferences keys.</li>
+ *     <li>Implements {@link AuthServiceObserver} in order to detect authentication changes.</li>
+ *     <li>Starts in sign-in mode. Asks for User email and password.</li>
+ *     <ul>
+ *         <li>If there is no error, launches {@link HomeActivity}</li>
+ *         <li>If there is a sign in error, displays appropriate error as Toast</li>
+ *     </ul>
+ *     <li>Click "sign up here" displays additional displayName field.</li>
+ *     <ul>
+ *         <li>Only allows sign-up click if email is valid gmail, password is >= 6 characters in length,
+ *         and displayName is not blank</li>
+ *         <li>If there is no error, launches {@link HomeActivity}</li>
+ *         <li>If there is a sign up error, displays appropriate error as Toast</li>
+ *     </ul>
+ * </ol>
+ */
 public class LoginActivity extends AppCompatActivity implements AuthServiceObserver {
     private static final String TAG = "WWR_LoginActivity";
     private static final String INVALID_GMAIL_TOAST = "Please enter a valid gmail address!";

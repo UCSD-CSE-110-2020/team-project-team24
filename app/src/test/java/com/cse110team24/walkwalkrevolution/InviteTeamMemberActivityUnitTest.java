@@ -9,9 +9,7 @@ import android.widget.TextView;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
-import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.models.user.UserBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +56,7 @@ public class InviteTeamMemberActivityUnitTest extends TestInjection {
                 .commit();
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.USERS)).thenReturn(usersDatabaseService);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.INVITATIONS)).thenReturn(invitationsDatabaseService);
-        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamDatabaseService);
+        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamsDatabaseService);
         Mockito.when(msf.createMessagingService(Mockito.any(), eq(invitationsDatabaseService))).thenReturn(mMsg);
 
     }
@@ -228,7 +226,7 @@ public class InviteTeamMemberActivityUnitTest extends TestInjection {
             return null;
         }).when(usersDatabaseService).getUserData(any());
 
-        Mockito.doReturn("666").when(teamDatabaseService).createTeamInDatabase(any());
+        Mockito.doReturn("666").when(teamsDatabaseService).createTeamInDatabase(any());
 
         scenario = ActivityScenario.launch(InviteTeamMemberActivity.class);
         scenario.onActivity(activity -> {
@@ -238,7 +236,7 @@ public class InviteTeamMemberActivityUnitTest extends TestInjection {
             inviteUserWithName("cheery");
 
             Mockito.verify(usersDatabaseService).checkIfOtherUserExists(any());
-            Mockito.verify(teamDatabaseService).createTeamInDatabase(any());
+            Mockito.verify(teamsDatabaseService).createTeamInDatabase(any());
             assertNotNull(testUser.teamUid());
         });
     }

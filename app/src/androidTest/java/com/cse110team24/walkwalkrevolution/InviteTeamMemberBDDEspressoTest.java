@@ -33,7 +33,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
 import static org.hamcrest.Matchers.allOf;
 
-/*
+/**
 Given that I have logged into my WWR account with a valid email address
 And I want to invite a team member with a valid email address and the WWR app
 When I click the “Team” button on the Home screen,

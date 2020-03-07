@@ -16,24 +16,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
+public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver, UsersDatabaseServiceObserver {
     private static final String TAG = "WWR_TeamActivity";
     private Button sendInviteBtn;
     private Button seeInvitationsBtn;
     private BottomNavigationView bottomNavigationView;
 
-    private TeamDatabaseService mDb;
+    private TeamsDatabaseService mDb;
+    private UsersDatabaseService uDb;
 
     SharedPreferences mPreferences;
 
@@ -76,7 +82,10 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         mTeamUid = mPreferences.getString(IUser.TEAM_UID_KEY, null);
         if (mTeamUid == null) {
-            showNoTeamToast();
+            IUser currUser = FirebaseUserAdapter.builder()
+                    .addEmail(Utils.getString(preferences, IUser.EMAIL_KEY))
+                    .build();
+            uDb.getUserData(currUser);
         } else {
             Log.d(TAG, "getTeamUid: team uid found, retrieving team");
             mDb.getUserTeam(mTeamUid, preferences.getString(IUser.USER_NAME_KEY, ""));
@@ -84,8 +93,11 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     }
 
     private void setUpServices() {
-        mDb = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mDb = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
         mDb.register(this);
+
+        uDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        uDb.register(this);
     }
 
     private void getUIFields() {
@@ -95,6 +107,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         noTeamMessage = findViewById(R.id.text_no_teammates);
         teammatesList = findViewById(R.id.list_members_in_team);
         listviewAdapter = new ListviewAdapter(this, mTeam.getTeam());
+        noTeamMessage.setVisibility(View.GONE);
         teammatesList.setAdapter(listviewAdapter);
     }
 
@@ -153,5 +166,28 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     private void showNoTeamToast() {
         Toast.makeText(this, "You don't have a team. Try sending an invitation!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onUserData(Map<String, Object> userDataMap) {
+        if (userDataMap != null) {
+            mTeamUid = (String) userDataMap.get(IUser.TEAM_UID_KEY);
+            Utils.saveString(preferences, IUser.TEAM_UID_KEY, mTeamUid);
+            if (mTeamUid == null) {
+                showNoTeamToast();
+            } else {
+                getTeamUid();
+            }
+        }
+    }
+
+    @Override
+    public void onUserExists(IUser otherUser) {
+
+    }
+
+    @Override
+    public void onUserDoesNotExist() {
+
     }
 }

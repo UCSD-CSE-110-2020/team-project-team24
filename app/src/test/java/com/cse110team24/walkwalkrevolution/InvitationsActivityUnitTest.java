@@ -3,12 +3,8 @@ package com.cse110team24.walkwalkrevolution;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -18,25 +14,18 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
-import com.cse110team24.walkwalkrevolution.models.invitation.IInvitation;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
-import com.cse110team24.walkwalkrevolution.models.invitation.InvitationBuilder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.utils.Builder;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -64,7 +53,7 @@ public class InvitationsActivityUnitTest extends TestInjection {
                 .commit();
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.USERS)).thenReturn(usersDatabaseService);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.INVITATIONS)).thenReturn(invitationsDatabaseService);
-        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamDatabaseService);
+        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamsDatabaseService);
         Mockito.when(msf.createMessagingService(Mockito.any(), eq(invitationsDatabaseService))).thenReturn(mMsg);
         appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
        // Invitation invitation = new Invitation(testUser);

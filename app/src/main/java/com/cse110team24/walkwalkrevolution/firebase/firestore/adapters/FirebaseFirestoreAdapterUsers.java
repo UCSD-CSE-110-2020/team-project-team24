@@ -20,6 +20,11 @@ import java.util.Map;
 
 import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.TEAM_UID_KEY;
 
+/**
+ * {@inheritDoc}
+ * This type's database provider is Cloud Firestore. The document path for a user is
+ * users/\{user\}.
+ */
 public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     private static final String TAG = "WWR_FirebaseFirestoreAdapterUsers";
 
@@ -59,23 +64,6 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
                 Log.e(TAG, "updateUserTeam: error updating team uid", task.getException());
             }
         });
-    }
-
-    @Override
-    public DocumentReference addUserMessagingRegistrationToken(IUser user, String token) {
-        DocumentReference userDoc = usersCollection.document(user.documentKey());
-        Map<String, Object> tokenData = new HashMap<>();
-        tokenData.put(TOKEN_SET_KEY, token);
-        userDoc.collection(USER_REGISTRATION_TOKENS_COLLECTION_KEY)
-                .add(tokenData)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.i(TAG, "addUserMessagingRegistrationToken: success adding user registration token");
-                    } else {
-                        Log.e(TAG, "addUserMessagingRegistrationToken: error adding user registration token", task.getException());
-                    }
-                });
-        return userDoc;
     }
 
     @Override

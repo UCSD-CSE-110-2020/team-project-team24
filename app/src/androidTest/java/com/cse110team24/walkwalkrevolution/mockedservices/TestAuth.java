@@ -8,13 +8,21 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains the test implementation of {@link AuthServiceFactory} and {@link AuthService}.
+ * <p><b>Set the static fields of this class to provide results for method calls.</b></p>
+ */
 public class TestAuth {
 
-    /** TODO
-     * returns instance of TestAuthService. See blow
+    /**
+     * Creates instance of TestAuthService.
      */
     public static class TestAuthAuthServiceFactory implements AuthServiceFactory {
 
+        /**
+         *
+         * @return an instance of {@link TestAuthService}
+         */
         @Override
         public AuthService createAuthService() {
             return new TestAuthService();
@@ -23,21 +31,49 @@ public class TestAuth {
 
 
     // set these when you need to.
+    /**
+     * The intended user signed in to the app. Should be set both in sign-up and sign-in tests.
+     * <p>This user is returned by {@link TestAuthService#getUser()}</p>
+     */
     public static IUser testAuthUser;
+
+    /**
+     * The intended {@link com.cse110team24.walkwalkrevolution.firebase.auth.AuthService.AuthError} during
+     * sign-in and sing-up error tests.
+     * <p>This auth error is returned by {@link TestAuthService#getAuthError()} and is sent to observers by
+     * {@link TestAuthService#signUp(String, String, String)} or {@link TestAuthService#signIn(String, String)}
+     * when one of {@link TestAuth#successUserSignedUp} or {@link TestAuth#successUserSignedIn} is false</p>
+     */
     public static AuthService.AuthError testAuthError;
+
+    /**
+     * Set to true when sign-in or sign-up is required for the test.
+     * <p>This boolean is returned by {@link TestAuthService#isUserSignedIn()}</p>
+     */
     public static boolean isTestUserSignedIn;
 
+    /**
+     * Set to true when testing that a user signed up successfully. Set false when testing sign-up errors.
+     *
+     * <p>When this is true, this TestAuthService will call {@link AuthServiceObserver#onUserSignedUp(IUser)} with argument {@link TestAuth#testAuthUser}</p>
+     * <p>When this is false, this TestAuthService will call {@link AuthServiceObserver#onAuthSignUpError(AuthService.AuthError)} with argument {@link TestAuth#testAuthError}</p>
+     */
     public static boolean successUserSignedUp;
+
+    /**
+     * Set to true when testing that user sign in successfully. Set false when testing sign-in errors.
+     *
+     * <p>When this is true, this TestAuthService will call {@link AuthServiceObserver#onUserSignedIn(IUser)} with argument {@link TestAuth#testAuthUser}</p>
+     * <p>When this is false, this TestAuthService will call {@link AuthServiceObserver#onAuthSignInError(AuthService.AuthError)} with argument {@link TestAuth#testAuthError}</p>
+     */
     public static boolean successUserSignedIn;
 
-    /** TODO
-     * instead of having observers, you should manually call the observer's method
-     * For example, if testing a user is successfully signed in, the method
-     * [observer].onUserSignedIn(testUser) should be called
+    /**
+     * Test implementation of {@link AuthService}.
      */
     public static class TestAuthService implements AuthService{
         private static final String TAG = "[WWR_TestAuthService]";
-        AuthServiceObserver observer;
+
         @Override
         public void signIn(String email, String password) {
             /** TODO: 3/5/20 should call one of
@@ -50,6 +86,11 @@ public class TestAuth {
                 observer.onAuthSignInError(testAuthError);
             }
         }
+
+        /**
+         * The single observer who will be notified of method calls.
+         */
+        public AuthServiceObserver observer;
 
         @Override
         public void signUp(String email, String password, String displayName) {

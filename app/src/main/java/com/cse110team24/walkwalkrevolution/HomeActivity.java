@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
@@ -39,7 +39,24 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-
+/**
+ * Handles Daily Steps and distance, latest steps, distance, and time, recording a walk.
+ * <p>Integrates {@link AuthService}, {@link TeamsDatabaseService}, {@link UsersDatabaseService}, and
+ * {@link MessagingService}.</p>
+ * <ol>
+ *     <li>Saves the user's height locally, passed by {@link LoginActivity}</li>
+ *     <li>Creates instance of {@link FitnessService}</li>
+ *     <li>Subscribes the currently signed in user to their invitations collection in order to receive notifications</li>\
+ *     <li>If saving a newly recorded route, adds it to local file</li>
+ *     <ul>
+ *         <li>If the signed in user has a team, adds the route to the user's team in the database</li>
+ *     </ul>
+ *     <li>If recording an existing route, when stopped, will automatically update local save file</li>
+ *     <ul>
+ *         <li>If the signed in user has a team, updates the route in the user's team in the database</li>
+ *     </ul>
+ * </ol>
+ */
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "WWR_HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
@@ -52,9 +69,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private FitnessService fitnessService;
 
-    private AuthService authService;
-    private UsersDatabaseService mDb;
-    private TeamDatabaseService mTeamsDbService;
+    private TeamsDatabaseService mTeamsDbService;
     private MessagingService messagingService;
 
     private SharedPreferences preferences;
@@ -150,9 +165,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void firebaseUserSetup() {
-        authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
-        mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
-        mTeamsDbService = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        AuthService authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        UsersDatabaseService mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        mTeamsDbService = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
         messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
 
         SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);

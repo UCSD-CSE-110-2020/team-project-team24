@@ -10,19 +10,38 @@ import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
 import com.google.android.gms.tasks.Task;
 
+/**
+ * Test implementation of {@link MessagingService}.
+ */
 public class TestMessage {
 
-    // TODO: 3/5/20 set these when you need to
+    /**
+     * Set to true when testing invitation sent; false when testing invitation sending errors.
+     *
+     * <p>When this is true, {@link TestMessagingService} will call {@link MessagingObserver#onInvitationSent(Invitation)}</p>
+     * <p>When this is false, {@link TestMessagingService} will call {@link MessagingObserver#onFailedInvitationSent(Task)}</p>
+     */
     public static boolean invitationSentSuccess;
 
+    /**
+     * Creates instances of {@link TestMessagingService}.
+     */
     public static class TestMessagingServiceFactory implements MessagingServiceFactory {
 
+        /**
+         * @param activity unused
+         * @param databaseService unused
+         * @return an instance of {@link TestMessagingService}
+         */
         @Override
         public MessagingService createMessagingService(Activity activity, DatabaseService databaseService) {
             return new TestMessagingService();
         }
     }
 
+    /**
+     * Test implementation of {@link MessagingService}.
+     */
     public static class TestMessagingService implements MessagingService {
 
         public MessagingObserver mObserver;

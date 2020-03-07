@@ -7,6 +7,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 
 /** TODO
@@ -33,6 +34,7 @@ public class  MockActivityTestRule<LoginActivity extends Activity> extends Activ
                 .edit()
                 .remove(HomeActivity.HEIGHT_FT_KEY)
                 .remove(HomeActivity.HEIGHT_IN_KEY)
+                .remove(IUser.TEAM_UID_KEY)
                 .apply();
         FirebaseApplicationWWR.setAuthServiceFactory(new TestAuth.TestAuthAuthServiceFactory());
         FirebaseApplicationWWR.setDatabaseServiceFactory(new TestDatabaseServiceFactory());

@@ -20,7 +20,7 @@ import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
@@ -35,7 +35,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
     private static final String TAG = "WWR_InvitationsActivity";
 
     private InvitationsDatabaseService mIDb;
-    private TeamDatabaseService mTDb;
+    private TeamsDatabaseService mTDb;
     private UsersDatabaseService mUDb;
     private MessagingService mMessagingService;
     private AuthService mAuth;
@@ -153,7 +153,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
         mIDb = (InvitationsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.INVITATIONS);
         mIDb.register(this);
 
-        mTDb = (TeamDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mTDb = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
 
         mUDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
 
