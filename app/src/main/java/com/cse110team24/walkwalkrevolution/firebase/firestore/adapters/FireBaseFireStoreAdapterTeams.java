@@ -110,7 +110,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         routesQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 QuerySnapshot resultDocs = task.getResult();
-                Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved");
+                Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved with names < current user");
                 List<Route> routes = getRoutes(resultDocs);
 
                 // try to grab more routes if not enough grabbed
@@ -168,7 +168,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         routesQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 QuerySnapshot resultDocs = task.getResult();
-                Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved");
+                Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved with names > current user");
                 routes.addAll(getRoutes(resultDocs));
                 getLastVisibleDoc(resultDocs, routes);
             } else {

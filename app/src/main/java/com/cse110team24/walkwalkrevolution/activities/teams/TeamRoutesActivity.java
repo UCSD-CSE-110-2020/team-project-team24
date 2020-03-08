@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution.activities.teams;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -76,23 +78,46 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
     }
 
     private void getTeamRoutes() {
-        mTeamsDb.getUserTeamRoutes(mCurrentUser.teamUid(), mCurrentUser.getDisplayName(), 5, mLastRouteDocSnapshot);
+        mTeamsDb.getUserTeamRoutes(mCurrentUser.teamUid(), mCurrentUser.getDisplayName(), 10, mLastRouteDocSnapshot);
     }
 
     private void getUIElements() {
         mTeamRv = findViewById(R.id.recycler_view_team_routes);
+        setScrollListener(mTeamRv);
         adapter = new TeamRoutesRecyclerViewAdapter(this, mTeamRoutes, mPreferences);
         mTeamRv.setAdapter(adapter);
         mTeamRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+    }
+
+    private void setScrollListener(RecyclerView view) {
+//        view.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//             @Override
+//             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                 super.onScrollStateChanged(recyclerView, newState);
+//             }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                if (dy > 100 && Utils.checkNotNull(mLastRouteDocSnapshot)) {
+//                    getTeamRoutes();
+//                }
+//            }
+//
+//        });
     }
 
     @Override
     public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
         routes.forEach(route -> Log.d(TAG, "onRoutesRetrieved: route " + route));
         mTeamRoutes.addAll(routes);
+        Collections.sort(mTeamRoutes);
         mLastRouteDocSnapshot = lastRoute;
         adapter.notifyDataSetChanged();
-        // notify adapter data changed
+
+        if (Utils.checkNotNull(lastRoute)) {
+            getTeamRoutes();
+        }
     }
 
     @Override
