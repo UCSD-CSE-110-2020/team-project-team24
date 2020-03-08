@@ -139,7 +139,11 @@ public class Route implements Serializable, Comparable<Route> {
     @Override
     public String toString() {
         return "\ntitle: " + mTitle +
-                "\nstats: " + ((mStats == null) ? "none" : mStats);
+                "\nstartingLocation: " + ((mStartingLocation == null) ? "N/A" : mStartingLocation) +
+                "\nstats: " + ((mStats == null) ? "N/A" : mStats) +
+                "\nenvironment: " + ((mEnvironment == null) ? "N/A" : mEnvironment) +
+                "\ncreatedBy: " + ((mCreatorDisplayName == null) ? "N/A" : mCreatorDisplayName);
+
     }
 
     public static class Builder implements RouteBuilder {
