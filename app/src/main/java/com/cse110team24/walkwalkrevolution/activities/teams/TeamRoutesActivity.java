@@ -1,6 +1,8 @@
 package com.cse110team24.walkwalkrevolution.activities.teams;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,6 +17,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseS
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,13 +25,27 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ * Handles displaying the currently signed in user's teammates' routes.
+ * <ol>
+ *     <li>Sets up RecyclerViewAdapter and gets first batch of team routes, ordered by teammate name</li>
+ *     <li>After a predetermined amount of scrolling or time, requests more routes from the database,
+ *     starting after route last queried</li>
+ * </ol>
+ */
 public class TeamRoutesActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
     private static final String TAG = "WWR_TeamRoutesActivity";
 
     private TeamsDatabaseService mTeamsDb;
     private SharedPreferences mPreferences;
-    private List<Route> mTeamRoutes = new ArrayList<>();
     private DocumentSnapshot mLastRouteDocSnapshot;
+
+    private List<Route> mTeamRoutes = new ArrayList<>();
+    private TeamRoutesRecyclerViewAdapter adapter;
+    private RecyclerView mTeamRv;
+
+    private IUser mCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +54,8 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
 
         mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         setUpDatabase();
+        getCurrentUser();
+        getUIElements();
         getTeamRoutes();
     }
 
@@ -45,10 +64,26 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
         mTeamsDb.register(this);
     }
 
-    private void getTeamRoutes() {
-        String name = Utils.getString(mPreferences, IUser.USER_NAME_KEY);
+    private void getCurrentUser() {
         String teamUid = Utils.getString(mPreferences, IUser.TEAM_UID_KEY);
-        mTeamsDb.getUserTeamRoutes(teamUid, name, 5, mLastRouteDocSnapshot);
+        String displayName = Utils.getString(mPreferences, IUser.USER_NAME_KEY);
+        String email = Utils.getString(mPreferences, IUser.EMAIL_KEY);
+        mCurrentUser = FirebaseUserAdapter.builder()
+                .addDisplayName(displayName)
+                .addEmail(email)
+                .addTeamUid(teamUid)
+                .build();
+    }
+
+    private void getTeamRoutes() {
+        mTeamsDb.getUserTeamRoutes(mCurrentUser.teamUid(), mCurrentUser.getDisplayName(), 5, mLastRouteDocSnapshot);
+    }
+
+    private void getUIElements() {
+        mTeamRv = findViewById(R.id.recycler_view_team);
+        adapter = new TeamRoutesRecyclerViewAdapter(this, mTeamRoutes, mCurrentUser.getDisplayName());
+        mTeamRv.setAdapter(adapter);
+        mTeamRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
@@ -56,6 +91,7 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
         routes.forEach(route -> Log.d(TAG, "onRoutesRetrieved: route " + route));
         mTeamRoutes.addAll(routes);
         mLastRouteDocSnapshot = lastRoute;
+        adapter.notifyDataSetChanged();
         // notify adapter data changed
     }
 

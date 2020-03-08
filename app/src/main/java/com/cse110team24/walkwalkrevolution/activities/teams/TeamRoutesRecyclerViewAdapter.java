@@ -26,7 +26,7 @@ public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRout
     private List<Route> mRoutes;
     private Context context;
 
-    public TeamRoutesRecyclerViewAdapter(List<Route> myRoutes, Context context) {
+    public TeamRoutesRecyclerViewAdapter(Context context, List<Route> myRoutes, String currentUserDisplayName) {
         this.context = context;
         mRoutes = myRoutes;
     }
@@ -56,6 +56,8 @@ public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRout
         private TextView stepsTv;
         private TextView distanceTv;
         private TextView dateTv;
+        private Button favoriteBtn;
+        private TextView initialsTv;
         RelativeLayout container;
 
         public ViewHolder(View itemView) {
@@ -65,6 +67,10 @@ public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRout
             stepsTv = itemView.findViewById(R.id.tv_routes_steps);
             distanceTv = itemView.findViewById(R.id.tv_routes_distance);
             dateTv = itemView.findViewById(R.id.tv_routes_date_completed);
+            favoriteBtn = itemView.findViewById(R.id.btn_routes_favorite);
+            initialsTv = itemView.findViewById(R.id.tv_team_routes_initials);
+            favoriteBtn.setVisibility(View.GONE);
+            initialsTv.setVisibility(View.VISIBLE);
         }
 
         @Override

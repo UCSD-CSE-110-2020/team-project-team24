@@ -58,7 +58,6 @@ public class RoutesActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private BottomNavigationView bottomNavigationView;
 
-    private UsersDatabaseService mUsersDbService;
     private TeamsDatabaseService mTeamsDbService;
 
     private SharedPreferences preferences;
@@ -76,7 +75,6 @@ public class RoutesActivity extends AppCompatActivity {
         getUIElements();
         setListeners();
 
-        mUsersDbService = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
         mTeamsDbService = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
     }
 
