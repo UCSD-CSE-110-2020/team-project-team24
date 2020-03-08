@@ -129,4 +129,7 @@
     <string name="fake_teammate_name">Samuel Jackson</string>
     <string name="fake_teammate_initials">SJ</string>
 
+    <!-- In TeamRoutesActivity -->
+    <string name="title_team_routes_activity">Team Routes</string>
+
 </resources>
