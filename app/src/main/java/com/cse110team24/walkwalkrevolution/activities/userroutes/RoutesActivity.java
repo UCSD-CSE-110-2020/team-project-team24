@@ -98,9 +98,9 @@ public class RoutesActivity extends AppCompatActivity {
         checkForExistingSavedRoutes();
         configureRecyclerViewAdapter();
         if (Utils.checkNotNull(preferences.getString(IUser.TEAM_UID_KEY, null))) {
-            teamRoutesBtn.setEnabled(false);
-        } else {
             teamRoutesBtn.setEnabled(true);
+        } else {
+            teamRoutesBtn.setEnabled(false);
         }
     }
 

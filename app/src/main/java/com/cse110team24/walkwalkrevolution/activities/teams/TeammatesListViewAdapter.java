@@ -77,7 +77,7 @@ public class TeammatesListViewAdapter extends BaseAdapter {
         int savedColor = mPreferences.getInt(name, -1);
         Log.d(TAG, "setInitialsColor: getting " + name + "'s color " + savedColor);
         if (savedColor == -1) {
-            savedColor = Utils.generateRandomARGBColor(idx);
+            savedColor = Utils.generateRandomARGBColor(idx + 50);
             Log.d(TAG, "setInitialsColor: generated new color " + savedColor);
             mPreferences.edit().putInt(name, savedColor).apply();
         }
