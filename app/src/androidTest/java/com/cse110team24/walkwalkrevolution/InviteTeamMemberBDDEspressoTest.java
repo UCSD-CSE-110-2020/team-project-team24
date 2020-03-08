@@ -89,7 +89,7 @@ public class InviteTeamMemberBDDEspressoTest {
         bottomNavigationItemView.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.btn_team_activity_invite_team_members), withText("Invite Teammate"), isDisplayed()));
+                allOf(withId(R.id.btn_team_activity_invite_team_members), withText("Invite New Teammate"), isDisplayed()));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText6 = onView(
