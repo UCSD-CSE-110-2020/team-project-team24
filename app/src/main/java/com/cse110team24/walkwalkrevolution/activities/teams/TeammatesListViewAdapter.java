@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 import java.util.List;
 import java.util.Random;
@@ -51,27 +52,14 @@ public class TeammatesListViewAdapter extends BaseAdapter {
             TextView nameView = newView.findViewById(R.id.nameView);
             TextView initialView = newView.findViewById(R.id.initialView);
             nameView.setText(users.get(i).getDisplayName());
-            initialView.setText(getInitialFromName(users.get(i).getDisplayName()));
-            setTextColor(initialView, i);
+            String name = users.get(i).getDisplayName();
+            initialView.setText(Utils.getInitials(name, -1));
+
+            initialView.setTextColor(Utils.generateRandomARGBColor(i));
         } else {
             newView = view;
         }
         return newView;
     }
-
-    private String getInitialFromName(String name) {
-        String[] nameArraySeperatedBySpace = name.split(" ");
-        String initialsToReturn = "";
-        for(int i = 0; i < nameArraySeperatedBySpace.length; i++) {
-            initialsToReturn += toUpperCase(nameArraySeperatedBySpace[i]).charAt(0);
-        }
-        return initialsToReturn;
-    }
-
-    private void setTextColor(TextView view, int seed) {
-        Random rnd = new Random(seed);
-        int color = Color.argb(255, rnd.nextInt(192), rnd.nextInt(192), rnd.nextInt(192));
-        view.setTextColor(color);
-    }
-
+    
 }
