@@ -32,6 +32,12 @@ public class TestInjection {
     protected TeamsDatabaseService teamsDatabaseService;
     protected InvitationsDatabaseService invitationsDatabaseService;
 
+    IUser aTestUser = FirebaseUserAdapter.builder()
+            .addDisplayName("Ival")
+            .addEmail("tester@gmail.com")
+            .addUid("4")
+            .build();
+
     IUser testUser = FirebaseUserAdapter.builder()
             .addDisplayName("tester")
             .addEmail("test@gmail.com")
