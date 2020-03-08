@@ -82,11 +82,10 @@
 
     <!-- In activity_team.xml-->
     <string name="title_team_page">Your Walking Team</string>
-    <string name="pending_invites">Pending&#10;Invites</string>
-    <string name="invite_team_member">Invite&#10;Teammate</string>
+    <string name="pending_invites">Pending&#10;Invitations</string>
+    <string name="invite_team_member">Invite&#10;New Teammate</string>
     <string name="title_teammates_in_team">Teammates: </string>
-    <string name="btn_title_proposed_walks">Proposed Walks</string>
-    <string name="btn_title_scheduled_walks">Scheduled Walks</string>
+    <string name="btn_title_scheduled_walks">Scheduled and Proposed Walks</string>
     <string name="text_no_teammates_in_team">No Teammates Yet :-(</string>
 
     <!-- In activity_invitations -->

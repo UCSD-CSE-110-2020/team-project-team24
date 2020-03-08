@@ -13,7 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pending_invites"
-        android:background="@drawable/my_button_bg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -23,34 +22,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/invite_team_member"
-        android:background="@drawable/my_button_bg"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
 
     <Button
-        android:id="@+id/btn_proposed_walks"
+        android:id="@+id/btn_see_teammate_routes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_title_proposed_walks"
-        android:background="@drawable/my_button_bg"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="@string/btn_see_teammates_routes"
+        android:layout_marginTop="@dimen/recycle_view_margin"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_scheduled_walks"
-        />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/btn_scheduled_walks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_title_scheduled_walks"
-        android:background="@drawable/my_button_bg"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_proposed_walks"
-        app:layout_constraintBottom_toTopOf="@id/list_members_in_team"
-        />
+        app:layout_constraintTop_toBottomOf="@id/btn_see_teammate_routes"
+        app:layout_constraintBottom_toTopOf="@id/list_members_in_team" />
 
     <TextView
         android:id="@+id/title_teammates"

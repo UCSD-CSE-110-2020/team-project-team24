@@ -58,7 +58,6 @@ public class RoutesActivity extends AppCompatActivity {
     private RecyclerView rvRoutes;
     private FloatingActionButton fab;
     private BottomNavigationView bottomNavigationView;
-    private Button teamRoutesBtn;
 
     private TeamsDatabaseService mTeamsDbService;
 
@@ -97,11 +96,6 @@ public class RoutesActivity extends AppCompatActivity {
         super.onResume();
         checkForExistingSavedRoutes();
         configureRecyclerViewAdapter();
-        if (Utils.checkNotNull(preferences.getString(IUser.TEAM_UID_KEY, null))) {
-            teamRoutesBtn.setEnabled(true);
-        } else {
-            teamRoutesBtn.setEnabled(false);
-        }
     }
 
     @Override
@@ -158,14 +152,6 @@ public class RoutesActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         rvRoutes = findViewById(R.id.recycler_view);
-        teamRoutesBtn = findViewById(R.id.btn_see_teammate_routes);
-        checkTeamUidBeforeLaunching(teamRoutesBtn);
-    }
-
-    private void checkTeamUidBeforeLaunching(Button teamRoutesBtn) {
-        teamRoutesBtn.setOnClickListener(v -> {
-                startActivity(new Intent(this, TeamRoutesActivity.class));
-        });
     }
 
     private void setListeners() {
