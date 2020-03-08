@@ -55,7 +55,7 @@
         android:layout_width="47dp"
         android:layout_height="35dp"
         android:layout_below="@+id/tv_routes_date_completed"
-        android:visibility="gone"
-        android:layout_alignParentEnd="true" />
+        android:visibility="visible"
+        android:layout_toStartOf="@+id/btn_routes_favorite"/>
 
 </RelativeLayout>

@@ -207,7 +207,7 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void configureRecyclerViewAdapter() {
         Collections.sort(routes);
-        adapter = new RouteRecyclerViewAdapter(routes, this);
+        adapter = new RouteRecyclerViewAdapter(this, routes, preferences);
         rvRoutes.setAdapter(adapter);
         rvRoutes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }

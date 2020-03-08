@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteRecyclerViewAdapter;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
@@ -44,7 +45,7 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
     private DocumentSnapshot mLastRouteDocSnapshot;
 
     private List<Route> mTeamRoutes = new ArrayList<>();
-    private TeamRoutesRecyclerViewAdapter adapter;
+    private RouteRecyclerViewAdapter adapter;
     private RecyclerView mTeamRv;
 
     private IUser mCurrentUser;
@@ -84,7 +85,7 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
     private void getUIElements() {
         mTeamRv = findViewById(R.id.recycler_view_team_routes);
         setScrollListener(mTeamRv);
-        adapter = new TeamRoutesRecyclerViewAdapter(this, mTeamRoutes, mPreferences);
+        adapter = new RouteRecyclerViewAdapter(this, mTeamRoutes, mPreferences);
         mTeamRv.setAdapter(adapter);
         mTeamRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
