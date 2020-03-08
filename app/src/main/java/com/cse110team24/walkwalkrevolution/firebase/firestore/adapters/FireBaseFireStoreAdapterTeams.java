@@ -111,26 +111,39 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
             if (task.isSuccessful() && task.getResult() != null) {
                 QuerySnapshot resultDocs = task.getResult();
                 Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved");
-                if (resultDocs.size() == 0 || resultDocs.size() < routeLimitCount) {
-                    getUserTeamRoutesGreaterThan(teamUid, currentUserDisplayName, routeLimitCount - resultDocs.size(), lastRoute);
+                List<Route> routes = getRoutes(resultDocs);
+
+                // try to grab more routes if not enough grabbed
+                if (resultDocs.size() < routeLimitCount) {
+                    getUserTeamRoutesGreaterThan(routes, teamUid, currentUserDisplayName, routeLimitCount - resultDocs.size(), lastRoute);
+                    return;
                 }
-                getRoutes(resultDocs);
+
+                getLastVisibleDoc(resultDocs, routes);
+
             } else {
                 Log.e(TAG, "getUserTeamRoutes: could not retrieve team routes", task.getException());
             }
         });
     }
 
-    private void getRoutes(QuerySnapshot resultDocs) {
+    private void getLastVisibleDoc(QuerySnapshot resultDocs, List<Route> routes) {
         DocumentSnapshot lastVisible = null;
         if (resultDocs.size() > 0) {
             lastVisible = resultDocs.getDocuments().get(resultDocs.size() - 1);
         }
-        List<Route> routes = new ArrayList<>(resultDocs.size());
-        resultDocs.getDocuments().forEach(documentSnapshot -> routes.add(buildRoute(documentSnapshot)));
+
         notifyObserversTeamRoutesRetrieved(routes, lastVisible);
     }
 
+    private List<Route> getRoutes(QuerySnapshot resultDocs) {
+
+        List<Route> routes = new ArrayList<>(resultDocs.size());
+        resultDocs.getDocuments().forEach(documentSnapshot -> routes.add(buildRoute(documentSnapshot)));
+        return routes;
+    }
+
+    // build the query as ordered by teammate name, limited by routeLimitCount. Skips current user via < and > clauses
     private Query getQuery(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute, int order) {
         Query routesQuery = teamsCollection
                 .document(teamUid)
@@ -141,22 +154,23 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         } else {
             routesQuery = routesQuery.whereGreaterThan("createdBy", currentUserDisplayName);
         }
+        routesQuery = routesQuery.orderBy("createdBy").limit(routeLimitCount);
         if (lastRoute != null) {
             routesQuery = routesQuery.startAfter(lastRoute);
         }
-        routesQuery = routesQuery.orderBy("createdBy").limit(routeLimitCount);
         return routesQuery;
     }
 
     // get the team routes for user's with names greater than currentUserDisplayName
-    private void getUserTeamRoutesGreaterThan(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute) {
+    private void getUserTeamRoutesGreaterThan(List<Route> routes, String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute) {
         Query routesQuery = getQuery(teamUid, currentUserDisplayName, routeLimitCount, lastRoute, 1);
 
         routesQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 QuerySnapshot resultDocs = task.getResult();
                 Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved");
-                getRoutes(resultDocs);
+                routes.addAll(getRoutes(resultDocs));
+                getLastVisibleDoc(resultDocs, routes);
             } else {
                 Log.e(TAG, "getUserTeamRoutes: could not retrieve team routes", task.getException());
             }
