@@ -39,7 +39,7 @@ public class Utils {
         return null;
     }
 
-    public static <T> boolean checkNotNull(T ref) {
+    public static boolean checkNotNull(Object ref) {
         return ref != null;
     }
 }
