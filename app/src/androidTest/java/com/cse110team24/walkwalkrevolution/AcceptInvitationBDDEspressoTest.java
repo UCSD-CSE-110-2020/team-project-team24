@@ -30,6 +30,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -41,6 +42,8 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  Given that I login successfully,
@@ -57,6 +60,8 @@ public class AcceptInvitationBDDEspressoTest {
 
     private List<IUser> listOfUsers;
     private List<Invitation> invitationList;
+    private IUser amara_momoh;
+    private IUser satta_momoh;
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
@@ -70,11 +75,11 @@ public class AcceptInvitationBDDEspressoTest {
         TestMessage.invitationSentSuccess = true;
 
         //ME
-        IUser satta_momoh = FirebaseUserAdapter.builder()
+        satta_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
                 .addEmail("amara@gmail.com")
                 .addUid("1")
-                .addTeamUid(null)
+               // .addTeamUid(null)
                 .build();
 
         TestAuth.testAuthUser = satta_momoh;
@@ -85,7 +90,7 @@ public class AcceptInvitationBDDEspressoTest {
         testTeamUid = testTeam.getUid();
 
 //PERSON INVITING ME
-        IUser amara_momoh = FirebaseUserAdapter.builder()
+        amara_momoh = FirebaseUserAdapter.builder()
                 .addDisplayName("Amara Momoh")
                 .addEmail("ival@gmail.com")
                 .addUid("2")
@@ -112,6 +117,8 @@ public class AcceptInvitationBDDEspressoTest {
     @Test
     public void loginActivitySignInEspressoTest() {
         setup();
+
+        assertThat(testTeamUid, nullValue());
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.enter_gmail_address), isDisplayed()));
@@ -151,7 +158,8 @@ public class AcceptInvitationBDDEspressoTest {
 
         onView(withId(R.id.text_no_teammates)).check(matches(not(isDisplayed())));
 
-
+        testTeamUid = amara_momoh.teamUid();
+        assertThat(testTeamUid, notNullValue());
 
     }
 }
