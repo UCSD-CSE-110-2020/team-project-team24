@@ -159,11 +159,11 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     private RouteEnvironment buildRouteEnvironment(Map<String, Object> data) {
         return RouteEnvironment.builder()
-                .addDifficulty((RouteEnvironment.Difficulty) data.get("difficulty"))
-                .addRouteType((RouteEnvironment.RouteType) data.get("routeType"))
-                .addSurfaceType((RouteEnvironment.SurfaceType) data.get("surfaceType"))
-                .addTerrainType((RouteEnvironment.TerrainType) data.get("terrainType"))
-                .addTrailType((RouteEnvironment.TrailType) data.get("trailType"))
+                .addDifficulty(RouteEnvironment.Difficulty.valueOf((String) data.get("difficulty")))
+                .addRouteType(RouteEnvironment.RouteType.valueOf((String) data.get("routeType")))
+                .addSurfaceType(RouteEnvironment.SurfaceType.valueOf((String) data.get("surfaceType")))
+                .addTerrainType(RouteEnvironment.TerrainType.valueOf((String)data.get("terrainType")))
+                .addTrailType(RouteEnvironment.TrailType.valueOf((String) data.get("trailType")))
                 .build();
     }
 
