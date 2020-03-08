@@ -111,8 +111,8 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
             if (task.isSuccessful() && task.getResult() != null) {
                 QuerySnapshot resultDocs = task.getResult();
                 Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved");
-                if (resultDocs.size() == 0) {
-                    getUserTeamRoutesGreaterThan(teamUid, currentUserDisplayName, routeLimitCount, lastRoute);
+                if (resultDocs.size() == 0 || resultDocs.size() < routeLimitCount) {
+                    getUserTeamRoutesGreaterThan(teamUid, currentUserDisplayName, routeLimitCount - resultDocs.size(), lastRoute);
                 }
                 getRoutes(resultDocs);
             } else {
