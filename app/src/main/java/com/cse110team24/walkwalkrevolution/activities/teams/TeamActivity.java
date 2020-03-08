@@ -39,8 +39,10 @@ import java.util.Map;
 
 public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver, UsersDatabaseServiceObserver {
     private static final String TAG = "WWR_TeamActivity";
+
     private Button sendInviteBtn;
     private Button seeInvitationsBtn;
+    private Button seeTeammateRoutesBtn;
     private BottomNavigationView bottomNavigationView;
 
     private TeamsDatabaseService mDb;
@@ -70,8 +72,8 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     @Override
     protected void onResume() {
         super.onResume();
-        getTeamUid();
         getUIFields();
+        getTeamUid();
         setButtonClickListeners();
         seeInvitationsBtn.setOnClickListener(view -> {
             launchInvitationsActivity(view);
@@ -93,6 +95,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
             uDb.getUserData(currUser);
         } else {
             Log.d(TAG, "getTeamUid: team uid found, retrieving team");
+            seeTeammateRoutesBtn.setEnabled(true);
             mDb.getUserTeam(mTeamUid, preferences.getString(IUser.USER_NAME_KEY, ""));
         }
     }
@@ -106,9 +109,10 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     }
 
     private void getUIFields() {
-        sendInviteBtn = findViewById(R.id.btn_invite_team_members);
+        sendInviteBtn = findViewById(R.id.btn_team_activity_invite_team_members);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        seeInvitationsBtn = findViewById(R.id.btn_pending_invites);
+        seeInvitationsBtn = findViewById(R.id.btn_team_activity_pending_invites);
+        seeTeammateRoutesBtn = findViewById(R.id.btn_team_activity_see_teammate_routes);
         noTeamMessage = findViewById(R.id.text_no_teammates);
         teammatesList = findViewById(R.id.list_members_in_team);
         teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam(), preferences);
@@ -119,6 +123,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     private void setButtonClickListeners() {
         setInviteButtonOnClick();
         setBottomNavItemSelectedListener();
+        setSeeTeamRoutesOnClick();
     }
 
     private void setInviteButtonOnClick() {
@@ -143,6 +148,13 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
             return true;
         });
     }
+
+    private void setSeeTeamRoutesOnClick() {
+        seeTeammateRoutesBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, TeamRoutesActivity.class));
+        });
+    }
+
     private void launchInviteRouteActivity() {
         Intent intent = new Intent(this, InviteTeamMemberActivity.class);
         startActivity(intent);

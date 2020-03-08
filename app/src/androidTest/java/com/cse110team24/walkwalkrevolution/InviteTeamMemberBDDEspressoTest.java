@@ -3,11 +3,9 @@ package com.cse110team24.walkwalkrevolution;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
-import com.cse110team24.walkwalkrevolution.mockedservices.MockedApplicationAndroidTestRunner;
 
 import com.cse110team24.walkwalkrevolution.mockedservices.MockActivityTestRule;
 import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
@@ -21,11 +19,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -93,7 +89,7 @@ public class InviteTeamMemberBDDEspressoTest {
         bottomNavigationItemView.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.btn_invite_team_members), withText("Invite Teammate"), isDisplayed()));
+                allOf(withId(R.id.btn_team_activity_invite_team_members), withText("Invite Teammate"), isDisplayed()));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText6 = onView(
