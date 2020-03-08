@@ -18,6 +18,8 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.any;
+
 public class TestInjection {
     protected FirebaseAuthFactory asf;
     protected FirestoreDatabaseServiceFactory dsf;
@@ -25,8 +27,6 @@ public class TestInjection {
     protected Auth mAuth;
     protected DatabaseService mDb;
     protected Messaging mMsg;
-    protected Activity activity;
-
 
     protected UsersDatabaseService usersDatabaseService;
     protected TeamsDatabaseService teamsDatabaseService;
@@ -60,7 +60,7 @@ public class TestInjection {
 
         Mockito.when(asf.createAuthService()).thenReturn(mAuth);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.LEGACY)).thenReturn(mDb);
-        Mockito.when(msf.createMessagingService(activity, mDb)).thenReturn(mMsg);
+        Mockito.when(msf.createMessagingService(any(), any())).thenReturn(mMsg);
 
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
         FirebaseApplicationWWR.setAuthServiceFactory(asf);
