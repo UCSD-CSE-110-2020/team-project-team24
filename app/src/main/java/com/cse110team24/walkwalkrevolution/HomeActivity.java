@@ -327,6 +327,7 @@ public class HomeActivity extends AppCompatActivity {
     private void handleNewRouteRecorded(Intent data) {
         toggleBtn(saveRouteBtn);
         Route route = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
+        Log.d(TAG, "handleNewRouteRecorded: new route recorded " + route);
         uploadRouteToTeamIfExists(route);
         saveIntoList(route);
         showRouteSavedToast();
@@ -395,8 +396,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private void saveIntoList(Route route) {
         int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, -1);
+        Log.d(TAG, "saveIntoList: saving new route with idx " + idx + " " + route);
         try {
-            RoutesManager.replaceInList(route, idx, RoutesActivity.LIST_SAVE_FILE, this);
+            if (idx == -1) {
+                RoutesManager.appendToList(route, RoutesActivity.LIST_SAVE_FILE, this);
+            } else {
+                RoutesManager.replaceInList(route, idx, RoutesActivity.LIST_SAVE_FILE, this);
+            }
         } catch (IOException e) {
             Log.e(TAG, "saveIntoList: failed to replace route in list", e);
         }
