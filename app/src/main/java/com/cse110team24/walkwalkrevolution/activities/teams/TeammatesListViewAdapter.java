@@ -1,7 +1,9 @@
 package com.cse110team24.walkwalkrevolution.activities.teams;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +20,16 @@ import java.util.Random;
 import static com.google.common.base.Ascii.toUpperCase;
 
 public class TeammatesListViewAdapter extends BaseAdapter {
+    private static final String TAG = "WWR_TeammatesListViewAdapter";
     Context context;
     List<IUser> users;
     LayoutInflater inflater;
+    private SharedPreferences mPreferences;
 
-    public TeammatesListViewAdapter(Context context, List<IUser> users) {
+    public TeammatesListViewAdapter(Context context, List<IUser> users, SharedPreferences preferences) {
         this.context = context;
         this.users = users;
+        mPreferences = preferences;
         inflater = (LayoutInflater.from(context));
     }
 
@@ -55,11 +60,22 @@ public class TeammatesListViewAdapter extends BaseAdapter {
             String name = users.get(i).getDisplayName();
             initialView.setText(Utils.getInitials(name, -1));
 
-            initialView.setTextColor(Utils.generateRandomARGBColor(i));
+            setInitialsColor(initialView, name, i);
         } else {
             newView = view;
         }
         return newView;
     }
-    
+
+    private void setInitialsColor(TextView initialsView, String name, int idx) {
+        int savedColor = mPreferences.getInt(name, -1);
+        Log.d(TAG, "setInitialsColor: getting " + name + "'s color " + savedColor);
+        if (savedColor == -1) {
+            savedColor = Utils.generateRandomARGBColor(idx);
+            Log.d(TAG, "setInitialsColor: generated new color " + savedColor);
+            mPreferences.edit().putInt(name, savedColor).apply();
+        }
+        initialsView.setTextColor(savedColor);
+    }
+
 }

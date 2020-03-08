@@ -111,7 +111,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         seeInvitationsBtn = findViewById(R.id.btn_pending_invites);
         noTeamMessage = findViewById(R.id.text_no_teammates);
         teammatesList = findViewById(R.id.list_members_in_team);
-        teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam());
+        teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam(), preferences);
         noTeamMessage.setVisibility(View.GONE);
         teammatesList.setAdapter(teammatesListViewAdapter);
     }
@@ -148,6 +148,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         startActivity(intent);
     }
 
+    // TODO: 3/8/20 stop initializing new adapter, notify data set changed instead
     @Override
     public void onTeamRetrieved(ITeam team) {
         mTeam = team;
@@ -159,7 +160,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
             noTeamMessage.setVisibility(View.GONE);
         }
         ListView teammatesList = findViewById(R.id.list_members_in_team);
-        TeammatesListViewAdapter teammatesListViewAdapter = new TeammatesListViewAdapter(this, users);
+        TeammatesListViewAdapter teammatesListViewAdapter = new TeammatesListViewAdapter(this, users, preferences);
         teammatesList.setAdapter(teammatesListViewAdapter);
 
     }
