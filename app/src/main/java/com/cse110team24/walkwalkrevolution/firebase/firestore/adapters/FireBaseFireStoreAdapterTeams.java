@@ -6,6 +6,9 @@ import android.util.Log;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.route.RouteBuilder;
+import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
+import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
@@ -14,9 +17,14 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * {@inheritDoc}
@@ -79,7 +87,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     public void getUserTeam(String teamUid, String currentUserDisplayName) {
         DocumentReference documentReference = teamsCollection.document(teamUid);
         CollectionReference teammatesCollection = documentReference.collection(TEAMMATES_SUB_COLLECTION);
-        teammatesCollection.get().addOnCompleteListener(task -> {
+        teammatesCollection.orderBy("displayName").get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 Log.i(TAG, "getUserTeam: team successfully retrieved");
                 List<DocumentSnapshot> documents = task.getResult().getDocuments();
@@ -92,9 +100,57 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     }
 
     @Override
-    public void getUserTeamRoutes(String teamUid, String currentUserDisplay, int routeLimitCount, DocumentSnapshot lastRoute) {
-        // todo get routeLimitCount amount of routes
+    public void getUserTeamRoutes(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute) {
 
+        // return routes ordered by name, skipping routes that current user owns
+        Query routesQuery = teamsCollection
+                .document(teamUid)
+                .collection(TEAM_ROUTES_SUB_COLLECTION_KEY)
+                .whereGreaterThan("createdBy", currentUserDisplayName)
+                .whereLessThan("createdBy", currentUserDisplayName)
+                .orderBy("createdBy")
+                .limit(routeLimitCount);
+
+        if (lastRoute != null) {
+            routesQuery = routesQuery.startAfter(lastRoute);
+        }
+
+        routesQuery.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                QuerySnapshot resultDocs = task.getResult();
+                Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved");
+                DocumentSnapshot lastVisible = resultDocs.getDocuments().get(resultDocs.size() - 1);
+                List<Route> routes = new ArrayList<>(resultDocs.size());
+                resultDocs.getDocuments().forEach(documentSnapshot -> routes.add(buildRoute(documentSnapshot)));
+                notifyObserversTeamRoutesRetrieved(routes, lastVisible);
+            } else {
+                Log.e(TAG, "getUserTeamRoutes: could not retrieve team routes", task.getException());
+            }
+        });
+    }
+
+    private Route buildRoute(DocumentSnapshot routeDoc) {
+        WalkStats stats = null;
+        Object data = routeDoc.get("stats");
+        if (data != null) {
+            stats = buildWalkStats((Map<String, Object>) data);
+        }
+        return new Route.Builder(routeDoc.getString("title"))
+                .addCreatorDisplayName(routeDoc.getString("createdBy"))
+                .addWalkStats(stats)
+                .addRouteEnvironment((RouteEnvironment) routeDoc.get("environment"))
+                .addNotes(routeDoc.getString("notes"))
+                .addStartingLocation(routeDoc.getString("startingLocation"))
+                .build();
+    }
+
+    private WalkStats buildWalkStats(Map<String, Object> data) {
+        long steps = (long) data.get("steps");
+        double distance = (double) data.get("distance");
+        long timeElapsed = (long) data.get("elapsedTimeMillis");
+        Date time = (Date) data.get("date");
+        Calendar.getInstance().setTime(time);
+        return new WalkStats(steps, timeElapsed, distance, Calendar.getInstance());
     }
 
     @Override

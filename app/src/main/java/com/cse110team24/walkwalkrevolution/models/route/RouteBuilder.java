@@ -16,5 +16,5 @@ public interface RouteBuilder extends Builder<Route> {
 
     RouteBuilder addRouteUid(String routeUid);
 
-    RouteBuilder addCreatorName(String name);
+    RouteBuilder addCreatorDisplayName(String name);
 }

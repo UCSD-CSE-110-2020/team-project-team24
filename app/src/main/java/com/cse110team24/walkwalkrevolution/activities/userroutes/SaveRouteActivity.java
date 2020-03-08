@@ -92,7 +92,7 @@ public class SaveRouteActivity extends AppCompatActivity {
                     .addNotes(editTextNotes.getText().toString())
                     .addRouteEnvironment(env)
                     .addWalkStats(stats)
-                    .addCreatorName(creatorName)
+                    .addCreatorDisplayName(creatorName)
                     .build();
         }
     }
