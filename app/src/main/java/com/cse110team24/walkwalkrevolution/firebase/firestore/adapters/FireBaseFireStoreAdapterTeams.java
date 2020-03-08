@@ -13,6 +13,7 @@ import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -101,15 +102,16 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     @Override
     public void getUserTeamRoutes(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute) {
-
+        Log.d(TAG, "getUserTeamRoutes: teamUid " + teamUid + " currentDisplayName " + currentUserDisplayName);
         // return routes ordered by name, skipping routes that current user owns
         Query routesQuery = teamsCollection
                 .document(teamUid)
                 .collection(TEAM_ROUTES_SUB_COLLECTION_KEY)
-                .whereGreaterThan("createdBy", currentUserDisplayName)
-                .whereLessThan("createdBy", currentUserDisplayName)
-                .orderBy("createdBy")
+//                .whereGreaterThan("createdBy", currentUserDisplayName)
+//                .whereLessThan("createdBy", currentUserDisplayName)
+//                .orderBy("createdBy")
                 .limit(routeLimitCount);
+        Log.d(TAG, "getUserTeamRoutes: query " + routesQuery);
 
         if (lastRoute != null) {
             routesQuery = routesQuery.startAfter(lastRoute);
@@ -140,7 +142,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         return new Route.Builder(routeDoc.getString("title"))
                 .addCreatorDisplayName(routeDoc.getString("createdBy"))
                 .addWalkStats(stats)
-                .addRouteEnvironment((RouteEnvironment) routeDoc.get("environment"))
+                .addRouteEnvironment(buildRouteEnvironment((Map<String, Object>) routeDoc.get("environment")))
                 .addNotes(routeDoc.getString("notes"))
                 .addStartingLocation(routeDoc.getString("startingLocation"))
                 .build();
@@ -150,9 +152,19 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         long steps = (long) data.get("steps");
         double distance = (double) data.get("distance");
         long timeElapsed = (long) data.get("elapsedTimeMillis");
-        Date time = (Date) data.get("date");
-        Calendar.getInstance().setTime(time);
+        Timestamp time = (Timestamp) data.get("date");
+        Calendar.getInstance().setTimeInMillis((long) (time.getNanoseconds() * 10e6));
         return new WalkStats(steps, timeElapsed, distance, Calendar.getInstance());
+    }
+
+    private RouteEnvironment buildRouteEnvironment(Map<String, Object> data) {
+        return RouteEnvironment.builder()
+                .addDifficulty((RouteEnvironment.Difficulty) data.get("difficulty"))
+                .addRouteType((RouteEnvironment.RouteType) data.get("routeType"))
+                .addSurfaceType((RouteEnvironment.SurfaceType) data.get("surfaceType"))
+                .addTerrainType((RouteEnvironment.TerrainType) data.get("terrainType"))
+                .addTrailType((RouteEnvironment.TrailType) data.get("trailType"))
+                .build();
     }
 
     @Override
