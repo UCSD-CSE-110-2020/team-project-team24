@@ -5,12 +5,36 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.google.firebase.firestore.DocumentSnapshot;
 
-public class TeamRoutesActivity extends AppCompatActivity {
+import java.util.List;
+
+public class TeamRoutesActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
+
+    private TeamsDatabaseService mTeamsDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_routes);
+
+        mTeamsDb = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mTeamsDb.register(this);
+    }
+
+    @Override
+    public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
+
+    }
+
+    @Override
+    public void onTeamRetrieved(ITeam team) {
+        // nada
     }
 }
