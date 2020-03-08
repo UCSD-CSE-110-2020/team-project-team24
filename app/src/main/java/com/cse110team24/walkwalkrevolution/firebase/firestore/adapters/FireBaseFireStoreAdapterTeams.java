@@ -153,8 +153,9 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         double distance = (double) data.get("distance");
         long timeElapsed = (long) data.get("elapsedTimeMillis");
         Timestamp time = (Timestamp) data.get("date");
-        Calendar.getInstance().setTimeInMillis((long) (time.getNanoseconds() * 10e6));
-        return new WalkStats(steps, timeElapsed, distance, Calendar.getInstance());
+        Calendar calendarInstance = Calendar.getInstance();
+        calendarInstance.setTime(time.toDate());
+        return new WalkStats(steps, timeElapsed, distance, calendarInstance);
     }
 
     private RouteEnvironment buildRouteEnvironment(Map<String, Object> data) {
