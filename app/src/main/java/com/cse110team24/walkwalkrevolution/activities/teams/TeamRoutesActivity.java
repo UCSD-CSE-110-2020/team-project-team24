@@ -81,7 +81,7 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
 
     private void getUIElements() {
         mTeamRv = findViewById(R.id.recycler_view_team);
-        adapter = new TeamRoutesRecyclerViewAdapter(this, mTeamRoutes, mCurrentUser.getDisplayName());
+        adapter = new TeamRoutesRecyclerViewAdapter(this, mTeamRoutes, mPreferences);
         mTeamRv.setAdapter(adapter);
         mTeamRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }

@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution.activities.teams;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,18 +18,23 @@ import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRoutesRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "WWR_TeamRoutesAdapter";
     private List<Route> mRoutes;
-    private Context context;
+    private Context mContext;
+    private SharedPreferences mPreferences;
 
-    public TeamRoutesRecyclerViewAdapter(Context context, List<Route> myRoutes, String currentUserDisplayName) {
-        this.context = context;
+    public TeamRoutesRecyclerViewAdapter(Context context, List<Route> myRoutes, SharedPreferences preferences) {
+        mContext = context;
         mRoutes = myRoutes;
+        mPreferences = preferences;
     }
 
     @Override
@@ -60,6 +66,8 @@ public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRout
         private TextView initialsTv;
         RelativeLayout container;
 
+        private Map<String, Integer> initialsColors = new HashMap<>();
+
         public ViewHolder(View itemView) {
             super(itemView);
             container = itemView.findViewById(R.id.routes_container);
@@ -85,7 +93,7 @@ public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRout
 
         public void bind(Route route) {
             launchRouteDetailsActivityOnClick(route);
-
+            setInitialsColor(route);
             routeNameTv.setText(route.getTitle());
             WalkStats stats = route.getStats();
             if(stats == null) {
@@ -101,13 +109,23 @@ public class TeamRoutesRecyclerViewAdapter extends RecyclerView.Adapter<TeamRout
 
         private void launchRouteDetailsActivityOnClick(Route route) {
             container.setOnClickListener(view -> {
-                Intent intent = new Intent(context, RouteDetailsActivity.class)
+                Intent intent = new Intent(mContext, RouteDetailsActivity.class)
                         .putExtra(RouteDetailsActivity.ROUTE_KEY, route)
                         .putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, getAdapterPosition());
-                if (context instanceof Activity) {
-                    ((Activity) context).startActivityForResult(intent, RouteDetailsActivity.REQUEST_CODE);
+                if (mContext instanceof Activity) {
+                    ((Activity) mContext).startActivityForResult(intent, RouteDetailsActivity.REQUEST_CODE);
                 }
             });
+        }
+
+        private void setInitialsColor(Route route) {
+            int color = mPreferences.getInt(route.getCreatorName(), -1);
+            if (color == -1) {
+                color = initialsColors.getOrDefault(route.getCreatorName(), Utils.generateRandomARGBColor(1));
+                initialsColors.put(route.getCreatorName(), color);
+            }
+            initialsTv.setText(Utils.getInitials(route.getCreatorName(), 2));
+            initialsTv.setTextColor(color);
         }
     }
 

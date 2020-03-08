@@ -67,6 +67,12 @@ public class TeammatesListViewAdapter extends BaseAdapter {
         return newView;
     }
 
+    /**
+     * makes the color for a teammate permanent by saving it to SharedPreferences
+     * @param initialsView TextView that holds the teammate's initials
+     * @param name the teammate's name
+     * @param idx the idx of the teammate in this adapter's data set
+     */
     private void setInitialsColor(TextView initialsView, String name, int idx) {
         int savedColor = mPreferences.getInt(name, -1);
         Log.d(TAG, "setInitialsColor: getting " + name + "'s color " + savedColor);
