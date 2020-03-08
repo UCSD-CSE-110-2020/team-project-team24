@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.activities.teams.TeamRoutesActivity;
 import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.widget.Button;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -151,6 +153,10 @@ public class RoutesActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         rvRoutes = findViewById(R.id.recycler_view);
+        Button teamRoutesBtn = findViewById(R.id.btn_see_teammate_routes);
+        teamRoutesBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, TeamRoutesActivity.class));
+        });
     }
 
     private void setListeners() {

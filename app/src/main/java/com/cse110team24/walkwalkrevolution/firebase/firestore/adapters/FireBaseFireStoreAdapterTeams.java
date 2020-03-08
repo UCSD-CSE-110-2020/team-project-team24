@@ -119,7 +119,9 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
             if (task.isSuccessful() && task.getResult() != null) {
                 QuerySnapshot resultDocs = task.getResult();
                 Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved");
-                DocumentSnapshot lastVisible = resultDocs.getDocuments().get(resultDocs.size() - 1);
+                DocumentSnapshot lastVisible = null;
+                if (resultDocs.size() > 0)
+                    lastVisible = resultDocs.getDocuments().get(resultDocs.size() - 1);
                 List<Route> routes = new ArrayList<>(resultDocs.size());
                 resultDocs.getDocuments().forEach(documentSnapshot -> routes.add(buildRoute(documentSnapshot)));
                 notifyObserversTeamRoutesRetrieved(routes, lastVisible);
