@@ -13,6 +13,7 @@ import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -104,29 +105,58 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     public void getUserTeamRoutes(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute) {
         Log.d(TAG, "getUserTeamRoutes: teamUid " + teamUid + " currentDisplayName " + currentUserDisplayName);
         // return routes ordered by name, skipping routes that current user owns
-        Query routesQuery = teamsCollection
-                .document(teamUid)
-                .collection(TEAM_ROUTES_SUB_COLLECTION_KEY)
-//                .whereGreaterThan("createdBy", currentUserDisplayName)
-//                .whereLessThan("createdBy", currentUserDisplayName)
-//                .orderBy("createdBy")
-                .limit(routeLimitCount);
-        Log.d(TAG, "getUserTeamRoutes: query " + routesQuery);
-
-        if (lastRoute != null) {
-            routesQuery = routesQuery.startAfter(lastRoute);
-        }
+        Query routesQuery = getQuery(teamUid, currentUserDisplayName, routeLimitCount, lastRoute, 0);
 
         routesQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 QuerySnapshot resultDocs = task.getResult();
                 Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved");
-                DocumentSnapshot lastVisible = null;
-                if (resultDocs.size() > 0)
-                    lastVisible = resultDocs.getDocuments().get(resultDocs.size() - 1);
-                List<Route> routes = new ArrayList<>(resultDocs.size());
-                resultDocs.getDocuments().forEach(documentSnapshot -> routes.add(buildRoute(documentSnapshot)));
-                notifyObserversTeamRoutesRetrieved(routes, lastVisible);
+                if (resultDocs.size() == 0) {
+                    getUserTeamRoutesGreaterThan(teamUid, currentUserDisplayName, routeLimitCount, lastRoute);
+                }
+                getRoutes(resultDocs);
+            } else {
+                Log.e(TAG, "getUserTeamRoutes: could not retrieve team routes", task.getException());
+            }
+        });
+    }
+
+    private void getRoutes(QuerySnapshot resultDocs) {
+        DocumentSnapshot lastVisible = null;
+        if (resultDocs.size() > 0) {
+            lastVisible = resultDocs.getDocuments().get(resultDocs.size() - 1);
+        }
+        List<Route> routes = new ArrayList<>(resultDocs.size());
+        resultDocs.getDocuments().forEach(documentSnapshot -> routes.add(buildRoute(documentSnapshot)));
+        notifyObserversTeamRoutesRetrieved(routes, lastVisible);
+    }
+
+    private Query getQuery(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute, int order) {
+        Query routesQuery = teamsCollection
+                .document(teamUid)
+                .collection(TEAM_ROUTES_SUB_COLLECTION_KEY);
+
+        if (order == 0) {
+            routesQuery = routesQuery.whereLessThan("createdBy", currentUserDisplayName);
+        } else {
+            routesQuery = routesQuery.whereGreaterThan("createdBy", currentUserDisplayName);
+        }
+        if (lastRoute != null) {
+            routesQuery = routesQuery.startAfter(lastRoute);
+        }
+        routesQuery = routesQuery.orderBy("createdBy").limit(routeLimitCount);
+        return routesQuery;
+    }
+
+    // get the team routes for user's with names greater than currentUserDisplayName
+    private void getUserTeamRoutesGreaterThan(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute) {
+        Query routesQuery = getQuery(teamUid, currentUserDisplayName, routeLimitCount, lastRoute, 1);
+
+        routesQuery.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                QuerySnapshot resultDocs = task.getResult();
+                Log.i(TAG, "getUserTeamRoutes: " + resultDocs.size() + " routes retrieved");
+                getRoutes(resultDocs);
             } else {
                 Log.e(TAG, "getUserTeamRoutes: could not retrieve team routes", task.getException());
             }
@@ -149,22 +179,27 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     }
 
     private WalkStats buildWalkStats(Map<String, Object> data) {
-        long steps = (long) data.get("steps");
-        double distance = (double) data.get("distance");
-        long timeElapsed = (long) data.get("elapsedTimeMillis");
-        Timestamp time = (Timestamp) data.get("date");
+        Long steps = Utils.getValueOrNull("steps", data);
+        Double distance = Utils.getValueOrNull("distance", data);
+        Long timeElapsed = Utils.getValueOrNull("timeElapsedMillis", data);
+        Timestamp time = Utils.getValueOrNull("date", data);
         Calendar calendarInstance = Calendar.getInstance();
         calendarInstance.setTime(time.toDate());
         return new WalkStats(steps, timeElapsed, distance, calendarInstance);
     }
 
     private RouteEnvironment buildRouteEnvironment(Map<String, Object> data) {
+        RouteEnvironment.Difficulty difficulty = data.get("difficulty") == null ? null : RouteEnvironment.Difficulty.valueOf((String) data.get("difficulty"));
+        RouteEnvironment.RouteType routeType = data.get("routeType") == null ? null : RouteEnvironment.RouteType.valueOf((String) data.get("routeType"));
+        RouteEnvironment.SurfaceType surfaceType = data.get("surfaceType") == null ? null : RouteEnvironment.SurfaceType.valueOf((String) data.get("surfaceType"));
+        RouteEnvironment.TerrainType terrainType = data.get("terrainType") == null ? null : RouteEnvironment.TerrainType.valueOf((String) data.get("terrainType"));
+        RouteEnvironment.TrailType trailType = data.get("trailType") == null ? null : RouteEnvironment.TrailType.valueOf((String) data.get("trailType"));
         return RouteEnvironment.builder()
-                .addDifficulty(RouteEnvironment.Difficulty.valueOf((String) data.get("difficulty")))
-                .addRouteType(RouteEnvironment.RouteType.valueOf((String) data.get("routeType")))
-                .addSurfaceType(RouteEnvironment.SurfaceType.valueOf((String) data.get("surfaceType")))
-                .addTerrainType(RouteEnvironment.TerrainType.valueOf((String)data.get("terrainType")))
-                .addTrailType(RouteEnvironment.TrailType.valueOf((String) data.get("trailType")))
+                .addDifficulty(difficulty)
+                .addRouteType(routeType)
+                .addSurfaceType(surfaceType)
+                .addTerrainType(terrainType)
+                .addTrailType(trailType)
                 .build();
     }
 

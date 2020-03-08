@@ -2,8 +2,10 @@ package com.cse110team24.walkwalkrevolution.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -27,5 +29,13 @@ public class Utils {
 
     public static void showToast(Context context, String msg, int len) {
         Toast.makeText(context, msg, len).show();
+    }
+
+    public static <T> T getValueOrNull(String key, Map<String, Object> data) {
+        Object val = data.get(key);
+        if (val != null) {
+            return (T) val;
+        }
+        return null;
     }
 }
