@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(AndroidJUnit4.class)
-public class SeeTeamRoutesUnitTest extends TestInjection {
+public class TeamRoutesActivityUnitTest extends TestInjection {
     private TeamsDatabaseServiceObserver observer;
     private ActivityScenario<TeamRoutesActivity> mActivityScenario;
 

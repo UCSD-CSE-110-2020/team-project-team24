@@ -135,7 +135,7 @@ public class RejectInvitationBDDEspressoTest {
         bottomNavigationItemView.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.btn_team_activity_pending_invites), withText("Pending Invites"), isDisplayed()));
+                allOf(withId(R.id.btn_team_activity_pending_invites), withText("Pending Invitations"), isDisplayed()));
         appCompatButton2.perform(click());
 
         onData(anything()).inAdapterView((withId(R.id.invitationList))).atPosition(0).perform(click());
@@ -144,10 +144,5 @@ public class RejectInvitationBDDEspressoTest {
                 allOf(withId(R.id.buttonDecline), withText("Decline"), isDisplayed()));
         appCompatButton3.perform(click());
 
-       // ViewInteraction listview = onView(allOf(withId(R.id.list_members_in_team), withContentDescription("Amara Momoh"), isDisplayed()));
-
-        pressBack();
-
-        onView(withId(R.id.text_no_teammates)).check(matches(isDisplayed()));
     }
 }
