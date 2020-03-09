@@ -57,6 +57,7 @@ public class InvitationsActivityUnitTest extends TestInjection {
     private List<Invitation> mInvitations = new ArrayList<>();
     Invitation invitation;
     String TOAST_SELECT_INVITATION = "Please select an invitation";
+    String TOAST_ALREADY_ON_TEAM = "You already have a team! You can only decline invitations";
 
     @Before
     public void setup() {
@@ -130,12 +131,31 @@ public class InvitationsActivityUnitTest extends TestInjection {
         scenario = ActivityScenario.launch(InvitationsActivity.class);
         scenario.onActivity(activity -> {
             getUIFields(activity);
-            invitationsListView.setSelection(0);
+            invitationsListView.performItemClick(
+                    invitationsListView.getAdapter().getView(0, null, null),
+                    0,
+                    invitationsListView.getAdapter().getItemId(0));
             declineBtn.performClick();
             assertNull(aTestUser.teamUid());
         });
     }
 
-    //TODO User is already on a team...Toast must decline
+    @Test
+    public void alreadyOnATeam() {
+        setup();
+        aTestUser.updateTeamUid("333");
+        sp.edit().putString(IUser.TEAM_UID_KEY, aTestUser.teamUid())
+                .commit();
+        scenario = ActivityScenario.launch(InvitationsActivity.class);
+        scenario.onActivity(activity ->  {
+            getUIFields(activity);
+            invitationsListView.performItemClick(
+                    invitationsListView.getAdapter().getView(0, null, null),
+                    0,
+                    invitationsListView.getAdapter().getItemId(0));
+            acceptBtn.performClick();
+            assertEquals(TOAST_ALREADY_ON_TEAM, ShadowToast.getTextOfLatestToast());
+        });
+    }
 
 }
