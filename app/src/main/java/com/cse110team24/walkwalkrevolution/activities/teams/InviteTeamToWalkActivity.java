@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
@@ -38,7 +39,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
 
     private EditText mDateEditText;
     private EditText mTimeEditText;
-    private Button mAmPmToggleBtn;
+    private ImageButton mAmPmToggleBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +62,15 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         setClickListenerAmPmToggleButton();
     }
     private boolean amSelected() {
-        return mAmPmToggleBtn.getBackground().getConstantState().equals(getDrawable(R.drawable.ic_sunny_yellow_5dp).getConstantState());
+        return mAmPmToggleBtn.getBackground().getConstantState().equals(getDrawable(R.drawable.ic_sunny_yellow_24dp).getConstantState());
     }
 
     private void setClickListenerAmPmToggleButton() {
         mAmPmToggleBtn.setOnClickListener(v -> {
             if (amSelected()) {
-                mAmPmToggleBtn.setBackground(getDrawable(R.drawable.ic_moon_black_5dp));
+                mAmPmToggleBtn.setBackground(getDrawable(R.drawable.ic_moon_black_24dp));
             } else {
-                mAmPmToggleBtn.setBackground(getDrawable(R.drawable.ic_sunny_yellow_5dp));
+                mAmPmToggleBtn.setBackground(getDrawable(R.drawable.ic_sunny_yellow_24dp));
             }
         });
     }

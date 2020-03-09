@@ -52,11 +52,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_proposed_time_invite_team_to_walk_activity" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_am_pm_toggle_invite_team_to_walk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_sunny_yellow_5dp"
+        android:background="@drawable/ic_sunny_yellow_24dp"
         app:layout_constraintLeft_toRightOf="@+id/et_proposed_time_invite_team_to_walk_activity"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_proposed_day_prompt_invite_team_to_walk_activity" />
