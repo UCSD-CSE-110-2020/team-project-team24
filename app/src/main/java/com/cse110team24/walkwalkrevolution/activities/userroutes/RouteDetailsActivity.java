@@ -3,7 +3,9 @@ package com.cse110team24.walkwalkrevolution.activities.userroutes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,10 +15,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.activities.teams.InviteTeamToWalkActivity;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 public class RouteDetailsActivity extends AppCompatActivity {
     private static final String TAG = "WWR_RouteDetailsActivity";
@@ -54,11 +61,13 @@ public class RouteDetailsActivity extends AppCompatActivity {
     private TextView neverWalkedPromptTv;
     private Button startWalkBtn;
 
+    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_details);
-
+        preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         getRouteInfo();
         findUIElements();
         displayRouteInformation();
@@ -76,11 +85,17 @@ public class RouteDetailsActivity extends AppCompatActivity {
         // TODO: 3/8/20 detect click
         switch (item.getItemId()) {
             case R.id.action_propose_walk:
-                Log.i(TAG, "onOptionsItemSelected: click on propose walk");
+                Log.i(TAG, "onOptionsItemSelected: clicked on propose walk");
+                launchProposeTeamWalk();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void launchProposeTeamWalk() {
+        Intent intent = new Intent(this, InviteTeamToWalkActivity.class);
+        startActivity(intent);
     }
 
     private void getRouteInfo() {

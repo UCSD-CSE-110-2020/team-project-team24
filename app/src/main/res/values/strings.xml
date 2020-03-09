@@ -118,6 +118,7 @@
     <string name="app_name">WalkWalkRevolution</string>
     <string name="title_activity_saving_page">Save your walk</string>
     <string name="title_activity_routes">My Routes</string>
+    <string name="title_activity_invite_team_to_walk">Invite Team to Walk</string>
 
     <!--    Others-->
     <string name="routes">Routes</string>

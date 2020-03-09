@@ -11,6 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
+        <activity android:name=".activities.teams.InviteTeamToWalkActivity"
+            android:label="@string/title_activity_invite_team_to_walk"/>
         <activity
             android:name=".activities.teams.TeamRoutesActivity"
             android:label="@string/title_team_routes_activity" />
