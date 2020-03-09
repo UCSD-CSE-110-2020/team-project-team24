@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
@@ -40,6 +41,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
     private EditText mDateEditText;
     private EditText mTimeEditText;
     private ImageButton mAmPmToggleBtn;
+    private TextView mAmPmTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         Button sendToTeamBtn = findViewById(R.id.btn_send_invitation_to_team);
         setClickListenerForSend(sendToTeamBtn);
         mAmPmToggleBtn = findViewById(R.id.btn_am_pm_toggle_invite_team_to_walk);
+        mAmPmTv = findViewById(R.id.am_pm);
         setClickListenerAmPmToggleButton();
     }
     private boolean amSelected() {
@@ -69,15 +72,16 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         mAmPmToggleBtn.setOnClickListener(v -> {
             if (amSelected()) {
                 mAmPmToggleBtn.setBackground(getDrawable(R.drawable.ic_moon_black_24dp));
+                mAmPmTv.setText(R.string.pm_text);
             } else {
                 mAmPmToggleBtn.setBackground(getDrawable(R.drawable.ic_sunny_yellow_24dp));
+                mAmPmTv.setText(R.string.am_text);
             }
         });
     }
 
     private void setClickListenerForSend(Button sendToTeamBtn) {
         sendToTeamBtn.setOnClickListener(v -> {
-            // TODO: 3/9/20 check if a walk already pending
             if (validateDateAndTime()) {
                 if (mParsedDate.getTime() < Calendar.getInstance().getTime().getTime()) {
                     Utils.showToast(this, "Please select a date in the future.", Toast.LENGTH_LONG);

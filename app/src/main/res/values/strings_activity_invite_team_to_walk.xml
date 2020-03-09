@@ -6,4 +6,7 @@
     <string name="hint_proposed_time_invite_team_to_walk">HH:MM</string>
     <string name="send_to_team_invite_team_to_walk">Send to Team</string>
     <string name="menu_item_send_to_team">Propose to Team</string>
+    <string name="am_text">AM</string>
+    <string name="pm_text">PM</string>
+    <string name="am_pm_image_description">Image that indicates AM/PM</string>
 </resources>

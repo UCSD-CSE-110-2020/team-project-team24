@@ -59,7 +59,19 @@
         android:background="@drawable/ic_sunny_yellow_24dp"
         app:layout_constraintLeft_toRightOf="@+id/et_proposed_time_invite_team_to_walk_activity"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_proposed_day_prompt_invite_team_to_walk_activity" />
+        app:layout_constraintBottom_toTopOf="@id/am_pm"
+        app:layout_constraintHorizontal_bias="0.2"
+        android:contentDescription="@string/am_pm_image_description" />
+
+    <TextView
+        android:id="@+id/am_pm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/am_text"
+        app:layout_constraintLeft_toRightOf="@+id/et_proposed_time_invite_team_to_walk_activity"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/et_proposed_time_invite_team_to_walk_activity"
+        app:layout_constraintHorizontal_bias="0.2" />
 
     <Button
         android:id="@+id/btn_send_invitation_to_team"
