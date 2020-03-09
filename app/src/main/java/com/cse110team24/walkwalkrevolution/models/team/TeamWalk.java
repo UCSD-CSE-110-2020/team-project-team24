@@ -7,6 +7,7 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.Timestamp;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TeamWalk {
@@ -64,8 +65,18 @@ public class TeamWalk {
     }
 
     public Map<String, Object> dataInMapForm() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("proposedBy", mProposedBy);
+        data.put("proposedDateAndTime", mProposedDateAndTime);
+        data.put("proposedRoute", relevantRouteData(mProposedRoute));
+        return data;
+    }
 
-        return null;
+    private Map<String, Object> relevantRouteData(Route route) {
+        Map<String, Object> data = new HashMap<>(route.routeData());
+        data.remove("stats");
+        data.remove("notes");
+        return data;
     }
 
     public static Builder builder() {
