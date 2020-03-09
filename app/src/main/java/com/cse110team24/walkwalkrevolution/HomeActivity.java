@@ -22,6 +22,7 @@ import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
@@ -43,6 +44,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Handles Daily Steps and distance, latest steps, distance, and time, recording a walk.
@@ -62,7 +64,7 @@ import java.util.Date;
  *     </ul>
  * </ol>
  */
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements UsersDatabaseServiceObserver {
     private static final String TAG = "WWR_HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
     private static final long UPDATE_PERIOD = 10_000;
@@ -75,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
     private FitnessService fitnessService;
 
     private TeamsDatabaseService mTeamsDbService;
+    private UsersDatabaseService mUsersDbService;
     private Messaging mMessaging;
 
     private SharedPreferences preferences;
@@ -171,15 +174,17 @@ public class HomeActivity extends AppCompatActivity {
 
     private void firebaseUserSetup() {
         Auth auth = FirebaseApplicationWWR.getAuthFactory().createAuthService();
-        UsersDatabaseService mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        mUsersDbService = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        mUsersDbService.register(this);
         mTeamsDbService = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
-        mMessaging = FirebaseApplicationWWR.getMessagingFactory().createMessagingService(this, mDb);
+        mMessaging = FirebaseApplicationWWR.getMessagingFactory().createMessagingService(this, mUsersDbService);
 
         SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         String email = preferences.getString(IUser.EMAIL_KEY, null);
         if (email != null) {
             mUser = auth.getUser();
             mUser.setEmail(email);
+            mUsersDbService.getUserData(mUser);
         }
     }
 
@@ -457,5 +462,23 @@ public class HomeActivity extends AppCompatActivity {
 
     private void showNoStartTimeToast() {
         Toast.makeText(this, "You didn't mock a start time for this walk!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUserData(Map<String, Object> userDataMap) {
+        if (userDataMap != null) {
+            String teamUid = (String) userDataMap.get(IUser.TEAM_UID_KEY);
+            Utils.saveString(preferences, IUser.TEAM_UID_KEY, teamUid);
+        }
+    }
+
+    @Override
+    public void onUserExists(IUser otherUser) {
+
+    }
+
+    @Override
+    public void onUserDoesNotExist() {
+
     }
 }
