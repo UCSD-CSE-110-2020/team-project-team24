@@ -52,17 +52,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_proposed_time_invite_team_to_walk_activity" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btn_am_pm_toggle_invite_team_to_walk"
         android:layout_width="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        android:translationZ="5dp"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_sunny_yellow_5dp"
+        app:layout_constraintLeft_toRightOf="@+id/et_proposed_time_invite_team_to_walk_activity"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_proposed_day_prompt_invite_team_to_walk_activity" />
 
     <Button
         android:id="@+id/btn_send_invitation_to_team"
