@@ -255,6 +255,8 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     public void updateCurrentTeamWalk(TeamWalk teamWalk) {
         // TODO: 3/9/20 update in teams/{team}.teamWalk
         teamsCollection.document(teamWalk.getTeamUid())
+                .collection("teamWalks")
+                .document(teamWalk.getTeamUid())
                 .update("teamWalk", teamWalk.dataInMapForm())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

@@ -85,3 +85,31 @@ exports.sendNewTeammateNotification = functions.firestore
 
         return "document was null or empty";
     });
+
+exports.sendTeamWalkUpdateNotification = functions.firestore
+    .document('teams/{team}/teamWalks/{teamWalk}')
+    .onUpdate((snap, context) => {
+        const document = snap.exists ? snap.data() : null;
+
+        if (document) {
+            var message = {
+                notification: {
+                    title: document.proposedBy + ' has ' + document.status.toLowerCase() + ' a team walk',
+                    body: 'Click to see your team'
+                },
+                topic: context.params.team
+            };
+
+            return admin.messaging().send(message)
+                .then((response) => {
+                    console.log('Successfully sent new team notification:', message);
+                    return response;
+                })
+                .catch((error) => {
+                    console.log('Error sending new team notification:', error);
+                    return error;
+                });
+        }
+
+        return "document was null or empty";
+    });
