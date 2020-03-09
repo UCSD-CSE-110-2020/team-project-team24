@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserExistsObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
@@ -110,11 +111,17 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
 
     @Override
     public void notifyObserversIfUserExists(boolean exists, IUser otherUser) {
-        if (exists) {
-            observers.forEach(observer -> observer.onUserExists(otherUser));
-        } else {
-            observers.forEach(observer -> observer.onUserDoesNotExist());
-        }
+        observers.forEach(observer -> {
+            if (observer instanceof UsersUserExistsObserver) {
+                UsersUserExistsObserver userExistsObserver = (UsersUserExistsObserver) observer;
+
+                if (exists) {
+                    userExistsObserver.onUserExists(otherUser);
+                } else {
+                    userExistsObserver.onUserDoesNotExist();
+                }
+            }
+        });
     }
     @Override
     public void register(UsersDatabaseServiceObserver usersDatabaseServiceObserver) {

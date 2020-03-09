@@ -14,6 +14,7 @@ import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserExistsObserver;
 import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
@@ -79,7 +80,7 @@ import java.util.Map;
  *     </ol>
  * </ol>
  */
-public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersDatabaseServiceObserver, UsersUserDataObserver {
+public class InviteTeamMemberActivity extends AppCompatActivity implements MessagingObserver, UsersUserExistsObserver, UsersUserDataObserver {
     private static final String TAG = "WWR_InviteTeamMemberActivity";
     private EditText editTeammateNameInvite;
     private EditText editTeammateGmailInvite;

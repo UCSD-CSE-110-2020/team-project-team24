@@ -472,14 +472,4 @@ public class HomeActivity extends AppCompatActivity implements UsersUserDataObse
             Utils.saveString(preferences, IUser.TEAM_UID_KEY, teamUid);
         }
     }
-
-    @Override
-    public void onUserExists(IUser otherUser) {
-
-    }
-
-    @Override
-    public void onUserDoesNotExist() {
-
-    }
 }
