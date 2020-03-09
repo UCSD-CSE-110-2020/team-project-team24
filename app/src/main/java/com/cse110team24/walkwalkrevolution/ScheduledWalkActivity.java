@@ -24,7 +24,7 @@ public class ScheduledWalkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scheduled_walk);
 
         route = new Route("Tecolote Canyon walk")
-            .setStartingLocation("Tecolote Canyon");
+            .setStartingLocation("Tecolote Canyon Trail Parking");
 
         directionsBtn = findViewById(R.id.btn_directions);
         directionsBtn.setOnClickListener(v -> {
@@ -38,12 +38,11 @@ public class ScheduledWalkActivity extends AppCompatActivity {
 
 
     private void launchMap() {
-        Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent);
-        }
+        getStartingLocation();
+        String map = "http://maps.google.co.in/maps?q=" + startingLocation;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+        //Intent.setPackage("com.google.android.apps.maps");
+        startActivity(intent);
     }
 
 }
