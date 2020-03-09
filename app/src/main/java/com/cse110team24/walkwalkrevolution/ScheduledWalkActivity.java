@@ -7,19 +7,33 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.route.RouteBuilder;
+import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
+import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+
 public class ScheduledWalkActivity extends AppCompatActivity {
 
     private Button directionsBtn;
+    private String startingLocation;
+    private Route route;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheduled_walk);
 
+        route = new Route("Tecolote Canyon walk")
+            .setStartingLocation("Tecolote Canyon");
+
         directionsBtn = findViewById(R.id.btn_directions);
         directionsBtn.setOnClickListener(v -> {
             launchMap();
         });
+    }
+
+    private void getStartingLocation() {
+        startingLocation = route.getStartingLocation();
     }
 
 
