@@ -125,7 +125,6 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
             btnSendInvite.setEnabled(true);
         }
 
-
         btnSendInvite.setOnClickListener(view -> {
             tryToSendInvitation(view);
         });
