@@ -1,7 +1,5 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
-
 import java.util.Map;
 
 /**

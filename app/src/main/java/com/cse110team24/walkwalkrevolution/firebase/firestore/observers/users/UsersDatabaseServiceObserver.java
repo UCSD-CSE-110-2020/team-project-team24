@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.firebase.firestore.observers;
+package com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 

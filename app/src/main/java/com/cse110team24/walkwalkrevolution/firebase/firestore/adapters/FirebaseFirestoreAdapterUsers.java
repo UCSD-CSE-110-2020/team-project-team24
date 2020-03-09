@@ -2,13 +2,11 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore.adapters;
 
 import android.util.Log;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserExistsObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
-import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
-import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapterBuilder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -16,7 +14,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
