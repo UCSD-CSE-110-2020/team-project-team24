@@ -19,6 +19,7 @@ import com.cse110team24.walkwalkrevolution.activities.invitations.InviteTeamMemb
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsTeammatesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
+public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObserver {
     private static final String TAG = "WWR_TeamActivity";
 
     private Button sendInviteBtn;

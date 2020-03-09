@@ -120,9 +120,4 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
             getTeamRoutes();
         }
     }
-
-    @Override
-    public void onTeamRetrieved(ITeam team) {
-        // nada
-    }
 }
