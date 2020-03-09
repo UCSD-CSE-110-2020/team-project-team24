@@ -7,6 +7,8 @@ com.cse110team24.walkwalkrevolution.firebase.auth
 com.cse110team24.walkwalkrevolution.firebase.firestore
 com.cse110team24.walkwalkrevolution.firebase.firestore.adapters
 com.cse110team24.walkwalkrevolution.firebase.firestore.observers
+com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams
+com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users
 com.cse110team24.walkwalkrevolution.firebase.firestore.services
 com.cse110team24.walkwalkrevolution.firebase.firestore.subjects
 com.cse110team24.walkwalkrevolution.firebase.messaging

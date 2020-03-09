@@ -6,7 +6,6 @@ import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
 import java.util.List;
 
 /**
- * {@inheritDoc}
  * Listens only for changes to teamWalks.
  */
 public interface TeamsTeamWalksObserver extends TeamsDatabaseServiceObserver {

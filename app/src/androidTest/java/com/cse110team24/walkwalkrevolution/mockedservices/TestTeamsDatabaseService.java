@@ -23,7 +23,7 @@ public class TestTeamsDatabaseService implements TeamsDatabaseService {
      * contains a list of {@link IUser} teammates. Set this testTeam when testing things to do with Team.
      *
      * <p>When {@link TestTeamsDatabaseService} is called, this ITeam is sent to the observer by calling
-     * {@link TeamsDatabaseServiceObserver#onTeamRetrieved(ITeam)}</p>
+     * {@link TeamsTeammatesObserver#onTeamRetrieved(ITeam)}</p>
      */
     public static ITeam testTeam;
 
