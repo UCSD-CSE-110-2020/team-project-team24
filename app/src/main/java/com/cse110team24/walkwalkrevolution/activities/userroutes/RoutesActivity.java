@@ -96,7 +96,6 @@ public class RoutesActivity extends AppCompatActivity {
         super.onResume();
         checkForExistingSavedRoutes();
         configureRecyclerViewAdapter();
-        adapter.notifyDataSetChanged();
     }
 
     @Override

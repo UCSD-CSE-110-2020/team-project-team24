@@ -65,7 +65,7 @@ public class SeeTeamRoutesUnitTest extends TestInjection {
             getTeamRoutesActivityUIElements(activity);
             Mockito.verify(dsf).createDatabaseService(DatabaseService.Service.TEAMS);
             Mockito.verify(teamsDatabaseService).register(any());
-            Mockito.verify(teamsDatabaseService).getUserTeamRoutes(eq("666"), eq("test"), eq(5), any());
+            Mockito.verify(teamsDatabaseService).getUserTeamRoutes(eq("666"), eq("test"), eq(10), any());
         });
     }
 

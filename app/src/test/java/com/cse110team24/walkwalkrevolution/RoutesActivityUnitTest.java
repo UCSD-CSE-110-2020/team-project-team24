@@ -37,7 +37,7 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 @LooperMode(LooperMode.Mode.PAUSED)
-public class RoutesActivityUnitTest extends TestInjection{
+public class RoutesActivityUnitTest extends TestInjection {
     public static final String TEST_SAVE_FILE = ".WWR_test_save_file";
 
     private BottomNavigationView bottomNavigation;
@@ -138,13 +138,14 @@ public class RoutesActivityUnitTest extends TestInjection{
     }
 
     private List<Route> getListOfRoutes() {
-        Route routeUno = new Route("CSE Building");
+        Route routeUno = new Route("CSE Building").setCreatorDisplayName("hola");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2019,5,6);
         WalkStats stats = new WalkStats(1000, 90_000_000, 1.5,  calendar);
         Route routeDos = new Route("ECE Building")
                 .setStartingLocation("ECE Makerspace")
                 .setFavorite(true)
+                .setCreatorDisplayName("hola")
                 .setStats(stats);
         calendar = Calendar.getInstance();
         calendar.set(2019, 1, 11);
@@ -152,6 +153,7 @@ public class RoutesActivityUnitTest extends TestInjection{
         Route routTres = new Route("Center Hall")
                 .setFavorite(false)
                 .setStartingLocation("Tu madre")
+                .setCreatorDisplayName("hola")
                 .setStats(stats);
 
         List<Route> routes = new ArrayList<>();
