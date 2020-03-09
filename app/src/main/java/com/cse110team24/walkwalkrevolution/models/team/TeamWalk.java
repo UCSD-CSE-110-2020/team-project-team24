@@ -69,6 +69,7 @@ public class TeamWalk {
         data.put("proposedBy", mProposedBy);
         data.put("proposedDateAndTime", mProposedDateAndTime);
         data.put("proposedRoute", relevantRouteData(mProposedRoute));
+        data.put("status", mStatus.toString());
         return data;
     }
 
