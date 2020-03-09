@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore.adapters;
 import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
@@ -79,7 +80,9 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     @Override
     public void notifyObserversUserData(Map<String, Object> userDataMap) {
         observers.forEach(observer -> {
-            observer.onUserData(userDataMap);
+            if(observer instanceof UsersUserDataObserver) {
+                ((UsersUserDataObserver) observer).onUserData(userDataMap);
+            }
         });
     }
 

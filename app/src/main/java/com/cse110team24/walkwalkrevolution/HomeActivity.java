@@ -23,6 +23,7 @@ import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivi
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
@@ -64,7 +65,7 @@ import java.util.Map;
  *     </ul>
  * </ol>
  */
-public class HomeActivity extends AppCompatActivity implements UsersDatabaseServiceObserver {
+public class HomeActivity extends AppCompatActivity implements UsersUserDataObserver {
     private static final String TAG = "WWR_HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
     private static final long UPDATE_PERIOD = 10_000;
