@@ -45,7 +45,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_team_to_walk);
 
-        mDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.US);
+        mDateTimeFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.US);
         mProposedRoute = (Route) getIntent().getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
         mProposedBy = getIntent().getStringExtra(IUser.USER_NAME_KEY);
         mTeamUid = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).getString(IUser.TEAM_UID_KEY, "");
@@ -76,8 +76,8 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
 
     private void setClickListenerForSend(Button sendToTeamBtn) {
         sendToTeamBtn.setOnClickListener(v -> {
+            // TODO: 3/9/20 check if a walk already pending
             if (validateDateAndTime()) {
-                // TODO: 3/8/20 send the invitation
                 if (mParsedDate.getTime() < Calendar.getInstance().getTime().getTime()) {
                     Utils.showToast(this, "Please select a date in the future.", Toast.LENGTH_LONG);
                     return;
@@ -99,14 +99,13 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
     }
 
     /**
-     * Date must be in the [human] format dd/mm/yyyy
+     * Date must be in the [human] format mm/dd/yyyy
      * Time must be in the [human] format hh:mm (12 hour time)
      * side effect: parses date and time if valid into mParsedDate.
      * @return true if both date and time match format
      */
     private boolean validateDateAndTime() {
         String day = mDateEditText.getText().toString();
-        day = reformatDate(day);
         String time = mTimeEditText.getText().toString();
         String ampm = getAmPmMarker();
         if (day.isEmpty()) {
@@ -126,15 +125,6 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         }
 
         return true;
-    }
-
-    // reformats date from [human] format dd/mm/yyyy to parsable format mm-dd-yyyy
-    private String reformatDate(String date) {
-        String[] dateArr = date.split("/");
-        if (dateArr.length == 3) {
-            return dateArr[1] + '-' + dateArr[0] + '-' + dateArr[2];
-        }
-        return date;
     }
 
     // checks the button's icon to determine if AM or PM time is selected
