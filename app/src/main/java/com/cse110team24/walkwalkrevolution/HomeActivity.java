@@ -17,16 +17,25 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.Messaging;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.activities.teams.TeamActivity;
+import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
@@ -35,10 +44,28 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
-
-public class HomeActivity extends AppCompatActivity {
-    private static final String TAG = "HomeActivity";
+/**
+ * Handles Daily Steps and distance, latest steps, distance, and time, recording a walk.
+ * <p>Integrates {@link Auth}, {@link TeamsDatabaseService}, {@link UsersDatabaseService}, and
+ * {@link Messaging}.</p>
+ * <ol>
+ *     <li>Saves the user's height locally, passed by {@link LoginActivity}</li>
+ *     <li>Creates instance of {@link FitnessService}</li>
+ *     <li>Subscribes the currently signed in user to their invitations collection in order to receive notifications</li>\
+ *     <li>If saving a newly recorded route, adds it to local file</li>
+ *     <ul>
+ *         <li>If the signed in user has a team, adds the route to the user's team in the database</li>
+ *     </ul>
+ *     <li>If recording an existing route, when stopped, will automatically update local save file</li>
+ *     <ul>
+ *         <li>If the signed in user has a team, updates the route in the user's team in the database</li>
+ *     </ul>
+ * </ol>
+ */
+public class HomeActivity extends AppCompatActivity implements UsersDatabaseServiceObserver {
+    private static final String TAG = "WWR_HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
     private static final long UPDATE_PERIOD = 10_000;
 
@@ -49,9 +76,11 @@ public class HomeActivity extends AppCompatActivity {
 
     private FitnessService fitnessService;
 
-    private AuthService authService;
-    private DatabaseService mDb;
-    private MessagingService messagingService;
+    private TeamsDatabaseService mTeamsDbService;
+    private UsersDatabaseService mUsersDbService;
+    private Messaging mMessaging;
+
+    private SharedPreferences preferences;
 
     private IUser mUser;
 
@@ -91,13 +120,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         getUIFields();
         saveHeight();
         setFitnessService();
         firebaseUserSetup();
         subscribeToReceiveInvitations();
-
         setButtonOnClickListeners();
 
         handler.post(runUpdateSteps);
@@ -125,7 +153,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void saveHeight() {
-        SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         heightFeet = getIntent().getIntExtra(HEIGHT_FT_KEY, -1);
         heightRemainderInches =  getIntent().getFloatExtra(HEIGHT_IN_KEY, -1);
@@ -146,21 +173,24 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void firebaseUserSetup() {
-        authService = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
-        mDb = FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
-        messagingService = FirebaseApplicationWWR.getMessagingServiceFactory().createMessagingService(this, mDb);
+        Auth auth = FirebaseApplicationWWR.getAuthFactory().createAuthService();
+        mUsersDbService = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
+        mUsersDbService.register(this);
+        mTeamsDbService = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+        mMessaging = FirebaseApplicationWWR.getMessagingFactory().createMessagingService(this, mUsersDbService);
 
         SharedPreferences preferences = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
         String email = preferences.getString(IUser.EMAIL_KEY, null);
         if (email != null) {
-            mUser = authService.getUser();
+            mUser = auth.getUser();
             mUser.setEmail(email);
+            mUsersDbService.getUserData(mUser);
         }
     }
 
     private void subscribeToReceiveInvitations() {
         if (mUser != null) {
-            messagingService.subscribeToNotificationsTopic(mUser.documentKey() + "invitations");
+            mMessaging.subscribeToNotificationsTopic(mUser.documentKey() + "invitations");
         }
     }
 
@@ -302,8 +332,19 @@ public class HomeActivity extends AppCompatActivity {
     private void handleNewRouteRecorded(Intent data) {
         toggleBtn(saveRouteBtn);
         Route route = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
+        Log.d(TAG, "handleNewRouteRecorded: new route recorded " + route);
+        uploadRouteToTeamIfExists(route);
         saveIntoList(route);
         showRouteSavedToast();
+    }
+
+    // if the user's team exists, upload the route to the routes collection of the Team
+    private void uploadRouteToTeamIfExists(Route route) {
+        String teamUid = Utils.getString(preferences, IUser.TEAM_UID_KEY);
+
+        if (teamUid != null) {
+            mTeamsDbService.uploadRoute(teamUid, route);
+        }
     }
 
     private void showRouteSavedToast() {
@@ -341,15 +382,32 @@ public class HomeActivity extends AppCompatActivity {
             Log.i(TAG, "checkIfRouteExisted: returning to route details view for automatic recording");
             Route existingRoute = (Route) data.getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
             existingRoute.setStats(stats);
+
+            // update existing route in db
+            updateRouteToTeamIfExists(existingRoute);
             saveIntoList(existingRoute);
             showRouteUpdatedToast();
         }
     }
 
+    // if the user's team exists, upload the route to the routes collection of the Team
+    private void updateRouteToTeamIfExists(Route route) {
+        String teamUid = Utils.getString(preferences, IUser.TEAM_UID_KEY);
+
+        if (teamUid != null) {
+            mTeamsDbService.updateRoute(teamUid, route);
+        }
+    }
+
     private void saveIntoList(Route route) {
         int idx = data.getIntExtra(RouteDetailsActivity.ROUTE_IDX_KEY, -1);
+        Log.d(TAG, "saveIntoList: saving new route with idx " + idx + " " + route);
         try {
-            RoutesManager.replaceInList(route, idx, RoutesActivity.LIST_SAVE_FILE, this);
+            if (idx == -1) {
+                RoutesManager.appendToList(route, RoutesActivity.LIST_SAVE_FILE, this);
+            } else {
+                RoutesManager.replaceInList(route, idx, RoutesActivity.LIST_SAVE_FILE, this);
+            }
         } catch (IOException e) {
             Log.e(TAG, "saveIntoList: failed to replace route in list", e);
         }
@@ -404,5 +462,23 @@ public class HomeActivity extends AppCompatActivity {
 
     private void showNoStartTimeToast() {
         Toast.makeText(this, "You didn't mock a start time for this walk!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUserData(Map<String, Object> userDataMap) {
+        if (userDataMap != null) {
+            String teamUid = (String) userDataMap.get(IUser.TEAM_UID_KEY);
+            Utils.saveString(preferences, IUser.TEAM_UID_KEY, teamUid);
+        }
+    }
+
+    @Override
+    public void onUserExists(IUser otherUser) {
+
+    }
+
+    @Override
+    public void onUserDoesNotExist() {
+
     }
 }

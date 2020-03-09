@@ -4,23 +4,23 @@ import java.io.Serializable;
 
 public class RouteEnvironment implements Serializable {
     public enum RouteType {
-        LOOP, OUT_AND_BACK;
+        LOOP, OUT_AND_BACK
     }
 
     public enum TerrainType {
-        FLAT, HILLY;
+        FLAT, HILLY
     }
 
     public enum SurfaceType {
-        EVEN, UNEVEN;
+        EVEN, UNEVEN
     }
 
     public enum Difficulty {
-        EASY, MODERATE, HARD;
+        EASY, MODERATE, HARD
     }
 
     public enum TrailType {
-        STREETS, TRAIL;
+        STREETS, TRAIL
     }
 
     private RouteType mRouteType;

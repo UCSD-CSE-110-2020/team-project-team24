@@ -2,6 +2,8 @@ package com.cse110team24.walkwalkrevolution.models.route;
 
 import java.io.Serializable;
 import java.lang.Comparable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Route implements Serializable, Comparable<Route> {
@@ -16,6 +18,9 @@ public class Route implements Serializable, Comparable<Route> {
     private RouteEnvironment mEnvironment;
     private boolean mIsFavorite;
     private String mNotes;
+
+    private String mRouteUid;
+    private String mCreatorDisplayName;
 
     public Route(String title) throws IllegalArgumentException {
         if (title == null) {
@@ -81,6 +86,24 @@ public class Route implements Serializable, Comparable<Route> {
         return this;
     }
 
+    public Route setRouteUid(String routeUid) {
+        mRouteUid = routeUid;
+        return this;
+    }
+
+    public String getRouteUid() {
+        return mRouteUid;
+    }
+
+    public Route setCreatorDisplayName(String name) {
+        mCreatorDisplayName = name;
+        return this;
+    }
+
+    public String getCreatorName() {
+        return mCreatorDisplayName;
+    }
+
     @Override
     public int compareTo(Route o) {
         return mTitle.compareTo(o.mTitle);
@@ -102,10 +125,25 @@ public class Route implements Serializable, Comparable<Route> {
         return false;
     }
 
+    public Map<String, Object> routeData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", mTitle);
+        data.put("createdBy", mCreatorDisplayName);
+        data.put("startingLocation", mStartingLocation);
+        data.put("environment", mEnvironment);
+        data.put("stats", (mStats == null) ? null : mStats.statsData());
+        data.put("notes", mNotes);
+        return data;
+    }
+
     @Override
     public String toString() {
         return "\ntitle: " + mTitle +
-                "\nstats: " + ((mStats == null) ? "none" : mStats);
+                "\nstartingLocation: " + ((mStartingLocation == null) ? "N/A" : mStartingLocation) +
+                "\nstats: " + ((mStats == null) ? "N/A" : mStats) +
+                "\nenvironment: " + ((mEnvironment == null) ? "N/A" : mEnvironment) +
+                "\ncreatedBy: " + ((mCreatorDisplayName == null) ? "N/A" : mCreatorDisplayName);
+
     }
 
     public static class Builder implements RouteBuilder {
@@ -142,6 +180,18 @@ public class Route implements Serializable, Comparable<Route> {
         @Override
         public Builder addFavStatus(boolean isFavorite) {
             mToBuild.setFavorite(isFavorite);
+            return this;
+        }
+
+        @Override
+        public Builder addRouteUid(String routeUid) {
+            mToBuild.setRouteUid(routeUid);
+            return this;
+        }
+
+        @Override
+        public Builder addCreatorDisplayName(String name) {
+            mToBuild.setCreatorDisplayName(name);
             return this;
         }
 

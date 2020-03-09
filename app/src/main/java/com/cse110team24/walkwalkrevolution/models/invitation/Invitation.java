@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import io.grpc.okhttp.internal.Util;
-
 public class Invitation implements IInvitation {
     public static final String INVITATION_UID_SET_KEY = "invitationUid";
     public static final String INVITATION_FROM_SET_KEY = "from";

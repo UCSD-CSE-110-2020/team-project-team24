@@ -9,6 +9,7 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;

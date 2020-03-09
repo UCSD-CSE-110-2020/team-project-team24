@@ -19,8 +19,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * {@inheritDoc}
+ * The database provider for this type is Cloud Firestore.
+ */
 public class FirebaseFirestoreAdapterInvitations implements InvitationsDatabaseService {
-    private static final String TAG = "FirebaseFirestoreAdapterInvitations";
+    private static final String TAG = "WWR_FirebaseFirestoreAdapterInvitations";
 
     public static final String INVITATIONS_ROOT_COLLECTION_KEY = "invitations";
     public static final String USER_RECEIVED_INVITATIONS_COLLECTION = "received";

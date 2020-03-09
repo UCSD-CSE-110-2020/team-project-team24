@@ -6,21 +6,18 @@
         android:id="@+id/action_home"
         android:enabled="true"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/home"
-         />
+        android:title="@string/home" />
 
     <item
         android:id="@+id/action_routes_list"
         android:enabled="true"
         android:icon="@drawable/ic_terrain_black_24dp"
-        android:title="@string/routes"
-         />
+        android:title="@string/routes" />
     <item
         android:id="@+id/action_team"
         android:enabled="true"
         android:icon="@drawable/ic_team_black_24dp"
-        android:title="@string/team"
-        />
+        android:title="@string/team" />
 
 
 </menu>

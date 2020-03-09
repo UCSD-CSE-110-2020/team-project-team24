@@ -3,34 +3,40 @@ package com.cse110team24.walkwalkrevolution;
 import android.app.Activity;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
-import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthServiceFactory;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
+import com.cse110team24.walkwalkrevolution.firebase.auth.FirebaseAuthFactory;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.FirestoreDatabaseServiceFactory;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingServiceFactory;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.FirebaseMessagingFactory;
+import com.cse110team24.walkwalkrevolution.firebase.messaging.Messaging;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 
 import org.mockito.Mockito;
 
-public class TestInjection {
-    protected FirebaseAuthServiceFactory asf;
-    protected FirestoreDatabaseServiceFactory dsf;
-    protected FirebaseMessagingServiceFactory msf;
-    protected AuthService mAuth;
-    protected DatabaseService mDb;
-    protected MessagingService mMsg;
-    protected Activity activity;
+import static org.mockito.ArgumentMatchers.any;
 
+public class TestInjection {
+    protected FirebaseAuthFactory asf;
+    protected FirestoreDatabaseServiceFactory dsf;
+    protected FirebaseMessagingFactory msf;
+    protected Auth mAuth;
+    protected DatabaseService mDb;
+    protected Messaging mMsg;
 
     protected UsersDatabaseService usersDatabaseService;
-    protected TeamDatabaseService teamDatabaseService;
+    protected TeamsDatabaseService teamsDatabaseService;
     protected InvitationsDatabaseService invitationsDatabaseService;
+
+    IUser aTestUser = FirebaseUserAdapter.builder()
+            .addDisplayName("Ival")
+            .addEmail("tester@gmail.com")
+            .addUid("4")
+            .build();
 
     IUser testUser = FirebaseUserAdapter.builder()
             .addDisplayName("tester")
@@ -41,19 +47,20 @@ public class TestInjection {
 
     IUser otherUser = FirebaseUserAdapter.builder()
             .addDisplayName("cheery")
+            .addEmail("amara@gmail.com")
             .build();
 
     void setup() {
-        asf = Mockito.mock(FirebaseAuthServiceFactory.class);
+        asf = Mockito.mock(FirebaseAuthFactory.class);
         dsf = Mockito.mock(FirestoreDatabaseServiceFactory.class);
-        msf = Mockito.mock(FirebaseMessagingServiceFactory.class);
-        mAuth = Mockito.mock(AuthService.class);
+        msf = Mockito.mock(FirebaseMessagingFactory.class);
+        mAuth = Mockito.mock(Auth.class);
         mDb = Mockito.mock(DatabaseService.class);
-        mMsg = Mockito.mock(MessagingService.class);
+        mMsg = Mockito.mock(Messaging.class);
 
         Mockito.when(asf.createAuthService()).thenReturn(mAuth);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.LEGACY)).thenReturn(mDb);
-        Mockito.when(msf.createMessagingService(activity, mDb)).thenReturn(mMsg);
+        Mockito.when(msf.createMessagingService(any(), any())).thenReturn(mMsg);
 
         FirebaseApplicationWWR.setDatabaseServiceFactory(dsf);
         FirebaseApplicationWWR.setAuthServiceFactory(asf);
@@ -61,7 +68,7 @@ public class TestInjection {
 
 
         usersDatabaseService = Mockito.mock(UsersDatabaseService.class);
-        teamDatabaseService = Mockito.mock(TeamDatabaseService.class);
+        teamsDatabaseService = Mockito.mock(TeamsDatabaseService.class);
         invitationsDatabaseService = Mockito.mock(InvitationsDatabaseService.class);
 
         Mockito.when(mAuth.getUser()).thenReturn(testUser);

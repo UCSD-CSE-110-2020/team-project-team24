@@ -12,6 +12,7 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
@@ -19,6 +20,7 @@ import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.shadows.ShadowToast;
 
 import static junit.framework.TestCase.assertEquals;
@@ -52,6 +54,7 @@ public class HomeActivityUnitTest extends TestInjection {
                     .putExtra(HomeActivity.FITNESS_SERVICE_KEY, TEST_SERVICE)
                     .putExtra(HomeActivity.HEIGHT_FT_KEY, FEET)
                     .putExtra(HomeActivity.HEIGHT_IN_KEY, INCHES);
+        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.USERS)).thenReturn(usersDatabaseService);
         timeElapsed = 90_000;
     }
 

@@ -7,5 +7,11 @@ import com.cse110team24.walkwalkrevolution.utils.Subject;
 import java.util.List;
 
 public interface InvitationsDatabaseServiceSubject extends Subject<InvitationsDatabaseServiceObserver> {
+
+    /**
+     * Notify this subject's observers that the requested received invitations are ready to be read.
+     * <p>See also: {@link InvitationsDatabaseServiceObserver#onUserPendingInvitations(List)}</p>
+     * @param invitations the requested pending invitations list.
+     */
     void notifyObserversPendingInvitations(List<Invitation> invitations);
 }

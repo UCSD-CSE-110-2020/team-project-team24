@@ -9,97 +9,133 @@ import android.widget.ListView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
+import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
+import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.robolectric.shadows.ShadowToast;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 
 @RunWith(AndroidJUnit4.class)
 public class InvitationsActivityUnitTest extends TestInjection {
 
     ActivityScenario<InvitationsActivity> scenario;
-    MessagingObserver messagingObserver;
-    UsersDatabaseServiceObserver userDbObserver;
     SharedPreferences sp;
     Button acceptBtn;
     Button declineBtn;
-    ListView invitationsList;
+    ListView invitationsListView;
+    InvitationsDatabaseServiceObserver invitationsDbObserver;
+    private List<Invitation> mInvitations = new ArrayList<>();
+    Invitation invitation;
+    String TOAST_SELECT_INVITATION = "Please select an invitation";
 
     @Before
     public void setup() {
         super.setup();
+        Mockito.when(mAuth.getUser()).thenReturn(aTestUser);
         sp = ApplicationProvider.getApplicationContext().getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
-        sp.edit().putString(IUser.EMAIL_KEY, testUser.getEmail())
-                .putString(IUser.USER_NAME_KEY, testUser.getDisplayName())
+        sp.edit().putString(IUser.EMAIL_KEY, aTestUser.getEmail())
+                .putString(IUser.USER_NAME_KEY, aTestUser.getDisplayName())
                 .commit();
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.USERS)).thenReturn(usersDatabaseService);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.INVITATIONS)).thenReturn(invitationsDatabaseService);
-        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamDatabaseService);
+        Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamsDatabaseService);
         Mockito.when(msf.createMessagingService(Mockito.any(), eq(invitationsDatabaseService))).thenReturn(mMsg);
-        mockInvitationSent();
+        invitation = Invitation.builder()
+                .addFromUser(testUser)
+                .addToEmail("tester@gmail.com")
+                .addToDisplayName("Ival")
+                .addTeamUid(testUser.teamUid())
+                .build();
+
+        doAnswer(invocation -> {
+            invitationsDbObserver = invocation.getArgument(0);
+            return invocation;
+        }).when(invitationsDatabaseService).register(any());
+
+        mInvitations.add(invitation);
+
+        doAnswer(invocation -> {
+            invitationsDbObserver.onUserPendingInvitations(mInvitations);
+            return null;
+        }).when(invitationsDatabaseService).getUserPendingInvitations(aTestUser);
+
     }
 
     private void getUIFields(Activity activity) {
         acceptBtn = activity.findViewById(R.id.buttonAccept);
         declineBtn = activity.findViewById(R.id.buttonDecline);
-        invitationsList = activity.findViewById(R.id.invitationList);
+        invitationsListView = activity.findViewById(R.id.invitationList);
     }
 
-    private void mockUserDbRegister() {
-        Mockito.doAnswer(invocation -> {
-            userDbObserver = invocation.getArgument(0);
-            return invocation;
-        }).when(usersDatabaseService).register(any());
-    }
-
-    private void mockOtherUserExists() {
-        Mockito.doAnswer(invocation -> {
-            userDbObserver.onUserExists(otherUser);
-            return null;
-        }).when(usersDatabaseService).checkIfOtherUserExists(Mockito.any());
-    }
-
-    private void mockInvitationSent() {
-        sp.edit().putString(IUser.TEAM_UID_KEY, testUser.teamUid()).commit();
-        mockUserDbRegister();
-        mockOtherUserExists();
-
-        Mockito.doAnswer(invocation -> {
-            messagingObserver = invocation.getArgument(0);
-            return invocation;
-        }).when(mMsg).register(any());
-
-        Mockito.doAnswer(invocation -> {
-            messagingObserver.onInvitationSent(null);
-            return null;
-        }).when(mMsg).sendInvitation(Mockito.any());
+    @Test
+    public void didNotSelectInvitation() {
+        setup();
+        scenario = ActivityScenario.launch(InvitationsActivity.class);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            acceptBtn.performClick();
+            assertEquals(TOAST_SELECT_INVITATION, ShadowToast.getTextOfLatestToast());
+        });
     }
 
     @Test
     public void approveInvitation() {
+        setup();
         scenario = ActivityScenario.launch(InvitationsActivity.class);
         scenario.onActivity(activity -> {
             getUIFields(activity);
-           // assertNotNull(invitationsList);
-           // invitationsList.performItemClick(invitationsList.getChildAt(0), 0, invitationsList.getAdapter().getItemId(0));
-          //  acceptBtn.performClick();
-           // assertEquals("not sure", ShadowToast.getTextOfLatestToast());
+            invitationsListView.performItemClick(
+                    invitationsListView.getAdapter().getView(0, null, null),
+                    0,
+                    invitationsListView.getAdapter().getItemId(0));
+            acceptBtn.performClick();
+            assertEquals(aTestUser.teamUid(), testUser.teamUid());
+            assertEquals(ShadowToast.getTextOfLatestToast(), "welcome to " + invitation.fromName() + "'s team");
         });
     }
 
+    @Test
+    public void declineInvitation() {
+        setup();
+        scenario = ActivityScenario.launch(InvitationsActivity.class);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            invitationsListView.setSelection(0);
+            declineBtn.performClick();
+            assertNull(aTestUser.teamUid());
+        });
+    }
 
+    //TODO User is already on a team...Toast must decline
 
 }

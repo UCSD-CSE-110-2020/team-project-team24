@@ -4,11 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapterBuilder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.Builder;
-import com.cse110team24.walkwalkrevolution.models.user.UserBuilder;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
@@ -22,8 +19,12 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateListener {
-    private static String TAG = "FirebaseAuthAdapter";
+/**
+ * {@inheritDoc}
+ * The provider for this class is Firebase.
+ */
+public class FirebaseAuthAdapter implements Auth, FirebaseAuth.AuthStateListener {
+    private static String TAG = "WWR_FirebaseAuthAdapter";
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
@@ -32,7 +33,7 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
 
     private boolean signUp;
 
-    private List<AuthServiceObserver> observers;
+    private List<AuthObserver> observers;
 
     public FirebaseAuthAdapter() {
         mAuth = FirebaseAuth.getInstance();
@@ -134,13 +135,13 @@ public class FirebaseAuthAdapter implements AuthService, FirebaseAuth.AuthStateL
     }
 
     @Override
-    public void register(AuthServiceObserver authServiceObserver) {
-        observers.add(authServiceObserver);
+    public void register(AuthObserver authObserver) {
+        observers.add(authObserver);
     }
 
     @Override
-    public void deregister(AuthServiceObserver authServiceObserver) {
-        observers.remove(authServiceObserver);
+    public void deregister(AuthObserver authObserver) {
+        observers.remove(authObserver);
     }
 
     @Override

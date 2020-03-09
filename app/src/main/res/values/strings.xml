@@ -63,6 +63,9 @@
     <string name="notesHint">Extra information about the route</string>
     <string name="save">SAVE</string>
 
+    <!--    In activity_routes.xml-->
+    <string name="btn_see_teammates_routes">See Teammate Routes</string>
+
     <!--    In item_route.xml-->
     <string name="fake_title">Canyon View Hiking Trail</string>
     <string name="fake_steps">22 steps</string>
@@ -79,11 +82,10 @@
 
     <!-- In activity_team.xml-->
     <string name="title_team_page">Your Walking Team</string>
-    <string name="pending_invites">Pending&#10;Invites</string>
-    <string name="invite_team_member">Invite&#10;Teammate</string>
+    <string name="pending_invites">Pending&#10;Invitations</string>
+    <string name="invite_team_member">Invite&#10;New Teammate</string>
     <string name="title_teammates_in_team">Teammates: </string>
-    <string name="btn_title_proposed_walks">Proposed Walks</string>
-    <string name="btn_title_scheduled_walks">Scheduled Walks</string>
+    <string name="btn_title_scheduled_walks">Scheduled and Proposed Walks</string>
     <string name="text_no_teammates_in_team">No Teammates Yet :-(</string>
 
     <!-- In activity_invitations -->
@@ -115,7 +117,7 @@
     <!--    In AndroidManifest.xml-->
     <string name="app_name">WalkWalkRevolution</string>
     <string name="title_activity_saving_page">Save your walk</string>
-    <string name="title_activity_routes">Routes</string>
+    <string name="title_activity_routes">My Routes</string>
 
     <!--    Others-->
     <string name="routes">Routes</string>
@@ -125,5 +127,8 @@
     <!-- In ListviewAdapter.java -->
     <string name="fake_teammate_name">Samuel Jackson</string>
     <string name="fake_teammate_initials">SJ</string>
+
+    <!-- In TeamRoutesActivity -->
+    <string name="title_team_routes_activity">Team Routes</string>
 
 </resources>

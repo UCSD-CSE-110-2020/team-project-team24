@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
@@ -96,4 +98,14 @@ public class WalkStats implements Serializable {
         NumberFormat format = new DecimalFormat("#0.00");
         return String.format("%s %s", format.format(val), suffix);
     }
+
+    public Map<String, Object> statsData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("steps", steps);
+        data.put("elapsedTimeMillis", timeElapsed);
+        data.put("distance", distance);
+        data.put("date", dateCompleted.getTime());
+        return data;
+    }
+
 }

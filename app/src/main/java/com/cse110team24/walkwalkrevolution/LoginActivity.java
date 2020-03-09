@@ -17,9 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthService;
-import com.cse110team24.walkwalkrevolution.firebase.auth.AuthServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
+import com.cse110team24.walkwalkrevolution.firebase.auth.AuthObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -27,8 +27,29 @@ import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
-public class LoginActivity extends AppCompatActivity implements AuthServiceObserver {
-    private static final String TAG = "LoginActivity";
+/**
+ * Handles user authentication UI, integrating {@link Auth} and {@link UsersDatabaseService}.
+ * Asks for user height information in any mode.
+ * <ol>
+ *     <li>On successful sign in or sign up, the user's name, email, and display name are saved locally
+ *     to the device. See {@link IUser} for the SharedPreferences keys.</li>
+ *     <li>Implements {@link AuthObserver} in order to detect authentication changes.</li>
+ *     <li>Starts in sign-in mode. Asks for User email and password.</li>
+ *     <ul>
+ *         <li>If there is no error, launches {@link HomeActivity}</li>
+ *         <li>If there is a sign in error, displays appropriate error as Toast</li>
+ *     </ul>
+ *     <li>Click "sign up here" displays additional displayName field.</li>
+ *     <ul>
+ *         <li>Only allows sign-up click if email is valid gmail, password is >= 6 characters in length,
+ *         and displayName is not blank</li>
+ *         <li>If there is no error, launches {@link HomeActivity}</li>
+ *         <li>If there is a sign up error, displays appropriate error as Toast</li>
+ *     </ul>
+ * </ol>
+ */
+public class LoginActivity extends AppCompatActivity implements AuthObserver {
+    private static final String TAG = "WWR_LoginActivity";
     private static final String INVALID_GMAIL_TOAST = "Please enter a valid gmail address!";
     private static final String INVALID_PASSWORD_TOAST = "Please enter a password at least 6 characters long!";
     private static final String INVALID_SIGN_IN = "Incorrect email or password";
@@ -56,9 +77,8 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     SharedPreferences preferences;
 
     // firebase dependencies
-    private AuthService mAuth;
+    private Auth mAuth;
     private IUser mUser;
-    // TODO: 3/3/20 change to UsersDatabaseService
     private UsersDatabaseService mDb;
     private ProgressBar progressBar;
 
@@ -81,11 +101,11 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Log.i(TAG, "onCreate: login activity created");
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         homeIntent = new Intent(this, HomeActivity.class);
 
-        mAuth = FirebaseApplicationWWR.getAuthServiceFactory().createAuthService();
+        mAuth = FirebaseApplicationWWR.getAuthFactory().createAuthService();
         mAuth.register(this);
         mDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
 
@@ -303,7 +323,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
         return feet > 0 && inches > 0;
     }
 
-    private void checkLogin(SharedPreferences preferences) { ;
+    private void checkLogin(SharedPreferences preferences) {
         if (checkHeight(preferences) && mAuth.isUserSignedIn()) {
             Log.i(TAG, "checkHeight: valid height in preferences already exists (feet: " + feet + ", inches: " + inches + ").");
             launchHome();
@@ -333,7 +353,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     @Override
-    public void onAuthSignInError(AuthService.AuthError error) {
+    public void onAuthSignInError(Auth.AuthError error) {
         String errorString = "";
         switch (error) {
             case DOES_NOT_EXIST:
@@ -356,6 +376,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     @Override
     public void onUserSignedUp(IUser user) {
+        Log.i(TAG, "onUserSignedUp: user signed up");
         if(mAuth.isUserSignedIn()) {
             user.updateDisplayName(username);
             saveUserInfo(user);
@@ -366,6 +387,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
 
     @Override
     public void onUserSignedIn(IUser user) {
+        Log.i(TAG, "onUserSignedIn: user signed in");
         if (validateFeet() && validateInches() && mAuth.isUserSignedIn()) {
             saveUserInfo(user);
             launchHome();
@@ -381,7 +403,7 @@ public class LoginActivity extends AppCompatActivity implements AuthServiceObser
     }
 
     @Override
-    public void onAuthSignUpError(AuthService.AuthError error) {
+    public void onAuthSignUpError(Auth.AuthError error) {
         String errorString = "";
         switch (error) {
             case USER_COLLISION:

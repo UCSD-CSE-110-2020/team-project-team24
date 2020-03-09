@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapterBuilder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -19,8 +20,13 @@ import java.util.Map;
 
 import static com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter.TEAM_UID_KEY;
 
+/**
+ * {@inheritDoc}
+ * This type's database provider is Cloud Firestore. The document path for a user is
+ * users/\{user\}.
+ */
 public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
-    private static final String TAG = "FirebaseFirestoreAdapterUsers";
+    private static final String TAG = "WWR_FirebaseFirestoreAdapterUsers";
 
     public static final String USERS_COLLECTION_KEY = "users";
     public static final String USER_REGISTRATION_TOKENS_COLLECTION_KEY = "tokens";
@@ -58,23 +64,6 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
                 Log.e(TAG, "updateUserTeam: error updating team uid", task.getException());
             }
         });
-    }
-
-    @Override
-    public DocumentReference addUserMessagingRegistrationToken(IUser user, String token) {
-        DocumentReference userDoc = usersCollection.document(user.documentKey());
-        Map<String, Object> tokenData = new HashMap<>();
-        tokenData.put(TOKEN_SET_KEY, token);
-        userDoc.collection(USER_REGISTRATION_TOKENS_COLLECTION_KEY)
-                .add(tokenData)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.i(TAG, "addUserMessagingRegistrationToken: success adding user registration token");
-                    } else {
-                        Log.e(TAG, "addUserMessagingRegistrationToken: error adding user registration token", task.getException());
-                    }
-                });
-        return userDoc;
     }
 
     @Override

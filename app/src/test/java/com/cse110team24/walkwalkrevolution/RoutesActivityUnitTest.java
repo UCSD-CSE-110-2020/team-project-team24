@@ -12,8 +12,12 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteRecyclerViewAdapter;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,11 +37,11 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 @LooperMode(LooperMode.Mode.PAUSED)
-public class RoutesActivityUnitTest {
+public class RoutesActivityUnitTest extends TestInjection {
     public static final String TEST_SAVE_FILE = ".WWR_test_save_file";
 
     private BottomNavigationView bottomNavigation;
-    private RouteAdapter adapter;
+    private RouteRecyclerViewAdapter adapter;
     private View secondBtn;
     private Button thirdBtn;
     private TextView firstTv;
@@ -49,6 +53,7 @@ public class RoutesActivityUnitTest {
 
     @Before
     public void setup() {
+        super.setup();
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), RoutesActivity.class)
                 .putExtra(RoutesActivity.SAVE_FILE_KEY, TEST_SAVE_FILE);
         try {
@@ -118,7 +123,7 @@ public class RoutesActivityUnitTest {
         bottomNavigation = activity.findViewById(R.id.bottom_navigation);
 
         RecyclerView recyclerView = activity.findViewById(R.id.recycler_view);
-        adapter = (RouteAdapter) recyclerView.getAdapter();
+        adapter = (RouteRecyclerViewAdapter) recyclerView.getAdapter();
 
         View firstView = recyclerView.getLayoutManager().findViewByPosition(0);
         View secondView = recyclerView.getLayoutManager().findViewByPosition(1);
@@ -133,13 +138,14 @@ public class RoutesActivityUnitTest {
     }
 
     private List<Route> getListOfRoutes() {
-        Route routeUno = new Route("CSE Building");
+        Route routeUno = new Route("CSE Building").setCreatorDisplayName("hola");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2019,5,6);
         WalkStats stats = new WalkStats(1000, 90_000_000, 1.5,  calendar);
         Route routeDos = new Route("ECE Building")
                 .setStartingLocation("ECE Makerspace")
                 .setFavorite(true)
+                .setCreatorDisplayName("hola")
                 .setStats(stats);
         calendar = Calendar.getInstance();
         calendar.set(2019, 1, 11);
@@ -147,6 +153,7 @@ public class RoutesActivityUnitTest {
         Route routTres = new Route("Center Hall")
                 .setFavorite(false)
                 .setStartingLocation("Tu madre")
+                .setCreatorDisplayName("hola")
                 .setStats(stats);
 
         List<Route> routes = new ArrayList<>();
