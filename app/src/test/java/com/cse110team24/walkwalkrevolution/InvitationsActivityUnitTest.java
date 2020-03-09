@@ -9,37 +9,23 @@ import android.widget.ListView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
-import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -48,16 +34,16 @@ import static org.mockito.Mockito.doAnswer;
 @RunWith(AndroidJUnit4.class)
 public class InvitationsActivityUnitTest extends TestInjection {
 
-    ActivityScenario<InvitationsActivity> scenario;
-    SharedPreferences sp;
-    Button acceptBtn;
-    Button declineBtn;
-    ListView invitationsListView;
-    InvitationsDatabaseServiceObserver invitationsDbObserver;
+    private ActivityScenario<InvitationsActivity> scenario;
+    private SharedPreferences sp;
+    private Button acceptBtn;
+    private Button declineBtn;
+    private ListView invitationsListView;
+    private InvitationsDatabaseServiceObserver invitationsDbObserver;
+    private Invitation invitation;
     private List<Invitation> mInvitations = new ArrayList<>();
-    Invitation invitation;
-    String TOAST_SELECT_INVITATION = "Please select an invitation";
-    String TOAST_ALREADY_ON_TEAM = "You already have a team! You can only decline invitations";
+    private static final String TOAST_SELECT_INVITATION = "Please select an invitation";
+    private static final String TOAST_ALREADY_ON_TEAM = "You already have a team! You can only decline invitations";
 
     @Before
     public void setup() {
@@ -121,7 +107,7 @@ public class InvitationsActivityUnitTest extends TestInjection {
                     invitationsListView.getAdapter().getItemId(0));
             acceptBtn.performClick();
             assertEquals(aTestUser.teamUid(), testUser.teamUid());
-            assertEquals(ShadowToast.getTextOfLatestToast(), "welcome to " + invitation.fromName() + "'s team");
+            assertEquals("welcome to " + invitation.fromName() + "'s team", ShadowToast.getTextOfLatestToast());
         });
     }
 
