@@ -17,34 +17,51 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class InviteTeamToWalkActivity extends AppCompatActivity {
     private static final String TAG = "WWR_InviteTeamToWalkActivity";
 
-    private Route proposedRoute;
-    private String proposedBy;
-    private SimpleDateFormat dateTimeFormat;
-    private Date parsedDate;
+    private Route mProposedRoute;
+    private String mProposedBy;
+    private SimpleDateFormat mDateTimeFormat;
+    private Date mParsedDate;
 
-    private EditText dateEditText;
-    private EditText timeEditText;
+    private EditText mDateEditText;
+    private EditText mTimeEditText;
+    private Button mAmPmToggleBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_team_to_walk);
 
-        dateTimeFormat = new SimpleDateFormat("dd-MM-yyy HH:mm");
-        proposedRoute = (Route) getIntent().getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
-        proposedBy = getIntent().getStringExtra(IUser.USER_NAME_KEY);
+        mDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.US);
+        mProposedRoute = (Route) getIntent().getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
+        mProposedBy = getIntent().getStringExtra(IUser.USER_NAME_KEY);
         getUIElements();
     }
 
     private void getUIElements() {
-        dateEditText = findViewById(R.id.et_proposed_day_invite_team_to_walk_activity);
-        timeEditText = findViewById(R.id.et_proposed_time_invite_team_to_walk_activity);
+        mDateEditText = findViewById(R.id.et_proposed_day_invite_team_to_walk_activity);
+        mTimeEditText = findViewById(R.id.et_proposed_time_invite_team_to_walk_activity);
         Button sendToTeamBtn = findViewById(R.id.btn_send_invitation_to_team);
         setClickListenerForSend(sendToTeamBtn);
+        mAmPmToggleBtn = findViewById(R.id.btn_am_pm_toggle_invite_team_to_walk);
+        setClickListenerAmPmToggleButton();
+    }
+    private boolean amSelected() {
+        return mAmPmToggleBtn.getBackground().getConstantState().equals(getDrawable(R.drawable.ic_sunny_yellow_5dp).getConstantState());
+    }
+
+    private void setClickListenerAmPmToggleButton() {
+        mAmPmToggleBtn.setOnClickListener(v -> {
+            if (amSelected()) {
+                mAmPmToggleBtn.setBackground(getDrawable(R.drawable.ic_moon_black_5dp));
+            } else {
+                mAmPmToggleBtn.setBackground(getDrawable(R.drawable.ic_sunny_yellow_5dp));
+            }
+        });
     }
 
     private void setClickListenerForSend(Button sendToTeamBtn) {
@@ -56,8 +73,9 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
     }
 
     private boolean validateDateAndTime() {
-        String day = dateEditText.getText().toString();
-        String time = timeEditText.getText().toString();
+        String day = mDateEditText.getText().toString();
+        String time = mTimeEditText.getText().toString();
+        String ampm = getAmPmMarker();
         if (day.isEmpty()) {
             Utils.showToast(this, "Please enter a date", Toast.LENGTH_SHORT);
             return false;
@@ -65,16 +83,24 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
             Utils.showToast(this, "Please enter a time", Toast.LENGTH_SHORT);
             return false;
         }
-        dateTimeFormat.setLenient(false);
+        mDateTimeFormat.setLenient(false);
         day = day.replaceAll("/", "-");
         try {
-            parsedDate = dateTimeFormat.parse(day + " " + time);
-            Log.i(TAG, "validateDateAndTime: date parsed successfully: " + parsedDate);
+            mParsedDate = mDateTimeFormat.parse(day + " " + time + " " + ampm);
+            Log.i(TAG, "validateDateAndTime: date parsed successfully: " + mParsedDate);
         } catch (ParseException e) {
             Log.e(TAG, "validateDateAndTime: Error parsing date and time", e);
             return false;
         }
 
         return true;
+    }
+
+    private String getAmPmMarker() {
+        if (amSelected()) {
+            return "AM";
+        } else {
+            return "PM";
+        }
     }
 }
