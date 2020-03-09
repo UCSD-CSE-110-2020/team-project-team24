@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
+import com.cse110team24.walkwalkrevolution.ScheduledWalkActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InviteTeamMemberActivity;
 import com.cse110team24.walkwalkrevolution.R;
@@ -43,6 +44,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     private Button sendInviteBtn;
     private Button seeInvitationsBtn;
     private Button seeTeammateRoutesBtn;
+    private Button seeScheduledWalkBtn;
     private BottomNavigationView bottomNavigationView;
 
     private TeamsDatabaseService mDb;
@@ -114,17 +116,25 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam(), preferences);
         noTeamMessage.setVisibility(View.GONE);
         teammatesList.setAdapter(teammatesListViewAdapter);
+        seeScheduledWalkBtn = findViewById(R.id.btn_scheduled_walks);
     }
 
     private void setButtonClickListeners() {
         setInviteButtonOnClick();
         setBottomNavItemSelectedListener();
         setSeeTeamRoutesOnClick();
+        setSeeScheduledWalkOnClick();
     }
 
     private void setInviteButtonOnClick() {
         sendInviteBtn.setOnClickListener(view -> {
             launchInviteRouteActivity();
+        });
+    }
+
+    private void setSeeScheduledWalkOnClick() {
+        seeScheduledWalkBtn.setOnClickListener(view -> {
+            startActivity(new Intent(this, ScheduledWalkActivity.class));
         });
     }
 
