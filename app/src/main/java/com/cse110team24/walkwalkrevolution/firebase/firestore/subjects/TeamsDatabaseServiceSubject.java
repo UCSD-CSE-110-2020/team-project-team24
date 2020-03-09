@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.subjects;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
@@ -27,7 +28,7 @@ public interface TeamsDatabaseServiceSubject extends Subject<TeamsDatabaseServic
 
     /**
      * Notify this subject's observers that the requested team's walks data is ready to be read.
-     * <p>See also: {@link com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsTeamWalksObserver#onTeamWalksRetrieved(List)}</p>
+     * <p>See also: {@link TeamsTeamWalksObserver#onTeamWalksRetrieved(List)}</p>
      * @param walks the list of TeamWalks that was retrieved.
      */
     void notifyObserversTeamWalksRetrieved(List<TeamWalk> walks);

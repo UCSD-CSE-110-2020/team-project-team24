@@ -1,11 +1,11 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.TeamsDatabaseServiceSubject;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
@@ -80,7 +80,7 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
      * Query this service's provider database for up to teamWalkLimitCt amount of team walks,
      * in descending order by timestamp of day walk was proposed.
      *
-     * <p>On successful complete, all observers of type {@link com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsTeamWalksObserver}
+     * <p>On successful complete, all observers of type {@link TeamsTeamWalksObserver}
      * are notified with a call to {@link TeamsDatabaseServiceSubject#notifyObserversTeamWalksRetrieved(List)}</p>
      * @param teamUid the uid of the team whose walks are being requested
      * @param teamWalkLimitCt the amount of team walks to query from database.
