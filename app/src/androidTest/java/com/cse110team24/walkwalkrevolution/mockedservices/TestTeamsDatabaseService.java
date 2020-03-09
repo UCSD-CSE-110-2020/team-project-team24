@@ -30,6 +30,11 @@ public class TestTeamsDatabaseService implements TeamsDatabaseService {
      */
     public static String testTeamUid;
 
+    /**
+     * Set this when sending routes to an observer
+     */
+    public static List<Route> testTeamRoutes;
+
     @Override
     public String createTeamInDatabase(IUser user) {
         return testTeamUid;
@@ -62,7 +67,7 @@ public class TestTeamsDatabaseService implements TeamsDatabaseService {
 
     @Override
     public void getUserTeamRoutes(String teamUid, String currentUserDisplay, int routeLimitCount, DocumentSnapshot lastRoute) {
-
+        mObserver.onRoutesRetrieved(testTeamRoutes, null);
     }
 
     @Override
