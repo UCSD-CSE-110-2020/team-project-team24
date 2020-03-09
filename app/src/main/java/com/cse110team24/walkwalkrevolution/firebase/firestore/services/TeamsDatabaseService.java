@@ -69,8 +69,9 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
     void updateRoute(String teamUid, Route route);
 
     /**
-     * Update current Team Walk in database
+     * Update current Team Walk in database or create it if it DNE
      * @param teamWalk team walk that is being proposed, scheduled, cancelled, or withdrawn
+     * @return the team walk's uid whether it was created or updated
      */
-    void updateCurrentTeamWalk(TeamWalk teamWalk);
+    String updateCurrentTeamWalk(TeamWalk teamWalk);
 }

@@ -90,7 +90,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
                         .addProposedRoute(mProposedRoute)
                         .addTeamUid(mTeamUid)
                         .build();
-                db.updateCurrentTeamWalk(teamWalk);
+                teamWalk.setWalkUid(db.updateCurrentTeamWalk(teamWalk));
 
             } else {
                 Utils.showToast(this, "Please enter a valid date and time.", Toast.LENGTH_SHORT);

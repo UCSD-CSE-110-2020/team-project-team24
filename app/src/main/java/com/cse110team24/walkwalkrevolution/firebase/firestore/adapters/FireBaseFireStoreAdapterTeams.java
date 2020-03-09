@@ -252,7 +252,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     }
 
     @Override
-    public void updateCurrentTeamWalk(TeamWalk teamWalk) {
+    public String updateCurrentTeamWalk(TeamWalk teamWalk) {
         // TODO: 3/9/20 update in teams/{team}.teamWalk
         if (Utils.checkNotNull(teamWalk.getWalkUid())) {
             teamsCollection.document(teamWalk.getTeamUid())
@@ -267,17 +267,16 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                             // try creating it if failed
                         }
                     });
+            return teamWalk.getWalkUid();
         } else {
-            tryToCreateTeamWalkDoc(teamWalk);
+            return tryToCreateTeamWalkDoc(teamWalk);
         }
     }
 
-    private void tryToCreateTeamWalkDoc(TeamWalk teamWalk) {
+    private String tryToCreateTeamWalkDoc(TeamWalk teamWalk) {
         DocumentReference docRef = teamsCollection.document(teamWalk.getTeamUid())
                 .collection("teamWalks")
                 .document();
-        teamWalk.setWalkUid(docRef.getId());
-
         docRef.set(teamWalk.dataInMapForm()).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Log.i(TAG, "tryToCreateTeamWalkDoc: team walk document created");
@@ -285,6 +284,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                     Log.e(TAG, "tryToCreateTeamWalkDoc: error creating team walk document", task.getException());
                 }
             });
+        return docRef.getId();
     }
 
     private ITeam getTeamList(List<DocumentSnapshot> documents, String currentUserDisplayName) {
