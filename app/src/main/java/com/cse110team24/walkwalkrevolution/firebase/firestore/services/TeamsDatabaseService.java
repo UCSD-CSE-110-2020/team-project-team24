@@ -5,6 +5,7 @@ import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
@@ -74,4 +75,13 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
      * @return the team walk's uid whether it was created or updated
      */
     String updateCurrentTeamWalk(TeamWalk teamWalk);
+
+    /**
+     * Query this service's provider database for up to teamWalkLimitCt amount of team walks,
+     * in descending order by timestamp of day walk was proposed
+     * @param teamUid the uid of the team whose walks are being requested
+     * @param teamWalkLimitCt the amount of team walks to query from database.
+     * @return a Task with the result of this operation, to be handled by caller
+     */
+    Task<?> getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt);
 }

@@ -6,7 +6,6 @@ import android.util.Log;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.models.route.RouteBuilder;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
@@ -15,6 +14,7 @@ import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,7 +25,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -106,7 +105,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     public void getUserTeamRoutes(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute) {
         Log.d(TAG, "getUserTeamRoutes: teamUid " + teamUid + " currentDisplayName " + currentUserDisplayName);
         // return routes ordered by name, skipping routes that current user owns
-        Query routesQuery = getQuery(teamUid, currentUserDisplayName, routeLimitCount, lastRoute, 0);
+        Query routesQuery = getRoutesQuery(teamUid, currentUserDisplayName, routeLimitCount, lastRoute, 0);
 
         routesQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
@@ -145,7 +144,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     }
 
     // build the query as ordered by teammate name, limited by routeLimitCount. Skips current user via < and > clauses
-    private Query getQuery(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute, int order) {
+    private Query getRoutesQuery(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute, int order) {
         Query routesQuery = teamsCollection
                 .document(teamUid)
                 .collection(TEAM_ROUTES_SUB_COLLECTION_KEY);
@@ -164,7 +163,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     // get the team routes for user's with names greater than currentUserDisplayName
     private void getUserTeamRoutesGreaterThan(List<Route> routes, String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute) {
-        Query routesQuery = getQuery(teamUid, currentUserDisplayName, routeLimitCount, lastRoute, 1);
+        Query routesQuery = getRoutesQuery(teamUid, currentUserDisplayName, routeLimitCount, lastRoute, 1);
 
         routesQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
@@ -271,6 +270,14 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         } else {
             return tryToCreateTeamWalkDoc(teamWalk);
         }
+    }
+
+    @Override
+    public Task<?> getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt) {
+        Query query = teamsCollection.document(teamUid).collection("teamWalks")
+                .orderBy("proposedOn", Query.Direction.DESCENDING)
+                .limit(teamWalkLimitCt);
+        return query.get();
     }
 
     private String tryToCreateTeamWalkDoc(TeamWalk teamWalk) {
