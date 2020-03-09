@@ -95,8 +95,6 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
                 Utils.showToast(this, "Invitation sent", Toast.LENGTH_SHORT);
                 mDateEditText.setText("");
                 mTimeEditText.setText("");
-            } else {
-                Utils.showToast(this, "Please enter a valid date and time.", Toast.LENGTH_SHORT);
             }
         });
     }
@@ -124,6 +122,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
             Log.i(TAG, "validateDateAndTime: date parsed successfully: " + mParsedDate);
         } catch (ParseException e) {
             Log.e(TAG, "validateDateAndTime: Error parsing date and time", e);
+            Utils.showToast(this, "Please enter a valid date and time.", Toast.LENGTH_SHORT);
             return false;
         }
 

@@ -468,6 +468,9 @@ public class HomeActivity extends AppCompatActivity implements UsersUserDataObse
     public void onUserData(Map<String, Object> userDataMap) {
         if (userDataMap != null) {
             String teamUid = (String) userDataMap.get(IUser.TEAM_UID_KEY);
+            if (teamUid != null) {
+                mMessaging.subscribeToNotificationsTopic(teamUid);
+            }
             Utils.saveString(preferences, IUser.TEAM_UID_KEY, teamUid);
         }
     }
