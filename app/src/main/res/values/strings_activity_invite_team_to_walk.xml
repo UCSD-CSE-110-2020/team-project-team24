@@ -5,4 +5,5 @@
     <string name="hint_proposed_day_invite_team_to_walk">DD/MM/YY</string>
     <string name="hint_proposed_time_invite_team_to_walk">HH:MM</string>
     <string name="send_to_team_invite_team_to_walk">Send to Team</string>
+    <string name="menu_item_send_to_team">Propose to Team</string>
 </resources>

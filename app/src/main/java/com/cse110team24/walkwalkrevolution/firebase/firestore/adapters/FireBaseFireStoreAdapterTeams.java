@@ -11,6 +11,7 @@ import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
@@ -248,6 +249,11 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                 Log.e(TAG, "uploadRoute: error updating route.", task.getException());
             }
         });
+    }
+
+    @Override
+    public void updateCurrentTeamWalk(TeamWalk teamWalk) {
+        // TODO: 3/9/20 update in teams/{team}.teamWalk
     }
 
     private ITeam getTeamList(List<DocumentSnapshot> documents, String currentUserDisplayName) {

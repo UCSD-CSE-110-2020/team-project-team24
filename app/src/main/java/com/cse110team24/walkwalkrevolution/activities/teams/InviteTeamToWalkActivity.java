@@ -37,7 +37,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_team_to_walk);
 
-        mDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+        mDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.US);
         mProposedRoute = (Route) getIntent().getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
         mProposedBy = getIntent().getStringExtra(IUser.USER_NAME_KEY);
         getUIElements();

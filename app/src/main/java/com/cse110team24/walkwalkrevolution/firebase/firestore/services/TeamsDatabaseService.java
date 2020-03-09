@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.TeamsDatabaseServiceSubject;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -66,4 +67,10 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
      * @param route the route whose document is being updated in the specified team's routes
      */
     void updateRoute(String teamUid, Route route);
+
+    /**
+     * Update current Team Walk in database
+     * @param teamWalk team walk that is being proposed, scheduled, cancelled, or withdrawn
+     */
+    void updateCurrentTeamWalk(TeamWalk teamWalk);
 }

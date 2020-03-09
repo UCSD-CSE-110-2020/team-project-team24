@@ -13,8 +13,11 @@ public class TeamWalk {
     private Route mProposedRoute;
     private String mProposedBy;
     private Timestamp mProposedDateAndTime;
+    private String mTeamUid;
+    private TeamWalkStatus mStatus;
 
     private TeamWalk() {
+        mStatus = TeamWalkStatus.PROPOSED;
     }
 
     public TeamWalk(Route proposedRoute, String proposedBy, Timestamp proposedDateAndTime) {
@@ -43,6 +46,22 @@ public class TeamWalk {
         mProposedDateAndTime = proposedDateAndTime;
     }
 
+    private void setTeamUid(String teamUid) {
+        mTeamUid = teamUid;
+    }
+
+    private String getTeamUid() {
+        return mTeamUid;
+    }
+
+    private TeamWalkStatus getStatus() {
+        return mStatus;
+    }
+
+    private void setStatus(TeamWalkStatus status) {
+        mStatus = status;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -62,6 +81,18 @@ public class TeamWalk {
 
         public Builder addProposedDateAndTime(@NonNull Timestamp proposedDateAndTime) {
             mTeamWalk.mProposedDateAndTime = proposedDateAndTime;
+            return this;
+        }
+
+        public Builder addTeamUid(@NonNull String teamUid) {
+            mTeamWalk.setTeamUid(teamUid);
+            return this;
+        }
+
+        public Builder addStatus(TeamWalkStatus status) {
+            if (Utils.checkNotNull(status)) {
+                mTeamWalk.setStatus(status);
+            }
             return this;
         }
 
