@@ -6,6 +6,7 @@ import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.Timestamp;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,12 +18,16 @@ public class TeamWalk {
     private Timestamp mProposedDateAndTime;
     private String mTeamUid;
     private TeamWalkStatus mStatus;
+    private Timestamp mProposedOn;
+    private String mWalkUid;
 
     private TeamWalk() {
         mStatus = TeamWalkStatus.PROPOSED;
+        mProposedOn = new Timestamp(Calendar.getInstance().getTime());
     }
 
     public TeamWalk(Route proposedRoute, String proposedBy, Timestamp proposedDateAndTime) {
+        this();
         mProposedRoute = proposedRoute;
         mProposedBy = proposedBy;
         mProposedDateAndTime = proposedDateAndTime;
@@ -64,12 +69,21 @@ public class TeamWalk {
         mStatus = status;
     }
 
+    public String getWalkUid() {
+        return mWalkUid;
+    }
+
+    public void setWalkUid(String walkUid) {
+        mWalkUid = walkUid;
+    }
+
     public Map<String, Object> dataInMapForm() {
         Map<String, Object> data = new HashMap<>();
         data.put("proposedBy", mProposedBy);
         data.put("proposedDateAndTime", mProposedDateAndTime);
         data.put("proposedRoute", relevantRouteData(mProposedRoute));
         data.put("status", mStatus.toString());
+        data.put("proposedOn", mProposedOn);
         return data;
     }
 
