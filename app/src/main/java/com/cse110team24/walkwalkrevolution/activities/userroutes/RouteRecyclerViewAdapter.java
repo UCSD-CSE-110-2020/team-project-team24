@@ -104,6 +104,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
         public void bind(Route route) {
             launchRouteDetailsActivityOnClick(route);
             setInitialsColor(route);
+            checkFavorite(route.isFavorite());
             routeNameTv.setText(route.getTitle());
             WalkStats stats = route.getStats();
             if(stats == null) {
