@@ -16,6 +16,7 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -36,7 +37,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_team_to_walk);
 
-        mDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.US);
+        mDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
         mProposedRoute = (Route) getIntent().getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
         mProposedBy = getIntent().getStringExtra(IUser.USER_NAME_KEY);
         getUIElements();
@@ -68,12 +69,17 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         sendToTeamBtn.setOnClickListener(v -> {
             if (validateDateAndTime()) {
                 // TODO: 3/8/20 send the invitation
+                if (mParsedDate.getTime() < Calendar.getInstance().getTime().getTime()) {
+                    Utils.showToast(this, "Please select a date in the future.", Toast.LENGTH_LONG);
+                    return;
+                }
             }
         });
     }
 
     private boolean validateDateAndTime() {
         String day = mDateEditText.getText().toString();
+        day = reformatDate(day);
         String time = mTimeEditText.getText().toString();
         String ampm = getAmPmMarker();
         if (day.isEmpty()) {
@@ -94,6 +100,14 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private String reformatDate(String date) {
+        String[] dateArr = date.split("/");
+        if (dateArr.length == 3) {
+            return dateArr[1] + '/' + dateArr[0] + '/' + dateArr[2];
+        }
+        return date;
     }
 
     private String getAmPmMarker() {
