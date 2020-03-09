@@ -11,6 +11,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.cse110team24.walkwalkrevolution.activities.teams.TeamRoutesActivity;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsRoutesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
@@ -72,7 +73,7 @@ public class TeamRoutesActivityUnitTest extends TestInjection {
     private void answerWithTeamRoutes(DocumentSnapshot doc) {
         printIfNull("teams database service", teamsDatabaseService);
         Mockito.doAnswer(invocation -> {
-            observer.onRoutesRetrieved(testTeamRoutes, doc);
+            ((TeamsRoutesObserver )observer).onRoutesRetrieved(testTeamRoutes, doc);
             return invocation;
         }).when(teamsDatabaseService).getUserTeamRoutes(anyString(), anyString(), anyInt(), any());
     }

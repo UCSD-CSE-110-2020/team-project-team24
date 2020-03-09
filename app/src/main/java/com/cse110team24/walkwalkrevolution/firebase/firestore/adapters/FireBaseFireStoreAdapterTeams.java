@@ -4,6 +4,7 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore.adapters;
 import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsRoutesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsTeammatesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
@@ -350,7 +351,11 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     @Override
     public void notifyObserversTeamRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
-        observers.forEach(observer -> observer.onRoutesRetrieved(routes, lastRoute));
+        observers.forEach(observer -> {
+            if (observer instanceof TeamsRoutesObserver) {
+                ((TeamsRoutesObserver) observer).onRoutesRetrieved(routes, lastRoute);
+            }
+        });
     }
 
     @Override

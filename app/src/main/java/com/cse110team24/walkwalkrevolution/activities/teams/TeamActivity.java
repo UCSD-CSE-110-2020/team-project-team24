@@ -174,11 +174,6 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
 
     }
 
-    @Override
-    public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
-        // TODO: 3/6/20 ?
-    }
-
     private void showNoTeamToast() {
         Toast.makeText(this, "You don't have a team. Try sending an invitation!", Toast.LENGTH_LONG).show();
     }
