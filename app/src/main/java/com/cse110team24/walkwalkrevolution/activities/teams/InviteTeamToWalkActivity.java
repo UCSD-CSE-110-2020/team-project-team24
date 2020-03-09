@@ -73,10 +73,18 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
                     Utils.showToast(this, "Please select a date in the future.", Toast.LENGTH_LONG);
                     return;
                 }
+            } else {
+                Utils.showToast(this, "Please enter a valid date and time.", Toast.LENGTH_SHORT);
             }
         });
     }
 
+    /**
+     * Date must be in the [human] format dd/mm/yyyy
+     * Time must be in the [human] format hh:mm (12 hour time)
+     * side effect: parses date and time if valid into mParsedDate.
+     * @return true if both date and time match format
+     */
     private boolean validateDateAndTime() {
         String day = mDateEditText.getText().toString();
         day = reformatDate(day);
@@ -90,7 +98,6 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
             return false;
         }
         mDateTimeFormat.setLenient(false);
-        day = day.replaceAll("/", "-");
         try {
             mParsedDate = mDateTimeFormat.parse(day + " " + time + " " + ampm);
             Log.i(TAG, "validateDateAndTime: date parsed successfully: " + mParsedDate);
@@ -102,14 +109,16 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         return true;
     }
 
+    // reformats date from [human] format dd/mm/yyyy to parsable format mm-dd-yyyy
     private String reformatDate(String date) {
         String[] dateArr = date.split("/");
         if (dateArr.length == 3) {
-            return dateArr[1] + '/' + dateArr[0] + '/' + dateArr[2];
+            return dateArr[1] + '-' + dateArr[0] + '-' + dateArr[2];
         }
         return date;
     }
 
+    // checks the button's icon to determine if AM or PM time is selected
     private String getAmPmMarker() {
         if (amSelected()) {
             return "AM";
