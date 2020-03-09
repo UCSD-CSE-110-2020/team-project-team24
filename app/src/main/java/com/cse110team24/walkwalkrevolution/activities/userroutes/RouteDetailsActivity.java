@@ -94,7 +94,9 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void launchProposeTeamWalk() {
-        Intent intent = new Intent(this, InviteTeamToWalkActivity.class);
+        Intent intent = new Intent(this, InviteTeamToWalkActivity.class)
+            .putExtra(ROUTE_KEY, displayedRoute)
+            .putExtra(IUser.USER_NAME_KEY, Utils.getString(preferences, IUser.USER_NAME_KEY));
         startActivity(intent);
     }
 
