@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver, UsersDatabaseServiceObserver {
+public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
     private static final String TAG = "WWR_TeamActivity";
 
     private Button sendInviteBtn;
@@ -89,10 +89,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         mTeamUid = mPreferences.getString(IUser.TEAM_UID_KEY, null);
         if (mTeamUid == null) {
-            IUser currUser = FirebaseUserAdapter.builder()
-                    .addEmail(Utils.getString(preferences, IUser.EMAIL_KEY))
-                    .build();
-            uDb.getUserData(currUser);
+            showNoTeamToast();
         } else {
             Log.d(TAG, "getTeamUid: team uid found, retrieving team");
             seeTeammateRoutesBtn.setEnabled(true);
@@ -105,7 +102,6 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         mDb.register(this);
 
         uDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
-        uDb.register(this);
     }
 
     private void getUIFields() {
@@ -184,28 +180,5 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     private void showNoTeamToast() {
         Toast.makeText(this, "You don't have a team. Try sending an invitation!", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onUserData(Map<String, Object> userDataMap) {
-        if (userDataMap != null) {
-            mTeamUid = (String) userDataMap.get(IUser.TEAM_UID_KEY);
-            Utils.saveString(preferences, IUser.TEAM_UID_KEY, mTeamUid);
-            if (mTeamUid == null) {
-                showNoTeamToast();
-            } else {
-                getTeamUid();
-            }
-        }
-    }
-
-    @Override
-    public void onUserExists(IUser otherUser) {
-
-    }
-
-    @Override
-    public void onUserDoesNotExist() {
-
     }
 }
