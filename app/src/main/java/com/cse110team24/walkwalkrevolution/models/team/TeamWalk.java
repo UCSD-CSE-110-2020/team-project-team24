@@ -7,6 +7,7 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.Timestamp;
 
 import java.util.Date;
+import java.util.Map;
 
 public class TeamWalk {
 
@@ -46,20 +47,25 @@ public class TeamWalk {
         mProposedDateAndTime = proposedDateAndTime;
     }
 
-    private void setTeamUid(String teamUid) {
+    public void setTeamUid(String teamUid) {
         mTeamUid = teamUid;
     }
 
-    private String getTeamUid() {
+    public String getTeamUid() {
         return mTeamUid;
     }
 
-    private TeamWalkStatus getStatus() {
+    public TeamWalkStatus getStatus() {
         return mStatus;
     }
 
-    private void setStatus(TeamWalkStatus status) {
+    public void setStatus(TeamWalkStatus status) {
         mStatus = status;
+    }
+
+    public Map<String, Object> dataInMapForm() {
+
+        return null;
     }
 
     public static Builder builder() {

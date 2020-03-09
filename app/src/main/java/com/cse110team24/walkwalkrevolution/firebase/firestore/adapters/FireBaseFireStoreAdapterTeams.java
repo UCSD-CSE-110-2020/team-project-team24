@@ -254,6 +254,15 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     @Override
     public void updateCurrentTeamWalk(TeamWalk teamWalk) {
         // TODO: 3/9/20 update in teams/{team}.teamWalk
+        teamsCollection.document(teamWalk.getTeamUid())
+                .update("teamWalk", teamWalk.dataInMapForm())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.i(TAG, "updateCurrentTeamWalk: Success updating team walk");
+                    } else {
+                        Log.e(TAG, "updateCurrentTeamWalk: error updating team walk", task.getException());
+                    }
+                });
     }
 
     private ITeam getTeamList(List<DocumentSnapshot> documents, String currentUserDisplayName) {

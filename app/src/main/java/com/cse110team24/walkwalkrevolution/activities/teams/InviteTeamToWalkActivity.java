@@ -2,17 +2,24 @@ package com.cse110team24.walkwalkrevolution.activities.teams;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
+import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
+import com.google.firebase.Timestamp;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +32,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
 
     private Route mProposedRoute;
     private String mProposedBy;
+    private String mTeamUid;
     private SimpleDateFormat mDateTimeFormat;
     private Date mParsedDate;
 
@@ -40,6 +48,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         mDateTimeFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.US);
         mProposedRoute = (Route) getIntent().getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
         mProposedBy = getIntent().getStringExtra(IUser.USER_NAME_KEY);
+        mTeamUid = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE).getString(IUser.TEAM_UID_KEY, "");
         getUIElements();
     }
 
@@ -73,6 +82,16 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
                     Utils.showToast(this, "Please select a date in the future.", Toast.LENGTH_LONG);
                     return;
                 }
+
+                TeamsDatabaseService db = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
+                TeamWalk teamWalk = TeamWalk.builder()
+                        .addProposedBy(mProposedBy)
+                        .addProposedDateAndTime(new Timestamp(mParsedDate))
+                        .addProposedRoute(mProposedRoute)
+                        .addTeamUid(mTeamUid)
+                        .build();
+                db.updateCurrentTeamWalk(teamWalk);
+
             } else {
                 Utils.showToast(this, "Please enter a valid date and time.", Toast.LENGTH_SHORT);
             }
