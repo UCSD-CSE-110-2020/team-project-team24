@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_directions"
         android:layout_width="152dp"
         android:layout_height="79dp"
         android:layout_marginTop="325dp"

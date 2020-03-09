@@ -32,10 +32,21 @@
             android:label="@string/title_team_page" />
         <activity
             android:name=".ScheduledWalkActivity"
-            android:label="Scheduled Walks" />
-        <activity
-            android:name=".activities.invitations.InviteTeamMemberActivity"
+            android:label="Scheduled Walks" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <!-- Include the host attribute if you want your app to respond
+                     only to URLs with your app's domain. -->
+                <data android:scheme="http" android:host="www.maps.google.com" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- The BROWSABLE category is required to get links from web pages. -->
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.invitations.InviteTeamMemberActivity"
             android:label="@string/title_add_team_member" />
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
