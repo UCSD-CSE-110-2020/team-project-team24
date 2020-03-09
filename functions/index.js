@@ -86,7 +86,34 @@ exports.sendNewTeammateNotification = functions.firestore
         return "document was null or empty";
     });
 
-exports.sendTeamWalkUpdateNotification = functions.firestore
+exports.sendNewTeamWalkNotification = functions.firestore
+    .document('teams/{team}/teamWalks/{teamWalk}')
+    .onCreate((snap, context) => {
+          const document = snap.exists ? snap.data() : null;
+          if (document) {
+              var message = {
+                  notification: {
+                      title: document.proposedBy + ' has proposed a team walk',
+                      body: 'Click to see your team'
+                  },
+                  topic: context.params.team
+              };
+
+              return admin.messaging().send(message)
+                  .then((response) => {
+                      console.log('Successfully sent new team walk notification:', message);
+                      return response;
+                  })
+                  .catch((error) => {
+                      console.log('Error sending new team walk notification:', error);
+                      return error;
+                  });
+          }
+
+          return "document was null or empty";
+    });
+
+exports.sendUpdateTeamWalkNotification = functions.firestore
     .document('teams/{team}/teamWalks/{teamWalk}')
     .onUpdate((snap, context) => {
         const document = snap.exists ? snap.data() : null;
@@ -102,11 +129,11 @@ exports.sendTeamWalkUpdateNotification = functions.firestore
 
             return admin.messaging().send(message)
                 .then((response) => {
-                    console.log('Successfully sent new team notification:', message);
+                    console.log('Successfully sent team walk update notification:', message);
                     return response;
                 })
                 .catch((error) => {
-                    console.log('Error sending new team notification:', error);
+                    console.log('Error sending team walk update notification:', error);
                     return error;
                 });
         }
