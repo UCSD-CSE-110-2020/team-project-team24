@@ -257,12 +257,28 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         teamsCollection.document(teamWalk.getTeamUid())
                 .collection("teamWalks")
                 .document(teamWalk.getTeamUid())
-                .update("teamWalk", teamWalk.dataInMapForm())
+                .update(teamWalk.dataInMapForm())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.i(TAG, "updateCurrentTeamWalk: Success updating team walk");
                     } else {
-                        Log.e(TAG, "updateCurrentTeamWalk: error updating team walk", task.getException());
+                        Log.e(TAG, "updateCurrentTeamWalk: error updating team walk, will attempt creation", task.getException());
+                        // try creating it if failed
+                        tryToCreateTeamWalkDoc(teamWalk);
+                    }
+                });
+    }
+
+    private void tryToCreateTeamWalkDoc(TeamWalk teamWalk) {
+        teamsCollection.document(teamWalk.getTeamUid())
+                .collection("teamWalks")
+                .document(teamWalk.getTeamUid())
+                .set(teamWalk.dataInMapForm())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.i(TAG, "tryToCreateTeamWalkDoc: team walk document created");
+                    } else {
+                        Log.e(TAG, "tryToCreateTeamWalkDoc: error creating team walk document", task.getException());
                     }
                 });
     }
