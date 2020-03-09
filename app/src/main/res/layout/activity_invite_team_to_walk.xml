@@ -65,7 +65,7 @@
         android:translationZ="5dp"/>
 
     <Button
-        android:id="@+id/btn_send_invite"
+        android:id="@+id/btn_send_invitation_to_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/send_to_team_invite_team_to_walk"
