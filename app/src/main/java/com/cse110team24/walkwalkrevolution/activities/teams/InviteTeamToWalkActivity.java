@@ -34,7 +34,7 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_team_to_walk);
 
-        dateTimeFormat = new SimpleDateFormat("dd-MM-yyyHH:mm");
+        dateTimeFormat = new SimpleDateFormat("dd-MM-yyy HH:mm");
         proposedRoute = (Route) getIntent().getSerializableExtra(RouteDetailsActivity.ROUTE_KEY);
         proposedBy = getIntent().getStringExtra(IUser.USER_NAME_KEY);
         getUIElements();
@@ -66,11 +66,12 @@ public class InviteTeamToWalkActivity extends AppCompatActivity {
             return false;
         }
         dateTimeFormat.setLenient(false);
-        day.replaceAll("-", "\\");
+        day = day.replaceAll("/", "-");
         try {
-            parsedDate = dateTimeFormat.parse(day + time);
+            parsedDate = dateTimeFormat.parse(day + " " + time);
             Log.i(TAG, "validateDateAndTime: date parsed successfully: " + parsedDate);
         } catch (ParseException e) {
+            Log.e(TAG, "validateDateAndTime: Error parsing date and time", e);
             return false;
         }
 
