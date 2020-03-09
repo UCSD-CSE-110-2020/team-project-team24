@@ -11,9 +11,11 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.InvitationsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.services.InvitationsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
@@ -27,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ import static junit.framework.TestCase.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 
 @RunWith(AndroidJUnit4.class)
 public class InvitationsActivityUnitTest extends TestInjection {
@@ -49,13 +53,15 @@ public class InvitationsActivityUnitTest extends TestInjection {
     Button acceptBtn;
     Button declineBtn;
     ListView invitationsListView;
-    Context appContext;
+    InvitationsDatabaseServiceObserver invitationsDbObserver;
+    private List<Invitation> mInvitations = new ArrayList<>();
     Invitation invitation;
     String TOAST_SELECT_INVITATION = "Please select an invitation";
 
     @Before
     public void setup() {
         super.setup();
+        Mockito.when(mAuth.getUser()).thenReturn(aTestUser);
         sp = ApplicationProvider.getApplicationContext().getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         sp.edit().putString(IUser.EMAIL_KEY, aTestUser.getEmail())
                 .putString(IUser.USER_NAME_KEY, aTestUser.getDisplayName())
@@ -64,15 +70,25 @@ public class InvitationsActivityUnitTest extends TestInjection {
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.INVITATIONS)).thenReturn(invitationsDatabaseService);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamsDatabaseService);
         Mockito.when(msf.createMessagingService(Mockito.any(), eq(invitationsDatabaseService))).thenReturn(mMsg);
-        appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         invitation = Invitation.builder()
-                .addFromUser(aTestUser)
-                .addToEmail("amara@gmail.com")
-                .addToDisplayName("cheery")
-                .addTeamUid(aTestUser.teamUid())
+                .addFromUser(testUser)
+                .addToEmail("tester@gmail.com")
+                .addToDisplayName("Ival")
+                .addTeamUid(testUser.teamUid())
                 .build();
 
-        mMsg.sendInvitation(invitation);
+        doAnswer(invocation -> {
+            invitationsDbObserver = invocation.getArgument(0);
+            return invocation;
+        }).when(invitationsDatabaseService).register(any());
+
+        mInvitations.add(invitation);
+
+        doAnswer(invocation -> {
+            invitationsDbObserver.onUserPendingInvitations(mInvitations);
+            return null;
+        }).when(invitationsDatabaseService).getUserPendingInvitations(aTestUser);
+
     }
 
     private void getUIFields(Activity activity) {
@@ -98,10 +114,13 @@ public class InvitationsActivityUnitTest extends TestInjection {
         scenario = ActivityScenario.launch(InvitationsActivity.class);
         scenario.onActivity(activity -> {
             getUIFields(activity);
-            invitationsListView.setSelection(0);
+            invitationsListView.performItemClick(
+                    invitationsListView.getAdapter().getView(0, null, null),
+                    0,
+                    invitationsListView.getAdapter().getItemId(0));
             acceptBtn.performClick();
-            assertEquals(aTestUser.teamUid(), otherUser.teamUid());
-            //assertEquals(ShadowToast.getTextOfLatestToast(), "welcome to " + invitation.fromName() + "'s team");
+            assertEquals(aTestUser.teamUid(), testUser.teamUid());
+            assertEquals(ShadowToast.getTextOfLatestToast(), "welcome to " + invitation.fromName() + "'s team");
         });
     }
 
