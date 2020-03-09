@@ -78,10 +78,13 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
 
     /**
      * Query this service's provider database for up to teamWalkLimitCt amount of team walks,
-     * in descending order by timestamp of day walk was proposed
+     * in descending order by timestamp of day walk was proposed.
+     *
+     * <p>On successful complete, all observers of type {@link com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsTeamWalksObserver}
+     * are notified with a call to {@link TeamsDatabaseServiceSubject#notifyObserversTeamWalksRetrieved(List)}</p>
      * @param teamUid the uid of the team whose walks are being requested
      * @param teamWalkLimitCt the amount of team walks to query from database.
      * @return a Task with the result of this operation, to be handled by caller
      */
-    Task<?> getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt);
+    void getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt);
 }

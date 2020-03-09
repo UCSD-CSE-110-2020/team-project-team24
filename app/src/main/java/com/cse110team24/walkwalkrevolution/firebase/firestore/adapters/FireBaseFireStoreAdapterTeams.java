@@ -4,6 +4,7 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore.adapters;
 import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
@@ -11,6 +12,7 @@ import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.team.TeamWalkStatus;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
@@ -272,12 +274,39 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         }
     }
 
+    private TeamWalk buildTeamWalk(DocumentSnapshot documentSnapshot) {
+        // TODO: 3/9/20 get the route as well
+        TeamWalk teamWalk = TeamWalk.builder()
+                .addTeamUid(documentSnapshot.getString("teamUid"))
+                .addProposedBy(documentSnapshot.getString("proposedBy"))
+                .addProposedDateAndTime(documentSnapshot.getTimestamp("proposedDateAndTime"))
+                .addStatus(TeamWalkStatus.valueOf(documentSnapshot.getString("status")))
+                .build();
+
+        return teamWalk;
+    }
+
     @Override
-    public Task<?> getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt) {
+    public void getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt) {
         Query query = teamsCollection.document(teamUid).collection("teamWalks")
                 .orderBy("proposedOn", Query.Direction.DESCENDING)
                 .limit(teamWalkLimitCt);
-        return query.get();
+
+        query.get().addOnCompleteListener(task -> {
+
+            List<TeamWalk> teamWalks = new ArrayList<>();
+            if (task.isSuccessful() && Utils.checkNotNull(task.getResult())) {
+                Log.i(TAG, "getLatestTeamWalksDescendingOrder: success getting team walks");
+                QuerySnapshot result = task.getResult();
+                result.getDocuments().forEach(documentSnapshot -> {
+                    teamWalks.add(buildTeamWalk(documentSnapshot));
+                });
+            } else {
+                Log.e(TAG, "getLatestTeamWalksDescendingOrder: error getting team walks", task.getException());
+            }
+            notifyObserversTeamWalksRetrieved(teamWalks);
+
+        });
     }
 
     private String tryToCreateTeamWalkDoc(TeamWalk teamWalk) {
@@ -319,6 +348,15 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     @Override
     public void notifyObserversTeamRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
         observers.forEach(observer -> observer.onRoutesRetrieved(routes, lastRoute));
+    }
+
+    @Override
+    public void notifyObserversTeamWalksRetrieved(List<TeamWalk> walks) {
+        observers.forEach(observer -> {
+            if (observer instanceof TeamsTeamWalksObserver) {
+                ((TeamsTeamWalksObserver) observer).onTeamWalksRetrieved(walks);
+            }
+        });
     }
 
     @Override
