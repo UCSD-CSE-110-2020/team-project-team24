@@ -66,6 +66,9 @@
     <!--    In activity_routes.xml-->
     <string name="btn_see_teammates_routes">See Teammate Routes</string>
 
+    <!--    In activty_schedule_walk.xml-->
+    <string name="directions">directions</string>
+
     <!--    In item_route.xml-->
     <string name="fake_title">Canyon View Hiking Trail</string>
     <string name="fake_steps">22 steps</string>
