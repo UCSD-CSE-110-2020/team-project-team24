@@ -6,6 +6,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -59,6 +62,25 @@ public class RouteDetailsActivity extends AppCompatActivity {
         getRouteInfo();
         findUIElements();
         displayRouteInformation();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_details_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO: 3/8/20 detect click
+        switch (item.getItemId()) {
+            case R.id.action_propose_walk:
+                Log.i(TAG, "onOptionsItemSelected: click on propose walk");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void getRouteInfo() {
