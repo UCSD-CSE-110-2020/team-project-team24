@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,8 @@ import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+
+import java.util.Locale;
 
 public class RouteDetailsActivity extends AppCompatActivity {
     private static final String TAG = "WWR_RouteDetailsActivity";
@@ -93,6 +96,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         startWalkBtn = findViewById(R.id.btn_details_start_walk);
         detailsPromptTv = findViewById(R.id.tv_details_recent_walk_prompt);
         setStartWalkBtnOnClickListener();
+        setTVStartLocationClickListener();
     }
 
     private void displayRouteInformation() {
@@ -259,6 +263,22 @@ public class RouteDetailsActivity extends AppCompatActivity {
         startWalkBtn.setOnClickListener(view -> {
             returnToRoutesActivityForWalk();
         });
+    }
+    private void setTVStartLocationClickListener() {
+        if( startingLocTv.getVisibility() == View.VISIBLE ) {
+            startingLocTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //String uri = String.format(Locale.ENGLISH, "geo: %f, %f", latitude, longitude);
+                    String map = "http://maps.google.co.in/maps?q=" + startingLocTv.getText().toString();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+                    //Intent.setPackage("com.google.android.apps.maps");
+                    startActivity(intent);
+                }
+
+            });
+        }
+
     }
 
     private void returnToRoutesActivityForWalk() {
