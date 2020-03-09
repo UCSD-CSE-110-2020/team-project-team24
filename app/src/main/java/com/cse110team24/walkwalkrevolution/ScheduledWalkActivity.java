@@ -8,9 +8,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.models.route.RouteBuilder;
-import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
-import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 
 public class ScheduledWalkActivity extends AppCompatActivity {
 
@@ -23,10 +20,11 @@ public class ScheduledWalkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheduled_walk);
 
+        // TODO replace fake walk with real
         route = new Route("Tecolote Canyon walk")
             .setStartingLocation("Tecolote Canyon Trail Parking");
 
-        directionsBtn = findViewById(R.id.btn_directions);
+        directionsBtn = findViewById(R.id.btn_location);
         directionsBtn.setOnClickListener(v -> {
             launchMap();
         });
@@ -41,8 +39,11 @@ public class ScheduledWalkActivity extends AppCompatActivity {
         getStartingLocation();
         String map = "http://maps.google.co.in/maps?q=" + startingLocation;
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
-        //Intent.setPackage("com.google.android.apps.maps");
         startActivity(intent);
+    }
+
+    public String getStartingLoc() {
+        return startingLocation;
     }
 
 }
