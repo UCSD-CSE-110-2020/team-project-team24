@@ -9,4 +9,5 @@
     <string name="accept">Accept</string>
     <string name="no_walks_to_show">You have no proposed or scheduled walks</string>
     <string name="proposed_by">Proposed by: </string>
+    <string name="attendees">Attendees: </string>
 </resources>

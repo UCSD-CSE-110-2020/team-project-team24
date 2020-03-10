@@ -1,140 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    tools:context=".activities.teams.ScheduledProposedWalkActivity">
-
-    <TextView
-        android:id="@+id/no_proposed_or_scheduled_walks_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:visibility="gone"
-        android:text="@string/no_walks_to_show"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/schedule_propose_tv_proposed_by_prompt"
-        android:text="@string/proposed_by"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"
-        android:visibility="gone"
-        android:textSize="@dimen/details_size"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/schedule_propose_tv_proposed_by_display"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:textSize="@dimen/details_size"/>
-
-
-    <TextView
-        android:id="@+id/schedule_propose_tv_walk_name_prompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="15dp"
-        android:visibility="gone"
-        android:text="@string/walk_name"
-        android:textSize="@dimen/details_size"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/schedule_propose_tv_walk_name_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:visibility="gone"
-        android:hint="@string/unspecified"
-        android:textSize="@dimen/details_size" />
-
-    <TextView
-        android:id="@+id/schedule_propose_tv_starting_loc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="15dp"
-        android:visibility="gone"
-        android:text="@string/starting_loc"
-        android:textSize="@dimen/details_size"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/schedule_propose_tv_starting_loc_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:visibility="gone"
-        android:hint="@string/unspecified"
-        android:textSize="@dimen/details_size" />
-
-    <TextView
-        android:id="@+id/schedule_propose_tv_walk_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="15dp"
-        android:visibility="gone"
-        android:text="@string/date"
-        android:textSize="@dimen/details_size"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/schedule_propose_tv_walk_date_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:visibility="gone"
-        android:hint="@string/unspecified"
-        android:textSize="@dimen/details_size" />
-
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:id="@+id/schedule_propose_linear_layout_status_buttons"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:visibility="gone"
-        android:padding="20dp">
+        android:orientation="vertical"
+        tools:context=".activities.teams.ScheduledProposedWalkActivity">
 
-        <Button
-            android:id="@+id/schedule_propose_btn_accept"
+        <TextView
+            android:id="@+id/no_proposed_or_scheduled_walks_tv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="6dp"
-            android:layout_weight="1"
-            style="?android:attr/buttonBarButtonStyle"
-            android:text="@string/accept" />
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="@string/no_walks_to_show"
+            android:gravity="center"/>
 
-        <Button
-            android:id="@+id/schedule_propose_btn_decline_cant_come"
+        <TextView
+            android:id="@+id/schedule_propose_tv_proposed_by_prompt"
+            android:text="@string/proposed_by"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:layout_weight="1"
-            android:padding="5dp"
-            android:text="@string/decline_cant_come"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:textSize="@dimen/details_size"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/schedule_propose_btn_decline_not_interested"
+        <TextView
+            android:id="@+id/schedule_propose_tv_proposed_by_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="6dp"
-            android:padding="5dp"
-            android:text="@string/decline_not_interested"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:layout_marginStart="15dp"
+            android:hint="@string/unspecified"
+            android:textSize="@dimen/details_size"/>
+
+        <TextView
+            android:id="@+id/schedule_propose_tv_walk_name_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="15dp"
+            android:text="@string/walk_name"
+            android:textSize="@dimen/details_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/schedule_propose_tv_walk_name_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:hint="@string/unspecified"
+            android:textSize="@dimen/details_size" />
+
+        <TextView
+            android:id="@+id/schedule_propose_tv_starting_loc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="15dp"
+            android:text="@string/starting_loc"
+            android:textSize="@dimen/details_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/schedule_propose_tv_starting_loc_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:hint="@string/unspecified"
+            android:textSize="@dimen/details_size" />
+
+        <TextView
+            android:id="@+id/schedule_propose_tv_walk_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="15dp"
+            android:text="@string/date"
+            android:textSize="@dimen/details_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/schedule_propose_tv_walk_date_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:hint="@string/unspecified"
+            android:textSize="@dimen/details_size" />
+
+
+        <TextView
+            android:id="@+id/attendees_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/attendees"
+            android:textSize="@dimen/details_size"
+            android:textStyle="bold"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="15dp"/>
+
+        <TextView
+            android:id="@+id/attendees_display_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:hint="@string/unspecified"
+            android:textSize="@dimen/details_size" />
+
+        <LinearLayout
+            android:id="@+id/schedule_propose_linear_layout_status_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <Button
+                android:id="@+id/schedule_propose_btn_accept"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="@string/accept" />
+
+            <Button
+                android:id="@+id/schedule_propose_btn_decline_cant_come"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:text="@string/decline_cant_come"
+                style="?android:attr/buttonBarButtonStyle" />
+
+            <Button
+                android:id="@+id/schedule_propose_btn_decline_not_interested"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:padding="5dp"
+                android:text="@string/decline_not_interested"
+                style="?android:attr/buttonBarButtonStyle" />
+        </LinearLayout>
     </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>
