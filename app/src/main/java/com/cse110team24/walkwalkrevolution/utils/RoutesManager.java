@@ -81,7 +81,7 @@ public class RoutesManager {
      * @return a Route object (caution: returns null if not read)
      * @throws IOException if the file stream could not be created
      */
-    public static Route readSingle(String filename, Context context) throws IOException {
+    public static Route readSingle(String filename, Context context) {
         ObjectInputStream ois = getInputStream(filename, context);
         if (ois == null) {
             return null;
@@ -90,10 +90,14 @@ public class RoutesManager {
         Route route = null;
         try {
             route = (Route) ois.readObject();
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        ois.close();
+        try {
+            ois.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return route;
     }
 
