@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="40dp"
     tools:context=".activities.teams.ScheduledProposedWalkActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/walk_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/walk_name"
+        android:textSize="@dimen/details_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/walk_name_display_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size" />
+
+    <TextView
+        android:id="@+id/starting_loc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/starting_loc"
+        android:textSize="@dimen/details_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/starting_loc_display_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size" />
+
+    <TextView
+        android:id="@+id/walk_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/date"
+        android:textSize="@dimen/details_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/walk_date_display_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size" />
+
+    <TextView
+        android:id="@+id/walk_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/time"
+        android:textSize="@dimen/details_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/walk_time_display_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/unspecified"
+        android:textSize="@dimen/details_size" />
+
+</LinearLayout>

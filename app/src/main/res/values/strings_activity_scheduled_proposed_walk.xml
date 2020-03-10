@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="walk_name">Name of walk:</string>
+    <string name="starting_loc">Starting location:</string>
+    <string name="date">Date:</string>
+    <string name="unspecified">(unspecified)</string>
+    <string name="time">Time:</string>
+</resources>
