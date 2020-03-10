@@ -135,6 +135,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
+                android:textColor="@color/colorBlack"
                 style="?android:attr/buttonBarButtonStyle"
                 android:text="@string/accept" />
 
@@ -145,6 +146,7 @@
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
                 android:padding="5dp"
+                android:textColor="@color/colorBlack"
                 android:text="@string/decline_cant_come"
                 style="?android:attr/buttonBarButtonStyle" />
 
@@ -155,6 +157,7 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="6dp"
                 android:padding="5dp"
+                android:textColor="@color/colorBlack"
                 android:text="@string/decline_not_interested"
                 style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
