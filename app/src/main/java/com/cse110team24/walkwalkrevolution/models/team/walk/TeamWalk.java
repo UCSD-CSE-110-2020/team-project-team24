@@ -52,6 +52,10 @@ public class TeamWalk {
         mProposedDateAndTime = proposedDateAndTime;
     }
 
+    public Timestamp getProposedDateAndTime() {
+        return mProposedDateAndTime;
+    }
+
     public void setTeamUid(String teamUid) {
         mTeamUid = teamUid;
     }
