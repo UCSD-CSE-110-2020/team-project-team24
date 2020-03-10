@@ -3,6 +3,7 @@ package com.cse110team24.walkwalkrevolution.activities.userroutes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,10 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
@@ -150,28 +153,44 @@ public class RouteDetailsActivity extends AppCompatActivity {
         notesTv.setText(mDisplayedRoute.getNotes());
     }
 
+    // TODO: 3/9/20 DRY and SRP this mofo
     private void displayLatestWalkStats() {
-        if(mStats == null) {
-            recentStepsPromptTv.setVisibility(View.GONE);
-            recentStepsTv.setVisibility(View.GONE);
-            recentDistancePromptTv.setVisibility(View.GONE);
-            recentDistanceTv.setVisibility(View.GONE);
-            recentTimeElapsedPromptTv.setVisibility(View.GONE);
-            recentTimeElapsedTv.setVisibility(View.GONE);
-            detailsPromptTv.setVisibility(View.GONE);
-            neverWalkedPromptTv.setVisibility(View.VISIBLE);
-        } else if (mDisplayedRoute.getRouteUid() != null) {
-            // this will be true if looking at teammate's route and you walked it
-            if (Utils.fileExists(mDisplayedRoute.getRouteUid(), this)) {
-                mStats = RoutesManager.readSingle(mDisplayedRoute.getRouteUid(), this).getStats();
+        String currName = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE)
+                .getString(IUser.USER_NAME_KEY, "");
+        if (Utils.checkNotNull(mStats)) {
+
+            if (currName.equals(mDisplayedRoute.getCreatorName())) {
+                displayStats(mStats);
+            } else if (Utils.fileExists(mDisplayedRoute.getRouteUid(), this)) {
+                Route route = RoutesManager.readSingle(mDisplayedRoute.getRouteUid(), this);
+                if (route != null) {
+                    mStats = route.getStats();
+                    displayStats(mStats);
+                }
                 detailsPromptTv.setText(R.string.your_recent_walk);
             } else {
                 detailsPromptTv.setText(R.string.teamate_recent_walk);
                 neverWalkedPromptTv.setVisibility(View.VISIBLE);
+                displayStats(mStats);
             }
-            displayStats(mStats);
         } else {
-            displayStats(mStats);
+            if (Utils.fileExists(mDisplayedRoute.getRouteUid(), this)) {
+                Route route = RoutesManager.readSingle(mDisplayedRoute.getRouteUid(), this);
+                if (route != null) {
+                    mStats = route.getStats();
+                }
+                detailsPromptTv.setText(R.string.your_recent_walk);
+                displayStats(mStats);
+            } else {
+                recentStepsPromptTv.setVisibility(View.GONE);
+                recentStepsTv.setVisibility(View.GONE);
+                recentDistancePromptTv.setVisibility(View.GONE);
+                recentDistanceTv.setVisibility(View.GONE);
+                recentTimeElapsedPromptTv.setVisibility(View.GONE);
+                recentTimeElapsedTv.setVisibility(View.GONE);
+                detailsPromptTv.setVisibility(View.GONE);
+                neverWalkedPromptTv.setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -117,8 +117,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             checkWalkStats(stats, route);
         }
 
-        // display stats if:
-        //stats are not null
+        // TODO: 3/9/20 SRP and DRY this mofo
         private void checkWalkStats(WalkStats stats, Route route) {
             if (Utils.checkNotNull(stats)) {
                 if (routeBelongsToUser(route)) {
