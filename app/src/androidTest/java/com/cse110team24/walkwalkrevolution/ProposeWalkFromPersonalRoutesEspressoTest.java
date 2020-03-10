@@ -5,8 +5,8 @@ import android.view.WindowManager;
 
 import androidx.test.espresso.Root;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.activities.teams.InviteTeamToWalkActivity;
 import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
@@ -40,6 +40,8 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.CursorMatchers.withRowString;
@@ -55,6 +57,7 @@ import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
+@RunWith(AndroidJUnit4.class)
 public class ProposeWalkFromPersonalRoutesEspressoTest {
 
     @Rule
@@ -113,7 +116,7 @@ public class ProposeWalkFromPersonalRoutesEspressoTest {
         bottomNavigationItemView.perform(click());
 
         ViewInteraction activityRoutesMenu = onView(
-                allOf(withId(R.id.action_create_walk), withContentDescription("Propose to Team"), isDisplayed()));
+                allOf(withId(R.id.action_create_walk), withContentDescription("Create Route"), isDisplayed()));
         activityRoutesMenu.perform(click());
 
         ViewInteraction appCompatEditText6 = onView(
@@ -122,6 +125,12 @@ public class ProposeWalkFromPersonalRoutesEspressoTest {
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.btn_save_route), withText("SAVE"), isDisplayed()));
+
+        onView(withId(R.id.scroll_view_save))
+                .perform(swipeUp());
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {}
         appCompatButton2.perform(click());
 
         onView(withId(R.id.recycler_view)).perform(actionOnItemAtPosition(0, click()));

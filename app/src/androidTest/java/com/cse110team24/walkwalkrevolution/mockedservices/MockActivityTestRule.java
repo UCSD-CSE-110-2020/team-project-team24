@@ -35,6 +35,8 @@ public class  MockActivityTestRule<LoginActivity extends Activity> extends Activ
                 .remove(HomeActivity.HEIGHT_FT_KEY)
                 .remove(HomeActivity.HEIGHT_IN_KEY)
                 .remove(IUser.TEAM_UID_KEY)
+                .remove(IUser.USER_NAME_KEY)
+                .remove(IUser.EMAIL_KEY)
                 .apply();
         FirebaseApplicationWWR.setAuthServiceFactory(new TestAuth.TestAuthFactory());
         FirebaseApplicationWWR.setDatabaseServiceFactory(new TestDatabaseServiceFactory());
