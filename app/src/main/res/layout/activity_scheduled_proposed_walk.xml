@@ -19,20 +19,30 @@
         android:gravity="center"/>
 
     <TextView
-        android:id="@+id/schedule_proposed_by_prompt"
+        android:id="@+id/schedule_propose_tv_proposed_by_prompt"
         android:text="@string/proposed_by"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
         android:visibility="gone"
         android:textSize="@dimen/details_size"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/schedule_propose_tv_proposed_by_display"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:textSize="@dimen/details_size"/>
 
 
     <TextView
         android:id="@+id/schedule_propose_tv_walk_name_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="15dp"
         android:visibility="gone"
         android:text="@string/walk_name"
