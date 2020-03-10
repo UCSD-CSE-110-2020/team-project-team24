@@ -79,28 +79,35 @@
         android:padding="20dp">
 
         <Button
-            android:id="@+id/schedule_btn"
+            android:id="@+id/cancel_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="3dp"
+            android:layout_marginEnd="6dp"
             android:layout_weight="1"
-            android:text="@string/schedule" />
+            android:text="@string/cancel"
+            android:background="@drawable/my_button_bg"
+            style="?android:attr/borderlessButtonStyle"
+            />
 
         <Button
-            android:id="@+id/cancel_btn"
+            android:id="@+id/schedule_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="3dp"
+            android:layout_marginEnd="6dp"
             android:layout_weight="1"
-            android:text="@string/cancel" />
+            android:text="@string/schedule"
+            android:background="@drawable/my_button_bg"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/withdraw_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginRight="3dp"
-            android:text="@string/withdraw" />
+            android:layout_marginEnd="6dp"
+            android:text="@string/withdraw"
+            android:background="@drawable/my_button_bg"
+            style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>
 
 
