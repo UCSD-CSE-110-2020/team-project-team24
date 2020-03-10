@@ -5,4 +5,7 @@
     <string name="date">Date:</string>
     <string name="unspecified">(unspecified)</string>
     <string name="time">Time:</string>
+    <string name="schedule">Schedule</string>
+    <string name="cancel">Cancel</string>
+    <string name="withdraw">Withdraw</string>
 </resources>
