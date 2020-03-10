@@ -140,13 +140,11 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
         }
 
         private void getUserStatsForTeamRoute(WalkStats stats, Route route) {
-            try {
-                Route teammateRouteSavedStats = RoutesManager.readSingle(route.getRouteUid(), mContext);
+            Route teammateRouteSavedStats = RoutesManager.readSingle(route.getRouteUid(), mContext);
+            if (Utils.checkNotNull(teammateRouteSavedStats)) {
                 stats.setDistance(teammateRouteSavedStats.getStats().getDistance());
                 stats.setSteps(teammateRouteSavedStats.getStats().getSteps());
                 stats.setDateCompleted(teammateRouteSavedStats.getStats().getDateCompleted());
-            } catch (IOException e) {
-                Log.e(TAG, "getUserStatsForTeamRoute: error getting saved team route", e);
             }
         }
 

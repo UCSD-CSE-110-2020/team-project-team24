@@ -5,7 +5,7 @@
     <string name="unspecified">(unspecified)</string>
     <string name="route_env"><u>Environment Details</u></string>
     <string name="your_recent_walk"><u>Your Most Recent Walk</u></string>
-    <string name="teamate_recent_walk"><u>Teammate's Most Recent Walk</u></string>
+    <string name="teamate_recent_walk"><u>Teammate\'s Most Recent Walk</u></string>
     <string name="never_walked">You have never gone on this walk</string>
     <string name="note_details"><u>Notes</u></string>
 

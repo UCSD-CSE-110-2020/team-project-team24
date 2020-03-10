@@ -106,12 +106,7 @@ public class RoutesManager {
      * @return a route object if a latest route exists or null otherwise
      */
     public static Route readLatest(String filename, Context context) {
-        Route latest = null;
-        try {
-            latest = readSingle(filename, context);
-        } catch (IOException e) {}
-
-        return latest;
+        return readSingle(filename, context);
     }
 
     public static void replaceInList(Route route, int idx, String listFilename, Context context) throws IOException{
