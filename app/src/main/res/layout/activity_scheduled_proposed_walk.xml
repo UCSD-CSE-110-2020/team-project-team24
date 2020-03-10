@@ -98,7 +98,7 @@
 
 
     <LinearLayout
-        android:id="@+id/schedule_propose_btns_accept_decline"
+        android:id="@+id/schedule_propose_linear_layout_status_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -112,6 +112,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle"
             android:text="@string/accept" />
 
         <Button

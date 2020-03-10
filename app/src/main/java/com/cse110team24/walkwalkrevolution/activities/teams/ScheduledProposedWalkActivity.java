@@ -105,8 +105,10 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
         // current user proposed the walk
         if (mCurrentTeamWalk.getProposedBy().equals(mCurrentUser.getDisplayName())) {
+            Log.i(TAG, "displayAppropriateUIViewsForUser: user proposed route");
             displayProposerUIViews();
         } else {
+            Log.i(TAG, "displayAppropriateUIViewsForUser: user was invited to route");
             displayTeammateUIViews();
         }
     }
@@ -116,9 +118,36 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void displayTeammateUIViews() {
-        LinearLayout teammateBtns = findViewById(R.id.schedule_propose_btns_accept_decline);
-        teammateBtns.setVisibility(View.VISIBLE);
+        LinearLayout statusButtonsLayout = findViewById(R.id.schedule_propose_linear_layout_status_buttons);
+        statusButtonsLayout.setVisibility(View.VISIBLE);
+        addClickListenersTeammateButtons();
         displayProposedByViews();
+    }
+
+    private void addClickListenersTeammateButtons() {
+        Button acceptBtn = findViewById(R.id.schedule_propose_btn_accept);
+        acceptBtn.setOnClickListener(v -> acceptBtnOnClickListener());
+
+        Button declineReasonTimeBtn = findViewById(R.id.schedule_propose_btn_decline_cant_come);
+        declineReasonTimeBtn.setOnClickListener(v -> declineReasonTimeBtnOnClickListener());
+
+        Button declineReasonBadBtn = findViewById(R.id.schedule_propose_btn_decline_not_interested);
+        declineReasonBadBtn.setOnClickListener(v -> declineReasonBadBtnOnClickListener());
+    }
+
+    // TODO: 3/10/20 change status to accept
+    private void acceptBtnOnClickListener() {
+
+    }
+
+    // TODO: 3/10/20 change status to declined due to time
+    private void declineReasonTimeBtnOnClickListener() {
+
+    }
+
+    // TODO: 3/10/20 change status to declined due to not good route
+    private void declineReasonBadBtnOnClickListener() {
+
     }
 
     private void displayProposedByViews() {
