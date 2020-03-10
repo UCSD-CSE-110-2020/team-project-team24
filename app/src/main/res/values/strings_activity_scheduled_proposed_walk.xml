@@ -5,7 +5,7 @@
     <string name="date">Date:</string>
     <string name="unspecified">(unspecified)</string>
     <string name="time">Time:</string>
-    <string name="schedule">Schedule</string>
-    <string name="cancel">Cancel</string>
-    <string name="withdraw">Withdraw</string>
+    <string name="decline_cant_come">Can\'t make it</string>
+    <string name="decline_not_interested">Not interested</string>
+    <string name="accept">Accept</string>
 </resources>

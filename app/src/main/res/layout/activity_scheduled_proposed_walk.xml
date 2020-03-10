@@ -5,7 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="40dp"
+    android:layout_marginTop="40dp"
+    android:layout_marginStart="10dp"
     tools:context=".activities.teams.ScheduledProposedWalkActivity">
 
     <TextView
@@ -13,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:layout_marginStart="15dp"
         android:text="@string/walk_name"
         android:textSize="@dimen/details_size"
         android:textStyle="bold" />
@@ -21,6 +23,7 @@
         android:id="@+id/schedule_propose_tv_walk_name_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:hint="@string/unspecified"
         android:textSize="@dimen/details_size" />
 
@@ -29,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginStart="15dp"
         android:text="@string/starting_loc"
         android:textSize="@dimen/details_size"
         android:textStyle="bold" />
@@ -37,6 +41,7 @@
         android:id="@+id/schedule_propose_tv_starting_loc_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:hint="@string/unspecified"
         android:textSize="@dimen/details_size" />
 
@@ -45,6 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginStart="15dp"
         android:text="@string/date"
         android:textSize="@dimen/details_size"
         android:textStyle="bold" />
@@ -53,6 +59,7 @@
         android:id="@+id/schedule_propose_tv_walk_date_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:hint="@string/unspecified"
         android:textSize="@dimen/details_size" />
 
@@ -61,15 +68,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginStart="15dp"
         android:text="@string/time"
         android:textSize="@dimen/details_size"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/schedule_propse_tv_walk_time_display"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/unspecified"
+        android:layout_marginStart="15dp"
         android:textSize="@dimen/details_size" />
 
     <LinearLayout
@@ -79,33 +88,33 @@
         android:padding="20dp">
 
         <Button
-            android:id="@+id/cancel_btn"
+            android:id="@+id/accept_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
-            android:text="@string/cancel"
+            android:text="@string/accept"
             android:background="@drawable/my_button_bg"
             style="?android:attr/borderlessButtonStyle"
             />
 
         <Button
-            android:id="@+id/schedule_btn"
+            android:id="@+id/decline_cant_come_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
-            android:text="@string/schedule"
+            android:text="@string/decline_cant_come"
             android:background="@drawable/my_button_bg"
             style="?android:attr/borderlessButtonStyle"/>
 
         <Button
-            android:id="@+id/withdraw_btn"
+            android:id="@+id/decline_not_interested_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
-            android:text="@string/withdraw"
+            android:text="@string/decline_not_interested"
             android:background="@drawable/my_button_bg"
             style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>
