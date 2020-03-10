@@ -95,13 +95,8 @@ public class RoutesManagerUnitTest extends TestInjection {
             } catch (IOException e) {
                 fail();
             }
-
-            try {
-                Route readRoute = RoutesManager.readSingle(TEST_FILE_SINGLE, context);
-                assertEquals(new Route(title), readRoute);
-            } catch (IOException e) {
-                fail();
-            }
+            Route readRoute = RoutesManager.readSingle(TEST_FILE_SINGLE, context);
+            assertEquals(new Route(title), readRoute);
         });
     }
 
@@ -115,13 +110,8 @@ public class RoutesManagerUnitTest extends TestInjection {
             } catch (IOException e) {
                 fail();
             }
-
-            try {
-                Route readRoute = RoutesManager.readSingle(TEST_FILE_SINGLE, context);
-                assertEquals(route, readRoute);
-            } catch (IOException e) {
-                fail();
-            }
+            Route readRoute = RoutesManager.readSingle(TEST_FILE_SINGLE, context);
+            assertEquals(route, readRoute);
         });
     }
 
