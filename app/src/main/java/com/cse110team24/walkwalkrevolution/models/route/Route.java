@@ -200,7 +200,7 @@ public class Route implements Serializable, Comparable<Route> {
         @Override
         public RouteBuilder addFieldsFromMap(Map<String, Object> data) {
             mToBuild.setTitle(Utils.getValueOrNull("title", data));
-            mToBuild.setEnvironment(Utils.getValueOrNull("startingLocation", data));
+            mToBuild.setStartingLocation(Utils.getValueOrNull("startingLocation", data));
             return this;
         }
 
