@@ -127,6 +127,11 @@ public class TeamWalk {
             return this;
         }
 
+        public Builder addWalkUid(String walkUid) {
+            mTeamWalk.setWalkUid(walkUid);
+            return this;
+        }
+
         public TeamWalk build() {
             if (Utils.checkNotNull(mTeamWalk.mProposedBy)
                     && Utils.checkNotNull(mTeamWalk.mProposedDateAndTime)

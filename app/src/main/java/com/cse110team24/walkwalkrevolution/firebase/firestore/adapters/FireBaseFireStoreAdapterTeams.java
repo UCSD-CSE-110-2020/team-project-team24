@@ -296,6 +296,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                 .addTeamUid(documentSnapshot.getString("teamUid"))
                 .addProposedBy(documentSnapshot.getString("proposedBy"))
                 .addProposedDateAndTime(documentSnapshot.getTimestamp("proposedDateAndTime"))
+                .addWalkUid(documentSnapshot.getId())
                 .addStatus(TeamWalkStatus.valueOf(documentSnapshot.getString("status")))
                 .build();
 
@@ -342,30 +343,26 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     @Override
     public void changeTeammateStatus(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus) {
         // teams/{team}/teamWalks/{teamWalk}/teamStatus/{teammate}
-        mTeamsCollection
+        DocumentReference teammateStatusDocument = mTeamsCollection
                 .document(user.teamUid())
                 .collection("teamWalks")
                 .document(teamWalk.getWalkUid())
                 .collection("teamStatus")
-                .document(user.documentKey())
+                .document(user.documentKey());
+        teammateStatusDocument
                 .update(changedStatus.dataInMapForm()).addOnCompleteListener(task -> {
 
                     if (task.isSuccessful()) {
                         Log.i(TAG, "changeTeammateStatus: success updating teammate status");
                     } else {
-                        tryToSetTeammateStatus(user, teamWalk, changedStatus);
+                        tryToSetTeammateStatus(user, teamWalk, changedStatus, teammateStatusDocument);
                     }
         });
 
     }
 
-    private void tryToSetTeammateStatus(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus) {
-        mTeamsCollection
-                .document(user.teamUid())
-                .collection("teamWalks")
-                .document(teamWalk.getWalkUid())
-                .collection("teamStatus")
-                .document(user.documentKey())
+    private void tryToSetTeammateStatus(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus, DocumentReference statusDocument) {
+        statusDocument
                 .set(changedStatus.dataInMapForm())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
