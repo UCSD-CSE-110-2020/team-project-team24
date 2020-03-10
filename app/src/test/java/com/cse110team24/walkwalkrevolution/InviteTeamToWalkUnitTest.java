@@ -11,7 +11,6 @@ import com.cse110team24.walkwalkrevolution.activities.teams.InviteTeamToWalkActi
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.models.route.RouteBuilder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import org.junit.Before;
@@ -36,7 +35,6 @@ public class InviteTeamToWalkUnitTest extends TestInjection {
     private Button sendBtn;
 
     private ActivityScenario<InviteTeamToWalkActivity> scenario;
-    private SharedPreferences sp;
     private static final String FAKE_DATE = "03/09/2050";
     private static final String PAST_DATE = "01/01/1990";
     private static final String FAKE_TIME = "08:00";
@@ -50,8 +48,8 @@ public class InviteTeamToWalkUnitTest extends TestInjection {
     @Before
     public void setup() {
         super.setup();
-        Mockito.when(mAuth.getUser()).thenReturn(aTestUser);
-        sp = ApplicationProvider.getApplicationContext().getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
+        Mockito.when(mAuth.getUser()).thenReturn(testUser);
+        SharedPreferences sp = ApplicationProvider.getApplicationContext().getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         sp.edit().putString(IUser.EMAIL_KEY, testUser.getEmail())
                 .putString(IUser.USER_NAME_KEY, testUser.getDisplayName())
                 .putString(IUser.TEAM_UID_KEY, testUser.teamUid())
@@ -149,7 +147,7 @@ public class InviteTeamToWalkUnitTest extends TestInjection {
             dateEt.setText(FAKE_DATE);
             timeEt.setText(FAKE_TIME);
             sendBtn.performClick();
-//            Mockito.verify(teamsDatabaseService).updateCurrentTeamWalk(any());
+            Mockito.verify(teamsDatabaseService).updateCurrentTeamWalk(any());
             assertEquals(TOAST_INVITATION_SENT, ShadowToast.getTextOfLatestToast());
         });
     }
