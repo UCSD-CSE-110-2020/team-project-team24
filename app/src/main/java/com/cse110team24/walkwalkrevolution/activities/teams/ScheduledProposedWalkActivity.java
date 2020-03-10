@@ -118,7 +118,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void displayProposerUIViews() {
-
+        // TODO: 3/10/20 dispaly schedule/cancel/withdraw buttons
     }
 
     private void displayTeammateUIViews() {
@@ -133,15 +133,15 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
         acceptBtn = findViewById(R.id.schedule_propose_btn_accept);
         acceptBtn.setEnabled(true);
-        acceptBtn.setOnClickListener(v -> acceptBtnOnClickListener());
+        acceptBtn.setOnClickListener(v -> updateStatus(TeammateStatus.ACCEPTED));
 
         declineCannotMakeItBtn = findViewById(R.id.schedule_propose_btn_decline_cant_come);
         declineCannotMakeItBtn.setEnabled(true);
-        declineCannotMakeItBtn.setOnClickListener(v -> declineReasonTimeBtnOnClickListener());
+        declineCannotMakeItBtn.setOnClickListener(v -> updateStatus(TeammateStatus.DECLINED_SCHEDULING_CONFLICT));
 
         declineNotInterestedBtn = findViewById(R.id.schedule_propose_btn_decline_not_interested);
         declineNotInterestedBtn.setEnabled(true);
-        declineNotInterestedBtn.setOnClickListener(v -> declineReasonBadBtnOnClickListener());
+        declineNotInterestedBtn.setOnClickListener(v -> updateStatus(TeammateStatus.DECLINED_NOT_GOOD));
     }
 
     private void highLightCurrentStatusButton() {
@@ -162,6 +162,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         }
     }
 
+    // updates the teammate's status for the latest walk locally and in the database
     private void updateStatus(TeammateStatus newStatus) {
         mCurrentUserStatus = TeammateStatus.get(mPreferences.getString(IUser.STATUS_TEAM_WALK, ""));
         if (mCurrentUserStatus == newStatus) {
@@ -175,18 +176,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         }
     }
 
-    private void acceptBtnOnClickListener() {
-        updateStatus(TeammateStatus.ACCEPTED);
-    }
-
-    private void declineReasonTimeBtnOnClickListener() {
-        updateStatus(TeammateStatus.DECLINED_SCHEDULING_CONFLICT);
-    }
-
-    private void declineReasonBadBtnOnClickListener() {
-        updateStatus(TeammateStatus.DECLINED_NOT_GOOD);
-    }
-
+    // not for proposer
     private void displayProposedByViews() {
         findViewById(R.id.schedule_propose_tv_proposed_by_prompt).setVisibility(View.VISIBLE);
         TextView proposedByDisplayTv = findViewById(R.id.schedule_propose_tv_proposed_by_display);
@@ -194,6 +184,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         proposedByDisplayTv.setText(mCurrentTeamWalk.getProposedBy());
     }
 
+    // for everyone
     private void displayCommonUIViews() {
         Route proposedRoute = mCurrentTeamWalk.getProposedRoute();
         displayRouteDetails(proposedRoute);
