@@ -5,8 +5,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:layout_marginTop="40dp"
-    android:layout_marginStart="10dp"
     tools:context=".activities.teams.ScheduledProposedWalkActivity">
 
     <TextView
@@ -109,7 +107,7 @@
         android:padding="20dp">
 
         <Button
-            android:id="@+id/accept_btn"
+            android:id="@+id/schedule_propose_btn_accept"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="6dp"
@@ -117,7 +115,7 @@
             android:text="@string/accept" />
 
         <Button
-            android:id="@+id/decline_cant_come_btn"
+            android:id="@+id/schedule_propose_btn_decline_cant_come"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
@@ -126,7 +124,7 @@
             android:text="@string/decline_cant_come" />
 
         <Button
-            android:id="@+id/decline_not_interested_btn"
+            android:id="@+id/schedule_propose_btn_decline_not_interested"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
