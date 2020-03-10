@@ -1,6 +1,8 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,9 +51,6 @@ public class RoutesActivityUnitTest extends TestInjection {
     private TextView firstTv;
     private TextView thirdTv;
     private FloatingActionButton fab;
-    private TextView previouslyWalkedMarkFirstTV;
-    private TextView previouslyWalkedMarkSecondTV;
-
 
     ActivityScenario<RoutesActivity> scenario;
 
@@ -90,21 +90,6 @@ public class RoutesActivityUnitTest extends TestInjection {
             getUIFields(activity);
             assertEquals(activity.getDrawable(R.drawable.ic_star_border_black_24dp).getConstantState(), secondBtn.getBackground().getConstantState());
             assertEquals(activity.getDrawable(R.drawable.ic_star_yellow_24dp).getConstantState(), thirdBtn.getBackground().getConstantState());
-        });
-    }
-    @Test
-    public void previouslyWalkedMarkSet() {
-        scenario.onActivity(activity -> {
-            getUIFields(activity);
-            assertEquals(View.VISIBLE, previouslyWalkedMarkSecondTV.getVisibility());
-        });
-    }
-
-    @Test
-    public void previouslyWalkedNotMarkSet() {
-        scenario.onActivity(activity -> {
-           getUIFields(activity);
-           assertEquals(View.INVISIBLE, previouslyWalkedMarkFirstTV.getVisibility());
         });
     }
 
@@ -152,26 +137,26 @@ public class RoutesActivityUnitTest extends TestInjection {
 
         secondBtn = secondView.findViewById(R.id.btn_routes_favorite);
         thirdBtn = thirdView.findViewById(R.id.btn_routes_favorite);
-
-        previouslyWalkedMarkFirstTV = firstView.findViewById(R.id.tv_previously_walked_checkmark);
-        previouslyWalkedMarkSecondTV = secondView.findViewById(R.id.tv_previously_walked_checkmark);
-
     }
 
     private List<Route> getListOfRoutes() {
-        Route routeUno = new Route("CSE Building").setCreatorDisplayName("hola");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2019,5,6);
         WalkStats stats = new WalkStats(1000, 90_000_000, 1.5,  calendar);
+
+        Route routeUno = new Route("CSE Building").setCreatorDisplayName("hola").setRouteUid("CSE");
         Route routeDos = new Route("ECE Building")
+                .setRouteUid("ECE")
                 .setStartingLocation("ECE Makerspace")
                 .setFavorite(true)
                 .setCreatorDisplayName("hola")
                 .setStats(stats);
+
         calendar = Calendar.getInstance();
         calendar.set(2019, 1, 11);
         stats = new WalkStats(500, 90_000, 2.0, calendar);
         Route routTres = new Route("Center Hall")
+                .setRouteUid("CENTRE")
                 .setFavorite(false)
                 .setStartingLocation("Tu madre")
                 .setCreatorDisplayName("hola")
@@ -183,6 +168,5 @@ public class RoutesActivityUnitTest extends TestInjection {
         routes.add(routTres);
         return routes;
     }
-
 
 }
