@@ -2,7 +2,6 @@
 <ScrollView xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
@@ -16,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="25sp"
+            android:visibility="gone"
             android:text="@string/no_walks_to_show"
             android:gravity="center"/>
 
@@ -27,6 +27,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="15dp"
             android:textSize="@dimen/details_size"
+            android:visibility="gone"
             android:textStyle="bold" />
 
         <TextView
@@ -35,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:hint="@string/unspecified"
+            android:visibility="gone"
             android:textSize="@dimen/details_size"/>
 
         <TextView
@@ -45,6 +47,7 @@
             android:layout_marginStart="15dp"
             android:text="@string/walk_name"
             android:textSize="@dimen/details_size"
+            android:visibility="gone"
             android:textStyle="bold" />
 
         <TextView
@@ -53,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:hint="@string/unspecified"
+            android:visibility="gone"
             android:textSize="@dimen/details_size" />
 
         <TextView
@@ -63,6 +67,7 @@
             android:layout_marginStart="15dp"
             android:text="@string/starting_loc"
             android:textSize="@dimen/details_size"
+            android:visibility="gone"
             android:textStyle="bold" />
 
         <TextView
@@ -71,6 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:hint="@string/unspecified"
+            android:visibility="gone"
             android:textSize="@dimen/details_size" />
 
         <TextView
@@ -81,6 +87,7 @@
             android:layout_marginStart="15dp"
             android:text="@string/date"
             android:textSize="@dimen/details_size"
+            android:visibility="gone"
             android:textStyle="bold" />
 
         <TextView
@@ -89,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:hint="@string/unspecified"
+            android:visibility="gone"
             android:textSize="@dimen/details_size" />
 
 
@@ -100,6 +108,7 @@
             android:textSize="@dimen/details_size"
             android:textStyle="bold"
             android:layout_marginTop="40dp"
+            android:visibility="gone"
             android:layout_marginStart="15dp"/>
 
         <TextView
@@ -108,6 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:hint="@string/unspecified"
+            android:visibility="gone"
             android:textSize="@dimen/details_size" />
 
         <LinearLayout
@@ -116,6 +126,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
+            android:visibility="gone"
             android:padding="20dp">
 
             <Button
