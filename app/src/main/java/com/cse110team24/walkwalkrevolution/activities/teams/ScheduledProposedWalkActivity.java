@@ -129,7 +129,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
     private void addClickListenersTeammateButtons() {
         mCurrentUserStatus = TeammateStatus.get(mPreferences.getString(IUser.STATUS_TEAM_WALK, ""));
-        highLightCurrentStatusButton();
 
         acceptBtn = findViewById(R.id.schedule_propose_btn_accept);
         acceptBtn.setEnabled(true);
@@ -142,22 +141,26 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         declineNotInterestedBtn = findViewById(R.id.schedule_propose_btn_decline_not_interested);
         declineNotInterestedBtn.setEnabled(true);
         declineNotInterestedBtn.setOnClickListener(v -> updateStatus(TeammateStatus.DECLINED_NOT_GOOD));
+
+        highLightCurrentStatusButton();
     }
 
     private void highLightCurrentStatusButton() {
         if(mCurrentUserStatus == null)
             return;
-
+        acceptBtn.setTextColor(getColor(R.color.colorBlack));
+        declineNotInterestedBtn.setTextColor(getColor(R.color.colorBlack));
+        declineCannotMakeItBtn.setTextColor(getColor(R.color.colorBlack));
         switch (mCurrentUserStatus) {
             case ACCEPTED:
-                // TODO: 3/10/20 highlight accepted button
+                acceptBtn.setTextColor(getColor(R.color.colorAccent));
                 break;
             case DECLINED_NOT_GOOD:
-                // TODO: 3/10/20 highlight declined not good reason button
+                declineNotInterestedBtn.setTextColor(getColor(R.color.colorAccent));
                 break;
 
             case DECLINED_SCHEDULING_CONFLICT:
-                // TODO: 3/10/20 highlight declined bad time button
+                declineCannotMakeItBtn.setTextColor(getColor(R.color.colorAccent));
                 break;
         }
     }
@@ -172,6 +175,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
             Log.d(TAG, "updateStatus: updated user status to " + newStatus);
             mPreferences.edit().putString(IUser.STATUS_TEAM_WALK, newStatus.getReason()).apply();
             mDb.changeTeammateStatusForLatestWalk(mCurrentUser, mCurrentTeamWalk, newStatus);
+            mCurrentUserStatus = newStatus;
             highLightCurrentStatusButton();
         }
     }
