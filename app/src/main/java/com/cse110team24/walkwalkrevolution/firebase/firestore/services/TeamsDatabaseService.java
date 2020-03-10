@@ -5,6 +5,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.TeamsData
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeammateStatus;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -88,5 +89,11 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
      */
     void getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt);
 
-//    void changeTeammateStatus(final IUser user, )
+    /**
+     * Update the specified user's status for a proposed or scheduled team walk to changedStatus.
+     * @param user the user whose status is being changed, must have a non-null documentKey.
+     * @param teamWalk the walk in which the user is changing their status
+     * @param changedStatus the new status.
+     */
+    void changeTeammateStatus(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus);
 }

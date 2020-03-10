@@ -18,6 +18,12 @@ public enum TeammateStatus {
         return mReason;
     }
 
+    public Map<String, Object> dataInMapForm() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("status", getReason());
+        return data;
+    }
+
     public static TeammateStatus get(String value) {
         return lookup.get(value);
     }
