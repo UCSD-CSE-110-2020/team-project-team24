@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
@@ -27,9 +28,12 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersData
 import com.cse110team24.walkwalkrevolution.firebase.messaging.Messaging;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.invitation.InvitationStatus;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +105,7 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
                 mCurrentSelectedInvitation.setStatus(InvitationStatus.ACCEPTED);
                 updateInvitations();
                 String senderTeamUid = mCurrentSelectedInvitation.getTeamUid();
+                uploadAllSavedRoutes(senderTeamUid);
                 updateTeamUidLocallyAndDatabase(senderTeamUid);
                 mTDb.addUserToTeam(mCurrentUser, senderTeamUid);
                 mMessaging.subscribeToNotificationsTopic(senderTeamUid);
@@ -108,6 +113,20 @@ public class InvitationsActivity extends AppCompatActivity implements Invitation
                 dismissSelectedInvitation();
             }
         });
+    }
+
+    private void uploadAllSavedRoutes(String mTeamUid) {
+        // todo get the list locally then upload them one by one
+        try {
+            List<Route> routes = RoutesManager.readList(RoutesActivity.LIST_SAVE_FILE, this);
+            routes.forEach(route -> mTDb.updateRoute(mTeamUid, route));
+            Log.i(TAG, "uploadAllSavedRoutes: uploaded all routes to database");
+
+            RoutesManager.AsyncTaskSaveRoutes saver = new RoutesManager.AsyncTaskSaveRoutes();
+            saver.execute(routes, this);
+        } catch (IOException e) {
+            Log.e(TAG, "uploadAllSavedRoutes: error reading list from file", e);
+        }
     }
 
     private void updateTeamUidLocallyAndDatabase(String senderTeamUid) {
