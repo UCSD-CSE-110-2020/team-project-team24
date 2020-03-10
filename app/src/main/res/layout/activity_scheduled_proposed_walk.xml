@@ -71,23 +71,6 @@
         android:hint="@string/unspecified"
         android:textSize="@dimen/details_size" />
 
-    <TextView
-        android:id="@+id/schedule_propose_tv_walk_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="15dp"
-        android:text="@string/time"
-        android:textSize="@dimen/details_size"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/schedule_propse_tv_walk_time_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/unspecified"
-        android:layout_marginStart="15dp"
-        android:textSize="@dimen/details_size" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -102,10 +85,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
-            android:text="@string/accept"
-            android:background="@drawable/my_button_bg"
-            style="?android:attr/borderlessButtonStyle"
-            />
+            android:text="@string/accept" />
 
         <Button
             android:id="@+id/decline_cant_come_btn"
@@ -114,9 +94,7 @@
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
             android:padding="5dp"
-            android:text="@string/decline_cant_come"
-            android:background="@drawable/my_button_bg"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:text="@string/decline_cant_come" />
 
         <Button
             android:id="@+id/decline_not_interested_btn"
@@ -125,9 +103,7 @@
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
             android:padding="5dp"
-            android:text="@string/decline_not_interested"
-            android:background="@drawable/my_button_bg"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:text="@string/decline_not_interested" />
     </LinearLayout>
 
 

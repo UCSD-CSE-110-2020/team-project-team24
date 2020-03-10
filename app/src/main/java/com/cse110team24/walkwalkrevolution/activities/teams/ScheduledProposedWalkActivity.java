@@ -21,6 +21,7 @@ import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -95,6 +96,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         Route proposedRoute = teamWalks.get(0).getProposedRoute();
         walkName.setText(proposedRoute.getTitle());
         startingLocation.setText(proposedRoute.getStartingLocation());
-        walkDate.setText(teamWalks.get(0).getProposedDateAndTime().toString());
+        String formattedDateAndTime = Utils.formatDateIntoReadableString("MM/dd/yyyy HH:mm a", teamWalks.get(0).getProposedDateAndTime().toDate());
+        walkDate.setText(formattedDateAndTime);
     }
 }

@@ -2,9 +2,8 @@
 <resources>
     <string name="walk_name">Name of walk:</string>
     <string name="starting_loc">Starting location:</string>
-    <string name="date">Date:</string>
+    <string name="date">Date and Time:</string>
     <string name="unspecified">(unspecified)</string>
-    <string name="time">Time:</string>
     <string name="decline_cant_come">Can\'t make it</string>
     <string name="decline_not_interested">Not interested</string>
     <string name="accept">Accept</string>

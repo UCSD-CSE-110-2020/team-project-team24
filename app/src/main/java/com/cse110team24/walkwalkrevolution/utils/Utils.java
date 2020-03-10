@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -63,5 +66,10 @@ public class Utils {
     public static int generateRandomARGBColor(int seed) {
         Random rnd = new Random(seed);
         return Color.argb(255, rnd.nextInt(192), rnd.nextInt(192), rnd.nextInt(192));
+    }
+
+    public static String formatDateIntoReadableString(String format, Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
+        return dateFormat.format(date);
     }
 }
