@@ -118,7 +118,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void displayProposerUIViews() {
-
+        // TODO: 3/10/20 dispaly schedule/cancel/withdraw buttons
     }
 
     private void displayTeammateUIViews() {
@@ -132,13 +132,16 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         highLightCurrentStatusButton();
 
         acceptBtn = findViewById(R.id.schedule_propose_btn_accept);
-        acceptBtn.setOnClickListener(v -> acceptBtnOnClickListener());
+        acceptBtn.setEnabled(true);
+        acceptBtn.setOnClickListener(v -> updateStatus(TeammateStatus.ACCEPTED));
 
         declineCannotMakeItBtn = findViewById(R.id.schedule_propose_btn_decline_cant_come);
-        declineCannotMakeItBtn.setOnClickListener(v -> declineReasonTimeBtnOnClickListener());
+        declineCannotMakeItBtn.setEnabled(true);
+        declineCannotMakeItBtn.setOnClickListener(v -> updateStatus(TeammateStatus.DECLINED_SCHEDULING_CONFLICT));
 
         declineNotInterestedBtn = findViewById(R.id.schedule_propose_btn_decline_not_interested);
-        declineNotInterestedBtn.setOnClickListener(v -> declineReasonBadBtnOnClickListener());
+        declineNotInterestedBtn.setEnabled(true);
+        declineNotInterestedBtn.setOnClickListener(v -> updateStatus(TeammateStatus.DECLINED_NOT_GOOD));
     }
 
     private void highLightCurrentStatusButton() {
@@ -159,28 +162,21 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         }
     }
 
+    // updates the teammate's status for the latest walk locally and in the database
     private void updateStatus(TeammateStatus newStatus) {
+        mCurrentUserStatus = TeammateStatus.get(mPreferences.getString(IUser.STATUS_TEAM_WALK, ""));
         if (mCurrentUserStatus == newStatus) {
+            Log.d(TAG, "updateStatus: current status was equal to newStatus " + newStatus);
             Utils.showToast(this, "Please pick a new status", Toast.LENGTH_SHORT);
         } else {
+            Log.d(TAG, "updateStatus: updated user status to " + newStatus);
             mPreferences.edit().putString(IUser.STATUS_TEAM_WALK, newStatus.getReason()).apply();
             mDb.changeTeammateStatusForLatestWalk(mCurrentUser, mCurrentTeamWalk, newStatus);
             highLightCurrentStatusButton();
         }
     }
 
-    private void acceptBtnOnClickListener() {
-        updateStatus(TeammateStatus.ACCEPTED);
-    }
-
-    private void declineReasonTimeBtnOnClickListener() {
-        updateStatus(TeammateStatus.DECLINED_SCHEDULING_CONFLICT);
-    }
-
-    private void declineReasonBadBtnOnClickListener() {
-        updateStatus(TeammateStatus.DECLINED_NOT_GOOD);
-    }
-
+    // not for proposer
     private void displayProposedByViews() {
         findViewById(R.id.schedule_propose_tv_proposed_by_prompt).setVisibility(View.VISIBLE);
         TextView proposedByDisplayTv = findViewById(R.id.schedule_propose_tv_proposed_by_display);
@@ -188,6 +184,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         proposedByDisplayTv.setText(mCurrentTeamWalk.getProposedBy());
     }
 
+    // for everyone
     private void displayCommonUIViews() {
         Route proposedRoute = mCurrentTeamWalk.getProposedRoute();
         displayRouteDetails(proposedRoute);
