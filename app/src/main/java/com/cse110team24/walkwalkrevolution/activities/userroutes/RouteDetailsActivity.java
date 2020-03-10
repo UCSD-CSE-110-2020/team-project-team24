@@ -167,6 +167,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 detailsPromptTv.setText(R.string.your_recent_walk);
             } else {
                 detailsPromptTv.setText(R.string.teamate_recent_walk);
+                neverWalkedPromptTv.setVisibility(View.VISIBLE);
             }
             displayStats(mStats);
         } else {
