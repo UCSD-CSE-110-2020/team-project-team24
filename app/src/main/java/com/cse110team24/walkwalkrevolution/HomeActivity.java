@@ -261,7 +261,7 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
             if(menuItem.getItemId() == R.id.action_team) {
                 myIntent = new Intent(getApplicationContext(), TeamActivity.class);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(myIntent);
+                startActivityForResult(myIntent, TeamActivity.REQUEST_CODE);
             }
             return true;
         });
@@ -319,7 +319,7 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
             }
         } else if (requestCode == MockActivity.REQUEST_CODE && data != null) {
             setMockedExtras(data);
-        } else if (requestCode == RoutesActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        } else if ((requestCode == RoutesActivity.REQUEST_CODE || requestCode == TeamActivity.REQUEST_CODE) && resultCode == Activity.RESULT_OK) {
             this.data = data;
             startRecordingExistingRoute();
         } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK ) {

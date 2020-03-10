@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution.activities.teams;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,12 +12,14 @@ import android.widget.Toast;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InviteTeamMemberActivity;
 import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
@@ -37,8 +40,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.transform.Result;
+
 public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
     private static final String TAG = "WWR_TeamActivity";
+    public static final int REQUEST_CODE = 7851;
 
     private Button sendInviteBtn;
     private Button seeInvitationsBtn;
@@ -78,6 +84,23 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         seeInvitationsBtn.setOnClickListener(view -> {
             launchInvitationsActivity(view);
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TeamRoutesActivity.REQUEST_CODE && resultCode == RESULT_OK) {
+            setResult(Activity.RESULT_OK, data);
+            transitionWithAnimation();
+        }
+    }
+
+    private void transitionWithAnimation() {
+        Intent walkIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        walkIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(walkIntent);
+        finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
     private void launchInvitationsActivity(View view) {

@@ -1,17 +1,21 @@
 package com.cse110team24.walkwalkrevolution.activities.teams;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteRecyclerViewAdapter;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
@@ -39,6 +43,7 @@ import java.util.List;
  */
 public class TeamRoutesActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
     private static final String TAG = "WWR_TeamRoutesActivity";
+    public static final int REQUEST_CODE = 5120;
 
     private TeamsDatabaseService mTeamsDb;
     private SharedPreferences mPreferences;
@@ -60,6 +65,19 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
         getCurrentUser();
         getUIElements();
         getTeamRoutes();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RouteDetailsActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            returnToTeamActivityForWalk(data);
+        }
+    }
+
+    private void returnToTeamActivityForWalk(Intent data) {
+        setResult(Activity.RESULT_OK, data);
+        finish();
     }
 
     private void setUpDatabase() {
