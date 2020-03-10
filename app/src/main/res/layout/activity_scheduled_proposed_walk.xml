@@ -9,7 +9,7 @@
     tools:context=".activities.teams.ScheduledProposedWalkActivity">
 
     <TextView
-        android:id="@+id/walk_name_tv"
+        android:id="@+id/schedule_propose_tv_walk_name_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -18,14 +18,14 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/walk_name_display_tv"
+        android:id="@+id/schedule_propose_tv_walk_name_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/unspecified"
         android:textSize="@dimen/details_size" />
 
     <TextView
-        android:id="@+id/starting_loc_tv"
+        android:id="@+id/schedule_propose_tv_starting_loc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -34,14 +34,14 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/starting_loc_display_tv"
+        android:id="@+id/schedule_propose_tv_starting_loc_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/unspecified"
         android:textSize="@dimen/details_size" />
 
     <TextView
-        android:id="@+id/walk_date_tv"
+        android:id="@+id/schedule_propose_tv_walk_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -50,14 +50,14 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/walk_date_display_tv"
+        android:id="@+id/schedule_propose_tv_walk_date_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/unspecified"
         android:textSize="@dimen/details_size" />
 
     <TextView
-        android:id="@+id/walk_time_tv"
+        android:id="@+id/schedule_propose_tv_walk_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -66,7 +66,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/walk_time_display_tv"
+        android:id="@+id/schedule_propse_tv_walk_time_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/unspecified"
