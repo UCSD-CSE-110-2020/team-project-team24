@@ -117,20 +117,28 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             checkWalkStats(stats, route);
         }
 
+        // display stats if:
+        //stats are not null
         private void checkWalkStats(WalkStats stats, Route route) {
-            if(stats == null) {
-                setStatsVisibility(View.INVISIBLE);
-            }  else if (routeBelongsToUser(route)) {
-                setStatsDisplayedValues(stats);
-                setColorStats(mContext.getColor(R.color.color_my_routes));
-            } else if (userHasWalkTeammateRoute(route)) {
-                getUserStatsForTeamRoute(stats, route);
+            if (Utils.checkNotNull(stats)) {
+                if (routeBelongsToUser(route)) {
+                    setStatsDisplayedValues(stats);
+                    setColorStats(mContext.getColor(R.color.color_my_routes));
+                } else if (userHasWalkedTeammateRoute(route)) {
+                    stats = getUserStatsForTeamRoute(route);
+                    setStatsDisplayedValues(stats);
+                    setColorStats(mContext.getColor(R.color.color_curr_user_completed_team_route));
+                } else {
+                    setStatsDisplayedValues(stats);
+                    setColorStats(Color.GRAY);
+                    previouslyWalkedTv.setVisibility(View.INVISIBLE);
+                }
+            } else if (userHasWalkedTeammateRoute(route)) {
+                stats = getUserStatsForTeamRoute(route);
                 setStatsDisplayedValues(stats);
                 setColorStats(mContext.getColor(R.color.color_curr_user_completed_team_route));
             } else {
-                setStatsDisplayedValues(stats);
-                setColorStats(Color.GRAY);
-                previouslyWalkedTv.setVisibility(View.INVISIBLE);
+                setStatsVisibility(View.INVISIBLE);
             }
         }
         private void setColorStats(int color) {
@@ -139,28 +147,37 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             dateTv.setTextColor(color);
         }
 
-        private void getUserStatsForTeamRoute(WalkStats stats, Route route) {
+        private WalkStats getUserStatsForTeamRoute(Route route) {
             Route teammateRouteSavedStats = RoutesManager.readSingle(route.getRouteUid(), mContext);
+            WalkStats stats = null;
             if (Utils.checkNotNull(teammateRouteSavedStats)) {
-                stats.setDistance(teammateRouteSavedStats.getStats().getDistance());
-                stats.setSteps(teammateRouteSavedStats.getStats().getSteps());
-                stats.setDateCompleted(teammateRouteSavedStats.getStats().getDateCompleted());
+                Log.i(TAG, "getUserStatsForTeamRoute: found user stats for a team route: " + route.getTitle());
+                stats = WalkStats.builder()
+                        .addDistance(teammateRouteSavedStats.getStats().getDistance())
+                        .addDateCompleted(teammateRouteSavedStats.getStats().getDateCompleted())
+                        .addSteps(teammateRouteSavedStats.getStats().getSteps())
+                        .build();
             }
+
+            return stats;
         }
 
         private void setStatsDisplayedValues(WalkStats stats) {
             setStatsVisibility(View.VISIBLE);
-            stepsTv.setText(String.format("%s%s", String.valueOf(stats.getSteps()), " steps"));
-            distanceTv.setText(stats.formattedDistance());
-            dateTv.setText(stats.formattedDate());
+            if (Utils.checkNotNull(stats)) {
+                stepsTv.setText(String.format("%s%s", String.valueOf(stats.getSteps()), " steps"));
+                distanceTv.setText(stats.formattedDistance());
+                dateTv.setText(stats.formattedDate());
+            }
         }
 
         private boolean routeBelongsToUser(Route route) {
             return mPreferences.getString(IUser.USER_NAME_KEY, "").equals(route.getCreatorName());
         }
 
-        private boolean userHasWalkTeammateRoute(Route route) {
-            return new File(mContext.getFilesDir(), route.getRouteUid()).exists();
+        private boolean userHasWalkedTeammateRoute(Route route) {
+            Log.d(TAG, "userHasWalkTeammateRoute: Looking for file for route " + route.getTitle() + " with id " + route.getRouteUid());
+            return Utils.fileExists(route.getRouteUid(), mContext);
         }
 
         private void launchRouteDetailsActivityOnClick(Route route) {
