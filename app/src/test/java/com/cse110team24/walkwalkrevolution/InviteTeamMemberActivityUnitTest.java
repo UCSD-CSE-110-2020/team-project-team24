@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserExistsObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.messaging.MessagingObserver;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InviteTeamMemberActivity;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -83,7 +85,7 @@ public class InviteTeamMemberActivityUnitTest extends TestInjection {
 
     private void mockOtherUserExists() {
         Mockito.doAnswer(invocation -> {
-            userDbObserver.onUserExists(otherUser);
+            ((UsersUserExistsObserver) userDbObserver).onUserExists(otherUser);
             return null;
         }).when(usersDatabaseService).checkIfOtherUserExists(Mockito.any());
     }
@@ -126,7 +128,7 @@ public class InviteTeamMemberActivityUnitTest extends TestInjection {
         mockUserDbRegister();
 
         Mockito.doAnswer(invocation -> {
-            userDbObserver.onUserDoesNotExist();
+            ((UsersUserExistsObserver) userDbObserver).onUserDoesNotExist();
             return null;
         }).when(usersDatabaseService).checkIfOtherUserExists(Mockito.any());
 
@@ -223,7 +225,7 @@ public class InviteTeamMemberActivityUnitTest extends TestInjection {
         mockOtherUserExists();
 
         Mockito.doAnswer(invocation -> {
-            userDbObserver.onUserData(new HashMap<>());
+            ((UsersUserDataObserver) userDbObserver).onUserData(new HashMap<>());
             return null;
         }).when(usersDatabaseService).getUserData(any());
 

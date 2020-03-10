@@ -28,6 +28,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -56,7 +59,6 @@ public class RoutesActivity extends AppCompatActivity {
 
     private RouteRecyclerViewAdapter adapter;
     private RecyclerView rvRoutes;
-    private FloatingActionButton fab;
     private BottomNavigationView bottomNavigationView;
 
     private TeamsDatabaseService mTeamsDbService;
@@ -109,6 +111,26 @@ public class RoutesActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_routes_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO: 3/8/20 detect click
+        switch (item.getItemId()) {
+            case R.id.action_create_walk:
+                Log.i(TAG, "onOptionsItemSelected: clicked on add walk");
+                launchSaveActivity();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void handleNewRoute(Intent data) {
         Route newRoute = (Route) data.getSerializableExtra(SaveRouteActivity.NEW_ROUTE_KEY);
         // upload the new route to db
@@ -132,13 +154,6 @@ public class RoutesActivity extends AppCompatActivity {
         transitionWithAnimation();
     }
 
-/*    public void launchGoToHomeActivity() {
-        setResult(Activity.RESULT_CANCELED);
-        transitionWithAnimation();
-    }
-
- */
-
     private void transitionWithAnimation() {
         saveListAsync();
         Intent walkIntent = new Intent(getApplicationContext(), HomeActivity.class);
@@ -149,20 +164,12 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     private void getUIElements() {
-        fab = findViewById(R.id.fab);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         rvRoutes = findViewById(R.id.recycler_view);
     }
 
     private void setListeners() {
-        setFabOnClickListener();
         setBottomNavItemSelectedListener();
-    }
-
-    private void setFabOnClickListener() {
-        fab.setOnClickListener(view -> {
-            launchSaveActivity();
-        });
     }
 
     private void launchSaveActivity() {

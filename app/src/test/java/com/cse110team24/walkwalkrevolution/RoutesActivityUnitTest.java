@@ -103,26 +103,7 @@ public class RoutesActivityUnitTest extends TestInjection {
         });
     }
 
-    @Test
-    public void fabIsThere() {
-        scenario.onActivity(activity -> {
-            getUIFields(activity);
-            assertNotNull(fab);
-        });
-    }
-
-    @Test
-    public void fabClickShouldStartNewActivity() throws Exception {
-        scenario.onActivity(activity -> {
-            getUIFields(activity);
-            fab.performClick();
-            Intent intent = Shadows.shadowOf(activity).peekNextStartedActivity();
-            assertEquals(SaveRouteActivity.class.getCanonicalName(), intent.getComponent().getClassName());
-        });
-    }
-
     private void getUIFields(RoutesActivity activity) {
-        fab = activity.findViewById(R.id.fab);
         bottomNavigation = activity.findViewById(R.id.bottom_navigation);
 
         RecyclerView recyclerView = activity.findViewById(R.id.recycler_view);

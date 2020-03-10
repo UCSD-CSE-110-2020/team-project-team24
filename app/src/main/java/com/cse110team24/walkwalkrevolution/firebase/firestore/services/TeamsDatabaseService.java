@@ -1,8 +1,10 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.services;
 
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.TeamsDatabaseServiceSubject;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
+import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -66,4 +68,23 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
      * @param route the route whose document is being updated in the specified team's routes
      */
     void updateRoute(String teamUid, Route route);
+
+    /**
+     * Update current Team Walk in database or create it if it DNE
+     * @param teamWalk team walk that is being proposed, scheduled, cancelled, or withdrawn
+     * @return the team walk's uid whether it was created or updated
+     */
+    String updateCurrentTeamWalk(TeamWalk teamWalk);
+
+    /**
+     * Query this service's provider database for up to teamWalkLimitCt amount of team walks,
+     * in descending order by timestamp of day walk was proposed. To obtain the latest walk,
+     * teamWalkLimitCt should == 1.
+     *
+     * <p>On successful complete, all observers of type {@link TeamsTeamWalksObserver}
+     * are notified with a call to {@link TeamsDatabaseServiceSubject#notifyObserversTeamWalksRetrieved(List)}</p>
+     * @param teamUid the uid of the team whose walks are being requested
+     * @param teamWalkLimitCt the amount of team walks to query from database.
+     */
+    void getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt);
 }

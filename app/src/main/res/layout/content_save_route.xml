@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:id="@+id/scroll_view_save"
     tools:context=".activities.userroutes.SaveRouteActivity"
     tools:showIn="@layout/activity_save_route">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/linear_layout_save"
         android:orientation="vertical">
 
         <TextView

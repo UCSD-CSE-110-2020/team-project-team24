@@ -30,7 +30,6 @@
     <dimen name="start_walk_btn_txt_size">25sp</dimen>
 
     <!--    In activity_routes.xml-->
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="recycle_view_margin">64dp</dimen>
 
     <!--    In activity_invitations.xml-->

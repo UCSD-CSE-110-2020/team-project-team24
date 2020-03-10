@@ -1,6 +1,8 @@
 package com.cse110team24.walkwalkrevolution.mockedservices;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserExistsObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
@@ -32,10 +34,10 @@ public class TestUsersDatabaseService implements UsersDatabaseService {
      * Set this to true when testing invitation sent. Set this to false when testing invitation errors.
      *
      * <p>If true, when {@link UsersDatabaseService#checkIfOtherUserExists(String)} is called,
-     * then the {@link TestUsersDatabaseService} will call {@link UsersDatabaseServiceObserver#onUserExists(IUser)} with
+     * then the {@link TestUsersDatabaseService} will call {@link UsersUserExistsObserver#onUserExists(IUser)} with
      * {@link TestUsersDatabaseService#testOtherUser} </p>
      *
-     * <p>If false, {@link UsersDatabaseServiceObserver#onUserDoesNotExist()} will be called.</p>
+     * <p>If false, {@link UsersUserExistsObserver#onUserDoesNotExist()} will be called.</p>
      */
     public static boolean testOtherUserExits;
 
@@ -51,7 +53,7 @@ public class TestUsersDatabaseService implements UsersDatabaseService {
     @Override
     public void getUserData(IUser user) {
         // TODO: 3/5/20 should call [observer].onUserData(Map<String, Object> data) with user's data
-        observer.onUserData(testCurrentUserData);
+        ((UsersUserDataObserver) observer).onUserData(testCurrentUserData);
     }
 
     @Override
@@ -61,9 +63,9 @@ public class TestUsersDatabaseService implements UsersDatabaseService {
          *  [observer].onUserDoesNotExist()
          */
         if (testOtherUserExits) {
-            observer.onUserExists(testOtherUser);
+            ((UsersUserExistsObserver) observer).onUserExists(testOtherUser);
         } else {
-            observer.onUserDoesNotExist();
+            ((UsersUserExistsObserver) observer).onUserDoesNotExist();
         }
     }
 

@@ -22,7 +22,7 @@ import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
@@ -64,7 +64,7 @@ import java.util.Map;
  *     </ul>
  * </ol>
  */
-public class HomeActivity extends AppCompatActivity implements UsersDatabaseServiceObserver {
+public class HomeActivity extends AppCompatActivity implements UsersUserDataObserver {
     private static final String TAG = "WWR_HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
     private static final long UPDATE_PERIOD = 60_000;
@@ -485,17 +485,10 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
     public void onUserData(Map<String, Object> userDataMap) {
         if (userDataMap != null) {
             String teamUid = (String) userDataMap.get(IUser.TEAM_UID_KEY);
+            if (teamUid != null) {
+                mMessaging.subscribeToNotificationsTopic(teamUid);
+            }
             Utils.saveString(preferences, IUser.TEAM_UID_KEY, teamUid);
         }
-    }
-
-    @Override
-    public void onUserExists(IUser otherUser) {
-
-    }
-
-    @Override
-    public void onUserDoesNotExist() {
-
     }
 }
