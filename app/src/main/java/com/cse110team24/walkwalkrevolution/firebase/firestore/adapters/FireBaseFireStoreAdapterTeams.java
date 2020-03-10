@@ -26,6 +26,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -341,13 +342,11 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     }
 
     @Override
-    public void changeTeammateStatus(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus) {
-        // teams/{team}/teamWalks/{teamWalk}/teamStatus/{teammate}
+    public void changeTeammateStatusForLatestWalk(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus) {
+        // teams/{team}/teammates/{teammate}
         DocumentReference teammateStatusDocument = mTeamsCollection
                 .document(user.teamUid())
-                .collection("teamWalks")
-                .document(teamWalk.getWalkUid())
-                .collection("teamStatus")
+                .collection("teammates")
                 .document(user.documentKey());
         teammateStatusDocument
                 .update(changedStatus.dataInMapForm()).addOnCompleteListener(task -> {
@@ -363,7 +362,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     private void tryToSetTeammateStatus(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus, DocumentReference statusDocument) {
         statusDocument
-                .set(changedStatus.dataInMapForm())
+                .set(changedStatus.dataInMapForm(), SetOptions.merge())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.i(TAG, "tryToSetTeammateStatus: success setting teammate status for first time");

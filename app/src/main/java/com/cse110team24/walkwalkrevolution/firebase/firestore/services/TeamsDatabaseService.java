@@ -95,5 +95,5 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
      * @param teamWalk the walk in which the user is changing their status
      * @param changedStatus the new status.
      */
-    void changeTeammateStatus(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus);
+    void changeTeammateStatusForLatestWalk(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus);
 }
