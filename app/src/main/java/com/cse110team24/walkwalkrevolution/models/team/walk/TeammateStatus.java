@@ -1,5 +1,8 @@
 package com.cse110team24.walkwalkrevolution.models.team.walk;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum TeammateStatus {
     DECLINED_SCHEDULING_CONFLICT("declined the walk due to a scheduling conflict"),
     DECLINED_NOT_GOOD("decline the walk because it's not good for them"),
@@ -13,5 +16,16 @@ public enum TeammateStatus {
 
     public String getReason() {
         return mReason;
+    }
+
+    public static TeammateStatus get(String value) {
+        return lookup.get(value);
+    }
+
+    private static final Map<String, TeammateStatus> lookup = new HashMap<>();
+    static {
+        for (TeammateStatus status : TeammateStatus.values()) {
+            lookup.put(status.getReason(), status);
+        }
     }
 }
