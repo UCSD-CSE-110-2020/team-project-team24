@@ -402,7 +402,9 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
     }
 
     private boolean routeBelongsToUser(Route route) {
-        return route.getCreatorName().equals(mUser.getDisplayName());
+        Log.d(TAG, "routeBelongsToUser: route's creator name " + route.getCreatorName());
+        Log.d(TAG, "routeBelongsToUser: mUser.getDisplayName() " + mUser.getDisplayName());
+        return route.getCreatorName().equals(Utils.getString(preferences, IUser.USER_NAME_KEY));
     }
 
     // if the user's team exists, upload the route to the routes collection of the Team
