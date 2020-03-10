@@ -90,6 +90,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TeamRoutesActivity.REQUEST_CODE && resultCode == RESULT_OK) {
+            Log.d(TAG, "onActivityResult: recording team's walk");
             setResult(Activity.RESULT_OK, data);
             transitionWithAnimation();
         }
@@ -170,7 +171,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     private void setSeeTeamRoutesOnClick() {
         seeTeammateRoutesBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, TeamRoutesActivity.class));
+            startActivityForResult(new Intent(this, TeamRoutesActivity.class), TeamRoutesActivity.REQUEST_CODE);
         });
     }
 

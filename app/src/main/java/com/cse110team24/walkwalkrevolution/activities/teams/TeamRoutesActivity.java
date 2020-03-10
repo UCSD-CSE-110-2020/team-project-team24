@@ -71,6 +71,7 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RouteDetailsActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Log.d(TAG, "onActivityResult: returning to team activity to record walk");
             returnToTeamActivityForWalk(data);
         }
     }
