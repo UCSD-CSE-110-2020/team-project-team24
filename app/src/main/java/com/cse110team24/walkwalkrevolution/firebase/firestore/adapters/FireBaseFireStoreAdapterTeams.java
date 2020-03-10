@@ -112,6 +112,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
             if (currentUserDisplayName.equals(displayName)) continue;
             IUser user = FirebaseUserAdapter.builder()
                     .addDisplayName(displayName)
+                    .addLatestWalkStatus(TeammateStatus.get(member.getString("status")))
                     .build();
             team.addMember(user);
         }
