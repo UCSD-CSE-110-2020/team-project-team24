@@ -390,6 +390,7 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
                 showRouteUpdatedToast();
             } else {
                 try {
+                    Log.d(TAG, "checkIfRouteExisted: route uid: " + existingRoute.getRouteUid());
                     RoutesManager.writeSingle(existingRoute, existingRoute.getRouteUid(), this);
                     Utils.showToast(this, "Saved your stats for a teammate's route", Toast.LENGTH_LONG);
                 } catch (IOException e) {
