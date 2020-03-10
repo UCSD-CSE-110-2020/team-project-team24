@@ -10,10 +10,18 @@
     tools:context=".activities.teams.ScheduledProposedWalkActivity">
 
     <TextView
+        android:id="@+id/no_proposed_or_scheduled_walks_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="@string/no_walks_to_show"
+        android:gravity="center"/>
+
+    <TextView
         android:id="@+id/schedule_propose_tv_walk_name_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
         android:text="@string/walk_name"
         android:textSize="@dimen/details_size"
@@ -85,6 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center"
         android:padding="20dp">
 
         <Button
@@ -104,6 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
+            android:padding="5dp"
             android:text="@string/decline_cant_come"
             android:background="@drawable/my_button_bg"
             style="?android:attr/borderlessButtonStyle"/>
@@ -114,11 +124,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
+            android:padding="5dp"
             android:text="@string/decline_not_interested"
             android:background="@drawable/my_button_bg"
             style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>
-
 
 
 </LinearLayout>

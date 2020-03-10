@@ -37,6 +37,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
     private Button sendInviteBtn;
     private Button seeInvitationsBtn;
     private Button seeTeammateRoutesBtn;
+    private Button seeScheduledWalksBtn;
     private BottomNavigationView bottomNavigationView;
 
     private TeamsDatabaseService mDb;
@@ -103,6 +104,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         seeInvitationsBtn = findViewById(R.id.btn_team_activity_pending_invites);
         seeTeammateRoutesBtn = findViewById(R.id.btn_team_activity_see_teammate_routes);
+        seeScheduledWalksBtn = findViewById(R.id.btn_scheduled_walks);
         noTeamMessage = findViewById(R.id.text_no_teammates);
         teammatesList = findViewById(R.id.list_members_in_team);
         teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam(), preferences);
@@ -114,6 +116,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
         setInviteButtonOnClick();
         setBottomNavItemSelectedListener();
         setSeeTeamRoutesOnClick();
+        setSeeScheduledWalksOnClick();
     }
 
     private void setInviteButtonOnClick() {
@@ -142,6 +145,12 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
     private void setSeeTeamRoutesOnClick() {
         seeTeammateRoutesBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, TeamRoutesActivity.class));
+        });
+    }
+
+    private void setSeeScheduledWalksOnClick() {
+        seeScheduledWalksBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, ScheduledProposedWalkActivity.class));
         });
     }
 
