@@ -96,6 +96,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             stepsTv.setVisibility(visibility);
             distanceTv.setVisibility(visibility);
             dateTv.setVisibility(visibility);
+            previouslyWalkedTv.setVisibility(visibility);
         }
 
         private void checkFavorite(boolean isFavorite) {
@@ -118,16 +119,17 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
         private void checkWalkStats(WalkStats stats, Route route) {
             if(stats == null) {
                 setStatsVisibility(View.INVISIBLE);
-                return;
             }  else if (routeBelongsToUser(route)) {
                 Log.d(TAG, "checkWalkStats: route belonged to user");
-                previouslyWalkedTv.setVisibility(View.VISIBLE);
+                setStatsDisplayedValues(stats);
             } else if (userHasWalkTeammateRoute(route)) {
                 stats = getUserStatsForTeamRoute(stats, route);
                 Log.d(TAG, "checkWalkStats: stats found for teammate " + route.getCreatorName() + "' " + route.getTitle() + " " + stats);
-                previouslyWalkedTv.setVisibility(View.VISIBLE);
+                setStatsDisplayedValues(stats);
+            } else {
+                setStatsDisplayedValues(stats);
+                previouslyWalkedTv.setVisibility(View.INVISIBLE);
             }
-            setStatsDisplayedValues(stats);
         }
 
         private WalkStats getUserStatsForTeamRoute(WalkStats stats, Route route) {
