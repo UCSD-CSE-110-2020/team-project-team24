@@ -215,9 +215,10 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 Route route = RoutesManager.readSingle(mDisplayedRoute.getRouteUid(), this);
                 if (route != null) {
                     mStats = route.getStats();
+                    detailsPromptTv.setText(R.string.your_recent_walk);
+                    displayStats(mStats);
+                    checkMarkTv.setVisibility(View.VISIBLE);
                 }
-                detailsPromptTv.setText(R.string.your_recent_walk);
-                displayStats(mStats);
             } else {
                 recentStepsPromptTv.setVisibility(View.GONE);
                 recentStepsTv.setVisibility(View.GONE);
