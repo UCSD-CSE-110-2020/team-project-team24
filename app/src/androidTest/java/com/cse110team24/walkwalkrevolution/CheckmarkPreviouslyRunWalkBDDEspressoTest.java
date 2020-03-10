@@ -162,6 +162,12 @@ public class CheckmarkPreviouslyRunWalkBDDEspressoTest {
                                 allOf(withId(R.id.routes_container),
                                                 withId(R.id.recycler_view_team_routes),
                         isDisplayed())));
+
+        onView(withId(R.id.recycler_view_team_routes)).perform(actionOnItemAtPosition(0, click()));
+
+        ViewInteraction appCompatText = onView(
+                allOf(withId(R.id.tv_previously_walked_checkmark), isDisplayed()));
+
     }
 
 }
