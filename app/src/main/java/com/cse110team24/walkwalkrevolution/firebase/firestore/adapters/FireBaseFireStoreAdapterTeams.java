@@ -87,7 +87,6 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         });
     }
 
-    // TODO: 2/28/20 need to determine if this will be real time
     @Override
     public void getUserTeam(String teamUid, String currentUserDisplayName) {
         DocumentReference documentReference = mTeamsCollection.document(teamUid);
@@ -102,6 +101,20 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                 Log.e(TAG, "getUserTeam: error getting user team", task.getException());
             }
         });
+    }
+
+    private ITeam getTeamList(List<DocumentSnapshot> documents, String currentUserDisplayName) {
+        ITeam team = new TeamAdapter(new ArrayList<>());
+        for (DocumentSnapshot member : documents) {
+            String displayName = (String) member.get("displayName");
+            // skip the current user
+            if (currentUserDisplayName.equals(displayName)) continue;
+            IUser user = FirebaseUserAdapter.builder()
+                    .addDisplayName(displayName)
+                    .build();
+            team.addMember(user);
+        }
+        return team;
     }
 
     @Override
@@ -296,6 +309,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                 .addTeamUid(documentSnapshot.getString("teamUid"))
                 .addProposedBy(documentSnapshot.getString("proposedBy"))
                 .addProposedDateAndTime(documentSnapshot.getTimestamp("proposedDateAndTime"))
+                .addProposedRoute((Route) documentSnapshot.get("proposedRoute"))
                 .addWalkUid(documentSnapshot.getId())
                 .addStatus(TeamWalkStatus.valueOf(documentSnapshot.getString("status")))
                 .build();
@@ -324,20 +338,6 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
             notifyObserversTeamWalksRetrieved(teamWalks);
 
         });
-    }
-
-    private ITeam getTeamList(List<DocumentSnapshot> documents, String currentUserDisplayName) {
-        ITeam team = new TeamAdapter(new ArrayList<>());
-        for (DocumentSnapshot member : documents) {
-            String displayName = (String) member.get("displayName");
-            // skip the current user
-            if (currentUserDisplayName.equals(displayName)) continue;
-            IUser user = FirebaseUserAdapter.builder()
-                    .addDisplayName(displayName)
-                    .build();
-            team.addMember(user);
-        }
-        return team;
     }
 
     @Override
