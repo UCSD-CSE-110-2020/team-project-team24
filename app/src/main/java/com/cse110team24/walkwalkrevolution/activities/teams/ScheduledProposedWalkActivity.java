@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
@@ -20,6 +21,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsData
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeammateStatus;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
@@ -39,6 +41,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     private UsersDatabaseService uDb;
     private TeamWalk mCurrentTeamWalk;
     private IUser mCurrentUser;
+    private TeammateStatus mCurrentUserStatus;
 
     SharedPreferences mPreferences;
 
@@ -86,6 +89,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         mCurrentUser = FirebaseUserAdapter.builder()
                 .addDisplayName(mPreferences.getString(IUser.USER_NAME_KEY, ""))
                 .addTeamUid(mTeamUid)
+                .addEmail(mPreferences.getString(IUser.EMAIL_KEY, ""))
                 .build();
     }
 
@@ -118,41 +122,65 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void displayTeammateUIViews() {
-        LinearLayout statusButtonsLayout = findViewById(R.id.schedule_propose_linear_layout_status_buttons);
-        statusButtonsLayout.setVisibility(View.VISIBLE);
+        findViewById(R.id.schedule_propose_linear_layout_status_buttons).setVisibility(View.VISIBLE);
         addClickListenersTeammateButtons();
         displayProposedByViews();
     }
 
     private void addClickListenersTeammateButtons() {
-        Button acceptBtn = findViewById(R.id.schedule_propose_btn_accept);
+        mCurrentUserStatus = TeammateStatus.get(mPreferences.getString(IUser.STATUS_TEAM_WALK, ""));
+        highLightCurrentStatusButton();
+
+        acceptBtn = findViewById(R.id.schedule_propose_btn_accept);
         acceptBtn.setOnClickListener(v -> acceptBtnOnClickListener());
 
-        Button declineReasonTimeBtn = findViewById(R.id.schedule_propose_btn_decline_cant_come);
-        declineReasonTimeBtn.setOnClickListener(v -> declineReasonTimeBtnOnClickListener());
+        declineCannotMakeItBtn = findViewById(R.id.schedule_propose_btn_decline_cant_come);
+        declineCannotMakeItBtn.setOnClickListener(v -> declineReasonTimeBtnOnClickListener());
 
-        Button declineReasonBadBtn = findViewById(R.id.schedule_propose_btn_decline_not_interested);
-        declineReasonBadBtn.setOnClickListener(v -> declineReasonBadBtnOnClickListener());
+        declineNotInterestedBtn = findViewById(R.id.schedule_propose_btn_decline_not_interested);
+        declineNotInterestedBtn.setOnClickListener(v -> declineReasonBadBtnOnClickListener());
     }
 
-    // TODO: 3/10/20 change status to accept
+    private void highLightCurrentStatusButton() {
+        switch (mCurrentUserStatus) {
+            case ACCEPTED:
+                // TODO: 3/10/20 highlight accepted button
+                break;
+            case DECLINED_NOT_GOOD:
+                // TODO: 3/10/20 highlight declined not good reason button
+                break;
+
+            case DECLINED_SCHEDULING_CONFLICT:
+                // TODO: 3/10/20 highlight declined bad time button
+                break;
+            default:
+        }
+    }
+
+    private void updateStatus(TeammateStatus newStatus) {
+        if (mCurrentUserStatus == newStatus) {
+            Utils.showToast(this, "Please pick a new status", Toast.LENGTH_SHORT);
+        } else {
+            mPreferences.edit().putString(IUser.STATUS_TEAM_WALK, newStatus.getReason()).apply();
+            mDb.changeTeammateStatusForLatestWalk(mCurrentUser, mCurrentTeamWalk, newStatus);
+            highLightCurrentStatusButton();
+        }
+    }
+
     private void acceptBtnOnClickListener() {
-
+        updateStatus(TeammateStatus.ACCEPTED);
     }
 
-    // TODO: 3/10/20 change status to declined due to time
     private void declineReasonTimeBtnOnClickListener() {
-
+        updateStatus(TeammateStatus.DECLINED_SCHEDULING_CONFLICT);
     }
 
-    // TODO: 3/10/20 change status to declined due to not good route
     private void declineReasonBadBtnOnClickListener() {
-
+        updateStatus(TeammateStatus.DECLINED_NOT_GOOD);
     }
 
     private void displayProposedByViews() {
-        TextView proposedByPromptTv = findViewById(R.id.schedule_propose_tv_proposed_by_prompt);
-        proposedByPromptTv.setVisibility(View.VISIBLE);
+        findViewById(R.id.schedule_propose_tv_proposed_by_prompt).setVisibility(View.VISIBLE);
         TextView proposedByDisplayTv = findViewById(R.id.schedule_propose_tv_proposed_by_display);
         proposedByDisplayTv.setVisibility(View.VISIBLE);
         proposedByDisplayTv.setText(mCurrentTeamWalk.getProposedBy());
@@ -170,24 +198,21 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void displayRouteName(Route proposedRoute) {
-        TextView walkNamePrompt = findViewById(R.id.schedule_propose_tv_walk_name_prompt);
-        walkNamePrompt.setVisibility(View.VISIBLE);
+        findViewById(R.id.schedule_propose_tv_walk_name_prompt).setVisibility(View.VISIBLE);
         TextView walkName = findViewById(R.id.schedule_propose_tv_walk_name_display);
         walkName.setVisibility(View.VISIBLE);
         walkName.setText(proposedRoute.getTitle());
     }
 
     private void displayRouteStartingLocation(Route proposedRoute) {
-        TextView startingLocationPrompt = findViewById(R.id.schedule_propose_tv_starting_loc);
-        startingLocationPrompt.setVisibility(View.VISIBLE);
+        findViewById(R.id.schedule_propose_tv_starting_loc).setVisibility(View.VISIBLE);
         TextView startingLocation = findViewById(R.id.schedule_propose_tv_starting_loc_display);
         startingLocation.setVisibility(View.VISIBLE);
         startingLocation.setText(proposedRoute.getStartingLocation());
     }
 
     private void displayProposedDateAndTime() {
-        TextView walkDatePrompt = findViewById(R.id.schedule_propose_tv_walk_date);
-        walkDatePrompt.setVisibility(View.VISIBLE);
+        findViewById(R.id.schedule_propose_tv_walk_date).setVisibility(View.VISIBLE);
         TextView walkDate = findViewById(R.id.schedule_propose_tv_walk_date_display);
         walkDate.setVisibility(View.VISIBLE);
         String formattedDateAndTime = Utils.formatDateIntoReadableString("MM/dd/yyyy 'at' HH:mm a", mCurrentTeamWalk.getProposedDateAndTime().toDate());

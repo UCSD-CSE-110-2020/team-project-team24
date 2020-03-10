@@ -11,6 +11,7 @@ public interface IUser {
     String EMAIL_KEY = "email";
     String UID_KEY = "uid";
     String TEAM_UID_KEY = "teamUid";
+    String STATUS_TEAM_WALK = "teamWalk";
     TeammateStatus getLatestWalkStatus();
     String getDisplayName();
     String getEmail();
