@@ -60,6 +60,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     private TextView notesTv;
     private TextView neverWalkedPromptTv;
     private Button startWalkBtn;
+    private TextView checkMarkTv;
 
     private SharedPreferences preferences;
 
@@ -131,6 +132,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         neverWalkedPromptTv = findViewById(R.id.tv_details_never_walked);
         startWalkBtn = findViewById(R.id.btn_details_start_walk);
         detailsPromptTv = findViewById(R.id.tv_details_recent_walk_prompt);
+        checkMarkTv = findViewById(R.id.tv_previously_walked_checkmark);
         setStartWalkBtnOnClickListener();
     }
 
@@ -192,16 +194,17 @@ public class RouteDetailsActivity extends AppCompatActivity {
         String currName = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE)
                 .getString(IUser.USER_NAME_KEY, "");
         if (Utils.checkNotNull(mStats)) {
-
             if (currName.equals(mDisplayedRoute.getCreatorName())) {
                 displayStats(mStats);
+                checkMarkTv.setVisibility(View.VISIBLE);
             } else if (Utils.fileExists(mDisplayedRoute.getRouteUid(), this)) {
                 Route route = RoutesManager.readSingle(mDisplayedRoute.getRouteUid(), this);
                 if (route != null) {
                     mStats = route.getStats();
                     displayStats(mStats);
+                    detailsPromptTv.setText(R.string.your_recent_walk);
+                    checkMarkTv.setVisibility(View.VISIBLE);
                 }
-                detailsPromptTv.setText(R.string.your_recent_walk);
             } else {
                 detailsPromptTv.setText(R.string.teamate_recent_walk);
                 neverWalkedPromptTv.setVisibility(View.VISIBLE);
