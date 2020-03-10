@@ -9,6 +9,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.Te
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeammatesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.route.RouteBuilder;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
@@ -306,12 +307,13 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     }
 
     private TeamWalk buildTeamWalk(DocumentSnapshot documentSnapshot) {
+        Route proposedRoute = new Route.Builder("").addFieldsFromMap((Map<String, Object>) documentSnapshot.get("proposedRoute")).build();
         // TODO: 3/9/20 get the route as well
         TeamWalk teamWalk = TeamWalk.builder()
                 .addTeamUid(documentSnapshot.getString("teamUid"))
                 .addProposedBy(documentSnapshot.getString("proposedBy"))
                 .addProposedDateAndTime(documentSnapshot.getTimestamp("proposedDateAndTime"))
-                .addProposedRoute((Route) documentSnapshot.get("proposedRoute"))
+                .addProposedRoute(proposedRoute)
                 .addWalkUid(documentSnapshot.getId())
                 .addStatus(TeamWalkStatus.valueOf(documentSnapshot.getString("status")))
                 .build();

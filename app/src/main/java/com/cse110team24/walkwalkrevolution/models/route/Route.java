@@ -1,5 +1,7 @@
 package com.cse110team24.walkwalkrevolution.models.route;
 
+import com.cse110team24.walkwalkrevolution.utils.Utils;
+
 import java.io.Serializable;
 import java.lang.Comparable;
 import java.util.HashMap;
@@ -192,6 +194,13 @@ public class Route implements Serializable, Comparable<Route> {
         @Override
         public Builder addCreatorDisplayName(String name) {
             mToBuild.setCreatorDisplayName(name);
+            return this;
+        }
+
+        @Override
+        public RouteBuilder addFieldsFromMap(Map<String, Object> data) {
+            mToBuild.setTitle(Utils.getValueOrNull("title", data));
+            mToBuild.setEnvironment(Utils.getValueOrNull("startingLocation", data));
             return this;
         }
 
