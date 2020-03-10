@@ -65,6 +65,7 @@
 
     <!--    In activity_routes.xml-->
     <string name="btn_see_teammates_routes">See Teammate Routes</string>
+    <string name="menu_item_create_walk">Create Route</string>
 
     <!--    In item_route.xml-->
     <string name="fake_title">Canyon View Hiking Trail</string>
@@ -118,6 +119,7 @@
     <string name="app_name">WalkWalkRevolution</string>
     <string name="title_activity_saving_page">Save your walk</string>
     <string name="title_activity_routes">My Routes</string>
+    <string name="title_activity_invite_team_to_walk">Invite Team to Walk</string>
 
     <!--    Others-->
     <string name="routes">Routes</string>

@@ -2,11 +2,11 @@ package com.cse110team24.walkwalkrevolution.firebase.firestore.adapters;
 
 import android.util.Log;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserExistsObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
-import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
-import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapterBuilder;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -14,7 +14,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +78,9 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
     @Override
     public void notifyObserversUserData(Map<String, Object> userDataMap) {
         observers.forEach(observer -> {
-            observer.onUserData(userDataMap);
+            if(observer instanceof UsersUserDataObserver) {
+                ((UsersUserDataObserver) observer).onUserData(userDataMap);
+            }
         });
     }
 
@@ -107,11 +108,17 @@ public class FirebaseFirestoreAdapterUsers implements UsersDatabaseService {
 
     @Override
     public void notifyObserversIfUserExists(boolean exists, IUser otherUser) {
-        if (exists) {
-            observers.forEach(observer -> observer.onUserExists(otherUser));
-        } else {
-            observers.forEach(observer -> observer.onUserDoesNotExist());
-        }
+        observers.forEach(observer -> {
+            if (observer instanceof UsersUserExistsObserver) {
+                UsersUserExistsObserver userExistsObserver = (UsersUserExistsObserver) observer;
+
+                if (exists) {
+                    userExistsObserver.onUserExists(otherUser);
+                } else {
+                    userExistsObserver.onUserDoesNotExist();
+                }
+            }
+        });
     }
     @Override
     public void register(UsersDatabaseServiceObserver usersDatabaseServiceObserver) {

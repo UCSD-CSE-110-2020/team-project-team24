@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution.activities.teams;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,11 +13,10 @@ import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteRecyclerViewAdapter;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsRoutesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
@@ -37,7 +35,7 @@ import java.util.List;
  *     starting after route last queried</li>
  * </ol>
  */
-public class TeamRoutesActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
+public class TeamRoutesActivity extends AppCompatActivity implements TeamsRoutesObserver {
     private static final String TAG = "WWR_TeamRoutesActivity";
 
     private TeamsDatabaseService mTeamsDb;
@@ -119,10 +117,5 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
         if (Utils.checkNotNull(lastRoute)) {
             getTeamRoutes();
         }
-    }
-
-    @Override
-    public void onTeamRetrieved(ITeam team) {
-        // nada
     }
 }
