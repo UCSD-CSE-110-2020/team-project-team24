@@ -132,6 +132,9 @@ public class ProposeWalkFromPersonalRoutesEspressoTest {
             Thread.sleep(1000);
         } catch (Exception e) {}
         appCompatButton2.perform(click());
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {}
 
         onView(withId(R.id.recycler_view)).perform(actionOnItemAtPosition(0, click()));
 

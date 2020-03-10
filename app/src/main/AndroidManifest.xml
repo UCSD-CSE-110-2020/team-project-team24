@@ -22,8 +22,7 @@
             android:label="@string/title_activity_saving_page" />
         <activity
             android:name=".activities.userroutes.RoutesActivity"
-            android:label="@string/title_activity_routes"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_routes" />
         <activity
             android:name=".activities.invitations.InvitationsActivity"
             android:label="@string/title_pending_invitations_page" />

@@ -67,6 +67,9 @@ public class Utils {
     }
 
     public static boolean fileExists(String filename, Context dirContext) {
-        return new File(dirContext.getFilesDir(), filename).exists();
+        if (checkNotNull(filename)) {
+            return new File(dirContext.getFilesDir(), filename).exists();
+        }
+        return false;
     }
 }
