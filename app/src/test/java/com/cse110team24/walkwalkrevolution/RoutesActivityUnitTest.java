@@ -156,7 +156,6 @@ public class RoutesActivityUnitTest extends TestInjection {
         previouslyWalkedMarkFirstTV = firstView.findViewById(R.id.tv_previously_walked_checkmark);
         previouslyWalkedMarkSecondTV = secondView.findViewById(R.id.tv_previously_walked_checkmark);
 
-
     }
 
     private List<Route> getListOfRoutes() {
