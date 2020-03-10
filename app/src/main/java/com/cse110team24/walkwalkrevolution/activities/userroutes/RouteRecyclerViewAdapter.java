@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,13 +123,27 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             }  else if (routeBelongsToUser(route)) {
                 Log.d(TAG, "checkWalkStats: route belonged to user");
                 setStatsDisplayedValues(stats);
+                setColorStats(route);
             } else if (userHasWalkTeammateRoute(route)) {
                 stats = getUserStatsForTeamRoute(stats, route);
                 Log.d(TAG, "checkWalkStats: stats found for teammate " + route.getCreatorName() + "' " + route.getTitle() + " " + stats);
                 setStatsDisplayedValues(stats);
+                setColorStats(route);
             } else {
                 setStatsDisplayedValues(stats);
                 previouslyWalkedTv.setVisibility(View.INVISIBLE);
+            }
+        }
+        private void setColorStats(Route route) {
+            if( routeBelongsToUser(route) ) {
+                stepsTv.setTextColor(Color.parseColor("#EF1818"));
+                distanceTv.setTextColor(Color.parseColor("#EF1818"));
+                dateTv.setTextColor(Color.parseColor("#EF1818"));
+            }
+            else if (userHasWalkTeammateRoute(route)) {
+                stepsTv.setTextColor(Color.parseColor("#00F6FF"));
+                distanceTv.setTextColor(Color.parseColor("#00F6FF"));
+                dateTv.setTextColor(Color.parseColor("#00F6FF"));
             }
         }
 
