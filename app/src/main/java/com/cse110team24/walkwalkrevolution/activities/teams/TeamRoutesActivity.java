@@ -129,7 +129,6 @@ public class TeamRoutesActivity extends AppCompatActivity implements TeamsDataba
 
     @Override
     public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
-        routes.forEach(route -> Log.d(TAG, "onRoutesRetrieved: route " + route));
         mTeamRoutes.addAll(routes);
         Collections.sort(mTeamRoutes);
         mLastRouteDocSnapshot = lastRoute;

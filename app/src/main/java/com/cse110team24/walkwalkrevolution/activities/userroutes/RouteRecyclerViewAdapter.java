@@ -17,8 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,11 +96,9 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             stepsTv.setVisibility(visibility);
             distanceTv.setVisibility(visibility);
             dateTv.setVisibility(visibility);
-            previouslyWalkedTv.setVisibility(visibility);
         }
 
         private void checkFavorite(boolean isFavorite) {
-            Log.i(TAG, "checkFavorite: toggling route is favorite");
             if (isFavorite) {
                 favoriteBtn.setBackgroundResource(R.drawable.ic_star_yellow_24dp);
             } else {
@@ -110,15 +112,49 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             checkFavorite(route.isFavorite());
             routeNameTv.setText(route.getTitle());
             WalkStats stats = route.getStats();
+            checkWalkStats(stats, route);
+        }
+
+        private void checkWalkStats(WalkStats stats, Route route) {
             if(stats == null) {
                 setStatsVisibility(View.INVISIBLE);
-            } else {
-                setStatsVisibility(View.VISIBLE);
-
-                stepsTv.setText(String.format("%s%s", String.valueOf(stats.getSteps()), " steps"));
-                distanceTv.setText(stats.formattedDistance());
-                dateTv.setText(stats.formattedDate());
+                return;
+            }  else if (routeBelongsToUser(route)) {
+                Log.d(TAG, "checkWalkStats: route belonged to user");
+                previouslyWalkedTv.setVisibility(View.VISIBLE);
+            } else if (userHasWalkTeammateRoute(route)) {
+                stats = getUserStatsForTeamRoute(stats, route);
+                Log.d(TAG, "checkWalkStats: stats found for teammate " + route.getCreatorName() + "' " + route.getTitle() + " " + stats);
+                previouslyWalkedTv.setVisibility(View.VISIBLE);
             }
+            setStatsDisplayedValues(stats);
+        }
+
+        private WalkStats getUserStatsForTeamRoute(WalkStats stats, Route route) {
+            try {
+                Route teammateRouteSavedStats = RoutesManager.readSingle(route.getRouteUid(), mContext);
+                stats.setDistance(teammateRouteSavedStats.getStats().getDistance());
+                stats.setSteps(teammateRouteSavedStats.getStats().getSteps());
+                stats.setDateCompleted(teammateRouteSavedStats.getStats().getDateCompleted());
+                return stats;
+            } catch (IOException e) {
+                return null;
+            }
+        }
+
+        private void setStatsDisplayedValues(WalkStats stats) {
+            setStatsVisibility(View.VISIBLE);
+            stepsTv.setText(String.format("%s%s", String.valueOf(stats.getSteps()), " steps"));
+            distanceTv.setText(stats.formattedDistance());
+            dateTv.setText(stats.formattedDate());
+        }
+
+        private boolean routeBelongsToUser(Route route) {
+            return mPreferences.getString(IUser.USER_NAME_KEY, "").equals(route.getCreatorName());
+        }
+
+        private boolean userHasWalkTeammateRoute(Route route) {
+            return new File(mContext.getFilesDir(), route.getRouteUid()).exists();
         }
 
         private void launchRouteDetailsActivityOnClick(Route route) {

@@ -64,7 +64,7 @@
         android:layout_height="35dp"
         android:background="@drawable/ic_check_black_24dp"
         android:layout_below="@+id/tv_routes_date_completed"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_toStartOf="@+id/btn_routes_favorite"/>
 
 </RelativeLayout>

@@ -67,7 +67,7 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity implements UsersDatabaseServiceObserver {
     private static final String TAG = "WWR_HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
-    private static final long UPDATE_PERIOD = 10_000;
+    private static final long UPDATE_PERIOD = 60_000;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final String HEIGHT_FT_KEY = "Height Feet";

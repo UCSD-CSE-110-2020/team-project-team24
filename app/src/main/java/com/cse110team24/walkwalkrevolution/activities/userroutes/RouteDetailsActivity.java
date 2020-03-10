@@ -262,7 +262,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void returnToRoutesActivityForWalk() {
-        Log.i(TAG, "returnToRoutesActivityForWalk: returning to home for automatic recording");
+        Log.i(TAG, "returnToRoutesActivityForWalk: returning to launching activity for automatic recording");
         Intent intent = new Intent()
                 .putExtra(ROUTE_KEY, displayedRoute)
                 .putExtra(ROUTE_IDX_KEY, routeIdx);
