@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.models.team;
+package com.cse110team24.walkwalkrevolution.models.team.walk;
 
 import androidx.annotation.NonNull;
 
@@ -7,7 +7,6 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.Timestamp;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

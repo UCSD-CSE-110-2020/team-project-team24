@@ -4,7 +4,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.Te
 import com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.TeamsDatabaseServiceSubject;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
-import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -87,4 +87,6 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
      * @param teamWalkLimitCt the amount of team walks to query from database.
      */
     void getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt);
+
+//    void changeTeammateStatus(final IUser user, )
 }

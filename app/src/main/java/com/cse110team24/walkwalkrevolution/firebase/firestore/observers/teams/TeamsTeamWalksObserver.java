@@ -1,7 +1,6 @@
 package com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams;
 
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
 
 import java.util.List;
 

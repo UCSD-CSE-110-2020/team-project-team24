@@ -4,7 +4,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.Te
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
-import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
 import com.cse110team24.walkwalkrevolution.utils.Subject;
 import com.google.firebase.firestore.DocumentSnapshot;
 
