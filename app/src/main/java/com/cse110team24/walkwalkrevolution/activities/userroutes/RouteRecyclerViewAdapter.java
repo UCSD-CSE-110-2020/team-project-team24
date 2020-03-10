@@ -62,6 +62,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
         private TextView dateTv;
         private Button favoriteBtn;
         private TextView initialsTv;
+        private TextView previouslyWalkedTv;
 
         private Map<String, Integer> initialsColors = new HashMap<>();
         RelativeLayout container;
@@ -76,6 +77,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             favoriteBtn = itemView.findViewById(R.id.btn_routes_favorite);
             favoriteBtn.setOnClickListener(this);
             initialsTv = itemView.findViewById(R.id.tv_team_routes_initials);
+            previouslyWalkedTv = itemView.findViewById(R.id.tv_previously_walked_checkmark);
         }
 
         @Override
@@ -90,6 +92,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             stepsTv.setVisibility(visibility);
             distanceTv.setVisibility(visibility);
             dateTv.setVisibility(visibility);
+            previouslyWalkedTv.setVisibility(visibility);
         }
 
         private void checkFavorite(boolean isFavorite) {

@@ -12,6 +12,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteRecyclerViewAdapter;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
@@ -47,6 +48,8 @@ public class RoutesActivityUnitTest extends TestInjection {
     private TextView firstTv;
     private TextView thirdTv;
     private FloatingActionButton fab;
+    private TextView previouslyWalkedMarkFirstTV;
+    private TextView previouslyWalkedMarkSecondTV;
 
 
     ActivityScenario<RoutesActivity> scenario;
@@ -87,6 +90,21 @@ public class RoutesActivityUnitTest extends TestInjection {
             getUIFields(activity);
             assertEquals(activity.getDrawable(R.drawable.ic_star_border_black_24dp).getConstantState(), secondBtn.getBackground().getConstantState());
             assertEquals(activity.getDrawable(R.drawable.ic_star_yellow_24dp).getConstantState(), thirdBtn.getBackground().getConstantState());
+        });
+    }
+    @Test
+    public void previouslyWalkedMarkSet() {
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            assertEquals(View.VISIBLE, previouslyWalkedMarkSecondTV.getVisibility());
+        });
+    }
+
+    @Test
+    public void previouslyWalkedNotMarkSet() {
+        scenario.onActivity(activity -> {
+           getUIFields(activity);
+           assertEquals(View.INVISIBLE, previouslyWalkedMarkFirstTV.getVisibility());
         });
     }
 
@@ -134,6 +152,10 @@ public class RoutesActivityUnitTest extends TestInjection {
 
         secondBtn = secondView.findViewById(R.id.btn_routes_favorite);
         thirdBtn = thirdView.findViewById(R.id.btn_routes_favorite);
+
+        previouslyWalkedMarkFirstTV = firstView.findViewById(R.id.tv_previously_walked_checkmark);
+        previouslyWalkedMarkSecondTV = secondView.findViewById(R.id.tv_previously_walked_checkmark);
+
 
     }
 
