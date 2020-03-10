@@ -96,7 +96,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         Route proposedRoute = teamWalks.get(0).getProposedRoute();
         walkName.setText(proposedRoute.getTitle());
         startingLocation.setText(proposedRoute.getStartingLocation());
-        String formattedDateAndTime = Utils.formatDateIntoReadableString("MM/dd/yyyy HH:mm a", teamWalks.get(0).getProposedDateAndTime().toDate());
+        String formattedDateAndTime = Utils.formatDateIntoReadableString("MM/dd/yyyy 'at' HH:mm a", teamWalks.get(0).getProposedDateAndTime().toDate());
         walkDate.setText(formattedDateAndTime);
     }
 }
