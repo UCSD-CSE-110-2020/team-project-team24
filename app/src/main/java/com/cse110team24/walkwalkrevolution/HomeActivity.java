@@ -384,10 +384,24 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
             existingRoute.setStats(stats);
 
             // update existing route in db
-            updateRouteToTeamIfExists(existingRoute);
-            saveIntoList(existingRoute);
-            showRouteUpdatedToast();
+            if (routeBelongsToUser(existingRoute)) {
+                updateRouteToTeamIfExists(existingRoute);
+                saveIntoList(existingRoute);
+                showRouteUpdatedToast();
+            } else {
+                try {
+                    RoutesManager.writeSingle(existingRoute, existingRoute.getRouteUid(), this);
+                    Utils.showToast(this, "Saved your stats for a teammate's route", Toast.LENGTH_LONG);
+                } catch (IOException e) {
+                    Log.e(TAG, "checkIfRouteExisted: could not save teammate route", e);
+                }
+            }
+
         }
+    }
+
+    private boolean routeBelongsToUser(Route route) {
+        return route.getCreatorName().equals(mUser.getDisplayName());
     }
 
     // if the user's team exists, upload the route to the routes collection of the Team
