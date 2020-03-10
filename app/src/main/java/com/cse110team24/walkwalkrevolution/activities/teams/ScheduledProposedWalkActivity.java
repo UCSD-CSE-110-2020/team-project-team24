@@ -142,6 +142,9 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void highLightCurrentStatusButton() {
+        if(mCurrentUserStatus == null)
+            return;
+
         switch (mCurrentUserStatus) {
             case ACCEPTED:
                 // TODO: 3/10/20 highlight accepted button
@@ -153,7 +156,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
             case DECLINED_SCHEDULING_CONFLICT:
                 // TODO: 3/10/20 highlight declined bad time button
                 break;
-            default:
         }
     }
 
