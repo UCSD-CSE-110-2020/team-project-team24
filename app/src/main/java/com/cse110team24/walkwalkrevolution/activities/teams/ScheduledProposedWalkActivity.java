@@ -132,12 +132,15 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         highLightCurrentStatusButton();
 
         acceptBtn = findViewById(R.id.schedule_propose_btn_accept);
+        acceptBtn.setEnabled(true);
         acceptBtn.setOnClickListener(v -> acceptBtnOnClickListener());
 
         declineCannotMakeItBtn = findViewById(R.id.schedule_propose_btn_decline_cant_come);
+        declineCannotMakeItBtn.setEnabled(true);
         declineCannotMakeItBtn.setOnClickListener(v -> declineReasonTimeBtnOnClickListener());
 
         declineNotInterestedBtn = findViewById(R.id.schedule_propose_btn_decline_not_interested);
+        declineNotInterestedBtn.setEnabled(true);
         declineNotInterestedBtn.setOnClickListener(v -> declineReasonBadBtnOnClickListener());
     }
 
@@ -160,9 +163,12 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void updateStatus(TeammateStatus newStatus) {
+        mCurrentUserStatus = TeammateStatus.get(mPreferences.getString(IUser.STATUS_TEAM_WALK, ""));
         if (mCurrentUserStatus == newStatus) {
+            Log.d(TAG, "updateStatus: current status was equal to newStatus " + newStatus);
             Utils.showToast(this, "Please pick a new status", Toast.LENGTH_SHORT);
         } else {
+            Log.d(TAG, "updateStatus: updated user status to " + newStatus);
             mPreferences.edit().putString(IUser.STATUS_TEAM_WALK, newStatus.getReason()).apply();
             mDb.changeTeammateStatusForLatestWalk(mCurrentUser, mCurrentTeamWalk, newStatus);
             highLightCurrentStatusButton();

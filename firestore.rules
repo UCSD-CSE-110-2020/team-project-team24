@@ -47,7 +47,7 @@ service cloud.firestore {
     // anyone can create and read team, only members can update their team
     match /teams/{team} {
     	
-    	match /teamWalks/{teamWalk} {
+      match /teamWalks/{teamWalk} {
       	allow write, read: if request.auth.uid != null;
       }
       
@@ -56,8 +56,8 @@ service cloud.firestore {
         allow create, read: if request.auth.uid != null
         // allow updating the team if the user's teamUid matches the team's uid
         allow update:
-          if request.auth.uid != null &&
-          get(/databases/$(database)/documents/users/$(request.resource.data.teamUid)) == resource.data.uid;
+          if request.auth.uid != null;
+          // get(/databases/$(database)/documents/users/$(request.resource.data.teamUid)) == resource.data.uid;
       }
       
       match /routes/{route} {
