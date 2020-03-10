@@ -121,41 +121,32 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             if(stats == null) {
                 setStatsVisibility(View.INVISIBLE);
             }  else if (routeBelongsToUser(route)) {
-                Log.d(TAG, "checkWalkStats: route belonged to user");
                 setStatsDisplayedValues(stats);
-                setColorStats(route);
+                setColorStats(mContext.getColor(R.color.color_my_routes));
             } else if (userHasWalkTeammateRoute(route)) {
-                stats = getUserStatsForTeamRoute(stats, route);
-                Log.d(TAG, "checkWalkStats: stats found for teammate " + route.getCreatorName() + "' " + route.getTitle() + " " + stats);
+                getUserStatsForTeamRoute(stats, route);
                 setStatsDisplayedValues(stats);
-                setColorStats(route);
+                setColorStats(mContext.getColor(R.color.color_curr_user_completed_team_route));
             } else {
                 setStatsDisplayedValues(stats);
+                setColorStats(Color.GRAY);
                 previouslyWalkedTv.setVisibility(View.INVISIBLE);
             }
         }
-        private void setColorStats(Route route) {
-            if( routeBelongsToUser(route) ) {
-                stepsTv.setTextColor(Color.parseColor("#EF1818"));
-                distanceTv.setTextColor(Color.parseColor("#EF1818"));
-                dateTv.setTextColor(Color.parseColor("#EF1818"));
-            }
-            else if (userHasWalkTeammateRoute(route)) {
-                stepsTv.setTextColor(Color.parseColor("#00F6FF"));
-                distanceTv.setTextColor(Color.parseColor("#00F6FF"));
-                dateTv.setTextColor(Color.parseColor("#00F6FF"));
-            }
+        private void setColorStats(int color) {
+            stepsTv.setTextColor(color);
+            distanceTv.setTextColor(color);
+            dateTv.setTextColor(color);
         }
 
-        private WalkStats getUserStatsForTeamRoute(WalkStats stats, Route route) {
+        private void getUserStatsForTeamRoute(WalkStats stats, Route route) {
             try {
                 Route teammateRouteSavedStats = RoutesManager.readSingle(route.getRouteUid(), mContext);
                 stats.setDistance(teammateRouteSavedStats.getStats().getDistance());
                 stats.setSteps(teammateRouteSavedStats.getStats().getSteps());
                 stats.setDateCompleted(teammateRouteSavedStats.getStats().getDateCompleted());
-                return stats;
             } catch (IOException e) {
-                return null;
+                Log.e(TAG, "getUserStatsForTeamRoute: error getting saved team route", e);
             }
         }
 

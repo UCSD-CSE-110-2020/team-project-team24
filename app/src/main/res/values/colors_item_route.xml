@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_my_routes">#EF1818</color>
+    <color name="color_curr_user_completed_team_route">#2196F3</color>
+    <color name="color_team_route">#000000</color>
+</resources>
