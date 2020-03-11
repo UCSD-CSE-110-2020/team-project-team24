@@ -60,7 +60,9 @@ public class TestTeamsDatabaseService implements TeamsDatabaseService {
 
     @Override
     public void getUserTeam(String teamUid, String currentUserDisplayName) {
-        ((TeamsTeammatesObserver) mObserver).onTeamRetrieved(testTeam);
+        if (mObserver instanceof TeamsTeammatesObserver) {
+            ((TeamsTeammatesObserver) mObserver).onTeamRetrieved(testTeam);
+        }
     }
 
     @Override

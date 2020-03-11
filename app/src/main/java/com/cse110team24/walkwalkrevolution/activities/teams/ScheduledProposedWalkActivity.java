@@ -81,7 +81,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         mTeamUid = mPreferences.getString(IUser.TEAM_UID_KEY, null);
         Log.d(TAG, "getTeamUid: team uid found, retrieving team");
-        mDb.getUserTeam(mTeamUid, preferences.getString(IUser.USER_NAME_KEY, ""));
     }
 
     private void getCurrentUser() {
