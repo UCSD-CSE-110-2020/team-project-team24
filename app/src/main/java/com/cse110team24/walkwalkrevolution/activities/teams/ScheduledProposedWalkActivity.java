@@ -235,7 +235,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     public void onTeamWalkStatusesRetrieved(SortedMap<String, String> statusData) {
         List<IUser> teammates = new ArrayList<>();
         statusData.forEach((displayName, statusString) -> {
-            if (!displayName.equals(mCurrentUser.getDisplayName())) {
+            if (!displayName.equals(mCurrentUser.getDisplayName()) && !displayName.equals(mCurrentTeamWalk.getProposedBy())) {
                 IUser teammate = FirebaseUserAdapter.builder()
                         .addDisplayName(displayName)
                         .addLatestWalkStatus(TeammateStatus.get(statusString))
