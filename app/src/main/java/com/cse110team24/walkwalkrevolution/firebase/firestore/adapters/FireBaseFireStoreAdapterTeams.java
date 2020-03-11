@@ -470,7 +470,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     @Override
     public void notifyObserversTeamWalkStatusesRetrieved(SortedMap<String, String> statusData) {
         observers.forEach(observer -> {
-            if (observer instanceof TeamsTeamWalksObserver) {
+            if (observer instanceof TeamsTeamStatusesObserver) {
                 ((TeamsTeamStatusesObserver) observer).onTeamWalkStatusesRetrieved(statusData);
             }
         });

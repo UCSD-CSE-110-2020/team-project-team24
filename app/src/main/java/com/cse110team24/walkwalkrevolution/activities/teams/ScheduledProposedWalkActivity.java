@@ -231,6 +231,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     @Override
     public void onTeamWalkStatusesRetrieved(SortedMap<String, String> statusData) {
         // TODO: 3/10/20 show teammate names and status
+        Log.d(TAG, "onTeamWalkStatusesRetrieved: status: ");
         statusData.forEach((key, value) -> {
             Log.d(TAG, "onTeamWalkStatusesRetrieved: key: " + key + " value: " + value);
         });
