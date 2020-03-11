@@ -116,7 +116,7 @@ exports.sendNewTeamWalkNotification = functions.firestore
 exports.sendUpdateTeamWalkNotification = functions.firestore
     .document('teams/{team}/teamWalks/{teamWalk}')
     .onUpdate((snap, context) => {
-        const document = snap.exists ? snap.data() : null;
+        const document = change.after.data();
 
         if (document) {
             var message = {
@@ -144,7 +144,7 @@ exports.sendUpdateTeamWalkNotification = functions.firestore
 exports.sendTeammateUpdateWalkStatusNotification = functions.firestore
     .document('teams/{team}/teammates/{teammate}')
     .onUpdate((snap, context) => {
-        const document = snap.exists ? snap.data() : null;
+        const document = change.after.data();
 
         if (document) {
             var message = {
