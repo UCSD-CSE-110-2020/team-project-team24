@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -140,7 +139,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
         declineNotInterestedBtn = findViewById(R.id.schedule_propose_btn_decline_not_interested);
         declineNotInterestedBtn.setEnabled(true);
-        declineNotInterestedBtn.setOnClickListener(v -> updateStatus(TeammateStatus.DECLINED_NOT_GOOD));
+        declineNotInterestedBtn.setOnClickListener(v -> updateStatus(TeammateStatus.DECLINED_NOT_INTERESTED));
 
         highLightCurrentStatusButton();
     }
@@ -155,7 +154,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
             case ACCEPTED:
                 acceptBtn.setTextColor(getColor(R.color.colorAccent));
                 break;
-            case DECLINED_NOT_GOOD:
+            case DECLINED_NOT_INTERESTED:
                 declineNotInterestedBtn.setTextColor(getColor(R.color.colorAccent));
                 break;
 
