@@ -1,10 +1,15 @@
 package com.cse110team24.walkwalkrevolution;
 
 import android.os.IBinder;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.WindowManager;
 
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.Root;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
@@ -19,11 +24,13 @@ import com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseServi
 import com.cse110team24.walkwalkrevolution.mockedservices.TestUsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,6 +38,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,7 +55,10 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.CursorMatchers.withRowString;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withChild;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -59,19 +71,19 @@ import static org.hamcrest.Matchers.not;
 
 /**
  Given that I login successfully,
- and click "Routes",
- When I click on one my routes,
- and I click on the "Propose to Team" arrow,
- and I enter, date, time,
- and click "Send to Team" button,
- Then my teammates will receive an invitation they are invited.
+ and click "Team",
+ When  I click "See Teammate Routes",
+ Then I will see our group's routes,
+ When I click on one of them,
+ Then it will show my teammate's stats.
  */
-@RunWith(AndroidJUnit4.class)
-public class ProposeWalkFromPersonalRoutesEspressoTest {
+public class CheckTeammateStatsOnTeamRoutesBDDEspressoTest {
+
+    private WalkStats stats;
+    private Calendar date = new GregorianCalendar(2020, 2, 14);
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
-    //public MockActivityTestRule<InviteTeamToWalkActivity> mActivityInviteTeamToWalk = new MockActivityTestRule<>(InviteTeamToWalkActivity.class);
 
     @Before
     public void setup() {
@@ -81,23 +93,26 @@ public class ProposeWalkFromPersonalRoutesEspressoTest {
         TestAuth.successUserSignedIn = true;
 
         TestUsersDatabaseService.testCurrentUserData = new HashMap<>();
-        TestUsersDatabaseService.testCurrentUserData.put("displayName", "Emulator User");
-        TestUsersDatabaseService.testCurrentUserData.put("email", "emulator@gmail.com");
+        TestUsersDatabaseService.testCurrentUserData.put("displayName", "Emulator");
+        TestUsersDatabaseService.testCurrentUserData.put("email", "emulato@gmail.com");
         TestUsersDatabaseService.testCurrentUserData.put("teamUid", "666");
         TestAuth.testAuthUser = FirebaseUserAdapter.builder()
-                .addDisplayName("Emulator User")
-                .addEmail("emulator@gmail.com")
+                .addDisplayName("Emulator")
+                .addEmail("emulat@gmail.com")
                 .addTeamUid("666")
                 .build();
 
+        stats = new WalkStats(1500, 1800000, 0.82, date);
         TestTeamsDatabaseService.testTeamRoutes = new ArrayList<>();
-        TestTeamsDatabaseService.testTeamRoutes.add(new Route.Builder("Title").addCreatorDisplayName("Ass Face").build());
-
+        TestTeamsDatabaseService.testTeamRoutes.add(new Route.Builder("Title")
+                .addCreatorDisplayName("Ass Face")
+                .addWalkStats(stats)
+                .addRouteUid("357").build());
         TestTeamsDatabaseService.testTeam = new TeamAdapter(new ArrayList<>());
     }
 
     @Test
-    public void proposeWalkFromPersonalRoutes() {
+    public void checkmarkPreviouslyRunWalk() {
         setup();
 
         ViewInteraction appCompatEditText = onView(
@@ -121,58 +136,38 @@ public class ProposeWalkFromPersonalRoutesEspressoTest {
         appCompatButton.perform(click());
 
         ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.action_routes_list), withContentDescription("Routes"), isDisplayed()));
+                allOf(withId(R.id.action_team), withContentDescription("Team"), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        ViewInteraction activityRoutesMenu = onView(
-                allOf(withId(R.id.action_create_walk), withContentDescription("Create Route"), isDisplayed()));
-        activityRoutesMenu.perform(click());
-
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.et_save_route_title), isDisplayed()));
-        appCompatEditText6.perform(replaceText("Lala Land"), closeSoftKeyboard());
-
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.btn_save_route), withText("SAVE"), isDisplayed()));
-
-        onView(withId(R.id.scroll_view_save))
-                .perform(swipeUp());
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {}
+                allOf(withId(R.id.btn_team_activity_see_teammate_routes), withText("See Teammate Routes"), isDisplayed()));
         appCompatButton2.perform(click());
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {}
 
-        onView(withId(R.id.recycler_view)).perform(actionOnItemAtPosition(0, click()));
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.tv_routes_steps),
+                        allOf(withId(R.id.routes_container),
+                                withId(R.id.recycler_view_team_routes),
+                                isDisplayed())));
 
-        ViewInteraction activityDetailsMenu = onView(
-                allOf(withId(R.id.action_propose_walk), withContentDescription("Propose to Team"), isDisplayed()));
-        activityDetailsMenu.perform(click());
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.tv_routes_distance),
+                        allOf(withId(R.id.routes_container),
+                                withId(R.id.recycler_view_team_routes),
+                                isDisplayed())));
 
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.et_proposed_day_invite_team_to_walk_activity), isDisplayed()));
-        appCompatEditText7.perform(replaceText("03/13/2099"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText8 = onView(
-                allOf(withId(R.id.et_proposed_time_invite_team_to_walk_activity), isDisplayed()));
-        appCompatEditText8.perform(replaceText("11:59"), closeSoftKeyboard());
+        onView(withId(R.id.recycler_view_team_routes)).perform(actionOnItemAtPosition(0, click()));
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.btn_send_invitation_to_team), withText("Send to Team"), isDisplayed()));
-        appCompatButton3.perform(click());
-
-        //Making sure that toast still exists.
-        /*try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        onView(withText("Invitation sent")).
-                inRoot(withDecorView(not(is(mActivityTestRule.getActivity().getWindow().getDecorView())))).
-                check(matches(isDisplayed()));*/
+        ViewInteraction appCompatText1 = onView(
+                allOf(withId(R.id.tv_details_recent_time_elapsed), isDisplayed()));
+        appCompatText1.check(matches(isDisplayed()));
+        ViewInteraction appCompatText2 = onView(
+                allOf(withId(R.id.tv_details_recent_steps), isDisplayed()));
+        appCompatText2.check(matches(isDisplayed()));
+        ViewInteraction appCompatText3 = onView(
+                allOf(withId(R.id.tv_details_recent_distance), isDisplayed()));
+        appCompatText3.check(matches(isDisplayed()));
 
     }
+
 }

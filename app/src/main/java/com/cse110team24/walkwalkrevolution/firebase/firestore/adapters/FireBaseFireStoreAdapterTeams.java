@@ -214,6 +214,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                 .addRouteEnvironment(buildRouteEnvironment((Map<String, Object>) routeDoc.get("environment")))
                 .addNotes(routeDoc.getString("notes"))
                 .addStartingLocation(routeDoc.getString("startingLocation"))
+                .addRouteUid(routeDoc.getId())
                 .build();
     }
 

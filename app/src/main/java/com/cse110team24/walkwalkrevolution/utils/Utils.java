@@ -9,6 +9,8 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import java.io.File;
 import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -72,5 +74,12 @@ public class Utils {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
         dateFormat.setLenient(leniency);
         return dateFormat.format(date);
+    }
+
+    public static boolean fileExists(String filename, Context dirContext) {
+        if (checkNotNull(filename)) {
+            return new File(dirContext.getFilesDir(), filename).exists();
+        }
+        return false;
     }
 }

@@ -1,6 +1,8 @@
 package com.cse110team24.walkwalkrevolution;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +14,13 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteRecyclerViewAdapter;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,6 +50,7 @@ public class RoutesActivityUnitTest extends TestInjection {
     private Button thirdBtn;
     private TextView firstTv;
     private TextView thirdTv;
+    private FloatingActionButton fab;
 
     ActivityScenario<RoutesActivity> scenario;
 
@@ -113,23 +118,26 @@ public class RoutesActivityUnitTest extends TestInjection {
 
         secondBtn = secondView.findViewById(R.id.btn_routes_favorite);
         thirdBtn = thirdView.findViewById(R.id.btn_routes_favorite);
-
     }
 
     private List<Route> getListOfRoutes() {
-        Route routeUno = new Route("CSE Building").setCreatorDisplayName("hola");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2019,5,6);
         WalkStats stats = new WalkStats(1000, 90_000_000, 1.5,  calendar);
+
+        Route routeUno = new Route("CSE Building").setCreatorDisplayName("hola").setRouteUid("CSE");
         Route routeDos = new Route("ECE Building")
+                .setRouteUid("ECE")
                 .setStartingLocation("ECE Makerspace")
                 .setFavorite(true)
                 .setCreatorDisplayName("hola")
                 .setStats(stats);
+
         calendar = Calendar.getInstance();
         calendar.set(2019, 1, 11);
         stats = new WalkStats(500, 90_000, 2.0, calendar);
         Route routTres = new Route("Center Hall")
+                .setRouteUid("CENTRE")
                 .setFavorite(false)
                 .setStartingLocation("Tu madre")
                 .setCreatorDisplayName("hola")
@@ -141,6 +149,5 @@ public class RoutesActivityUnitTest extends TestInjection {
         routes.add(routTres);
         return routes;
     }
-
 
 }
