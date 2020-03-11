@@ -20,6 +20,7 @@ import com.cse110team24.walkwalkrevolution.models.team.walk.TeammateStatus;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * {@inheritDoc}
@@ -372,7 +374,45 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     @Override
     public void getTeammateStatusesForTeamWalk(TeamWalk teamWalk, String teamUid) {
+        mTeamsCollection.document(teamUid)
+                .collection("teammates")
+                .get().addOnCompleteListener(task -> {
+                    SortedMap<String, String> data = new TreeMap<>();
+                    if (task.isSuccessful() && task.getResult() != null) {
+                            addToMap(task.getResult().getDocuments(), data, teamWalk, teamUid, 0);
+                    } else {
+                        notifyObserversTeamWalkStatusesRetrieved(data);
+                    }
+        });
+    }
 
+    private void addToMap(List<DocumentSnapshot> documentSnapshots, SortedMap<String, String> data, TeamWalk teamWalk, String teamUid, int position) {
+        if (position >= documentSnapshots.size()) {
+            notifyObserversTeamWalkStatusesRetrieved(data);
+        } else {
+            String displayName = documentSnapshots.get(position).getString("displayName");
+            // teams/{team}/teamWalks/{teamWalk}/teammateStatuses/{teamStatus}
+            mTeamsCollection.document(teamUid)
+                    .collection("teamWalks")
+                    .document(teamWalk.getWalkUid())
+                    .collection("teammateStatuses")
+                    .document(documentSnapshots.get(position).getId()) // the user's document key
+                    .get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            getUserNameAndStatus(data, task, displayName);
+                            addToMap(documentSnapshots, data, teamWalk, teamUid, position + 1);
+                        } else {
+                            notifyObserversTeamWalkStatusesRetrieved(data);
+                        }
+            });
+        }
+    }
+
+    private void getUserNameAndStatus(SortedMap<String, String> data, Task<DocumentSnapshot> task, String displayName) {
+        DocumentSnapshot statusSnapshot = task.getResult();
+        boolean exists = statusSnapshot != null && statusSnapshot.exists();
+        String status = exists ? statusSnapshot.getString("status") : TeammateStatus.PENDING.getReason();
+        data.put(displayName, status);
     }
 
     private void tryToSetTeammateStatus(Map<String, Object> data, DocumentReference statusDocument) {
