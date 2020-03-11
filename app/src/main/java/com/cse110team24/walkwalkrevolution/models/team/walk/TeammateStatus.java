@@ -6,7 +6,8 @@ import java.util.Map;
 public enum TeammateStatus {
     DECLINED_SCHEDULING_CONFLICT("declined the walk due to a scheduling conflict"),
     DECLINED_NOT_INTERESTED("declined the walk because they're not interested"),
-    ACCEPTED("accepted the walk!");
+    ACCEPTED("accepted the walk!"),
+    PENDING("hasn't responded");
 
 
     private String mReason;
