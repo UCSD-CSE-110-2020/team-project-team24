@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,10 +17,12 @@ import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamStatusesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeammatesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
 import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalkStatus;
 import com.cse110team24.walkwalkrevolution.models.team.walk.TeammateStatus;
@@ -30,7 +33,7 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
 import java.util.List;
 import java.util.SortedMap;
 
-public class ScheduledProposedWalkActivity extends AppCompatActivity implements TeamsTeamWalksObserver, TeamsTeamStatusesObserver {
+public class ScheduledProposedWalkActivity extends AppCompatActivity implements TeamsTeammatesObserver, TeamsTeamWalksObserver, TeamsTeamStatusesObserver {
     private static final String TAG = "WWR_ScheduledProposedWalkActivity";
 
     private Button acceptBtn;
@@ -38,6 +41,8 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     private Button declineNotInterestedBtn;
     private Button scheduleWalkBtn;
     private Button withdrawWalkBtn;
+    private ListView teammateStatusList;
+    private TeammatesListViewAdapter statusListAdapter;
 
     private TeamsDatabaseService mDb;
     private TeamWalk mCurrentTeamWalk;
@@ -57,7 +62,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
         preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         setUpServices();
-        getUIFields();
         getCurrentUser();
     }
 
@@ -72,13 +76,11 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         mDb.register(this);
     }
 
-    private void getUIFields() {
-    }
-
     private void getTeamUid() {
         mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         mTeamUid = mPreferences.getString(IUser.TEAM_UID_KEY, null);
         Log.d(TAG, "getTeamUid: team uid found, retrieving team");
+        mDb.getUserTeam(mTeamUid, preferences.getString(IUser.USER_NAME_KEY, ""));
     }
 
     private void getCurrentUser() {
@@ -88,6 +90,14 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
                 .addTeamUid(mTeamUid)
                 .addEmail(mPreferences.getString(IUser.EMAIL_KEY, ""))
                 .build();
+    }
+
+    @Override
+    public void onTeamRetrieved(ITeam team) {
+        teammateStatusList = findViewById(R.id.list_members_with_status);
+        statusListAdapter = new TeammatesListViewAdapter(this, team.getTeam(), preferences);
+        teammateStatusList.setAdapter(statusListAdapter);
+        teammateStatusList.setVisibility(View.VISIBLE);
     }
 
     @Override
