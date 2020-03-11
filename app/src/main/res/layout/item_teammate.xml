@@ -4,6 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <ImageView
+        android:id="@+id/statusView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_schedule_black_24dp"
+        android:layout_marginStart="@dimen/details_indent"
+        android:layout_gravity="center"
+        android:contentDescription="@string/status_description"/>
+
     <TextView
         android:id="@+id/initialView"
         android:layout_width="wrap_content"
@@ -11,7 +20,7 @@
         android:text="@string/fake_teammate_initials"
         android:textSize="26sp"
         android:textStyle="bold"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="@dimen/details_indent"
         android:layout_gravity="center"/>
 
     <TextView

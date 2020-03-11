@@ -88,6 +88,7 @@
     <string name="title_teammates_in_team">Teammates: </string>
     <string name="btn_title_scheduled_walks">Scheduled and Proposed Walks</string>
     <string name="text_no_teammates_in_team">No Teammates Yet :-(</string>
+    <string name="status_description">Teammate Walk Decision Icon</string>
 
     <!-- In activity_invitations -->
     <string name="title_pending_invitations_page">Pending Invitations</string>
