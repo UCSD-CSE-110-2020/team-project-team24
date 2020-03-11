@@ -147,10 +147,19 @@ exports.sendTeammateUpdateWalkStatusNotification = functions.firestore
         const document = change.after.data();
 
         if (document) {
+            var statusString = document.status;
+            var messageTitle = statusString;
+            var messageBody = 'Click to see your team';
+            var statusArr = statusString.split(' ');
+            if (statusArr[0] === 'declined') {
+                messageTitle = 'declined';
+                statusArr.shift();
+                messageBody = statusArr.join(' ');
+            }
             var message = {
                 notification: {
-                    title: document.displayName + ' has ' + document.status,
-                    body: 'Click to see your team'
+                    title: document.displayName + ' has ' + messageTitle,
+                    body: messageBody
                 },
                 topic: context.params.team
             };
