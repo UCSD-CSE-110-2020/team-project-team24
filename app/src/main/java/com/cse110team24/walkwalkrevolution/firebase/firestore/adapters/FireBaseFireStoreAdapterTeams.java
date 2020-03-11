@@ -31,6 +31,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -346,26 +347,31 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     @Override
     public void changeTeammateStatusForLatestWalk(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus) {
-        // teams/{team}/teammates/{teammate}
+        Map<String, Object> data = new HashMap<>();
+        data.put("teammate", user.getDisplayName());
+        data.put("status", changedStatus.getReason());
+        // teams/{team}/teamWalks/{teamWalk}/teammateStatuses/{teammate}
         DocumentReference teammateStatusDocument = mTeamsCollection
                 .document(user.teamUid())
-                .collection("teammates")
+                .collection("teamWalks")
+                .document(teamWalk.getWalkUid())
+                .collection("teammateStatuses")
                 .document(user.documentKey());
         teammateStatusDocument
-                .update(changedStatus.dataInMapForm()).addOnCompleteListener(task -> {
+                .update(data).addOnCompleteListener(task -> {
 
                     if (task.isSuccessful()) {
                         Log.i(TAG, "changeTeammateStatus: success updating teammate status");
                     } else {
-                        tryToSetTeammateStatus(user, teamWalk, changedStatus, teammateStatusDocument);
+                        tryToSetTeammateStatus(data, teammateStatusDocument);
                     }
         });
 
     }
 
-    private void tryToSetTeammateStatus(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus, DocumentReference statusDocument) {
+    private void tryToSetTeammateStatus(Map<String, Object> data, DocumentReference statusDocument) {
         statusDocument
-                .set(changedStatus.dataInMapForm(), SetOptions.merge())
+                .set(data, SetOptions.merge())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.i(TAG, "tryToSetTeammateStatus: success setting teammate status for first time");
