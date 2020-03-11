@@ -46,6 +46,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 @LooperMode(LooperMode.Mode.PAUSED)
 public class PreviouslyWalkedUnitTest extends TestInjection {
 
+    private Route routeUno, routeDos, routeTres;
     private TextView routesFirstCheckmark, routesSecondCheckmark, routesThirdCheckmark;
     private TeamsDatabaseServiceObserver observer;
     private ActivityScenario<TeamRoutesActivity> teamRoutesScenario;
@@ -98,17 +99,49 @@ public class PreviouslyWalkedUnitTest extends TestInjection {
 
     @Test
     public void testTeamRouteCheckMark_teamAndYouHaveStats() {
-        Mockito.doAnswer(invocation -> {
-            ((TeamsRoutesObserver)observer).onRoutesRetrieved(teamRoutesList, null);
-            return invocation;
-        }).when(teamsDatabaseService).getUserTeamRoutes(anyString(), anyString(), anyInt(), any());
-
-        teamRoutesScenario = ActivityScenario.launch(TeamRoutesActivity.class);
+        try {
+            RoutesManager.writeSingle(routeDos, routeDos.getRouteUid(), context);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        launchTeamRoutesActivity();
         teamRoutesScenario.onActivity(activity -> {
             Mockito.verify(teamsDatabaseService).register(any());
             Mockito.verify(teamsDatabaseService).getUserTeamRoutes(anyString(), anyString(), anyInt(), any());
             getUIFields(activity);
             assertEquals(View.VISIBLE, routesThirdCheckmark.getVisibility());
+        });
+    }
+
+    @Test
+    public void testTeamRouteCheckMark_teamNoStatsYouHaveStats() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2019,5,6);
+        WalkStats stats = new WalkStats(1000, 90_000_000, 1.5,  calendar);
+        Route routeUnoCopy = new Route("CSE Building").setRouteUid("CSE").setStats(stats);
+        try {
+            RoutesManager.writeSingle(routeUnoCopy, routeUno.getRouteUid(), context);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        launchTeamRoutesActivity();
+        teamRoutesScenario.onActivity(activity -> {
+            Mockito.verify(teamsDatabaseService).register(any());
+            Mockito.verify(teamsDatabaseService).getUserTeamRoutes(anyString(), anyString(), anyInt(), any());
+            getUIFields(activity);
+            assertEquals(View.VISIBLE, routesFirstCheckmark.getVisibility());
+        });
+    }
+
+    @Test
+    public void testTeamRouteNoCheckMark_teamHasStatsYouNoStats() {
+        launchTeamRoutesActivity();
+        teamRoutesScenario.onActivity(activity -> {
+            Mockito.verify(teamsDatabaseService).register(any());
+            Mockito.verify(teamsDatabaseService).getUserTeamRoutes(anyString(), anyString(), anyInt(), any());
+            getUIFields(activity);
+            assertEquals(View.INVISIBLE, routesThirdCheckmark.getVisibility());
         });
     }
 
@@ -143,13 +176,21 @@ public class PreviouslyWalkedUnitTest extends TestInjection {
         routesScenario = ActivityScenario.launch(intent);
     }
 
+    private void launchTeamRoutesActivity() {
+        Mockito.doAnswer(invocation -> {
+            ((TeamsRoutesObserver)observer).onRoutesRetrieved(teamRoutesList, null);
+            return invocation;
+        }).when(teamsDatabaseService).getUserTeamRoutes(anyString(), anyString(), anyInt(), any());
+        teamRoutesScenario = ActivityScenario.launch(TeamRoutesActivity.class);
+    }
+
     private List<Route> getListOfRoutes(boolean getUserRoutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2019,5,6);
         WalkStats stats = new WalkStats(1000, 90_000_000, 1.5,  calendar);
 
-        Route routeUno = new Route("CSE Building").setRouteUid("CSE");
-        Route routeDos = new Route("ECE Building")
+        routeUno = new Route("CSE Building").setRouteUid("CSE");
+        routeDos = new Route("ECE Building")
                 .setRouteUid("ECE")
                 .setStartingLocation("ECE Makerspace")
                 .setFavorite(true)
@@ -158,17 +199,11 @@ public class PreviouslyWalkedUnitTest extends TestInjection {
         calendar = Calendar.getInstance();
         calendar.set(2019, 1, 11);
         stats = new WalkStats(500, 90_000, 2.0, calendar);
-        Route routeTres = new Route("Center Hall")
+        routeTres = new Route("Center Hall")
                 .setRouteUid("CENTRE")
                 .setFavorite(false)
                 .setStartingLocation("Tu madre")
                 .setStats(stats);
-
-        try {
-            RoutesManager.writeSingle(routeDos, routeDos.getRouteUid(), context);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         String ownerName = otherUser.getDisplayName();
         if(getUserRoutes) {
