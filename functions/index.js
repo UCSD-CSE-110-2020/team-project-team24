@@ -140,3 +140,31 @@ exports.sendUpdateTeamWalkNotification = functions.firestore
 
         return "document was null or empty";
     });
+
+exports.sendTeammateUpdateWalkStatusNotification = functions.firestore
+    .document('teams/{team}/teammates/{teammate}')
+    .onUpdate((snap, context) => {
+        const document = snap.exists ? snap.data() : null;
+
+        if (document) {
+            var message = {
+                notification: {
+                    title: document.displayName + ' has ' + document.status,
+                    body: 'Click to see your team'
+                },
+                topic: context.params.team
+            };
+
+            return admin.messaging().send(message)
+                .then((response) => {
+                    console.log('Successfully sent teammate changed status for walk notification:', message);
+                    return response;
+                })
+                .catch((error) => {
+                    console.log('Error sending teammate changed status for walk notification:', error);
+                    return error;
+                });
+        }
+
+        return "document was null or empty";
+    });
