@@ -5,11 +5,11 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsRoutesObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamStatusesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeammatesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
-import com.cse110team24.walkwalkrevolution.models.route.RouteBuilder;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 /**
  * {@inheritDoc}
@@ -369,6 +370,11 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     }
 
+    @Override
+    public void getTeammateStatusesForTeamWalk(TeamWalk teamWalk, String teamUid) {
+
+    }
+
     private void tryToSetTeammateStatus(Map<String, Object> data, DocumentReference statusDocument) {
         statusDocument
                 .set(data, SetOptions.merge())
@@ -405,6 +411,15 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         observers.forEach(observer -> {
             if (observer instanceof TeamsTeamWalksObserver) {
                 ((TeamsTeamWalksObserver) observer).onTeamWalksRetrieved(walks);
+            }
+        });
+    }
+
+    @Override
+    public void notifyObserversTeamWalkStatusesRetrieved(SortedMap<String, String> statusData) {
+        observers.forEach(observer -> {
+            if (observer instanceof TeamsTeamWalksObserver) {
+                ((TeamsTeamStatusesObserver) observer).onTeamWalkStatusesRetrieved(statusData);
             }
         });
     }

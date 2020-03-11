@@ -96,4 +96,11 @@ public interface TeamsDatabaseService extends TeamsDatabaseServiceSubject, Datab
      * @param changedStatus the new status.
      */
     void changeTeammateStatusForLatestWalk(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus);
+
+    /**
+     * Request the database for the specified team's status for all members
+     * @param teamWalk the team walk being requested, must have a lid teamWalkUid.
+     * @param teamUid the teamUid of the teamWalk being requested.
+     */
+    void getTeammateStatusesForTeamWalk(TeamWalk teamWalk, String teamUid);
 }

@@ -9,6 +9,7 @@ import com.cse110team24.walkwalkrevolution.utils.Subject;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
+import java.util.SortedMap;
 
 public interface TeamsDatabaseServiceSubject extends Subject<TeamsDatabaseServiceObserver> {
     /**
@@ -35,4 +36,13 @@ public interface TeamsDatabaseServiceSubject extends Subject<TeamsDatabaseServic
      * @param walks the list of TeamWalks that was retrieved.
      */
     void notifyObserversTeamWalksRetrieved(List<TeamWalk> walks);
+
+    /**
+     * Notify this subject's observers of type {@link com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamStatusesObserver}
+     * that the requested team walk statuses data is ready to be read.
+     * <p>See also: {@link com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamStatusesObserver#onTeamWalkStatusesRetrieved(SortedMap)}</p>
+     * @param statusData map of teammate status data. Key = teammate display name and value = {@link com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalkStatus}
+     *                   in string form.
+     */
+    void notifyObserversTeamWalkStatusesRetrieved(SortedMap<String, String> statusData);
 }
