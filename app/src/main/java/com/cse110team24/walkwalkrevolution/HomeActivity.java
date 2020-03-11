@@ -411,7 +411,7 @@ public class HomeActivity extends AppCompatActivity implements UsersUserDataObse
     private void updateRouteToTeamIfExists(Route route) {
         String teamUid = Utils.getString(preferences, IUser.TEAM_UID_KEY);
 
-        if (teamUid != null) {
+        if (teamUid != null && route.getRouteUid() != null) {
             mTeamsDbService.updateRoute(teamUid, route);
         }
     }
