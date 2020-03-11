@@ -382,8 +382,10 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                 .get().addOnCompleteListener(task -> {
                     SortedMap<String, String> data = new TreeMap<>();
                     if (task.isSuccessful() && task.getResult() != null) {
-                            addToMap(task.getResult().getDocuments(), data, teamWalk, teamUid, 0);
+                        Log.d(TAG, "getTeammateStatusesForTeamWalk: success");
+                        addToMap(task.getResult().getDocuments(), data, teamWalk, teamUid, 0);
                     } else {
+                        Log.e(TAG, "getTeammateStatusesForTeamWalk: error", task.getException());
                         notifyObserversTeamWalkStatusesRetrieved(data);
                     }
         });
@@ -399,6 +401,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                 .collection("teammateStatuses")
                 .get().addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
+                        Log.d(TAG, "addToMap: success");
                         // for each teammate with a status update it to the data map; remove them from set to know who is missing
                         task.getResult().getDocuments().forEach(documentSnapshot -> {
                             getUserNameAndStatus(data, documentSnapshot);
@@ -407,6 +410,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                         addPendingStatusForRemainingTeammates(teammateNames, data);
                         notifyObserversTeamWalkStatusesRetrieved(data);
                     } else {
+                        Log.e(TAG, "addToMap: error", task.getException());
                         notifyObserversTeamWalkStatusesRetrieved(data);
                     }
         });
