@@ -55,6 +55,17 @@ import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
+/**
+ Given that I login successfully,
+ and click "Team",
+ When click I click "See Teammate Routes",
+ Then I will see of our group's routes,
+ When I click on one of them,
+ and I click on the "Propose to Team" arrow,
+ and I enter, date, time,
+ and click "Send to Team" button,
+ Then my teammates will receive an invitation they are invited.
+ */
 public class ProposeWalkFromTeammateRoutesEspressoTest {
 
     @Rule

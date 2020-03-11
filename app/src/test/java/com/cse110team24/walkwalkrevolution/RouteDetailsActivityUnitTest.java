@@ -67,14 +67,16 @@ public class RouteDetailsActivityUnitTest {
 
         stats = new WalkStats(1500, 1800000, 0.82, date);
         expectedRoute = new Route("Route has all the info")
+                .setRouteUid("ALL INFO")
                 .setStartingLocation("THIS IS AT UCSD")
                 .setEnvironment(env)
                 .setNotes("This team is AWESOME!")
                 .setStats(stats);
 
-        incompleteExpectedRoute = new Route("Route has no Info");
+        incompleteExpectedRoute = new Route("Route has no Info").setRouteUid("NO INFO");
 
         semiCompleteExpectedRoute = new Route("This route has some info")
+                .setRouteUid("SOME INFO")
                 .setStartingLocation(" This is idk where")
                 .setEnvironment(semiEnv)
                 .setStats(stats);

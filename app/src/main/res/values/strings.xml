@@ -35,14 +35,6 @@
     <string name="max_input_chars">8</string>
     <string name="enter_start_time">Enter Desired Start Time: </string>
 
-    <!--    In activity_route_details.xml-->
-    <string name="starting_loc"><u>Starting Location</u></string>
-    <string name="unspecified">(unspecified)</string>
-    <string name="route_env"><u>Environment Details</u></string>
-    <string name="recent_walk"><u>Most Recent Walk</u></string>
-    <string name="never_walked">You have never gone on this walk</string>
-    <string name="note_details"><u>Notes</u></string>
-
     <!--    In content_save_route.xml-->
     <string name="title">Title: (this is REQUIRED) </string>
     <string name="name_route_hint">Name Route</string>

@@ -31,6 +31,15 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
 import static org.hamcrest.Matchers.allOf;
 
+/**
+ * Given that I don't have a WWR account,
+ * When I type in my email,
+ * and I type in my password,
+ * and I type in my name
+ * and I type in my height,
+ * and I hit, sign iun,
+ * Then an account in WWR will be made successfully for me.
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class LoginActivitySignUpEspressoTest {
