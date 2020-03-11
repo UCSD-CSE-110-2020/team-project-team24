@@ -115,7 +115,7 @@ exports.sendNewTeamWalkNotification = functions.firestore
 
 exports.sendUpdateTeamWalkNotification = functions.firestore
     .document('teams/{team}/teamWalks/{teamWalk}')
-    .onUpdate((snap, context) => {
+    .onUpdate((change, context) => {
         const document = change.after.data();
 
         if (document) {
@@ -143,7 +143,7 @@ exports.sendUpdateTeamWalkNotification = functions.firestore
 
 exports.sendTeammateUpdateWalkStatusNotification = functions.firestore
     .document('teams/{team}/teammates/{teammate}')
-    .onUpdate((snap, context) => {
+    .onUpdate((change, context) => {
         const document = change.after.data();
 
         if (document) {
