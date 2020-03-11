@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution.models.user;
 
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeammateStatus;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ public class FirebaseUserAdapter implements IUser {
     private String mEmail;
     private String mUid;
     private List<Invitation> mInvitations;
+    private TeammateStatus mWalkStatus;
 
     public FirebaseUserAdapter() {
         mInvitations = new ArrayList<>();
@@ -34,6 +36,11 @@ public class FirebaseUserAdapter implements IUser {
 
     public FirebaseUser firebaseUser() {
         return mFirebaseUser;
+    }
+
+    @Override
+    public TeammateStatus getLatestWalkStatus() {
+        return mWalkStatus;
     }
 
     @Override
@@ -154,6 +161,12 @@ public class FirebaseUserAdapter implements IUser {
         @Override
         public UserBuilder addTeamUid(String teamUid) {
             mUser.updateTeamUid(teamUid);
+            return this;
+        }
+
+        @Override
+        public UserBuilder addLatestWalkStatus(TeammateStatus status) {
+            mUser.mWalkStatus = status;
             return this;
         }
 

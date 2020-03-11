@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsRoutesObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamStatusesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeammatesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
@@ -13,11 +14,13 @@ import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
-import com.cse110team24.walkwalkrevolution.models.team.TeamWalk;
-import com.cse110team24.walkwalkrevolution.models.team.TeamWalkStatus;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalkStatus;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeammateStatus;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,11 +28,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * {@inheritDoc}
@@ -44,19 +53,18 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     public static final String TEAMMATES_SUB_COLLECTION = "teammates";
     public static final String TEAM_ROUTES_SUB_COLLECTION_KEY = "routes";
 
-    private CollectionReference teamsCollection;
-    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference mTeamsCollection;
 
     public FireBaseFireStoreAdapterTeams() {
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        teamsCollection = firebaseFirestore.collection(TEAMS_COLLECTION_KEY);
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        mTeamsCollection = firebaseFirestore.collection(TEAMS_COLLECTION_KEY);
     }
 
     @Override
     public String createTeamInDatabase(IUser user) {
         Log.d(TAG, "createTeamInDatabase: creating team");
         // create new team document and update user's teamUid
-        DocumentReference teamDocument = teamsCollection.document();
+        DocumentReference teamDocument = mTeamsCollection.document();
         String teamUid = teamDocument.getId();
 
         // create the teammates collection and the individual member document
@@ -76,7 +84,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     @Override
     public void addUserToTeam(IUser user, String teamUid) {
         // teamsCollection/teamDocument/teammatesCollection/userDocument
-        DocumentReference teamDocument = teamsCollection.document(teamUid);
+        DocumentReference teamDocument = mTeamsCollection.document(teamUid);
         CollectionReference teammatesCollection = teamDocument.collection(TEAMMATES_SUB_COLLECTION);
         teammatesCollection.document(user.documentKey()).set(user.userData()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -87,10 +95,9 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         });
     }
 
-    // TODO: 2/28/20 need to determine if this will be real time
     @Override
     public void getUserTeam(String teamUid, String currentUserDisplayName) {
-        DocumentReference documentReference = teamsCollection.document(teamUid);
+        DocumentReference documentReference = mTeamsCollection.document(teamUid);
         CollectionReference teammatesCollection = documentReference.collection(TEAMMATES_SUB_COLLECTION);
         teammatesCollection.orderBy("displayName").get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
@@ -102,6 +109,21 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
                 Log.e(TAG, "getUserTeam: error getting user team", task.getException());
             }
         });
+    }
+
+    private ITeam getTeamList(List<DocumentSnapshot> documents, String currentUserDisplayName) {
+        ITeam team = new TeamAdapter(new ArrayList<>());
+        for (DocumentSnapshot member : documents) {
+            String displayName = (String) member.get("displayName");
+            // skip the current user
+            if (currentUserDisplayName.equals(displayName)) continue;
+            IUser user = FirebaseUserAdapter.builder()
+                    .addDisplayName(displayName)
+                    .addLatestWalkStatus(TeammateStatus.get(member.getString("status")))
+                    .build();
+            team.addMember(user);
+        }
+        return team;
     }
 
     @Override
@@ -148,7 +170,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     // build the query as ordered by teammate name, limited by routeLimitCount. Skips current user via < and > clauses
     private Query getRoutesQuery(String teamUid, String currentUserDisplayName, int routeLimitCount, DocumentSnapshot lastRoute, int order) {
-        Query routesQuery = teamsCollection
+        Query routesQuery = mTeamsCollection
                 .document(teamUid)
                 .collection(TEAM_ROUTES_SUB_COLLECTION_KEY);
 
@@ -224,7 +246,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     @Override
     public void uploadRoute(String teamUid, Route route) {
         // upload to teams/{team}/routes/{route}
-        DocumentReference routeDoc = teamsCollection
+        DocumentReference routeDoc = mTeamsCollection
                 .document(teamUid)
                 .collection(TEAM_ROUTES_SUB_COLLECTION_KEY)
                 .document();
@@ -241,7 +263,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     @Override
     public void updateRoute(String teamUid, Route route) {
         // update in teams/{team}/routes/{route}
-        DocumentReference routeDoc = teamsCollection
+        DocumentReference routeDoc = mTeamsCollection
                 .document(teamUid)
                 .collection(TEAM_ROUTES_SUB_COLLECTION_KEY)
                 .document(route.getRouteUid());
@@ -254,11 +276,12 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         });
     }
 
+    // if walk doesn't exist, creates it first
     @Override
     public String updateCurrentTeamWalk(TeamWalk teamWalk) {
         // TODO: 3/9/20 update in teams/{team}.teamWalk
         if (Utils.checkNotNull(teamWalk.getWalkUid())) {
-            teamsCollection.document(teamWalk.getTeamUid())
+            mTeamsCollection.document(teamWalk.getTeamUid())
                     .collection("teamWalks")
                     .document(teamWalk.getWalkUid())
                     .update(teamWalk.dataInMapForm())
@@ -276,12 +299,29 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         }
     }
 
+    private String tryToCreateTeamWalkDoc(TeamWalk teamWalk) {
+        DocumentReference docRef = mTeamsCollection.document(teamWalk.getTeamUid())
+                .collection("teamWalks")
+                .document();
+        docRef.set(teamWalk.dataInMapForm()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "tryToCreateTeamWalkDoc: team walk document created");
+            } else {
+                Log.e(TAG, "tryToCreateTeamWalkDoc: error creating team walk document", task.getException());
+            }
+        });
+        return docRef.getId();
+    }
+
     private TeamWalk buildTeamWalk(DocumentSnapshot documentSnapshot) {
+        Route proposedRoute = new Route.Builder("").addFieldsFromMap((Map<String, Object>) documentSnapshot.get("proposedRoute")).build();
         // TODO: 3/9/20 get the route as well
         TeamWalk teamWalk = TeamWalk.builder()
                 .addTeamUid(documentSnapshot.getString("teamUid"))
                 .addProposedBy(documentSnapshot.getString("proposedBy"))
                 .addProposedDateAndTime(documentSnapshot.getTimestamp("proposedDateAndTime"))
+                .addProposedRoute(proposedRoute)
+                .addWalkUid(documentSnapshot.getId())
                 .addStatus(TeamWalkStatus.valueOf(documentSnapshot.getString("status")))
                 .build();
 
@@ -290,7 +330,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     @Override
     public void getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt) {
-        Query query = teamsCollection.document(teamUid).collection("teamWalks")
+        Query query = mTeamsCollection.document(teamUid).collection("teamWalks")
                 .orderBy("proposedOn", Query.Direction.DESCENDING)
                 .limit(teamWalkLimitCt);
 
@@ -311,35 +351,96 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         });
     }
 
-    private String tryToCreateTeamWalkDoc(TeamWalk teamWalk) {
-        DocumentReference docRef = teamsCollection.document(teamWalk.getTeamUid())
+    @Override
+    public void changeTeammateStatusForLatestWalk(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("displayName", user.getDisplayName());
+        data.put("status", changedStatus.getReason());
+        // teams/{team}/teamWalks/{teamWalk}/teammateStatuses/{teammate}
+        DocumentReference teammateStatusDocument = mTeamsCollection
+                .document(user.teamUid())
                 .collection("teamWalks")
-                .document();
-        docRef.set(teamWalk.dataInMapForm()).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Log.i(TAG, "tryToCreateTeamWalkDoc: team walk document created");
-                } else {
-                    Log.e(TAG, "tryToCreateTeamWalkDoc: error creating team walk document", task.getException());
-                }
-            });
-        return docRef.getId();
+                .document(teamWalk.getWalkUid())
+                .collection("teammateStatuses")
+                .document(user.documentKey());
+        teammateStatusDocument
+                .update(data).addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+                        Log.i(TAG, "changeTeammateStatus: success updating teammate status");
+                    } else {
+                        tryToSetTeammateStatus(data, teammateStatusDocument);
+                    }
+        });
+
     }
 
-    private ITeam getTeamList(List<DocumentSnapshot> documents, String currentUserDisplayName) {
-        ITeam team = new TeamAdapter(new ArrayList<>());
-        for (DocumentSnapshot member : documents) {
-            String displayName = (String) member.get("displayName");
-            // skip the current user
-            if (currentUserDisplayName.equals(displayName)) continue;
-            IUser user = FirebaseUserAdapter.builder()
-                    .addDisplayName(displayName)
-                    .build();
-            team.addMember(user);
-        }
-        return team;
+    @Override
+    public void getTeammateStatusesForTeamWalk(TeamWalk teamWalk, String teamUid) {
+        // first get all teammate documents to know who are teammates
+        mTeamsCollection.document(teamUid)
+                .collection("teammates")
+                .get().addOnCompleteListener(task -> {
+                    SortedMap<String, String> data = new TreeMap<>();
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Log.d(TAG, "getTeammateStatusesForTeamWalk: success");
+                        addToMap(task.getResult().getDocuments(), data, teamWalk, teamUid, 0);
+                    } else {
+                        Log.e(TAG, "getTeammateStatusesForTeamWalk: error", task.getException());
+                        notifyObserversTeamWalkStatusesRetrieved(data);
+                    }
+        });
     }
 
-    List<TeamsDatabaseServiceObserver> observers = new ArrayList<>();
+    private void addToMap(List<DocumentSnapshot> documentSnapshots, SortedMap<String, String> data, TeamWalk teamWalk, String teamUid, int position) {
+        Set<String> teammateNames = new HashSet<>();
+        documentSnapshots.forEach(documentSnapshot -> teammateNames.add(documentSnapshot.getString("displayName")));
+        // get all status documents
+        mTeamsCollection.document(teamUid)
+                .collection("teamWalks")
+                .document(teamWalk.getWalkUid())
+                .collection("teammateStatuses")
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Log.d(TAG, "addToMap: success");
+                        // for each teammate with a status update it to the data map; remove them from set to know who is missing
+                        task.getResult().getDocuments().forEach(documentSnapshot -> {
+                            getUserNameAndStatus(data, documentSnapshot);
+                            teammateNames.remove(documentSnapshot.getString("displayName"));
+                        });
+                        addPendingStatusForRemainingTeammates(teammateNames, data);
+                        notifyObserversTeamWalkStatusesRetrieved(data);
+                    } else {
+                        Log.e(TAG, "addToMap: error", task.getException());
+                        notifyObserversTeamWalkStatusesRetrieved(data);
+                    }
+        });
+    }
+
+    private void getUserNameAndStatus(SortedMap<String, String> data, DocumentSnapshot documentSnapshot) {
+        String status = documentSnapshot.getString("status");
+        String displayName = documentSnapshot.getString("displayName");
+        data.put(displayName, status);
+    }
+
+    private void addPendingStatusForRemainingTeammates(Set<String> teammateNames, SortedMap<String, String> data) {
+        String status = TeammateStatus.PENDING.getReason();
+        teammateNames.forEach(teammateName -> data.put(teammateName, status));
+    }
+
+    private void tryToSetTeammateStatus(Map<String, Object> data, DocumentReference statusDocument) {
+        statusDocument
+                .set(data, SetOptions.merge())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.i(TAG, "tryToSetTeammateStatus: success setting teammate status for first time");
+                    } else {
+                        Log.e(TAG, "tryToSetTeammateStatus: error updating and setting teammate status", task.getException());
+                    }
+                });
+    }
+
+    private List<TeamsDatabaseServiceObserver> observers = new ArrayList<>();
     @Override
     public void notifyObserversTeamRetrieved(ITeam team) {
         observers.forEach(observer -> {
@@ -363,6 +464,15 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
         observers.forEach(observer -> {
             if (observer instanceof TeamsTeamWalksObserver) {
                 ((TeamsTeamWalksObserver) observer).onTeamWalksRetrieved(walks);
+            }
+        });
+    }
+
+    @Override
+    public void notifyObserversTeamWalkStatusesRetrieved(SortedMap<String, String> statusData) {
+        observers.forEach(observer -> {
+            if (observer instanceof TeamsTeamStatusesObserver) {
+                ((TeamsTeamStatusesObserver) observer).onTeamWalkStatusesRetrieved(statusData);
             }
         });
     }

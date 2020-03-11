@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="walk_name">Name of walk:</string>
+    <string name="date">Proposed Date and Time:</string>
+    <string name="decline_cant_come">Can\'t make it</string>
+    <string name="decline_not_interested">Not interested</string>
+    <string name="accept">Accept</string>
+    <string name="no_walks_to_show">You have no proposed or scheduled walks</string>
+    <string name="proposed_by">Proposed by: </string>
+    <string name="status_header">Teammate Statuses:</string>
+</resources>

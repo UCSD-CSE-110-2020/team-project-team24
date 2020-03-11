@@ -2,7 +2,7 @@
 <resources>
     <string name="proposed_day_invite_team_to_walk">Proposed Day</string>
     <string name="proposed_time_invite_team_to_walk">Proposed Time</string>
-    <string name="hint_proposed_day_invite_team_to_walk">MM/DD/YY</string>
+    <string name="hint_proposed_day_invite_team_to_walk">MM/DD/YYYY</string>
     <string name="hint_proposed_time_invite_team_to_walk">HH:MM</string>
     <string name="send_to_team_invite_team_to_walk">Send to Team</string>
     <string name="menu_item_send_to_team">Propose to Team</string>

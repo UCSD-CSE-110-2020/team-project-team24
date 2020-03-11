@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--    In activity_route_details.xml-->
-    <string name="starting_loc"><u>Starting Location</u></string>
+    <string name="starting_loc"><u>Starting location:</u></string>
     <string name="unspecified">(unspecified)</string>
     <string name="route_env"><u>Environment Details</u></string>
     <string name="your_recent_walk"><u>Your Most Recent Walk</u></string>

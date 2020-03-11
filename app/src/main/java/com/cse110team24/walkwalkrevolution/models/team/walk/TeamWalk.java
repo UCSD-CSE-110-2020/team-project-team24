@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.models.team;
+package com.cse110team24.walkwalkrevolution.models.team.walk;
 
 import androidx.annotation.NonNull;
 
@@ -7,7 +7,6 @@ import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.firebase.Timestamp;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +50,10 @@ public class TeamWalk {
 
     public void setProposedDateAndTime(Timestamp proposedDateAndTime) {
         mProposedDateAndTime = proposedDateAndTime;
+    }
+
+    public Timestamp getProposedDateAndTime() {
+        return mProposedDateAndTime;
     }
 
     public void setTeamUid(String teamUid) {
@@ -125,6 +128,11 @@ public class TeamWalk {
             if (Utils.checkNotNull(status)) {
                 mTeamWalk.setStatus(status);
             }
+            return this;
+        }
+
+        public Builder addWalkUid(String walkUid) {
+            mTeamWalk.setWalkUid(walkUid);
             return this;
         }
 

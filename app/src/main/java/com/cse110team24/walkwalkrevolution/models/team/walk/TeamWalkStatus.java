@@ -1,4 +1,4 @@
-package com.cse110team24.walkwalkrevolution.models.team;
+package com.cse110team24.walkwalkrevolution.models.team.walk;
 
 public enum TeamWalkStatus {
     PROPOSED,

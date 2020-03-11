@@ -1,6 +1,7 @@
 package com.cse110team24.walkwalkrevolution.models.user;
 
 import com.cse110team24.walkwalkrevolution.models.invitation.Invitation;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeammateStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,8 @@ public interface IUser {
     String EMAIL_KEY = "email";
     String UID_KEY = "uid";
     String TEAM_UID_KEY = "teamUid";
-
+    String STATUS_TEAM_WALK = "teamWalk";
+    TeammateStatus getLatestWalkStatus();
     String getDisplayName();
     String getEmail();
     String getUid();
