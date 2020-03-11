@@ -247,7 +247,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         teammateStatusList = findViewById(R.id.list_members_with_status);
         statusListAdapter = new TeammatesListViewAdapter(this, teammates, preferences);
         teammateStatusList.setAdapter(statusListAdapter);
-        teammateStatusList.setVisibility(View.VISIBLE);
         statusListAdapter.setShowStatusIcons(true);
     }
 
