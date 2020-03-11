@@ -30,10 +30,11 @@ import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 
-public class ScheduledProposedWalkActivity extends AppCompatActivity implements TeamsTeammatesObserver, TeamsTeamWalksObserver, TeamsTeamStatusesObserver {
+public class ScheduledProposedWalkActivity extends AppCompatActivity implements TeamsTeamWalksObserver, TeamsTeamStatusesObserver {
     private static final String TAG = "WWR_ScheduledProposedWalkActivity";
 
     private Button acceptBtn;
@@ -90,14 +91,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
                 .addTeamUid(mTeamUid)
                 .addEmail(mPreferences.getString(IUser.EMAIL_KEY, ""))
                 .build();
-    }
-
-    @Override
-    public void onTeamRetrieved(ITeam team) {
-        teammateStatusList = findViewById(R.id.list_members_with_status);
-        statusListAdapter = new TeammatesListViewAdapter(this, team.getTeam(), preferences);
-        teammateStatusList.setAdapter(statusListAdapter);
-        teammateStatusList.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -240,11 +233,19 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
     @Override
     public void onTeamWalkStatusesRetrieved(SortedMap<String, String> statusData) {
-        // TODO: 3/10/20 show teammate names and status
-        Log.d(TAG, "onTeamWalkStatusesRetrieved: status: ");
-        statusData.forEach((key, value) -> {
-            Log.d(TAG, "onTeamWalkStatusesRetrieved: key: " + key + " value: " + value);
+        List<IUser> teammates = new ArrayList<>();
+        statusData.forEach((displayName, statusString) -> {
+            IUser teammate = FirebaseUserAdapter.builder()
+                    .addDisplayName(displayName)
+                    .addLatestWalkStatus(TeammateStatus.get(statusString))
+                    .build();
+            teammates.add(teammate);
         });
+
+        teammateStatusList = findViewById(R.id.list_members_with_status);
+        statusListAdapter = new TeammatesListViewAdapter(this, teammates, preferences);
+        teammateStatusList.setAdapter(statusListAdapter);
+        teammateStatusList.setVisibility(View.VISIBLE);
     }
 
     private boolean walkNotCancelledOrWithdrawn() {
