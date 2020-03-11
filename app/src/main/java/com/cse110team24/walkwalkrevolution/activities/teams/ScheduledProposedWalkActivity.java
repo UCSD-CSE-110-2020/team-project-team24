@@ -248,6 +248,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         statusListAdapter = new TeammatesListViewAdapter(this, teammates, preferences);
         teammateStatusList.setAdapter(statusListAdapter);
         statusListAdapter.setShowStatusIcons(true);
+        teammateStatusList.setNestedScrollingEnabled(true);
     }
 
     private boolean walkNotCancelledOrWithdrawn() {
