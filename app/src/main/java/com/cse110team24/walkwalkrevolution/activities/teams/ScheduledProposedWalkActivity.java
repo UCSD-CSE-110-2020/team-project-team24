@@ -21,6 +21,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsData
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalkStatus;
 import com.cse110team24.walkwalkrevolution.models.team.walk.TeammateStatus;
 import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
@@ -78,8 +79,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         mTeamUid = mPreferences.getString(IUser.TEAM_UID_KEY, null);
         Log.d(TAG, "getTeamUid: team uid found, retrieving team");
-        // TODO implement onTeamRetrieved
-        mDb.getUserTeam(mTeamUid, preferences.getString(IUser.USER_NAME_KEY, ""));
     }
 
     private void getCurrentUser() {
@@ -99,7 +98,9 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         }
 
         mCurrentTeamWalk = teamWalks.get(0);
-        mDb.getTeammateStatusesForTeamWalk(mCurrentTeamWalk, mTeamUid);
+        if (walkNotCancelledOrWithdrawn()) {
+            mDb.getTeammateStatusesForTeamWalk(mCurrentTeamWalk, mTeamUid);
+        }
         displayAppropriateUIViewsForUser();
     }
 
@@ -117,12 +118,14 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void displayProposerUIViews() {
-        // TODO: 3/10/20 dispaly schedule/cancel/withdraw buttons
+        // TODO: 3/10/20 display schedule/cancel/withdraw buttons
     }
 
     private void displayTeammateUIViews() {
-        findViewById(R.id.schedule_propose_linear_layout_status_buttons).setVisibility(View.VISIBLE);
-        addClickListenersTeammateButtons();
+        if (walkNotCancelledOrWithdrawn()) {
+            findViewById(R.id.schedule_propose_linear_layout_status_buttons).setVisibility(View.VISIBLE);
+            addClickListenersTeammateButtons();
+        }
         displayProposedByViews();
     }
 
@@ -228,5 +231,9 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     @Override
     public void onTeamWalkStatusesRetrieved(SortedMap<String, String> statusData) {
         // TODO: 3/10/20 show teammate names and status
+    }
+
+    private boolean walkNotCancelledOrWithdrawn() {
+        return mCurrentTeamWalk.getStatus() != TeamWalkStatus.CANCELLED && mCurrentTeamWalk.getStatus() != TeamWalkStatus.WITHDRAWN;
     }
 }
