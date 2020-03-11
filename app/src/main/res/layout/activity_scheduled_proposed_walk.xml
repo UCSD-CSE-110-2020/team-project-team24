@@ -138,7 +138,9 @@
                 android:layout_weight="1"
                 android:maxLines="1"
                 android:textColor="@color/colorBlack"
+                android:textSize="12sp"
                 style="?android:attr/buttonBarButtonStyle"
+                android:drawableStart="@drawable/ic_check_black_24dp"
                 android:text="@string/accept" />
 
             <Button
@@ -150,6 +152,8 @@
                 android:padding="5dp"
                 android:textColor="@color/colorBlack"
                 android:text="@string/decline_cant_come"
+                android:textSize="12sp"
+                android:drawableStart="@drawable/ic_event_busy_black_24dp"
                 style="?android:attr/buttonBarButtonStyle" />
 
             <Button
@@ -161,6 +165,8 @@
                 android:padding="5dp"
                 android:textColor="@color/colorBlack"
                 android:text="@string/decline_not_interested"
+                android:textSize="12sp"
+                android:drawableStart="@drawable/ic_close_black_24dp"
                 style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
 
