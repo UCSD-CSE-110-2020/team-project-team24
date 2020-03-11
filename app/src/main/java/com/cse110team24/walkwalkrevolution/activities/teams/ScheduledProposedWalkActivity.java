@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamStatusesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
@@ -26,8 +27,9 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 import java.util.List;
+import java.util.SortedMap;
 
-public class ScheduledProposedWalkActivity extends AppCompatActivity implements TeamsTeamWalksObserver {
+public class ScheduledProposedWalkActivity extends AppCompatActivity implements TeamsTeamWalksObserver, TeamsTeamStatusesObserver {
     private static final String TAG = "WWR_ScheduledProposedWalkActivity";
 
     private Button acceptBtn;
@@ -37,7 +39,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     private Button withdrawWalkBtn;
 
     private TeamsDatabaseService mDb;
-    private UsersDatabaseService uDb;
     private TeamWalk mCurrentTeamWalk;
     private IUser mCurrentUser;
     private TeammateStatus mCurrentUserStatus;
@@ -68,8 +69,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     private void setUpServices() {
         mDb = (TeamsDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.TEAMS);
         mDb.register(this);
-
-        uDb = (UsersDatabaseService) FirebaseApplicationWWR.getDatabaseServiceFactory().createDatabaseService(DatabaseService.Service.USERS);
     }
 
     private void getUIFields() {
@@ -100,6 +99,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         }
 
         mCurrentTeamWalk = teamWalks.get(0);
+        mDb.getTeammateStatusesForTeamWalk(mCurrentTeamWalk, mTeamUid);
         displayAppropriateUIViewsForUser();
     }
 
@@ -225,4 +225,8 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         walkDate.setText(formattedDateAndTime);
     }
 
+    @Override
+    public void onTeamWalkStatusesRetrieved(SortedMap<String, String> statusData) {
+        // TODO: 3/10/20 show teammate names and status
+    }
 }
