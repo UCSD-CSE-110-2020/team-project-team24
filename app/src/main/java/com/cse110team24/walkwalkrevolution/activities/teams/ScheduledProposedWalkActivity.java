@@ -98,6 +98,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         statusListAdapter = new TeammatesListViewAdapter(this, team.getTeam(), preferences);
         teammateStatusList.setAdapter(statusListAdapter);
         teammateStatusList.setVisibility(View.VISIBLE);
+        statusListAdapter.setShowStatusIcons(true);
     }
 
     @Override

@@ -27,6 +27,7 @@ public class TeammatesListViewAdapter extends BaseAdapter {
     Context context;
     List<IUser> users;
     LayoutInflater inflater;
+    boolean showStatusIcons;
     private SharedPreferences mPreferences;
 
     public TeammatesListViewAdapter(Context context, List<IUser> users, SharedPreferences preferences) {
@@ -51,6 +52,10 @@ public class TeammatesListViewAdapter extends BaseAdapter {
         return 0;
     }
 
+    public void setShowStatusIcons(boolean showIcons) {
+        showStatusIcons = showIcons;
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View newView;
@@ -61,7 +66,7 @@ public class TeammatesListViewAdapter extends BaseAdapter {
             TextView nameView = newView.findViewById(R.id.nameView);
             TextView initialView = newView.findViewById(R.id.initialView);
             setStatusImage(statusView, users.get(i).getLatestWalkStatus());
-            if (context.equals(ScheduledProposedWalkActivity.class)) statusView.setVisibility(View.VISIBLE);
+            if (showStatusIcons) statusView.setVisibility(View.VISIBLE);
             nameView.setText(users.get(i).getDisplayName());
             String name = users.get(i).getDisplayName();
             initialView.setText(Utils.getInitials(name, -1));
