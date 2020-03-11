@@ -68,8 +68,9 @@ public class Utils {
         return Color.argb(255, rnd.nextInt(192), rnd.nextInt(192), rnd.nextInt(192));
     }
 
-    public static String formatDateIntoReadableString(String format, Date date) {
+    public static String formatDateIntoReadableString(String format, Date date, boolean leniency) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
+        dateFormat.setLenient(leniency);
         return dateFormat.format(date);
     }
 }

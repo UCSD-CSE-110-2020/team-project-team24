@@ -227,7 +227,8 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         findViewById(R.id.schedule_propose_tv_walk_date).setVisibility(View.VISIBLE);
         TextView walkDate = findViewById(R.id.schedule_propose_tv_walk_date_display);
         walkDate.setVisibility(View.VISIBLE);
-        String formattedDateAndTime = Utils.formatDateIntoReadableString("MM/dd/yyyy 'at' HH:mm a", mCurrentTeamWalk.getProposedDateAndTime().toDate());
+        Log.d(TAG, "displayProposedDateAndTime: date: " + mCurrentTeamWalk.getProposedDateAndTime().toDate());
+        String formattedDateAndTime = Utils.formatDateIntoReadableString("MM/dd/yyyy 'at' hh:mm a", mCurrentTeamWalk.getProposedDateAndTime().toDate(), false);
         walkDate.setText(formattedDateAndTime);
     }
 
