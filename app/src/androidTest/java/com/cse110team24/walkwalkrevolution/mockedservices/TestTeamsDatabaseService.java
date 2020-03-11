@@ -2,6 +2,8 @@ package com.cse110team24.walkwalkrevolution.mockedservices;
 
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsRoutesObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamStatusesObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeammatesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
@@ -39,6 +41,12 @@ public class TestTeamsDatabaseService implements TeamsDatabaseService {
      * Set this when sending routes to an observer
      */
     public static List<Route> testTeamRoutes;
+
+    // should only have one element (still needs to be in list). This is the walk that is shown.
+    public static List<TeamWalk> testTeamWalks;
+
+    // keys should be teammate names and values should be the string representation of TeammateStatus. See TeammateStatus.java for the strings
+    public static SortedMap<String, String> testTeamStatuses;
 
     @Override
     public String createTeamInDatabase(IUser user) {
@@ -92,7 +100,7 @@ public class TestTeamsDatabaseService implements TeamsDatabaseService {
 
     @Override
     public void getLatestTeamWalksDescendingOrder(String teamUid, int teamWalkLimitCt) {
-
+        ((TeamsTeamWalksObserver) mObserver).onTeamWalksRetrieved(testTeamWalks);
     }
 
     @Override
@@ -102,7 +110,6 @@ public class TestTeamsDatabaseService implements TeamsDatabaseService {
 
     @Override
     public void notifyObserversTeamWalksRetrieved(List<TeamWalk> walks) {
-
     }
 
     @Override
@@ -112,7 +119,7 @@ public class TestTeamsDatabaseService implements TeamsDatabaseService {
 
     @Override
     public void getTeammateStatusesForTeamWalk(TeamWalk teamWalk, String teamUid) {
-
+        ((TeamsTeamStatusesObserver)mObserver).onTeamWalkStatusesRetrieved(testTeamStatuses);
     }
 
     @Override
