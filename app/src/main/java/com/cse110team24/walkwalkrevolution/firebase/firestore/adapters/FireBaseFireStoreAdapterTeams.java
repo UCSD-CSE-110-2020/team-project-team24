@@ -33,8 +33,10 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -374,6 +376,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     @Override
     public void getTeammateStatusesForTeamWalk(TeamWalk teamWalk, String teamUid) {
+        // first get all teammate documents to know who are teammates
         mTeamsCollection.document(teamUid)
                 .collection("teammates")
                 .get().addOnCompleteListener(task -> {
@@ -387,32 +390,37 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     }
 
     private void addToMap(List<DocumentSnapshot> documentSnapshots, SortedMap<String, String> data, TeamWalk teamWalk, String teamUid, int position) {
-        if (position >= documentSnapshots.size()) {
-            notifyObserversTeamWalkStatusesRetrieved(data);
-        } else {
-            String displayName = documentSnapshots.get(position).getString("displayName");
-            // teams/{team}/teamWalks/{teamWalk}/teammateStatuses/{teamStatus}
-            mTeamsCollection.document(teamUid)
-                    .collection("teamWalks")
-                    .document(teamWalk.getWalkUid())
-                    .collection("teammateStatuses")
-                    .document(documentSnapshots.get(position).getId()) // the user's document key
-                    .get().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            getUserNameAndStatus(data, task, displayName);
-                            addToMap(documentSnapshots, data, teamWalk, teamUid, position + 1);
-                        } else {
-                            notifyObserversTeamWalkStatusesRetrieved(data);
-                        }
-            });
-        }
+        Set<String> teammateNames = new HashSet<>();
+        documentSnapshots.forEach(documentSnapshot -> teammateNames.add(documentSnapshot.getString("displayName")));
+        // get all status documents
+        mTeamsCollection.document(teamUid)
+                .collection("teamWalks")
+                .document(teamWalk.getWalkUid())
+                .collection("teammateStatuses")
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        // for each teammate with a status update it to the data map; remove them from set to know who is missing
+                        task.getResult().getDocuments().forEach(documentSnapshot -> {
+                            getUserNameAndStatus(data, documentSnapshot);
+                            teammateNames.remove(documentSnapshot.getString("displayName"));
+                        });
+                        addPendingStatusForRemainingTeammates(teammateNames, data);
+                        notifyObserversTeamWalkStatusesRetrieved(data);
+                    } else {
+                        notifyObserversTeamWalkStatusesRetrieved(data);
+                    }
+        });
     }
 
-    private void getUserNameAndStatus(SortedMap<String, String> data, Task<DocumentSnapshot> task, String displayName) {
-        DocumentSnapshot statusSnapshot = task.getResult();
-        boolean exists = statusSnapshot != null && statusSnapshot.exists();
-        String status = exists ? statusSnapshot.getString("status") : TeammateStatus.PENDING.getReason();
+    private void getUserNameAndStatus(SortedMap<String, String> data, DocumentSnapshot documentSnapshot) {
+        String status = documentSnapshot.getString("status");
+        String displayName = documentSnapshot.getString("displayName");
         data.put(displayName, status);
+    }
+
+    private void addPendingStatusForRemainingTeammates(Set<String> teammateNames, SortedMap<String, String> data) {
+        String status = TeammateStatus.PENDING.getReason();
+        teammateNames.forEach(teammateName -> data.put(teammateName, status));
     }
 
     private void tryToSetTeammateStatus(Map<String, Object> data, DocumentReference statusDocument) {
