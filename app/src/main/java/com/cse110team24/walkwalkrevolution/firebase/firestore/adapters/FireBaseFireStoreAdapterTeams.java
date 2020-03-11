@@ -348,7 +348,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     @Override
     public void changeTeammateStatusForLatestWalk(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus) {
         Map<String, Object> data = new HashMap<>();
-        data.put("teammate", user.getDisplayName());
+        data.put("displayName", user.getDisplayName());
         data.put("status", changedStatus.getReason());
         // teams/{team}/teamWalks/{teamWalk}/teammateStatuses/{teammate}
         DocumentReference teammateStatusDocument = mTeamsCollection

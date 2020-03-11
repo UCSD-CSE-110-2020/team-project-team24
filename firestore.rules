@@ -49,6 +49,10 @@ service cloud.firestore {
     	
       match /teamWalks/{teamWalk} {
       	allow write, read: if request.auth.uid != null;
+
+        match /teammateStatuses/{teammateStatus} {
+            allow write, read: if request.auth.uid != null;
+        }
       }
       
       match /teammates/{teammate} {
