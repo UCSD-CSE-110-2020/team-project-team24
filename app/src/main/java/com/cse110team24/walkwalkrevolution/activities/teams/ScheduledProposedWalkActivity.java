@@ -145,7 +145,8 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void highLightCurrentStatusButton() {
-        if(mCurrentUserStatus == null)
+        String latestWalkUserAcceptedOrDeclined = preferences.getString("latestTeamWalk", "");
+        if(mCurrentUserStatus == null || !latestWalkUserAcceptedOrDeclined.equals(mCurrentTeamWalk.getWalkUid()))
             return;
         acceptBtn.setTextColor(getColor(R.color.colorBlack));
         declineNotInterestedBtn.setTextColor(getColor(R.color.colorBlack));
@@ -172,7 +173,10 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
             Utils.showToast(this, "Please pick a new status", Toast.LENGTH_SHORT);
         } else {
             Log.d(TAG, "updateStatus: updated user status to " + newStatus);
-            mPreferences.edit().putString(IUser.STATUS_TEAM_WALK, newStatus.getReason()).apply();
+            mPreferences.edit()
+                    .putString(IUser.STATUS_TEAM_WALK, newStatus.getReason())
+                    .putString("latestTeamWalk", mCurrentTeamWalk.getWalkUid())
+                    .apply();
             mDb.changeTeammateStatusForLatestWalk(mCurrentUser, mCurrentTeamWalk, newStatus);
             mCurrentUserStatus = newStatus;
             highLightCurrentStatusButton();
