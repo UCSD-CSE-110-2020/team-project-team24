@@ -6,20 +6,36 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.cse110team24.walkwalkrevolution.fitness.FitnessServiceFactory;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestAuth;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestTeamsDatabaseService;
+import com.cse110team24.walkwalkrevolution.mockedservices.TestUsersDatabaseService;
+import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
+import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
+
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -29,8 +45,33 @@ public class AcceptWalkEspressoTest {
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
+    @Before
+    public void setup() {
+        FitnessServiceFactory.put(TEST_SERVICE_KEY, activity -> new TestFitnessService(activity));
+        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE_KEY);
+        TestAuth.isTestUserSignedIn = true;
+        TestAuth.successUserSignedIn = true;
+
+        TestUsersDatabaseService.testCurrentUserData = new HashMap<>();
+        TestUsersDatabaseService.testCurrentUserData.put("displayName", "Emulator User");
+        TestUsersDatabaseService.testCurrentUserData.put("email", "emulator@gmail.com");
+        TestUsersDatabaseService.testCurrentUserData.put("teamUid", "666");
+        TestAuth.testAuthUser = FirebaseUserAdapter.builder()
+                .addDisplayName("Emulator User")
+                .addEmail("emulator@gmail.com")
+                .addTeamUid("666")
+                .build();
+
+        TestTeamsDatabaseService.testTeamRoutes = new ArrayList<>();
+        TestTeamsDatabaseService.testTeamRoutes.add(new Route.Builder("Title").addCreatorDisplayName("Ass Face").build());
+
+        TestTeamsDatabaseService.testTeam = new TeamAdapter(new ArrayList<>());
+    }
+
     @Test
     public void acceptWalkEspressoTest() {
+        setup();
+
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.enter_gmail_address), isDisplayed()));
         appCompatEditText.perform(replaceText("satta@gmail.com"), closeSoftKeyboard());
@@ -39,8 +80,6 @@ public class AcceptWalkEspressoTest {
                 allOf(withId(R.id.enter_password), isDisplayed()));
         appCompatEditText2.perform(replaceText("dogfood"), closeSoftKeyboard());
 
-        pressBack();
-
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.et_height_feet), isDisplayed()));
         appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
@@ -48,8 +87,6 @@ public class AcceptWalkEspressoTest {
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.et_height_remainder_inches), isDisplayed()));
         appCompatEditText4.perform(replaceText("9"), closeSoftKeyboard());
-
-        pressBack();
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.btn_height_finish), withText("Login"), isDisplayed()));
@@ -119,8 +156,8 @@ public class AcceptWalkEspressoTest {
         textView5.check(matches(withText("Starting location:")));
 
         ViewInteraction textView6 = onView(
-                allOf(withId(R.id.schedule_propose_tv_starting_loc_display), withText("(unspecified)"), isDisplayed()));
-        textView6.check(matches(withText("(unspecified)")));
+                allOf(withId(R.id.schedule_propose_tv_starting_loc_display), withHint("(unspecified)"), isDisplayed()));
+        textView6.check(matches(withHint("(unspecified)")));
 
         ViewInteraction textView7 = onView(
                 allOf(withId(R.id.schedule_propose_tv_walk_date), withText("Proposed Date and Time:"), isDisplayed()));

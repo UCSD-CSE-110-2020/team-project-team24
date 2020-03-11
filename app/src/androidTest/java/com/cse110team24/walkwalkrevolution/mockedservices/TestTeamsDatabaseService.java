@@ -7,10 +7,12 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsData
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.walk.TeamWalk;
+import com.cse110team24.walkwalkrevolution.models.team.walk.TeammateStatus;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
+import java.util.SortedMap;
 
 /**
  * Test implementation of {@link TestTeamsDatabaseService}
@@ -100,6 +102,21 @@ public class TestTeamsDatabaseService implements TeamsDatabaseService {
 
     @Override
     public void notifyObserversTeamWalksRetrieved(List<TeamWalk> walks) {
+
+    }
+
+    @Override
+    public void changeTeammateStatusForLatestWalk(IUser user, TeamWalk teamWalk, TeammateStatus changedStatus) {
+
+    }
+
+    @Override
+    public void getTeammateStatusesForTeamWalk(TeamWalk teamWalk, String teamUid) {
+
+    }
+
+    @Override
+    public void notifyObserversTeamWalkStatusesRetrieved(SortedMap<String, String> statusData) {
 
     }
 }
