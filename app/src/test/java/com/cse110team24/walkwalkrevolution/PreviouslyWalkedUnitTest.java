@@ -1,6 +1,5 @@
 package com.cse110team24.walkwalkrevolution;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,7 +20,6 @@ import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.annotation.LooperMode;
 
@@ -86,6 +84,13 @@ public class PreviouslyWalkedUnitTest extends TestInjection {
             assertEquals(View.VISIBLE, routesSecondCheckmark.getVisibility());
             assertEquals(View.VISIBLE, routesThirdCheckmark.getVisibility());
         });
+
+        Route route = routesList.get(1);
+        launchRouteDetailsActivity(route, 2);
+        routeDetailScenario.onActivity(activity -> {
+            TextView checkMark = activity.findViewById(R.id.tv_previously_walked_checkmark);
+            assertEquals(View.VISIBLE, checkMark.getVisibility());
+        });
     }
 
     @Test
@@ -111,6 +116,13 @@ public class PreviouslyWalkedUnitTest extends TestInjection {
             getUIFields(activity);
             assertEquals(View.VISIBLE, routesThirdCheckmark.getVisibility());
         });
+
+        Route route = teamRoutesList.get(1);
+        launchRouteDetailsActivity(route, 2);
+        routeDetailScenario.onActivity(activity -> {
+            TextView checkMark = activity.findViewById(R.id.tv_previously_walked_checkmark);
+            assertEquals(View.VISIBLE, checkMark.getVisibility());
+        });
     }
 
     @Test
@@ -132,6 +144,13 @@ public class PreviouslyWalkedUnitTest extends TestInjection {
             getUIFields(activity);
             assertEquals(View.VISIBLE, routesFirstCheckmark.getVisibility());
         });
+
+        Route route = teamRoutesList.get(0);
+        launchRouteDetailsActivity(route, 0);
+        routeDetailScenario.onActivity(activity -> {
+            TextView checkMark = activity.findViewById(R.id.tv_previously_walked_checkmark);
+            assertEquals(View.VISIBLE, checkMark.getVisibility());
+        });
     }
 
     @Test
@@ -142,6 +161,15 @@ public class PreviouslyWalkedUnitTest extends TestInjection {
             Mockito.verify(teamsDatabaseService).getUserTeamRoutes(anyString(), anyString(), anyInt(), any());
             getUIFields(activity);
             assertEquals(View.INVISIBLE, routesThirdCheckmark.getVisibility());
+        });
+
+        Route route = teamRoutesList.get(1);
+        launchRouteDetailsActivity(route, 2);
+        routeDetailScenario.onActivity(activity -> {
+            TextView checkMark = activity.findViewById(R.id.tv_previously_walked_checkmark);
+            TextView neverWalked = activity.findViewById(R.id.tv_details_never_walked);
+            assertEquals(View.INVISIBLE, checkMark.getVisibility());
+            assertEquals(View.VISIBLE, neverWalked.getVisibility());
         });
     }
 
@@ -182,6 +210,13 @@ public class PreviouslyWalkedUnitTest extends TestInjection {
             return invocation;
         }).when(teamsDatabaseService).getUserTeamRoutes(anyString(), anyString(), anyInt(), any());
         teamRoutesScenario = ActivityScenario.launch(TeamRoutesActivity.class);
+    }
+
+    private void launchRouteDetailsActivity(Route route, int index) {
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class)
+                .putExtra(RouteDetailsActivity.ROUTE_KEY, route)
+                .putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, index);
+        routeDetailScenario = ActivityScenario.launch(intent);
     }
 
     private List<Route> getListOfRoutes(boolean getUserRoutes) {
