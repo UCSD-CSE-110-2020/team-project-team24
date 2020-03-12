@@ -38,7 +38,6 @@ import static org.mockito.ArgumentMatchers.any;
 public class TeamActivityUnitTest extends TestInjection {
 
     ActivityScenario<TeamActivity> scenario;
-    MessagingObserver messagingObserver;
     TeamsDatabaseServiceObserver teamDbObserver;
     SharedPreferences sp;
     ListView teammatesList;
@@ -54,7 +53,6 @@ public class TeamActivityUnitTest extends TestInjection {
                 .putString(IUser.USER_NAME_KEY, testUser.getDisplayName())
                 .commit();
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.USERS)).thenReturn(usersDatabaseService);
-        //Mockito.when(dsf.createDatabaseService(DatabaseService.Service.INVITATIONS)).thenReturn(invitationsDatabaseService);
         Mockito.when(dsf.createDatabaseService(DatabaseService.Service.TEAMS)).thenReturn(teamsDatabaseService);
     }
 
