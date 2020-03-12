@@ -213,8 +213,10 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         startingLocationTv = findViewById(R.id.schedule_propose_tv_starting_loc_display);
         startingLocationTv.setEnabled(true);
         startingLocationTv.setOnClickListener( v -> {
-            startingLocationTv.setTextColor(getColor(R.color.colorAccent));
-            launchGoogleMaps();
+            String locationText = startingLocationTv.getText().toString();
+            if(!locationText.isEmpty()) {
+                launchGoogleMaps();
+            }
         });
     }
 
