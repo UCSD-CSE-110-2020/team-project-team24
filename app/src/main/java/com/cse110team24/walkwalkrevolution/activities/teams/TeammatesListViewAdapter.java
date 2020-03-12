@@ -82,7 +82,7 @@ public class TeammatesListViewAdapter extends BaseAdapter {
         if (status == null) return;
 
         if (status == TeammateStatus.ACCEPTED)
-            statusView.setBackgroundResource(R.drawable.ic_check_black_24dp);
+            statusView.setBackgroundResource(R.drawable.ic_check_green_24dp);
         else if (status == TeammateStatus.DECLINED_NOT_INTERESTED)
             statusView.setBackgroundResource(R.drawable.ic_close_black_24dp);
         else if (status == TeammateStatus.DECLINED_SCHEDULING_CONFLICT)

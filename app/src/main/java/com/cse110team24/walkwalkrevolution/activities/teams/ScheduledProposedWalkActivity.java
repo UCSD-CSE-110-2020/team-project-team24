@@ -102,6 +102,8 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         mCurrentTeamWalk = teamWalks.get(0);
         displayWalkStatusUIViews();
         if (walkNotCancelledOrWithdrawn()) {
+            findViewById(R.id.tv_status_prompt).setVisibility(View.VISIBLE);
+            mCurrentTeamWalk.setTeamUid(mTeamUid);
             mDb.getTeammateStatusesForTeamWalk(mCurrentTeamWalk, mTeamUid);
             displayAppropriateUIViewsForUser();
         }
@@ -109,11 +111,30 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
     private void displayWalkStatusUIViews() {
         TextView walkStatusTv = findViewById(R.id.schedule_propose_tv_walk_status);
+
+        setStatusText(walkStatusTv);
         if (!walkNotCancelledOrWithdrawn()) {
             walkStatusTv.setTextColor(getColor(android.R.color.holo_red_dark));
         }
         walkStatusTv.setVisibility(View.VISIBLE);
     }
+
+    private void setStatusText(TextView walkStatusTv) {
+        switch (mCurrentTeamWalk.getStatus()) {
+            case SCHEDULED:
+                walkStatusTv.setText(R.string.status_scheduled);
+                break;
+            case WITHDRAWN:
+                walkStatusTv.setText(R.string.status_withdrawn);
+                break;
+            case CANCELLED:
+                walkStatusTv.setText(R.string.status_cancelled);
+                break;
+            default:
+                walkStatusTv.setText(R.string.status_proposed);
+        }
+    }
+
     private void displayAppropriateUIViewsForUser() {
         displayCommonUIViews();
 
@@ -138,10 +159,11 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     private void setCancelWithdrawBtnIconAndText() {
         if (mCurrentTeamWalk.getStatus() == TeamWalkStatus.SCHEDULED) {
             withdrawCancelBtn.setText(R.string.cancel);
-            withdrawCancelBtn.setCompoundDrawablesRelative(getDrawable(R.drawable.ic_delete_forever_red_24dp), null, null, null);
+            scheduleWalkBtn.setVisibility(View.GONE);
+            withdrawCancelBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_delete_forever_red_24dp, 0, 0, 0);
         } else {
             withdrawCancelBtn.setText(R.string.withdraw);
-            withdrawCancelBtn.setCompoundDrawablesRelative(getDrawable(R.drawable.ic_event_busy_black_24dp), null, null, null);
+            withdrawCancelBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_event_busy_black_24dp, 0, 0, 0);
         }
     }
 
@@ -159,13 +181,18 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void withdrawCancelBtnClickListener() {
-        if (withdrawCancelBtn.getText().toString().equals(getString(R.string.cancel))) {
-            mCurrentTeamWalk.setStatus(TeamWalkStatus.CANCELLED);
+        if(walkNotCancelledOrWithdrawn()) {
+            if (withdrawCancelBtn.getText().toString().equals(getString(R.string.cancel))) {
+                mCurrentTeamWalk.setStatus(TeamWalkStatus.CANCELLED);
+            } else {
+                mCurrentTeamWalk.setStatus(TeamWalkStatus.WITHDRAWN);
+            }
+            mDb.updateCurrentTeamWalk(mCurrentTeamWalk);
         } else {
-            mCurrentTeamWalk.setStatus(TeamWalkStatus.WITHDRAWN);
+            withdrawCancelBtn.setEnabled(false);
+            withdrawCancelBtn.setVisibility(View.GONE);
         }
-        setCancelWithdrawBtnIconAndText();
-        mDb.updateCurrentTeamWalk(mCurrentTeamWalk);
+        setStatusText(findViewById(R.id.schedule_propose_tv_walk_status));
     }
 
     private void displayTeammateUIViews() {
