@@ -90,7 +90,7 @@ public class ScheduleWalkActivityUnitTest extends TestInjection {
             assertEquals(View.GONE, recipientButtons.getVisibility());
             assertEquals(View.VISIBLE, organizerButtons.getVisibility());
             assertEquals(View.GONE, scheduleBtn.getVisibility());
-            assertEquals("cancel", withdrawCancelBtn.getText().toString());
+            assertEquals("Cancel", withdrawCancelBtn.getText().toString());
         });
     }
 
