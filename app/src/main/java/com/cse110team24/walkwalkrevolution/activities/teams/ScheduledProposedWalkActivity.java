@@ -41,7 +41,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     private Button declineCannotMakeItBtn;
     private Button declineNotInterestedBtn;
     private Button scheduleWalkBtn;
-    private Button withdrawWalkBtn;
+    private Button withdrawCancelBtn;
     private ListView teammateStatusList;
     private TeammatesListViewAdapter statusListAdapter;
 
@@ -120,7 +120,27 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     }
 
     private void displayProposerUIViews() {
-        // TODO: 3/10/20 display schedule/cancel/withdraw buttons
+        if (walkNotCancelledOrWithdrawn()) {
+            // TODO: 3/11/20 check status and change icon and text of cancel/withdraw button
+            findViewById(R.id.schedule_propose_linear_layout_decision_buttons).setVisibility(View.VISIBLE);
+            addClickListenersProposerButtons();
+        }
+    }
+
+    private void addClickListenersProposerButtons() {
+        // TODO: 3/11/20 highlight currently selected option
+        scheduleWalkBtn = findViewById(R.id.schedule_propose_btn_schedule);
+        scheduleWalkBtn.setOnClickListener(v -> scheduleWalkBtnClickListener());
+        withdrawCancelBtn = findViewById(R.id.schedule_propose_btn_withdraw);
+        withdrawCancelBtn.setOnClickListener(v -> withdrawCancelBtnClickListener());
+    }
+
+    private void scheduleWalkBtnClickListener() {
+        
+    }
+
+    private void withdrawCancelBtnClickListener() {
+
     }
 
     private void displayTeammateUIViews() {

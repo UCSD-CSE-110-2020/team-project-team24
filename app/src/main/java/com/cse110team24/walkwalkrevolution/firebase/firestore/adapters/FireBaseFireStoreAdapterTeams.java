@@ -279,7 +279,7 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
     // if walk doesn't exist, creates it first
     @Override
     public String updateCurrentTeamWalk(TeamWalk teamWalk) {
-        // TODO: 3/9/20 update in teams/{team}.teamWalk
+        // update in teams/{team}/teamWalks/{teamWalk}
         if (Utils.checkNotNull(teamWalk.getWalkUid())) {
             mTeamsCollection.document(teamWalk.getTeamUid())
                     .collection("teamWalks")
@@ -315,7 +315,6 @@ public class FireBaseFireStoreAdapterTeams implements TeamsDatabaseService {
 
     private TeamWalk buildTeamWalk(DocumentSnapshot documentSnapshot) {
         Route proposedRoute = new Route.Builder("").addFieldsFromMap((Map<String, Object>) documentSnapshot.get("proposedRoute")).build();
-        // TODO: 3/9/20 get the route as well
         TeamWalk teamWalk = TeamWalk.builder()
                 .addTeamUid(documentSnapshot.getString("teamUid"))
                 .addProposedBy(documentSnapshot.getString("proposedBy"))
