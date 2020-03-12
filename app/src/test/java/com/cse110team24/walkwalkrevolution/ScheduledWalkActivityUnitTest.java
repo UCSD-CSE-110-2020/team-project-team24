@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.ContactsContract;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
@@ -13,9 +11,6 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.activities.teams.ScheduledProposedWalkActivity;
-import com.cse110team24.walkwalkrevolution.activities.teams.TeamActivity;
-import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeamWalksObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
@@ -26,7 +21,6 @@ import com.google.firebase.Timestamp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowActivity;
@@ -38,7 +32,6 @@ import java.util.Date;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
