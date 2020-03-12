@@ -10,7 +10,7 @@
     <string name="status_header">Teammate Statuses:</string>
     <string name="schedule">schedule</string>
     <string name="withdraw">withdraw</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">@android:string/cancel</string>
     <string name="status_proposed">Status: Proposed</string>
     <string name="status_cancelled">Status: Cancelled</string>
     <string name="status_scheduled">Status: Scheduled</string>
