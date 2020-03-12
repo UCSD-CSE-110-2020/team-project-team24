@@ -11,4 +11,5 @@
     <string name="schedule">schedule</string>
     <string name="withdraw">withdraw</string>
     <string name="cancel">cancel</string>
+    <string name="status_proposed">Status: Proposed</string>
 </resources>
