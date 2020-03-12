@@ -143,5 +143,4 @@ public class InvitationsActivityUnitTest extends TestInjection {
             assertEquals(TOAST_ALREADY_ON_TEAM, ShadowToast.getTextOfLatestToast());
         });
     }
-
 }

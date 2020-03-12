@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 public class LoginActivityUnitTest extends TestInjection {
     private LoginActivity testActivity;
     private Button finishBtn;
-    private Button signInAsGuestBtn;
     private TextView signUpTV;
     private EditText feetEt;
     private EditText inchesEt;
@@ -52,7 +51,6 @@ public class LoginActivityUnitTest extends TestInjection {
             password = testActivity.findViewById(R.id.enter_password);
             signUpTV = testActivity.findViewById(R.id.sign_up_tv);
             username = testActivity.findViewById(R.id.enter_username);
-            signInAsGuestBtn = testActivity.findViewById(R.id.no_login_btn);
         });
     }
 
@@ -128,16 +126,6 @@ public class LoginActivityUnitTest extends TestInjection {
         when(mAuth.getAuthError()).thenReturn(Auth.AuthError.USER_COLLISION);
         when(mAuth.isUserSignedIn()).thenReturn(false);
     }
-
-//    @Test
-//    public void signInAsGuest() {
-//        signInAsGuestBtn.performClick();
-//        feetEt.setText("5");
-//        inchesEt.setText("3");
-//        finishBtn.performClick();
-//        Intent intent = Shadows.shadowOf(testActivity).peekNextStartedActivity();
-//        assertEquals(HomeActivity.class.getCanonicalName(), intent.getComponent().getClassName());
-//    }
 
     @Test
     public void invalidPassword() {
