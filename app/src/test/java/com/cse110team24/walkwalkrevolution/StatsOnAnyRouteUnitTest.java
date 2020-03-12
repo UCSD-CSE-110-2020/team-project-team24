@@ -45,7 +45,6 @@ public class StatsOnAnyRouteUnitTest extends TestInjection {
     private TeamsDatabaseServiceObserver observer;
     private List<Route> teamRoutesList;
     private ActivityScenario<TeamRoutesActivity> teamRoutesScenario;
-    private ActivityScenario<RouteDetailsActivity> mRouteDetailsScenario;
     SharedPreferences sp;
 
     @Before
