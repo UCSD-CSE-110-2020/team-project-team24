@@ -111,8 +111,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             if (!routeBelongsToUser(route)) {
                 route.setFavorite(mPreferences.getBoolean(route.getRouteUid(), false));
             }
-            boolean isFavorite = route.isFavorite();
-            if (isFavorite) {
+            if (route.isFavorite()) {
                 favoriteBtn.setBackgroundResource(R.drawable.ic_star_yellow_24dp);
             } else {
                 favoriteBtn.setBackgroundResource(R.drawable.ic_star_border_black_24dp);
