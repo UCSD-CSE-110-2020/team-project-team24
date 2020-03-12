@@ -87,7 +87,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
 
         private void saveFavoritesToggleIfBelongsToTeammate(Route teammateRoute) {
             if (!routeBelongsToUser(teammateRoute)) {
-                mPreferences.edit().putBoolean(teammateRoute.getRouteUid(), teammateRoute.isFavorite()).apply();
+                mPreferences.edit().putBoolean(teammateRoute.getRouteUid(), teammateRoute.isFavorite()).commit();
             }
         }
 
