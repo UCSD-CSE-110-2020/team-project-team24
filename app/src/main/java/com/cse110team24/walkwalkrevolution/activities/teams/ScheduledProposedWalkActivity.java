@@ -45,7 +45,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     private Button declineNotInterestedBtn;
     private Button scheduleWalkBtn;
     private Button withdrawWalkBtn;
-    private TextView startingLocationTv;
     private ListView teammateStatusList;
     private TeammatesListViewAdapter statusListAdapter;
 
@@ -74,7 +73,6 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     protected void onResume() {
         super.onResume();
         mDb.getLatestTeamWalksDescendingOrder(mTeamUid, 1);
-        onClickListenerLaunchGoogleMaps();
 
     }
 
@@ -209,23 +207,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         displayProposedDateAndTime();
     }
 
-    private void onClickListenerLaunchGoogleMaps() {
-        startingLocationTv = findViewById(R.id.schedule_propose_tv_starting_loc_display);
-        startingLocationTv.setEnabled(true);
-        startingLocationTv.setOnClickListener( v -> {
-            String locationText = startingLocationTv.getText().toString();
-            if(!locationText.isEmpty()) {
-                launchGoogleMaps();
-            }
-        });
-    }
 
-    private void launchGoogleMaps() {
-        String startingLocation = mCurrentTeamWalk.getProposedRoute().getStartingLocation();
-        String map = "http://maps.google.co.in/maps?q=" + startingLocation;
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
-        startActivity(intent);
-    }
 
     private void displayRouteDetails(Route proposedRoute) {
         displayRouteName(proposedRoute);
@@ -241,9 +223,27 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
     private void displayRouteStartingLocation(Route proposedRoute) {
         findViewById(R.id.schedule_propose_tv_starting_loc).setVisibility(View.VISIBLE);
+        TextView startingLocationTv = findViewById(R.id.schedule_propose_tv_starting_loc_display);
         startingLocationTv.setVisibility(View.VISIBLE);
         startingLocationTv.setText(proposedRoute.getStartingLocation());
+        onClickListenerLaunchGoogleMaps(startingLocationTv);
+    }
 
+    private void onClickListenerLaunchGoogleMaps(final TextView startingLocationTv) {
+        startingLocationTv.setEnabled(true);
+        startingLocationTv.setOnClickListener( v -> {
+            String locationText = startingLocationTv.getText().toString();
+            if(!locationText.isEmpty()) {
+                launchGoogleMaps();
+            }
+        });
+    }
+
+    private void launchGoogleMaps() {
+        String startingLocation = mCurrentTeamWalk.getProposedRoute().getStartingLocation();
+        String map = "http://maps.google.co.in/maps?q=" + startingLocation;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+        startActivity(intent);
     }
 
     private void displayProposedDateAndTime() {
