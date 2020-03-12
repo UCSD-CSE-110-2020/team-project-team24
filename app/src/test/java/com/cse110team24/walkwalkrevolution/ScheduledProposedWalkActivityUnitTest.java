@@ -36,7 +36,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(AndroidJUnit4.class)
-public class ScheduledWalkActivityUnitTest extends TestInjection {
+public class ScheduledProposedWalkActivityUnitTest extends TestInjection {
 
     ActivityScenario<ScheduledProposedWalkActivity> scenario;
     SharedPreferences sp;
