@@ -3,7 +3,10 @@ package com.cse110team24.walkwalkrevolution.activities.teams;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +45,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     private Button declineNotInterestedBtn;
     private Button scheduleWalkBtn;
     private Button withdrawWalkBtn;
+    private TextView startingLocationTv;
     private ListView teammateStatusList;
     private TeammatesListViewAdapter statusListAdapter;
 
@@ -70,6 +74,8 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
     protected void onResume() {
         super.onResume();
         mDb.getLatestTeamWalksDescendingOrder(mTeamUid, 1);
+        onClickListenerLaunchGoogleMaps();
+
     }
 
     private void setUpServices() {
@@ -203,6 +209,22 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         displayProposedDateAndTime();
     }
 
+    private void onClickListenerLaunchGoogleMaps() {
+        startingLocationTv = findViewById(R.id.schedule_propose_tv_starting_loc_display);
+        startingLocationTv.setEnabled(true);
+        startingLocationTv.setOnClickListener( v -> {
+            startingLocationTv.setTextColor(getColor(R.color.colorAccent));
+            launchGoogleMaps();
+        });
+    }
+
+    private void launchGoogleMaps() {
+        String startingLocation = mCurrentTeamWalk.getProposedRoute().getStartingLocation();
+        String map = "http://maps.google.co.in/maps?q=" + startingLocation;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+        startActivity(intent);
+    }
+
     private void displayRouteDetails(Route proposedRoute) {
         displayRouteName(proposedRoute);
         displayRouteStartingLocation(proposedRoute);
@@ -217,9 +239,9 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
     private void displayRouteStartingLocation(Route proposedRoute) {
         findViewById(R.id.schedule_propose_tv_starting_loc).setVisibility(View.VISIBLE);
-        TextView startingLocation = findViewById(R.id.schedule_propose_tv_starting_loc_display);
-        startingLocation.setVisibility(View.VISIBLE);
-        startingLocation.setText(proposedRoute.getStartingLocation());
+        startingLocationTv.setVisibility(View.VISIBLE);
+        startingLocationTv.setText(proposedRoute.getStartingLocation());
+
     }
 
     private void displayProposedDateAndTime() {

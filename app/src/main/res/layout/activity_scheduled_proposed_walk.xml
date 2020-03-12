@@ -89,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:hint="@string/unspecified"
+            android:text=""
             android:visibility="gone"
             android:textSize="@dimen/details_size"
             app:layout_constraintTop_toBottomOf="@+id/schedule_propose_tv_starting_loc"
@@ -114,6 +115,8 @@
             android:layout_marginStart="15dp"
             android:hint="@string/unspecified"
             android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
             android:textSize="@dimen/details_size"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/schedule_propose_tv_walk_date"/>

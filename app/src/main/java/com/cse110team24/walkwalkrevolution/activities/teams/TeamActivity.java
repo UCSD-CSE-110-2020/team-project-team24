@@ -16,11 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
-import com.cse110team24.walkwalkrevolution.ScheduledWalkActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InviteTeamMemberActivity;
 import com.cse110team24.walkwalkrevolution.R;
-import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeammatesObserver;
@@ -149,12 +147,6 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
             launchInviteRouteActivity();
         });
     }
-
-//    private void setSeeScheduledWalksOnClick() {
-//        seeScheduledWalksBtn.setOnClickListener(view -> {
-//            startActivity(new Intent(this, ScheduledWalkActivity.class));
-//        });
-//    }
 
     private void setBottomNavItemSelectedListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {

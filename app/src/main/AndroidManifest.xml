@@ -34,8 +34,8 @@
             android:name=".activities.teams.TeamActivity"
             android:label="@string/title_team_page" />
         <activity
-            android:name=".ScheduledWalkActivity"
-            android:label="Scheduled Walks" >
+            android:name="activities.teams.ScheduledProposedWalkActivity"
+            android:label="Scheduled and Proposed Walks" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <!-- Include the host attribute if you want your app to respond
