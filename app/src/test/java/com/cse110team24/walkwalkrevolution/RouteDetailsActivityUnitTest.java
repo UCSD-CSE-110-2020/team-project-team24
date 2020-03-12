@@ -11,6 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
+import com.cse110team24.walkwalkrevolution.models.route.RouteBuilder;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
 
@@ -32,10 +33,12 @@ public class RouteDetailsActivityUnitTest {
     private Intent intent;
     private Intent intentIncomplete;
     private Intent intentSemiComplete;
+    private Intent intentTeammate;
     private WalkStats stats;
     private Route expectedRoute;
     private Route incompleteExpectedRoute;
     private Route semiCompleteExpectedRoute;
+    private Route teammateRoute;
     private Calendar date = new GregorianCalendar(2020, 2, 14);
     private TextView startLocationText;
     private TextView routeTypeText;
@@ -43,6 +46,7 @@ public class RouteDetailsActivityUnitTest {
     private TextView surfaceTypeText;
     private TextView landTypeText;
     private TextView difficultyText;
+    private TextView mostRecentWalkPrompt;
     private TextView detailsRecentStepsText;
     private TextView detailsRecentDistanceText;
     private TextView detailsRcentTimeElapsedText;
@@ -54,42 +58,17 @@ public class RouteDetailsActivityUnitTest {
 
     @Before
     public void setup() {
-
-        env.setRouteType(RouteEnvironment.RouteType.LOOP);
-        env.setTerrainType(RouteEnvironment.TerrainType.HILLY);
-        env.setSurfaceType(RouteEnvironment.SurfaceType.EVEN);
-        env.setTrailType(RouteEnvironment.TrailType.TRAIL);
-        env.setDifficulty(RouteEnvironment.Difficulty.MODERATE);
-
-        semiEnv.setSurfaceType(RouteEnvironment.SurfaceType.EVEN);
-        semiEnv.setTrailType(RouteEnvironment.TrailType.TRAIL);
-        semiEnv.setDifficulty(RouteEnvironment.Difficulty.MODERATE);
-
+        setEnvironment();
+        setPartialEnv();
         stats = new WalkStats(1500, 1800000, 0.82, date);
-        expectedRoute = new Route("Route has all the info")
-                .setStartingLocation("THIS IS AT UCSD")
-                .setEnvironment(env)
-                .setNotes("This team is AWESOME!")
-                .setStats(stats);
-
-        incompleteExpectedRoute = new Route("Route has no Info");
-
-        semiCompleteExpectedRoute = new Route("This route has some info")
-                .setStartingLocation(" This is idk where")
-                .setEnvironment(semiEnv)
-                .setStats(stats);
-
-        intent = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
-        intent.putExtra(RouteDetailsActivity.ROUTE_KEY, expectedRoute);
-        intent.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
-
-        intentIncomplete = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
-        intentIncomplete.putExtra(RouteDetailsActivity.ROUTE_KEY, incompleteExpectedRoute);
-        intentIncomplete.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
-
-        intentSemiComplete = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
-        intentSemiComplete.putExtra(RouteDetailsActivity.ROUTE_KEY, semiCompleteExpectedRoute);
-        intentSemiComplete.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
+        makeExpectedRoute();
+        incompleteExpectedRoute = new Route("Route has no Info").setRouteUid("NO INFO");
+        makePartialRoute();
+        makeTeammateRoute();
+        createCompleteIntent();
+        createIncompleteIntent();
+        createSemiCompleteIntent();
+        createTeammateRouteIntent();
     }
 
     @Test
@@ -176,24 +155,20 @@ public class RouteDetailsActivityUnitTest {
         });
     }
 
-
-
     private void getUIFields(RouteDetailsActivity activity) {
-
         startLocationText = activity.findViewById(R.id.tv_starting_loc);
         routeTypeText = activity.findViewById(R.id.tv_rte_type);
         terrainTypeText = activity.findViewById(R.id.tv_terr_type);
         surfaceTypeText = activity.findViewById(R.id.tv_srfce_type);
         landTypeText = activity.findViewById(R.id.tv_lnd_type);
         difficultyText = activity.findViewById(R.id.tv_diff);
+        mostRecentWalkPrompt = activity.findViewById(R.id.tv_details_recent_walk_prompt);
         detailsRecentStepsText = activity.findViewById(R.id.tv_details_recent_steps);
         detailsRecentDistanceText = activity.findViewById(R.id.tv_details_recent_distance);
         detailsRcentTimeElapsedText = activity.findViewById(R.id.tv_details_recent_time_elapsed);
         neverWalkedBeforeText = activity.findViewById(R.id.tv_details_never_walked);
         notesText = activity.findViewById(R.id.tv_notes);
         startWalkBtn = activity.findViewById(R.id.btn_details_start_walk);
-
-
     }
 
     @Test
@@ -214,4 +189,88 @@ public class RouteDetailsActivityUnitTest {
         });
     }
 
+    @Test
+    public void testTeamRoutes_verifyStatsSubstitution_TeammateGoneOnWalk() {
+        ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intentTeammate);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            assertEquals(neverWalkedBeforeText.getVisibility(), View.VISIBLE);
+            assertEquals(mostRecentWalkPrompt.getText().toString(), "Teammate's Most Recent Walk");
+        });
+    }
+
+    @Test
+    public void testTeamRoutes_verifyStatsSubstitution_TeammateNotGoneOnWalk() {
+        teammateRoute.setStats(null);
+        ActivityScenario<RouteDetailsActivity> scenario = ActivityScenario.launch(intentTeammate);
+        scenario.onActivity(activity -> {
+            getUIFields(activity);
+            assertEquals(neverWalkedBeforeText.getVisibility(), View.VISIBLE);
+            assertEquals(mostRecentWalkPrompt.getVisibility(), View.GONE);
+        });
+    }
+
+    private void setEnvironment() {
+        env.setRouteType(RouteEnvironment.RouteType.LOOP);
+        env.setTerrainType(RouteEnvironment.TerrainType.HILLY);
+        env.setSurfaceType(RouteEnvironment.SurfaceType.EVEN);
+        env.setTrailType(RouteEnvironment.TrailType.TRAIL);
+        env.setDifficulty(RouteEnvironment.Difficulty.MODERATE);
+    }
+
+    private void setPartialEnv() {
+        semiEnv.setSurfaceType(RouteEnvironment.SurfaceType.EVEN);
+        semiEnv.setTrailType(RouteEnvironment.TrailType.TRAIL);
+        semiEnv.setDifficulty(RouteEnvironment.Difficulty.MODERATE);
+    }
+
+    private void makeExpectedRoute() {
+        expectedRoute = new Route("Route has all the info")
+                .setRouteUid("ALL INFO")
+                .setStartingLocation("THIS IS AT UCSD")
+                .setEnvironment(env)
+                .setNotes("This team is AWESOME!")
+                .setStats(stats);
+    }
+
+    private void makePartialRoute() {
+        semiCompleteExpectedRoute = new Route("This route has some info")
+                .setRouteUid("SOME INFO")
+                .setStartingLocation(" This is idk where")
+                .setEnvironment(semiEnv)
+                .setStats(stats);
+    }
+
+    private void makeTeammateRoute() {
+        teammateRoute = new Route("Teammate Route")
+                .setRouteUid("teamRouteUid")
+                .setStartingLocation("here")
+                .setEnvironment(env)
+                .setStats(stats)
+                .setCreatorDisplayName("Steve");
+    }
+
+    private void createCompleteIntent() {
+        intent = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
+        intent.putExtra(RouteDetailsActivity.ROUTE_KEY, expectedRoute);
+        intent.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
+    }
+
+    private void createIncompleteIntent() {
+        intentIncomplete = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
+        intentIncomplete.putExtra(RouteDetailsActivity.ROUTE_KEY, incompleteExpectedRoute);
+        intentIncomplete.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
+    }
+
+    private void createSemiCompleteIntent() {
+        intentSemiComplete = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
+        intentSemiComplete.putExtra(RouteDetailsActivity.ROUTE_KEY, semiCompleteExpectedRoute);
+        intentSemiComplete.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
+    }
+
+    private void createTeammateRouteIntent() {
+        intentTeammate = new Intent(ApplicationProvider.getApplicationContext(), RouteDetailsActivity.class);
+        intentTeammate.putExtra(RouteDetailsActivity.ROUTE_KEY, teammateRoute);
+        intentTeammate.putExtra(RouteDetailsActivity.ROUTE_IDX_KEY, 0);
+    }
 }

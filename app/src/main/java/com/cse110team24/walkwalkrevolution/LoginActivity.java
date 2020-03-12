@@ -320,7 +320,7 @@ public class LoginActivity extends AppCompatActivity implements AuthObserver {
         Log.i(TAG, "checkHeight: checking preferences if height already exists");
         feet = preferences.getInt(HomeActivity.HEIGHT_FT_KEY, (int) INVALID_VAL);
         inches = preferences.getFloat(HomeActivity.HEIGHT_IN_KEY, INVALID_VAL);
-        return feet > 0 && inches > 0;
+        return feet > 0 && inches > -.00001 ;
     }
 
     private void checkLogin(SharedPreferences preferences) {
@@ -336,7 +336,7 @@ public class LoginActivity extends AppCompatActivity implements AuthObserver {
         } catch (NumberFormatException e) {
             inches = INVALID_VAL;
         }
-        return inches <= MAX_INCHES && inches > 0;
+        return inches <= MAX_INCHES && inches >= 0;
     }
 
     private boolean validateFeet() {

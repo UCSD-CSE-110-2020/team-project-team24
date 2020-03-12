@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    // allows any user to be created, only a user can write to themselves
+    match /users/{user} {
+      allow read, create: if request.auth.uid != null;
+      // logged in user requests own data and doesn't have a team UID
+      allow update: if userData().uid == request.auth.uid && userData().teamUid == null;
+      
+      function userData() {
+      	return get(/databases/$(database)/documents/users/$(user)).data;
+      }
+    }
+
+    // check that receiving user has no team before allowing an invitation
+    function userHasNoTeam() {
+      return get(/databases/$(database)/documents/users/$(request.resource.data.to.identifier)).data.teamUid == null;
+    }
+
+    // only user can update his invitations
+    // anyone can read your invititations
+    match /invitations/{invitationsDocument}/received/{invitation} {
+      allow read: if request.auth.uid != null;
+      allow update: if invitationIdentifierMatchesSenderOrReceiver();
+      
+    	// anyone can create an invitation for a user, given that the user exists and doesn't have a team
+      allow create: if request.auth.uid != null && 
+        exists(/databases/$(database)/documents/users/$(request.resource.data.to.identifier)) &&
+        userHasNoTeam();
+    }
+
+    match /invitations/{invitationsDocument}/sent/{invitation} {
+      allow read: if request.auth.uid != null;
+      allow update: if invitationIdentifierMatchesSenderOrReceiver();
+      allow create: if request.auth.uid != null && 
+        exists(/databases/$(database)/documents/users/$(request.resource.data.to.identifier));
+    }
+
+    // check if the if the user trying to update invitation is same as owner of invitation 
+    // or receiver of invitation
+    function invitationIdentifierMatchesSenderOrReceiver() {
+      return request.auth.uid == get(/databases/$(database)/documents/users/$(request.resource.data.from.identifier)).data.uid ||
+            request.auth.uid == get(/databases/$(database)/documents/users/$(request.resource.data.to.identifier)).data.uid;
+    }
+
+    // anyone can create and read team, only members can update their team
+    match /teams/{team} {
+    	
+      match /teamWalks/{teamWalk} {
+      	allow write, read: if request.auth.uid != null;
+
+        match /teammateStatuses/{teammateStatus} {
+            allow write, read: if request.auth.uid != null;
+        }
+      }
+      
+      match /teammates/{teammate} {
+      // allow create if you don't currently have a team
+        allow create, read: if request.auth.uid != null
+        // allow updating the team if the user's teamUid matches the team's uid
+        allow update:
+          if request.auth.uid != null;
+          // get(/databases/$(database)/documents/users/$(request.resource.data.teamUid)) == resource.data.uid;
+      }
+      
+      match /routes/{route} {
+      	allow read: if request.auth.uid != null;
+        allow write: if request.auth.uid != null;
+      }
+      
+       function teamData() {
+      	return get(/databases/$(database)/documents/teams/$(team));
+      }
+    }
+  }
+
+}

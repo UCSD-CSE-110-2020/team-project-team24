@@ -1,5 +1,6 @@
 package com.cse110team24.walkwalkrevolution.activities.teams;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
@@ -18,33 +20,30 @@ import com.cse110team24.walkwalkrevolution.ScheduledWalkActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InviteTeamMemberActivity;
 import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeammatesObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.TeamsDatabaseServiceObserver;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
-import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
-import com.cse110team24.walkwalkrevolution.models.user.FirebaseUserAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
-import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServiceObserver {
+public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObserver {
     private static final String TAG = "WWR_TeamActivity";
+    public static final int REQUEST_CODE = 7851;
 
     private Button sendInviteBtn;
     private Button seeInvitationsBtn;
     private Button seeTeammateRoutesBtn;
-    private Button seeScheduledWalkBtn;
+    private Button seeScheduledWalksBtn;
+
     private BottomNavigationView bottomNavigationView;
 
     private TeamsDatabaseService mDb;
@@ -82,6 +81,24 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TeamRoutesActivity.REQUEST_CODE && resultCode == RESULT_OK) {
+            Log.d(TAG, "onActivityResult: recording team's walk");
+            setResult(Activity.RESULT_OK, data);
+            transitionWithAnimation();
+        }
+    }
+
+    private void transitionWithAnimation() {
+        Intent walkIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        walkIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(walkIntent);
+        finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
     private void launchInvitationsActivity(View view) {
         Intent intent = new Intent(this, InvitationsActivity.class);
         startActivity(intent);
@@ -111,19 +128,20 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         seeInvitationsBtn = findViewById(R.id.btn_team_activity_pending_invites);
         seeTeammateRoutesBtn = findViewById(R.id.btn_team_activity_see_teammate_routes);
+        seeScheduledWalksBtn = findViewById(R.id.btn_scheduled_walks);
         noTeamMessage = findViewById(R.id.text_no_teammates);
         teammatesList = findViewById(R.id.list_members_in_team);
         teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam(), preferences);
         noTeamMessage.setVisibility(View.GONE);
         teammatesList.setAdapter(teammatesListViewAdapter);
-        seeScheduledWalkBtn = findViewById(R.id.btn_scheduled_walks);
+        seeScheduledWalksBtn = findViewById(R.id.btn_scheduled_walks);
     }
 
     private void setButtonClickListeners() {
         setInviteButtonOnClick();
         setBottomNavItemSelectedListener();
         setSeeTeamRoutesOnClick();
-        setSeeScheduledWalkOnClick();
+        setSeeScheduledWalksOnClick();
     }
 
     private void setInviteButtonOnClick() {
@@ -132,11 +150,11 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         });
     }
 
-    private void setSeeScheduledWalkOnClick() {
-        seeScheduledWalkBtn.setOnClickListener(view -> {
-            startActivity(new Intent(this, ScheduledWalkActivity.class));
-        });
-    }
+//    private void setSeeScheduledWalksOnClick() {
+//        seeScheduledWalksBtn.setOnClickListener(view -> {
+//            startActivity(new Intent(this, ScheduledWalkActivity.class));
+//        });
+//    }
 
     private void setBottomNavItemSelectedListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
@@ -157,7 +175,13 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
 
     private void setSeeTeamRoutesOnClick() {
         seeTeammateRoutesBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, TeamRoutesActivity.class));
+            startActivityForResult(new Intent(this, TeamRoutesActivity.class), TeamRoutesActivity.REQUEST_CODE);
+        });
+    }
+
+    private void setSeeScheduledWalksOnClick() {
+        seeScheduledWalksBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, ScheduledProposedWalkActivity.class));
         });
     }
 
@@ -181,11 +205,6 @@ public class TeamActivity extends AppCompatActivity implements TeamsDatabaseServ
         TeammatesListViewAdapter teammatesListViewAdapter = new TeammatesListViewAdapter(this, users, preferences);
         teammatesList.setAdapter(teammatesListViewAdapter);
 
-    }
-
-    @Override
-    public void onRoutesRetrieved(List<Route> routes, DocumentSnapshot lastRoute) {
-        // TODO: 3/6/20 ?
     }
 
     private void showNoTeamToast() {

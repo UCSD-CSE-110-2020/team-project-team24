@@ -31,6 +31,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cse110team24.walkwalkrevolution.mockedservices.TestFitnessService.TEST_SERVICE_KEY;
 import static org.hamcrest.Matchers.allOf;
 
+/**
+ * Given that I have a WWR account,
+ * When I type in my email,
+ * and I type in my password,
+ * and I type in my height,
+ * and I hit, sign in,
+ * Then I will be logged in successfully.
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class LoginActivitySignInEspressoTest {

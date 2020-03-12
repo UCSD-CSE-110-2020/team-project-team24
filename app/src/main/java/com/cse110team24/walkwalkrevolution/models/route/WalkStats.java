@@ -24,6 +24,10 @@ public class WalkStats implements Serializable {
         this.dateCompleted = dateCompleted;
     }
 
+    private WalkStats() {
+        dateCompleted = Calendar.getInstance();
+    }
+
     public long getSteps() {
         return steps;
     }
@@ -106,6 +110,38 @@ public class WalkStats implements Serializable {
         data.put("distance", distance);
         data.put("date", dateCompleted.getTime());
         return data;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        WalkStats mWalkStats = new WalkStats();
+
+        public Builder addDateCompleted(Calendar calendar) {
+            mWalkStats.setDateCompleted(calendar);
+            return this;
+        }
+
+        public Builder addDistance(double distance) {
+            mWalkStats.setDistance(distance);
+            return this;
+        }
+
+        public Builder addTimeElapsed(long timeElapsed) {
+            mWalkStats.setTimeElapsed(timeElapsed);
+            return this;
+        }
+
+        public Builder addSteps(long steps) {
+            mWalkStats.setSteps(steps);
+            return this;
+        }
+
+        public WalkStats build() {
+            return mWalkStats;
+        }
     }
 
 }

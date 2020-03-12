@@ -35,14 +35,6 @@
     <string name="max_input_chars">8</string>
     <string name="enter_start_time">Enter Desired Start Time: </string>
 
-    <!--    In activity_route_details.xml-->
-    <string name="starting_loc"><u>Starting Location</u></string>
-    <string name="unspecified">(unspecified)</string>
-    <string name="route_env"><u>Environment Details</u></string>
-    <string name="recent_walk"><u>Most Recent Walk</u></string>
-    <string name="never_walked">You have never gone on this walk</string>
-    <string name="note_details"><u>Notes</u></string>
-
     <!--    In content_save_route.xml-->
     <string name="title">Title: (this is REQUIRED) </string>
     <string name="name_route_hint">Name Route</string>
@@ -65,6 +57,7 @@
 
     <!--    In activity_routes.xml-->
     <string name="btn_see_teammates_routes">See Teammate Routes</string>
+    <string name="menu_item_create_walk">Create Route</string>
 
     <!--    In activty_schedule_walk.xml-->
     <string name="location">location</string>
@@ -90,6 +83,7 @@
     <string name="title_teammates_in_team">Teammates: </string>
     <string name="btn_title_scheduled_walks">Scheduled and Proposed Walks</string>
     <string name="text_no_teammates_in_team">No Teammates Yet :-(</string>
+    <string name="status_description">Teammate Walk Decision Icon</string>
 
     <!-- In activity_invitations -->
     <string name="title_pending_invitations_page">Pending Invitations</string>
@@ -121,6 +115,7 @@
     <string name="app_name">WalkWalkRevolution</string>
     <string name="title_activity_saving_page">Save your walk</string>
     <string name="title_activity_routes">My Routes</string>
+    <string name="title_activity_invite_team_to_walk">Invite Team to Walk</string>
 
     <!--    Others-->
     <string name="routes">Routes</string>

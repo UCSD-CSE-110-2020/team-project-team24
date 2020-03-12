@@ -22,7 +22,7 @@ import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.SaveRouteActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.auth.Auth;
-import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.UsersDatabaseServiceObserver;
+import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users.UsersUserDataObserver;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.DatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.TeamsDatabaseService;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersDatabaseService;
@@ -64,10 +64,10 @@ import java.util.Map;
  *     </ul>
  * </ol>
  */
-public class HomeActivity extends AppCompatActivity implements UsersDatabaseServiceObserver {
+public class HomeActivity extends AppCompatActivity implements UsersUserDataObserver {
     private static final String TAG = "WWR_HomeActivity";
     private static final String DECIMAL_FMT = "#0.00";
-    private static final long UPDATE_PERIOD = 10_000;
+    private static final long UPDATE_PERIOD = 60_000;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final String HEIGHT_FT_KEY = "Height Feet";
@@ -261,7 +261,7 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
             if(menuItem.getItemId() == R.id.action_team) {
                 myIntent = new Intent(getApplicationContext(), TeamActivity.class);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(myIntent);
+                startActivityForResult(myIntent, TeamActivity.REQUEST_CODE);
             }
             return true;
         });
@@ -319,7 +319,7 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
             }
         } else if (requestCode == MockActivity.REQUEST_CODE && data != null) {
             setMockedExtras(data);
-        } else if (requestCode == RoutesActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        } else if ((requestCode == RoutesActivity.REQUEST_CODE || requestCode == TeamActivity.REQUEST_CODE) && resultCode == Activity.RESULT_OK) {
             this.data = data;
             startRecordingExistingRoute();
         } else if (requestCode == SaveRouteActivity.REQUEST_CODE && resultCode == RESULT_OK ) {
@@ -384,17 +384,34 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
             existingRoute.setStats(stats);
 
             // update existing route in db
-            updateRouteToTeamIfExists(existingRoute);
-            saveIntoList(existingRoute);
-            showRouteUpdatedToast();
+            if (routeBelongsToUser(existingRoute)) {
+                updateRouteToTeamIfExists(existingRoute);
+                saveIntoList(existingRoute);
+                showRouteUpdatedToast();
+            } else {
+                try {
+                    Log.d(TAG, "checkIfRouteExisted: route uid: " + existingRoute.getRouteUid());
+                    RoutesManager.writeSingle(existingRoute, existingRoute.getRouteUid(), this);
+                    Utils.showToast(this, "Saved your stats for a teammate's route", Toast.LENGTH_LONG);
+                } catch (IOException e) {
+                    Log.e(TAG, "checkIfRouteExisted: could not save teammate route", e);
+                }
+            }
+
         }
+    }
+
+    private boolean routeBelongsToUser(Route route) {
+        Log.d(TAG, "routeBelongsToUser: route's creator name " + route.getCreatorName());
+        Log.d(TAG, "routeBelongsToUser: mUser.getDisplayName() " + mUser.getDisplayName());
+        return route.getCreatorName().equals(Utils.getString(preferences, IUser.USER_NAME_KEY));
     }
 
     // if the user's team exists, upload the route to the routes collection of the Team
     private void updateRouteToTeamIfExists(Route route) {
         String teamUid = Utils.getString(preferences, IUser.TEAM_UID_KEY);
 
-        if (teamUid != null) {
+        if (teamUid != null && route.getRouteUid() != null) {
             mTeamsDbService.updateRoute(teamUid, route);
         }
     }
@@ -468,17 +485,10 @@ public class HomeActivity extends AppCompatActivity implements UsersDatabaseServ
     public void onUserData(Map<String, Object> userDataMap) {
         if (userDataMap != null) {
             String teamUid = (String) userDataMap.get(IUser.TEAM_UID_KEY);
+            if (teamUid != null) {
+                mMessaging.subscribeToNotificationsTopic(teamUid);
+            }
             Utils.saveString(preferences, IUser.TEAM_UID_KEY, teamUid);
         }
-    }
-
-    @Override
-    public void onUserExists(IUser otherUser) {
-
-    }
-
-    @Override
-    public void onUserDoesNotExist() {
-
     }
 }

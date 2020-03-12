@@ -11,6 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
+        <activity android:name=".activities.teams.ScheduledProposedWalkActivity"></activity>
+        <activity
+            android:name=".activities.teams.InviteTeamToWalkActivity"
+            android:label="@string/title_activity_invite_team_to_walk" />
         <activity
             android:name=".activities.teams.TeamRoutesActivity"
             android:label="@string/title_team_routes_activity" />
@@ -20,8 +24,7 @@
             android:label="@string/title_activity_saving_page" />
         <activity
             android:name=".activities.userroutes.RoutesActivity"
-            android:label="@string/title_activity_routes"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_routes" />
         <activity
             android:name=".activities.invitations.InvitationsActivity"
             android:label="@string/title_pending_invitations_page" />

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    In activity_route_details.xml-->
+    <string name="starting_loc"><u>Starting location:</u></string>
+    <string name="unspecified">(unspecified)</string>
+    <string name="route_env"><u>Environment Details</u></string>
+    <string name="your_recent_walk"><u>Your Most Recent Walk</u></string>
+    <string name="teamate_recent_walk"><u>Teammate\'s Most Recent Walk</u></string>
+    <string name="never_walked">You have never gone on this walk</string>
+    <string name="note_details"><u>Notes</u></string>
+
+</resources>

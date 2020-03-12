@@ -1,18 +1,8 @@
-package com.cse110team24.walkwalkrevolution.firebase.firestore.observers;
+package com.cse110team24.walkwalkrevolution.firebase.firestore.observers.users;
 
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 
-import java.util.Map;
-
-public interface UsersDatabaseServiceObserver {
-
-    /**
-     * Called by the UsersDatabaseServiceSubject this observer is observing when requested user data is ready
-     * to read.
-     * <p>See also: {@link com.cse110team24.walkwalkrevolution.firebase.firestore.subjects.UsersDatabaseServiceSubject#notifyObserversUserData(Map)}</p>
-     * @param userDataMap the user data being requested
-     */
-    void onUserData(Map<String, Object> userDataMap);
+public interface UsersUserExistsObserver extends UsersDatabaseServiceObserver {
 
     /**
      * Called by the UsersDatabaseServiceSubject this observer is observing when the requested user

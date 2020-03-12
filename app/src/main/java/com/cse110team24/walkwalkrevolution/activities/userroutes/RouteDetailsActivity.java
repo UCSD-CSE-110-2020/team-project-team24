@@ -3,18 +3,27 @@ package com.cse110team24.walkwalkrevolution.activities.userroutes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
+import com.cse110team24.walkwalkrevolution.activities.teams.InviteTeamToWalkActivity;
 import com.cse110team24.walkwalkrevolution.models.route.Route;
 import com.cse110team24.walkwalkrevolution.models.route.RouteEnvironment;
 import com.cse110team24.walkwalkrevolution.models.route.WalkStats;
+import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 
 import java.util.Locale;
 
@@ -25,9 +34,9 @@ public class RouteDetailsActivity extends AppCompatActivity {
     public static final String ROUTE_IDX_KEY = "route_adapter_idx";
     public static final int REQUEST_CODE = 99;
 
-    private Route displayedRoute;
+    private Route mDisplayedRoute;
     private int routeIdx;
-    private WalkStats stats;
+    private WalkStats mStats;
 
     private TextView startingLocPromptTv;
     private TextView routeTypePromptTv;
@@ -53,22 +62,52 @@ public class RouteDetailsActivity extends AppCompatActivity {
     private TextView notesTv;
     private TextView neverWalkedPromptTv;
     private Button startWalkBtn;
+    private TextView checkMarkTv;
+
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_details);
-
+        preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         getRouteInfo();
         findUIElements();
         displayRouteInformation();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_details_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO: 3/8/20 detect click
+        switch (item.getItemId()) {
+            case R.id.action_propose_walk:
+                Log.i(TAG, "onOptionsItemSelected: clicked on propose walk");
+                launchProposeTeamWalk();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void launchProposeTeamWalk() {
+        Intent intent = new Intent(this, InviteTeamToWalkActivity.class)
+            .putExtra(ROUTE_KEY, mDisplayedRoute)
+            .putExtra(IUser.USER_NAME_KEY, Utils.getString(preferences, IUser.USER_NAME_KEY));
+        startActivity(intent);
+    }
+
     private void getRouteInfo() {
-        displayedRoute = (Route) getIntent().getSerializableExtra(ROUTE_KEY);
+        mDisplayedRoute = (Route) getIntent().getSerializableExtra(ROUTE_KEY);
         routeIdx = getIntent().getIntExtra(ROUTE_IDX_KEY, 0);
-        stats = displayedRoute.getStats();
-        getSupportActionBar().setTitle(displayedRoute.getTitle());
+        mStats = mDisplayedRoute.getStats();
+        getSupportActionBar().setTitle(mDisplayedRoute.getTitle());
     }
 
     private void findUIElements() {
@@ -95,6 +134,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         neverWalkedPromptTv = findViewById(R.id.tv_details_never_walked);
         startWalkBtn = findViewById(R.id.btn_details_start_walk);
         detailsPromptTv = findViewById(R.id.tv_details_recent_walk_prompt);
+        checkMarkTv = findViewById(R.id.tv_previously_walked_checkmark);
         setStartWalkBtnOnClickListener();
     }
 
@@ -106,17 +146,17 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displayStartingLocation() {
-        String startingLoc = displayedRoute.getStartingLocation();
+        String startingLoc = mDisplayedRoute.getStartingLocation();
         if ( startingLoc == null || startingLoc.isEmpty() ) {
             startingLocPromptTv.setVisibility(View.GONE);
             startingLocTv.setVisibility(View.GONE);
             return;
         }
-        startingLocTv.setText(displayedRoute.getStartingLocation());
+        startingLocTv.setText(mDisplayedRoute.getStartingLocation());
     }
 
     private void displayRouteEnvironment() {
-        RouteEnvironment env = displayedRoute.getEnvironment();
+        RouteEnvironment env = mDisplayedRoute.getEnvironment();
         if( env == null || (env.getRouteType() == null && env.getTerrainType() == null &&
                             env.getSurfaceType() == null && env.getTrailType() == null &&
                             env.getDifficulty() == null) ) {
@@ -142,36 +182,66 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displayNotes() {
-        String notes = displayedRoute.getNotes();
+        String notes = mDisplayedRoute.getNotes();
         if ( notes == null || notes.isEmpty() ) {
             notesPromptTv.setVisibility(View.GONE);
             notesTv.setVisibility(View.GONE);
             return;
         }
-        notesTv.setText(displayedRoute.getNotes());
+        notesTv.setText(mDisplayedRoute.getNotes());
     }
 
+    // TODO: 3/9/20 DRY and SRP this mofo
     private void displayLatestWalkStats() {
-        if(stats == null) {
-            recentStepsPromptTv.setVisibility(View.GONE);
-            recentStepsTv.setVisibility(View.GONE);
-            recentDistancePromptTv.setVisibility(View.GONE);
-            recentDistanceTv.setVisibility(View.GONE);
-            recentTimeElapsedPromptTv.setVisibility(View.GONE);
-            recentTimeElapsedTv.setVisibility(View.GONE);
-            detailsPromptTv.setVisibility(View.GONE);
-            neverWalkedPromptTv.setVisibility(View.VISIBLE);
+        String currName = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE)
+                .getString(IUser.USER_NAME_KEY, "");
+        if (Utils.checkNotNull(mStats)) {
+            if (currName.equals(mDisplayedRoute.getCreatorName())) {
+                displayStats(mStats);
+                checkMarkTv.setVisibility(View.VISIBLE);
+            } else if (Utils.fileExists(mDisplayedRoute.getRouteUid(), this)) {
+                Route route = RoutesManager.readSingle(mDisplayedRoute.getRouteUid(), this);
+                if (route != null) {
+                    mStats = route.getStats();
+                    displayStats(mStats);
+                    detailsPromptTv.setText(R.string.your_recent_walk);
+                    checkMarkTv.setVisibility(View.VISIBLE);
+                }
+            } else {
+                detailsPromptTv.setText(R.string.teamate_recent_walk);
+                neverWalkedPromptTv.setVisibility(View.VISIBLE);
+                displayStats(mStats);
+            }
+        } else {
+            if (Utils.fileExists(mDisplayedRoute.getRouteUid(), this)) {
+                Route route = RoutesManager.readSingle(mDisplayedRoute.getRouteUid(), this);
+                if (route != null) {
+                    mStats = route.getStats();
+                    detailsPromptTv.setText(R.string.your_recent_walk);
+                    displayStats(mStats);
+                    checkMarkTv.setVisibility(View.VISIBLE);
+                }
+            } else {
+                recentStepsPromptTv.setVisibility(View.GONE);
+                recentStepsTv.setVisibility(View.GONE);
+                recentDistancePromptTv.setVisibility(View.GONE);
+                recentDistanceTv.setVisibility(View.GONE);
+                recentTimeElapsedPromptTv.setVisibility(View.GONE);
+                recentTimeElapsedTv.setVisibility(View.GONE);
+                detailsPromptTv.setVisibility(View.GONE);
+                neverWalkedPromptTv.setVisibility(View.VISIBLE);
+            }
         }
-        else {
-            Log.i(TAG, "displayLatestWalkStats: stats found for current route, displaying them now");
-            recentStepsTv.setText(String.valueOf(stats.getSteps()));
-            recentDistanceTv.setText(stats.formattedDistance());
-            recentTimeElapsedTv.setText(stats.formattedTime());
-        }
+    }
+
+    private void displayStats(WalkStats stats) {
+        recentStepsTv.setText(String.valueOf(stats.getSteps()));
+        recentDistanceTv.setText(stats.formattedDistance());
+        recentTimeElapsedTv.setText(stats.formattedTime());
     }
 
     private void displayRouteType() {
-        RouteEnvironment.RouteType rteType = displayedRoute.getEnvironment().getRouteType();
+        RouteEnvironment.RouteType rteType = mDisplayedRoute.getEnvironment().getRouteType();
         if(rteType == null) {
             routeTypePromptTv.setVisibility(View.GONE);
             routeTypeTv.setVisibility(View.GONE);
@@ -188,7 +258,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displayTerrainType() {
-        RouteEnvironment.TerrainType terrType = displayedRoute.getEnvironment().getTerrainType();
+        RouteEnvironment.TerrainType terrType = mDisplayedRoute.getEnvironment().getTerrainType();
         if(terrType == null) {
             terrainTypePromptTv.setVisibility(View.GONE);
             terrainTypeTv.setVisibility(View.GONE);
@@ -205,7 +275,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displaySurfaceType() {
-        RouteEnvironment.SurfaceType srfceType = displayedRoute.getEnvironment().getSurfaceType();
+        RouteEnvironment.SurfaceType srfceType = mDisplayedRoute.getEnvironment().getSurfaceType();
         if(srfceType == null) {
             surfaceTypePromptTv.setVisibility(View.GONE);
             surfaceTypeTv.setVisibility(View.GONE);
@@ -222,7 +292,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displayLandType() {
-        RouteEnvironment.TrailType lndType = displayedRoute.getEnvironment().getTrailType();
+        RouteEnvironment.TrailType lndType = mDisplayedRoute.getEnvironment().getTrailType();
         if(lndType == null) {
             landTypePromptTv.setVisibility(View.GONE);
             landTypeTv.setVisibility(View.GONE);
@@ -239,7 +309,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void displayDifficulty() {
-        RouteEnvironment.Difficulty difficulty = displayedRoute.getEnvironment().getDifficulty();
+        RouteEnvironment.Difficulty difficulty = mDisplayedRoute.getEnvironment().getDifficulty();
         if(difficulty == null) {
             difficultyPromptTv.setVisibility(View.GONE);
             difficultyTv.setVisibility(View.GONE);
@@ -265,9 +335,9 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     private void returnToRoutesActivityForWalk() {
-        Log.i(TAG, "returnToRoutesActivityForWalk: returning to home for automatic recording");
+        Log.i(TAG, "returnToRoutesActivityForWalk: returning to launching activity for automatic recording");
         Intent intent = new Intent()
-                .putExtra(ROUTE_KEY, displayedRoute)
+                .putExtra(ROUTE_KEY, mDisplayedRoute)
                 .putExtra(ROUTE_IDX_KEY, routeIdx);
         setResult(Activity.RESULT_OK, intent);
         finish();
