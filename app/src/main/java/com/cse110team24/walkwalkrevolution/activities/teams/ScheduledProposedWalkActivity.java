@@ -178,6 +178,7 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         mCurrentTeamWalk.setStatus(TeamWalkStatus.SCHEDULED);
         setCancelWithdrawBtnIconAndText();
         mDb.updateCurrentTeamWalk(mCurrentTeamWalk);
+        displayWalkStatusUIViews();
     }
 
     private void withdrawCancelBtnClickListener() {
