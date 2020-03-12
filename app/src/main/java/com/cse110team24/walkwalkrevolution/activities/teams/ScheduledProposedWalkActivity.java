@@ -188,11 +188,11 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
                 mCurrentTeamWalk.setStatus(TeamWalkStatus.WITHDRAWN);
             }
             mDb.updateCurrentTeamWalk(mCurrentTeamWalk);
-        } else {
-            withdrawCancelBtn.setEnabled(false);
-            withdrawCancelBtn.setVisibility(View.GONE);
         }
-        setStatusText(findViewById(R.id.schedule_propose_tv_walk_status));
+        if (walkCancelledOrWithdrawn()) {
+            findViewById(R.id.schedule_propose_linear_layout_decision_buttons).setVisibility(View.GONE);
+        }
+        displayWalkStatusUIViews();
     }
 
     private void displayTeammateUIViews() {
@@ -323,5 +323,9 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
 
     private boolean walkNotCancelledOrWithdrawn() {
         return mCurrentTeamWalk.getStatus() != TeamWalkStatus.CANCELLED && mCurrentTeamWalk.getStatus() != TeamWalkStatus.WITHDRAWN;
+    }
+
+    private boolean walkCancelledOrWithdrawn() {
+        return !walkNotCancelledOrWithdrawn();
     }
 }
