@@ -85,11 +85,18 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             previouslyWalkedTv = itemView.findViewById(R.id.tv_previously_walked_checkmark);
         }
 
+        private void saveFavoritesToggleIfBelongsToTeammate(Route teammateRoute) {
+            if (!routeBelongsToUser(teammateRoute)) {
+                mPreferences.edit().putBoolean(teammateRoute.getRouteUid(), teammateRoute.isFavorite()).apply();
+            }
+        }
+
         @Override
         public void onClick(View v) {
             Route currRoute = mRoutes.get(getAdapterPosition());
             boolean isFavorite = !currRoute.isFavorite();
             currRoute.setFavorite(isFavorite);
+            saveFavoritesToggleIfBelongsToTeammate(currRoute);
             notifyDataSetChanged();
         }
 
@@ -100,8 +107,11 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
             previouslyWalkedTv.setVisibility(visibility);
         }
 
-        private void checkFavorite(boolean isFavorite) {
-            if (isFavorite) {
+        private void checkFavorite(Route route) {
+            if (!routeBelongsToUser(route)) {
+                route.setFavorite(mPreferences.getBoolean(route.getRouteUid(), false));
+            }
+            if (route.isFavorite()) {
                 favoriteBtn.setBackgroundResource(R.drawable.ic_star_yellow_24dp);
             } else {
                 favoriteBtn.setBackgroundResource(R.drawable.ic_star_border_black_24dp);
@@ -111,7 +121,7 @@ public class RouteRecyclerViewAdapter extends RecyclerView.Adapter<RouteRecycler
         public void bind(Route route) {
             launchRouteDetailsActivityOnClick(route);
             setInitialsColor(route);
-            checkFavorite(route.isFavorite());
+            checkFavorite(route);
             routeNameTv.setText(route.getTitle());
             WalkStats stats = route.getStats();
             checkWalkStats(stats, route);
