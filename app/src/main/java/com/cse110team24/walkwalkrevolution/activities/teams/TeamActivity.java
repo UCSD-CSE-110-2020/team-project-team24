@@ -19,7 +19,6 @@ import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InvitationsActivity;
 import com.cse110team24.walkwalkrevolution.activities.invitations.InviteTeamMemberActivity;
 import com.cse110team24.walkwalkrevolution.R;
-import com.cse110team24.walkwalkrevolution.activities.userroutes.RouteDetailsActivity;
 import com.cse110team24.walkwalkrevolution.activities.userroutes.RoutesActivity;
 import com.cse110team24.walkwalkrevolution.application.FirebaseApplicationWWR;
 import com.cse110team24.walkwalkrevolution.firebase.firestore.observers.teams.TeamsTeammatesObserver;
@@ -42,6 +41,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
     private Button seeInvitationsBtn;
     private Button seeTeammateRoutesBtn;
     private Button seeScheduledWalksBtn;
+
     private BottomNavigationView bottomNavigationView;
 
     private TeamsDatabaseService mDb;
@@ -132,6 +132,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
         teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam(), preferences);
         noTeamMessage.setVisibility(View.GONE);
         teammatesList.setAdapter(teammatesListViewAdapter);
+        seeScheduledWalksBtn = findViewById(R.id.btn_scheduled_walks);
     }
 
     private void setButtonClickListeners() {

@@ -25,6 +25,8 @@ import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.RoutesManager;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
+import java.util.Locale;
+
 public class RouteDetailsActivity extends AppCompatActivity {
     private static final String TAG = "WWR_RouteDetailsActivity";
     
