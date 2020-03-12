@@ -182,7 +182,6 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
         startActivity(intent);
     }
 
-    // TODO: 3/8/20 stop initializing new adapter, notify data set changed instead
     @Override
     public void onTeamRetrieved(ITeam team) {
         mTeam = team;

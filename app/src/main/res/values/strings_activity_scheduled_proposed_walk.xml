@@ -8,4 +8,11 @@
     <string name="no_walks_to_show">You have no proposed or scheduled walks</string>
     <string name="proposed_by">Proposed by: </string>
     <string name="status_header">Teammate Statuses:</string>
+    <string name="schedule">schedule</string>
+    <string name="withdraw">withdraw</string>
+    <string name="cancel">@android:string/cancel</string>
+    <string name="status_proposed">Status: Proposed</string>
+    <string name="status_cancelled">Status: Cancelled</string>
+    <string name="status_scheduled">Status: Scheduled</string>
+    <string name="status_withdrawn">Status: Withdrawn</string>
 </resources>
