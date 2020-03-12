@@ -8,4 +8,7 @@
     <string name="no_walks_to_show">You have no proposed or scheduled walks</string>
     <string name="proposed_by">Proposed by: </string>
     <string name="status_header">Teammate Statuses:</string>
+    <string name="schedule">schedule</string>
+    <string name="withdraw">withdraw</string>
+    <string name="cancel">cancel</string>
 </resources>
