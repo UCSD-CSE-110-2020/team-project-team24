@@ -345,29 +345,9 @@ public class ScheduledProposedWalkActivity extends AppCompatActivity implements 
         teammateStatusList = findViewById(R.id.list_members_with_status);
         statusListAdapter = new TeammatesListViewAdapter(this, teammates, preferences);
         teammateStatusList.setAdapter(statusListAdapter);
-        setListViewHeightBasedOnChildren(teammateStatusList);
+        Utils.setListViewHeightBasedOnChildren(teammateStatusList);
         statusListAdapter.setShowStatusIcons(true);
         teammateStatusList.setNestedScrollingEnabled(true);
-    }
-
-    // Reference: https://stackoverflow.com/questions/34015513/listview-inside-scrollview-with-auto-adjust-height
-    private void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
-
-        int totalHeight = 0;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
 
     private boolean walkNotCancelledOrWithdrawn() {

@@ -31,6 +31,7 @@ import org.junit.runner.RunWith;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.SortedMap;
@@ -88,6 +89,9 @@ public class AcceptWalkEspressoTest {
         try {
             date = sdf.parse("12/10/2099 12:00 PM");
         } catch (ParseException e) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2099, 11, 10, 12, 0);
+            date = calendar.getTime();
             e.printStackTrace();
         }
 

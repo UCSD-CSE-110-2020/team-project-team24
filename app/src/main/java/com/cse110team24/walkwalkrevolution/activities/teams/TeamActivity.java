@@ -28,6 +28,7 @@ import com.cse110team24.walkwalkrevolution.firebase.firestore.services.UsersData
 import com.cse110team24.walkwalkrevolution.models.team.ITeam;
 import com.cse110team24.walkwalkrevolution.models.team.TeamAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
+import com.cse110team24.walkwalkrevolution.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -195,7 +196,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
         ListView teammatesList = findViewById(R.id.list_members_in_team);
         TeammatesListViewAdapter teammatesListViewAdapter = new TeammatesListViewAdapter(this, users, preferences);
         teammatesList.setAdapter(teammatesListViewAdapter);
-
+        Utils.setListViewHeightBasedOnChildren(teammatesList);
     }
 
     private void showNoTeamToast() {

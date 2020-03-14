@@ -23,6 +23,7 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -90,6 +91,9 @@ public class WithdrawWalkFromProposedWalkEspressoTest {
         try {
             date = sdf.parse("04/20/2020 4:20 PM");
         } catch (ParseException e) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2020, 3, 20, 16, 20);
+            date = calendar.getTime();
             e.printStackTrace();
         }
 

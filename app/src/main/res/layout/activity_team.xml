@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/pending_invites"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_team_activity_invite_team_members"
@@ -58,22 +57,7 @@
         android:layout_marginTop="@dimen/details_indent"
         app:layout_constraintTop_toBottomOf="@id/btn_scheduled_walks"
         app:layout_constraintBottom_toTopOf="@id/list_members_in_team"
-        app:layout_constraintLeft_toLeftOf="parent"
-        />
-
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/list_members_in_team"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:background="@drawable/textview_border"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/title_teammates"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        >-->
-
-<!--    </androidx.recyclerview.widget.RecyclerView>-->
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <ListView
         android:id="@+id/list_members_in_team"
