@@ -37,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -146,7 +147,7 @@ public class InviteTeamMemberActivity extends AppCompatActivity implements Messa
     private void tryToSendInvitation(View view) {
 
         // don't call send invitation if the receiver information is invalid
-        mToEmail = editTeammateGmailInvite.getText().toString();
+        mToEmail = editTeammateGmailInvite.getText().toString().toLowerCase(Locale.getDefault());
         mToDisplayName = editTeammateNameInvite.getText().toString();
         if (invalidEmail(mToEmail) || invalidName(mToDisplayName)) return;
 

@@ -27,6 +27,8 @@ import com.cse110team24.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.cse110team24.walkwalkrevolution.models.user.IUser;
 import com.cse110team24.walkwalkrevolution.utils.Utils;
 
+import java.util.Locale;
+
 /**
  * Handles user authentication UI, integrating {@link Auth} and {@link UsersDatabaseService}.
  * Asks for user height information in any mode.
@@ -125,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements AuthObserver {
         loginBtn.setOnClickListener(view -> {
             username = nameEditText.getText().toString();
             password = passwordEditText.getText().toString();
-            gmailAddress = gmailEditText.getText().toString();
+            gmailAddress = gmailEditText.getText().toString().toLowerCase(Locale.getDefault());
             String btnText = loginBtn.getText().toString();
             Log.i(TAG, "loginBtnOnClickListener: button text is " + btnText);
             if(btnText.equals("Finish")) {
