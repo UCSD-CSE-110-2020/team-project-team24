@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cse110team24.walkwalkrevolution.HomeActivity;
 import com.cse110team24.walkwalkrevolution.R;
@@ -89,7 +90,11 @@ public class RouteDetailsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_propose_walk:
                 Log.i(TAG, "onOptionsItemSelected: clicked on propose walk");
-                launchProposeTeamWalk();
+                if (preferences.getString(IUser.TEAM_UID_KEY, null) != null) {
+                    launchProposeTeamWalk();
+                } else {
+                    Utils.showToast(this, "You need a team to propose walks. Send or accept an invitation!", Toast.LENGTH_LONG);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
