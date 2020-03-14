@@ -79,7 +79,6 @@ public class AcceptInvitationBDDEspressoTest {
                 .addDisplayName("Amara Momoh")
                 .addEmail("amara@gmail.com")
                 .addUid("1")
-               // .addTeamUid(null)
                 .build();
 
         TestAuth.testAuthUser = satta_momoh;

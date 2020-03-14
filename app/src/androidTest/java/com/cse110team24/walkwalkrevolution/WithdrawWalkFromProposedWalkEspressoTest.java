@@ -45,7 +45,6 @@ import static org.hamcrest.Matchers.allOf;
 public class WithdrawWalkFromProposedWalkEspressoTest {
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
-    //public MockActivityTestRule<InviteTeamToWalkActivity> mActivityInviteTeamToWalk = new MockActivityTestRule<>(InviteTeamToWalkActivity.class);
 
     @Before
     public void setup() {

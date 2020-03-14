@@ -66,11 +66,8 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class ProposedWalkInviterBDDEspressoTest {
 
-    private Date SimpleDate;
-
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
-    //public MockActivityTestRule<InviteTeamToWalkActivity> mActivityInviteTeamToWalk = new MockActivityTestRule<>(InviteTeamToWalkActivity.class);
 
     @Before
     public void setup() {
@@ -133,9 +130,6 @@ public class ProposedWalkInviterBDDEspressoTest {
                         .addProposedBy("Emulator User")
                         .addProposedDateAndTime(new Timestamp(date))
                         .build());
-
-
-
     }
 
     @Test

@@ -70,7 +70,6 @@ public class ProposeWalkFromTeammateRoutesEspressoTest {
 
     @Rule
     public MockActivityTestRule<LoginActivity> mActivityTestRule = new MockActivityTestRule<>(LoginActivity.class);
-    //public MockActivityTestRule<InviteTeamToWalkActivity> mActivityInviteTeamToWalk = new MockActivityTestRule<>(InviteTeamToWalkActivity.class);
 
     @Before
     public void setup() {
@@ -144,17 +143,5 @@ public class ProposeWalkFromTeammateRoutesEspressoTest {
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.btn_send_invitation_to_team), withText("Send to Team"), isDisplayed()));
         appCompatButton3.perform(click());
-
-        //Making sure that toast still exists.
-        /*try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        onView(withText("Invitation sent")).
-                inRoot(withDecorView(not(is(mActivityTestRule.getActivity().getWindow().getDecorView())))).
-                check(matches(isDisplayed()));*/
-
     }
 }
