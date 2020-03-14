@@ -72,8 +72,8 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
     @Override
     protected void onResume() {
         super.onResume();
-        getUIFields();
         getTeamUid();
+        getUIFields();
         setButtonClickListeners();
         seeInvitationsBtn.setOnClickListener(view -> {
             launchInvitationsActivity(view);
@@ -134,6 +134,9 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
         noTeamMessage.setVisibility(View.GONE);
         teammatesList.setAdapter(teammatesListViewAdapter);
         seeScheduledWalksBtn = findViewById(R.id.btn_scheduled_walks);
+        if (mTeamUid == null) {
+            seeScheduledWalksBtn.setEnabled(false);
+        }
     }
 
     private void setButtonClickListeners() {
