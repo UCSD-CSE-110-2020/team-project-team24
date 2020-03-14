@@ -65,15 +65,15 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
-        preferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
+        mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
         setUpServices();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getTeamUid();
         getUIFields();
+        getTeamUid();
         setButtonClickListeners();
         seeInvitationsBtn.setOnClickListener(view -> {
             launchInvitationsActivity(view);
@@ -104,14 +104,12 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
     }
 
     private void getTeamUid() {
-        mPreferences = getSharedPreferences(HomeActivity.APP_PREF, Context.MODE_PRIVATE);
-        mTeamUid = mPreferences.getString(IUser.TEAM_UID_KEY, null);
         if (mTeamUid == null) {
             showNoTeamToast();
         } else {
             Log.d(TAG, "getTeamUid: team uid found, retrieving team");
             seeTeammateRoutesBtn.setEnabled(true);
-            mDb.getUserTeam(mTeamUid, preferences.getString(IUser.USER_NAME_KEY, ""));
+            mDb.getUserTeam(mTeamUid, mPreferences.getString(IUser.USER_NAME_KEY, ""));
         }
     }
 
@@ -130,10 +128,11 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
         seeScheduledWalksBtn = findViewById(R.id.btn_scheduled_walks);
         noTeamMessage = findViewById(R.id.text_no_teammates);
         teammatesList = findViewById(R.id.list_members_in_team);
-        teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam(), preferences);
+        teammatesListViewAdapter = new TeammatesListViewAdapter(this, mTeam.getTeam(), mPreferences);
         noTeamMessage.setVisibility(View.GONE);
         teammatesList.setAdapter(teammatesListViewAdapter);
         seeScheduledWalksBtn = findViewById(R.id.btn_scheduled_walks);
+        mTeamUid = mPreferences.getString(IUser.TEAM_UID_KEY, null);
         if (mTeamUid == null) {
             seeScheduledWalksBtn.setEnabled(false);
         }
@@ -197,7 +196,7 @@ public class TeamActivity extends AppCompatActivity implements TeamsTeammatesObs
             noTeamMessage.setVisibility(View.GONE);
         }
         ListView teammatesList = findViewById(R.id.list_members_in_team);
-        TeammatesListViewAdapter teammatesListViewAdapter = new TeammatesListViewAdapter(this, users, preferences);
+        TeammatesListViewAdapter teammatesListViewAdapter = new TeammatesListViewAdapter(this, users, mPreferences);
         teammatesList.setAdapter(teammatesListViewAdapter);
         Utils.setListViewHeightBasedOnChildren(teammatesList);
     }
