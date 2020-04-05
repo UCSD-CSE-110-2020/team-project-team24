@@ -8,9 +8,13 @@
   
 Note: If not specified, the access date for each of the above references is between February 2, 2020 and February 16, 2020.
 
-# TODO
-1. We NEED to write more tests that do the same thing a couple of times to make sure toggling doesn't mess it up
-2. If possible, write tests that actually close and reopen the app to see what happens
+# Major Functionalities
+- Record daily steps and distance using Google Fit API
+- Start a walking session that records your steps and distance separate from daily steps
+- Save a walking session as a new route
+- Create a new route without walking it first so the user can start recording a walk directly from this route later
+- Form a walking team with other users so any user in the team can schedule and propose a walk to the team (implemented with Cloud Firestore storage with a few uses of JS Cloud functions)
+- If the user is part of a walking team, the user can also see their teammate's personal routes to get ideas for exploring new routes
 
 # Design Patterns in Practice
 1. **Adapter**
